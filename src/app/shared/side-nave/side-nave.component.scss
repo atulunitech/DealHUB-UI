@@ -1,93 +1,79 @@
-.logo_cont
-{
-    text-align: center;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    background-color: black;
-    width: 100%;
-    margin-bottom: 20px;
+@import "../../../assets/scss/mixins";
+@import "../../../assets/scss/variables";
+
+.logo_cont {
+  text-align: center;
+  @include font-size(1.6);
+  @include padding(20px, inherit, 20px, inherit);
+  @include margin(initial, initial, 20px, inherit);
+  @include heightwidth(100%, initial);
+  @include font-weight(900);
+  color: $thm-tex-col-dar;
 }
 
-.acc_out_wr{width: 100%;}
-.accordion {
-    width: 96%;
-    
+.acc_out_wr {
+  @include heightwidth(200px, initial);
+  .accordion {
+    @include heightwidth(97%, initial);
+    li {
+      i {
+        @include position(absolute, 0.8rem, initial, initial, 26px);
+        @include transition(all 0.4s ease);
+        color: $thm-tex-col-dar;
+        @include font-size(1.4);
+      }
+      .menu {
+        cursor: pointer;
+        display: inherit;
+        @include position(relative);
+        @include padding(19px, 15px, 19px, 70px);
+        @include font-weight(400);
+        color: $thm-tex-col-dar;
+        @include transition(all 0.4s ease);
+      }
+      &.active
+      {
+        i{
+          &::after
+          {
+            content:'';
+            background-color: #e5eeff;
+            z-index: -1;
+            @include heightwidth(40px,40px);
+            @include position(absolute,-7px,initial,initial,-10px);
+            @include border-radius(20px);
+          }
+        }
+      }
+    }
   }
-  
-  .accordion .menu {
-    position: relative;
-    padding: 10px 15px 10px 45px;
-    color: #fff;
-    font-weight: 400;
-    cursor: pointer;
-    transition: all 0.4s ease;
-  }
-  
-  .accordion li:last-child .menu {
-    border-bottom: 0;
-  }
-  
-  .accordion li i {
-    position: absolute;
-    top: 0.8rem;
-    left: 1rem;
-    color: #fff;
-    transition: all 0.4s ease;
-  }
-  
-  .accordion li i.fa-chevron-down {
-    right: 1rem;
-    left: auto;
-  }
-  
-  .accordion li.active i.fa-chevron-down {
-    transform: rotate(180deg);
-  }
-  
-  .accordion li.active .menu {
-    color: #fff;
-    background-color: #0058bf;
-    border-radius: 7px;
-  }
-  
-  .accordion li.active i {
-    color: #fff;
-  }
-  
-  /* Show submenu */
+}
 
-  
-  .submenu {
-    height: 0;
-    overflow: hidden;
-    background: transparent;
-    font-size: 12px;
-    transition: height 0.4s ease;
-    font-weight: 300;
-  }
-  
+/* Show submenu */
+
+.submenu {
+  height: 0;
+  overflow: hidden;
+  background: transparent;
+  font-size: 12px;
+  transition: height 0.4s ease;
+  font-weight: 300;
+}
+
 //   .submenu li {
 //     border-bottom: 1px solid #ccc;
 //   }
-  
-  .accordion li:last-child .submenu {
-    border-radius: 0 0 4px 4px;
-  }
-  
-  .accordion li:last-child .submenu li:last-child {
-    border-bottom: 0;
-  }
-  
-  .submenu a {
-    display: block;
-    text-decoration: none;
-    color: #d9d9d9;
-    padding: 12px;
-    padding-left: 42px;
-    transition: all 0.25s ease-in-out;
-  }
-  
-  .submenu a:hover {
-    background: #b63b4d;
-    color: #fff;
-  }
+
+.submenu a {
+  display: block;
+  text-decoration: none;
+  color: #d9d9d9;
+  padding: 12px;
+  padding-left: 42px;
+  transition: all 0.25s ease-in-out;
+}
+
+.submenu a:hover {
+  background: #b63b4d;
+  color: #fff;
+}

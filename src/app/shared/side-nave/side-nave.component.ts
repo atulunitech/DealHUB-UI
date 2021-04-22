@@ -14,40 +14,48 @@ export class SideNaveComponent implements OnInit {
   options = { multi: false };
   menus = [
    { 
-     name: 'Menu 1',
-     iconClass: 'fa fa-code',
+     name: 'User Id',
+     iconClass: 'fas fa-user-astronaut',
+     url:"javascript:void(0)",
      active: true,
-     submenu: [
-       { name: 'Sub Menu 1 ', url: '#' },
-       { name: 'Sub Menu 1', url: '#' },
-       { name: 'Sub Menu 1', url: '#' }
-     ]
    },
    { 
-     name: 'Menu 2',
-     iconClass: 'fa fa-mobile',
-     active: false,
-     submenu: [
-       { name: 'Sub Menu 2', url: '#' },
-       { name: 'Sub Menu 2', url: '#' },
-       { name: 'Sub Menu 2', url: '#' }
-     ]
-   },
-   { 
-     name: 'Menu 3',
-     iconClass: 'fa fa-globe',
-     active: false,
-     submenu: [
-       { name: 'Sub Menu 3', url: '#' },
-       { name: 'Sub Menu 3', url: '#' },
-       { name: 'Sub Menu 3', url: '#' }
-     ]
-   },
-   { 
-     name: 'Menu 4',
-     iconClass: 'fa fa-globe',
-     active: false
-   }
+    name: 'Menu 1',
+    iconClass: 'fas fa-lock',
+    url:"javascript:void(0)",
+    active: false,
+  },
+  { 
+    name: 'Menu 1',
+    iconClass: 'fas fa-sign-out-alt',
+    url:"javascript:void(0)",
+    active: false,
+  }
+  //  { 
+  //    name: 'Menu 2',
+  //    iconClass: 'fa fa-mobile',
+  //    active: false,
+  //    submenu: [
+  //      { name: 'Sub Menu 2', url: '#' },
+  //      { name: 'Sub Menu 2', url: '#' },
+  //      { name: 'Sub Menu 2', url: '#' }
+  //    ]
+  //  },
+  //  { 
+  //    name: 'Menu 3',
+  //    iconClass: 'fa fa-globe',
+  //    active: false,
+  //    submenu: [
+  //      { name: 'Sub Menu 3', url: '#' },
+  //      { name: 'Sub Menu 3', url: '#' },
+  //      { name: 'Sub Menu 3', url: '#' }
+  //    ]
+  //  },
+  //  { 
+  //    name: 'Menu 4',
+  //    iconClass: 'fa fa-globe',
+  //    active: false
+  //  }
  ];
 
   ngOnInit(): void {
