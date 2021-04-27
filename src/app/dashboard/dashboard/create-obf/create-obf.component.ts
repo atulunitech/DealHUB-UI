@@ -29,6 +29,9 @@ export class CreateOBFComponent implements OnInit {
   columns:Array<any>;
   displayedColumns:Array<any>;
   ProjectDetails: MatTableDataSource<any>;
+
+  readMore = false;
+  BrifreadMore=false;
       @ViewChild(MatSort) sort: MatSort;
       @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
@@ -302,4 +305,6 @@ export class CreateOBFComponent implements OnInit {
         this.ProjectDetails.sort = this.sort;
         this.ProjectDetails.paginator = this.paginator;
         }
+        
+       
 }

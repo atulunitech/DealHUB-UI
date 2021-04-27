@@ -51,10 +51,7 @@
         <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft()" value="Save as Draft"/>
         <input type="button" (click)="Prview()" class="btn btn-primary" [disabled]="_obfservices.ObfCreateForm.invalid" value="Preview & Submit"/>
     </div>
-    <div style="display: block;float: left;width:100%;">
-        <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
-        <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
-    </div>
+   
     </form>
     <div >
         <ng-template #callAPIDialog>
@@ -99,12 +96,24 @@
                     <span><label>IIR % Borrowed Fund</label>{{OBFData.IRRborrowedfund}}</span>
                     <span><label>Payment Terms</label>{{OBFData.Paymentterms}}</span>
                 </div>
-                  <div>Project Date:{{OBFData.Projectdate}}</div>
-                  <div>Project Brief:{{OBFData.Projectbrief}} </div>
-                  <div>Assumption & Risk:{{OBFData.Assumptionrisks}} </div>
+                <div>Project Date:{{OBFData.Projectdate}}</div>
+
+               <div >Project Brief:{{(BrifreadMore) ? (OBFData.Projectbrief) : (OBFData.Projectbrief) | slice:0:50 }}  
+                   <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
+                   <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                </div>
+
+                <div >Assumption & Risk:{{(readMore) ? (OBFData.Assumptionrisks) : (OBFData.Assumptionrisks) | slice:0:50 }}  
+                    <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
+                    <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
+                 </div>
                   <div>LOI/Po:{{OBFData.Loipo}}</div>
                   <div>
                     <input type="text" placeholder="Enter Comment" style="height:180px;" [value]="OBFData.comments"/>
+                    </div>
+                    <div style="display: block;float: left;width:100%;">
+                        <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
+                        <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
                     </div>
                     <div>
                         <div  class="sb_buttion" (click)="EditOBF()"><button>Edit</button></div>
