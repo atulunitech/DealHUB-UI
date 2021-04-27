@@ -9,6 +9,10 @@
     @include heightwidth(70px,100%);
     @include transition(all 0.3s);
     background-color: $thm-bg;
+    &.open
+    {
+        width: 200px;
+    }
 }
 .page
 {
@@ -19,6 +23,10 @@
     @include position(absolute,0,0,initial,initial);
     @include transition(all 0.3s);
     background-color: $thm-dash-bg;  
+    &.open
+    {
+        width: calc(100% - 200px);
+    }
 }
 .back_head
 {
