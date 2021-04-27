@@ -5,6 +5,61 @@
     <div style="background-color: white;
     height: 485px;
     padding: 20px;">
-      <h4 style="text-align: center;padding-top: 20px;">Coming Soon</h4>  
+      <div class="search-div">
+    
+         <!-- <mat-form-field class="search-form-field" floatLabel="never">
+           <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+           <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+             <mat-icon>close</mat-icon>
+           </button>
+         </mat-form-field> -->
+         
+         <input  [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+           <button  aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+             <!-- <mat-icon>close</mat-icon> -->
+           </button>
+       </div>
+       <div>
+         <div  class="sb_buttion"><button (click)="CreateOBF()">Create OBF</button></div>
+     
+       </div>
+
+    
+ <div class="search-div col s8 offset-s4">
+    <mat-card class="example-card">Drafts : {{listData.data?.length}}</mat-card>
+    <mat-card class="example-card">Submitted : {{listData.data?.length}}</mat-card>
+    <mat-card class="example-card">Rejected : {{listData.data?.length}}</mat-card>
+    <mat-card class="example-card">Approved OBF's : {{listData.data?.length}}</mat-card>
+    <mat-card class="example-card">Approved PPL's : {{listData.data?.length}}</mat-card>
+  </div>
+  
+<div class="mat-elevation-z8">
+   <mat-table #table [dataSource]="listData" matSort>
+     <ng-container  [matColumnDef]="theRemovedElement.columnDef">
+       <mat-header-cell *matHeaderCellDef mat-sort-header>{{ theRemovedElement.header }}</mat-header-cell>
+       <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
+       
+     </ng-container>
+       <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+         <div *ngIf="column.columnDef == 'download'">
+         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+         <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
+       </div>
+       <div *ngIf="column.columnDef != 'download'">
+         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+         <mat-cell  *matCellDef="let row">{{ column.cell(row) }}</mat-cell>
+       </div>
+         
+       </ng-container>
+       <ng-container  matColumnDef="Action">
+         <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+         <mat-cell *matCellDef="let row"><button mat-icon-button (click)="onEdit(row)"><mat-icon>Edit</mat-icon></button></mat-cell>
+         
+       </ng-container>
+       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+     </mat-table>
+     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator> 
+</div>
     </div>
  </div>

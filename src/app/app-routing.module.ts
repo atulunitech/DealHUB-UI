@@ -4,10 +4,11 @@ import { BackendLayoutComponent } from './layouts/backend-layout/backend-layout.
 import { BACKEND_LAYOUT } from './routes/backend-layout-routes';
 import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { DEFAULT_ROUTES } from './routes/default-layout-routes';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', component: DefaultLayoutComponent, children: DEFAULT_ROUTES },
-  { path: 'DealHUB', component: BackendLayoutComponent, children: BACKEND_LAYOUT },
+  { path: 'DealHUB', component: BackendLayoutComponent, children: BACKEND_LAYOUT,canActivate:[AuthGuard],canActivateChild:[AuthGuard] },
   { path: '**', redirectTo: '404' }
 ];
 

@@ -11,9 +11,10 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import {ResetPassword} from './login/ResetPassword.component';
 
 @NgModule({
-  declarations: [SignupComponent, LoginComponent],
+  declarations: [SignupComponent, LoginComponent,ResetPassword],
   imports: [
     CommonModule,
     MatCheckboxModule,
@@ -23,7 +24,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    CommonModule,
+    AuthRoutingModule,FormsModule
+    ,ReactiveFormsModule
   ]
 })
 export class AuthModule { }
