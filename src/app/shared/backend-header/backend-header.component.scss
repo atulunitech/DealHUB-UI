@@ -55,7 +55,20 @@
     display: inline-block;
     img
     {
-        width: 110px;
+        width: 92px;
         display: block;
     }
+}
+
+.not_alt
+{
+  @include margin(inherit,50px,inherit,inherit);
+  i
+  {
+    background-color:#e5eeff;
+    opacity: 0.5;
+    @include font-size(1.2);
+    @include border-radius(40px);
+    @include padding(9px,12px,9px,12px);
+  }
 }

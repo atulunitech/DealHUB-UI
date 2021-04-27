@@ -1,7 +1,101 @@
-<div fxLayout="row" fxLayoutAlign="space-between center" class="filter_cont" >
-   <div>DASHBOARD</div>
+<div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
+   <div class="com_title">dashboard</div>
+   <div class="serch_box_ms">
+     <div class="search_con">
+       <input type="search" placeholder="Search"  [(ngModel)]="searchKey"  autocomplete="off" (keyup)="applyFilter()">
+     </div>
+     <i class="fas fa-search"></i>
+   </div>
 </div>
-<div fxLayout="row" fxLayoutAlign="space-between center" class="con_data" >
+<div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" >
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in">
+    <div class="con_fil_box p_f_apr">
+      <div class="box_shead"><img src="../../../assets/images/p_f_a.png"></div>
+      <div class="fil_hed_tit">
+        pending for approval
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box approved">
+      <div class="box_shead"><img src="../../../assets/images/approved.png"></div>
+      <div class="fil_hed_tit">
+        approved
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box rejected">
+      <div class="box_shead"><img src="../../../assets/images/rejected.png"></div>
+      <div class="fil_hed_tit">
+        rejected
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box app_obf">
+      <div class="box_shead"><img src="../../../assets/images/approved_obf.png"></div>
+      <div class="fil_hed_tit">
+        approved obf
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div> -->
+    </div>
+    <div class="con_fil_box app_ppl">
+      <div class="box_shead"><img src="../../../assets/images/approved_ppl.png"></div>
+      <div class="fil_hed_tit">
+        approved ppl
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div> -->
+    </div>
+    
+  </div>
     <div style="background-color: white;
    
     ">
