@@ -1,0 +1,61 @@
+@import "../../../assets/scss/mixins";
+
+#nav-icon1 {
+    display: inline-block;
+  cursor: pointer;
+  @include position(relative);
+  @include heightwidth(30px, 20px);
+  @include transform(rotate(0deg));
+  @include transition(0.5s ease-in-out);
+  @include margin(initial,15px,initial,15px);
+  span {
+    display:block;
+    background: #9490ae;
+    opacity: 1;
+    @include border-radius(90px);
+    @include position(absolute,initial,inherit,inherit,0);
+    @include heightwidth(100%,3px);
+    @include transform(0deg);
+    @include transition(0.25s ease-in-out);
+    &:nth-child(1) {
+      top: 0px;
+    }
+    &:nth-child(2) {
+      top: 8px;
+      
+    }
+    &:nth-child(3) {
+      bottom: 0px;
+      width: 60%;
+    }
+  }
+  &.open {
+    span {
+      &:nth-child(1) {
+        top: 10px;
+        @include transform(rotate(135deg));
+      }
+      &:nth-child(2) {
+        opacity: 0;
+        left: -60px;
+      }
+      &:nth-child(3) {
+        top: 10px;
+        width: 100%;
+        @include transform(rotate(-135deg));
+      }
+    }
+  }
+}
+
+/* Icon 2 */
+
+.logo_wrp
+{
+    display: inline-block;
+    img
+    {
+        width: 110px;
+        display: block;
+    }
+}
