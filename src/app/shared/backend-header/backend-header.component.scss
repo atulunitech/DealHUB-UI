@@ -32,7 +32,7 @@
   &.open {
     span {
       &:nth-child(1) {
-        top: 8px;
+        top: 6px;
         @include transform(rotate(135deg));
       }
       &:nth-child(2) {
@@ -40,7 +40,7 @@
         left: -60px;
       }
       &:nth-child(3) {
-        top: 8px;
+        top: 6px;
         width: 100%;
         @include transform(rotate(-135deg));
       }

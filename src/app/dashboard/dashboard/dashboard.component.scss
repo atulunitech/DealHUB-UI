@@ -2,7 +2,7 @@
 @import '../../../assets/scss/variables';
 
 .filter_cont {
-    @include padding(20px,50px,20px,50px);
+    @include padding(15px,50px,15px,50px);
 }
 .com_title
 {
@@ -87,6 +87,7 @@
   @include position(relative);
     .search_con
     {
+        border: solid 1px #eeeeee;
         @include border-radius(60px);
         @include heightwidth(320px,inherit);
         @include padding(5px,40px,5px,20px);
@@ -112,4 +113,21 @@
             @include position(absolute,10px,15px,inherit,inherit);
             @include font-size(1.2);
         }
+    .search_icon
+    {
+        @include position(absolute,11px,15px,inherit,inherit);
+        img
+        {@include heightwidth(18px,auto);}
+    }
+}
+.bt_sp
+{
+    @include margin(initial,initial,initial,10px);
+}
+.fl_table_con
+{
+    .ms_table
+    {
+        min-width: 100%;
+    }
 }
