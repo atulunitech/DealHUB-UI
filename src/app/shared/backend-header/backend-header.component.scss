@@ -4,10 +4,10 @@
     display: inline-block;
   cursor: pointer;
   @include position(relative);
-  @include heightwidth(30px, 20px);
+  @include heightwidth(25px, 15px);
   @include transform(rotate(0deg));
   @include transition(0.5s ease-in-out);
-  @include margin(initial,15px,initial,15px);
+  @include margin(2px,15px,initial,15px);
   span {
     display:block;
     background: #9490ae;
@@ -21,7 +21,7 @@
       top: 0px;
     }
     &:nth-child(2) {
-      top: 8px;
+      top: 0.3755rem;
       
     }
     &:nth-child(3) {
@@ -32,7 +32,7 @@
   &.open {
     span {
       &:nth-child(1) {
-        top: 10px;
+        top: 8px;
         @include transform(rotate(135deg));
       }
       &:nth-child(2) {
@@ -40,7 +40,7 @@
         left: -60px;
       }
       &:nth-child(3) {
-        top: 10px;
+        top: 8px;
         width: 100%;
         @include transform(rotate(-135deg));
       }
@@ -63,12 +63,13 @@
 .not_alt
 {
   @include margin(inherit,50px,inherit,inherit);
-  i
+  background-color:#e5eeff;
+  opacity: 0.5;
+  @include font-size(1.2);
+  @include border-radius(40px);
+  @include padding(5px,10px,5px,10px);
+  img
   {
-    background-color:#e5eeff;
-    opacity: 0.5;
-    @include font-size(1.2);
-    @include border-radius(40px);
-    @include padding(9px,12px,9px,12px);
+    @include heightwidth(20px,auto);
   }
 }

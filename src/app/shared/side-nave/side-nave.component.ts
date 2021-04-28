@@ -15,19 +15,19 @@ export class SideNaveComponent implements OnInit {
   menus = [
    { 
      name: 'User Id',
-     iconClass: 'fas fa-user-astronaut',
+     iconClass: 'user_icon.png',
      url:"javascript:void(0)",
      active: true,
    },
    { 
     name: 'Menu 1',
-    iconClass: 'fas fa-lock',
+    iconClass: 'user_login_icon.png',
     url:"javascript:void(0)",
     active: false,
   },
   { 
     name: 'Menu 1',
-    iconClass: 'fas fa-sign-out-alt',
+    iconClass: 'log_out_icon.png',
     url:"javascript:void(0)",
     active: false,
   }
