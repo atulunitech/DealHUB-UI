@@ -44,7 +44,11 @@ import { ToastrModule } from 'ngx-toastr';
       positionClass: 'toast-top-right'
     })
     ],
-  providers: [],
+    providers: [AuthGuard,{
+      provide : HTTP_INTERCEPTORS,
+      useClass : AuthInterceptor,
+      multi : true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
