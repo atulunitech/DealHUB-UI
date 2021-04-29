@@ -6,7 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
-import { CreateOBFComponent } from './dashboard/create-obf/create-obf.component';
+import { CreateOBFComponent } from './create-obf/create-obf.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 
 

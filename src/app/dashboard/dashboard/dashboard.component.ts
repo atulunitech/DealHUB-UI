@@ -50,26 +50,26 @@ export class DashboardComponent implements OnInit {
 
   CallDashBoardService()
   {
-    // this._dashboardmodel._user_code=localStorage.getItem("UserName");
-    //  this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
+     this._dashboardmodel._user_code=localStorage.getItem("UserName");
+     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
      
        
-    //    console.log(Result);
-    //    var loginresult =Result;
-    //    this.dashboardData=JSON.parse(Result);
-    //    this.BindGridDetails();
-    //  },
-    //  (error:HttpErrorResponse)=>{
+      console.log(Result);
+      var loginresult =Result;
+     this.dashboardData=JSON.parse(Result);
+       this.BindGridDetails();
+     },
+     (error:HttpErrorResponse)=>{
     
-    //   if (error.status==401)
-    //   {
-    //      this.router.navigateByUrl('/login');
+     if (error.status==401)
+     {
+       //  this.router.navigateByUrl('/login');
         
-    //  }
+      }
       
-    //  }
-    //  );
-     this.dashboardData=DATA;
+     }
+      );
+    //  this.dashboardData=DATA;
      this.BindGridDetails();
   }
 

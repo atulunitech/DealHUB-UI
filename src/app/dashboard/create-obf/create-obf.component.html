@@ -72,8 +72,8 @@
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                   </mat-table> -->
                   <div style="display:block;float:left;width:100%;background: #4e65d796;">
-                    <span><label>Project Name</label>{{OBFData.Projectname}}</span>
-                    <span><label>Project Type</label>{{OBFData.Projecttype}}</span>
+                    <span><label [matTooltip]="getToolTipData(OBFData.Projectname)">Project Name</label>{{OBFData.Projectname}}</span>
+                    <span><label [matTooltip]="getToolTipData(OBFData.Projecttype)">Project Type</label>{{OBFData.Projecttype}}</span>
                     <span><label>Opportunity Id</label>{{OBFData.Opportunityid}}</span>
                     <span><label>Location / State</label>{{OBFData.State}}</span>
                     <span><label>Vertical</label>{{OBFData.Vertical}}</span>
@@ -115,11 +115,12 @@
                         <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
                         <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
                     </div>
-                    <div>
+                    <div style="display: block;float: right;">
                         <div  class="sb_buttion" (click)="EditOBF()"><button>Edit</button></div>
-                        <div  class="sb_buttion"><button>Submit</button></div>
                     </div>
-            
+                    &nbsp;
+                    <div style="display: block;float: right;">
+                    <div  class="sb_buttion"><button>Submit</button></div></div>
         </ng-template>
         
      
@@ -133,9 +134,6 @@
             </tr>
         </tbody>
     </table> -->
-    <div>
-        <div  class="sb_buttion"><button>Save As Draft</button></div>
-        <div  class="sb_buttion"><button (click)="Prview()">Prview & Submit</button></div>
-    </div>
+    
     
     
