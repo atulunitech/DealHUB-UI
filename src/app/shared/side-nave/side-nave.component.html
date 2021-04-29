@@ -1,7 +1,7 @@
 
-<div fxLayout >
+<div fxLayout="row" fxLayoutAlign="start center" >
    <div class="logo_cont">
-      DH
+      <!-- DH -->
    </div>
 </div>
 
@@ -11,10 +11,10 @@
             <li *ngFor="let menu of menus; let i = index" 
               [class.active]="menu.active">
               <a [href]="menu.url" class="menu" (click)="toggle(i)">
-                <i [class]="menu.iconClass"></i>
+                <div class="m_icon"><img  src="../../../assets/images/{{menu.iconClass}}"></div>
                <span> {{ menu.name }}</span>
                 <!-- <i class="fa fa-chevron-down"></i> -->
-                <div class="arrow_icon"></div>
+                <!-- <div class="arrow_icon"></div> -->
               </a>
               <!-- <ul class="submenu" #submenu 
                 [style.height.px]="menu.active ? submenu.scrollHeight : 0">

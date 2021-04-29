@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-backend-layout',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackendLayoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(public commonService:CommonService) { }
 
   ngOnInit(): void {
   }
 
+ 
 }

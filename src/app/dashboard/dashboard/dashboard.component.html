@@ -1,65 +1,136 @@
-<div fxLayout="row" fxLayoutAlign="space-between center" class="filter_cont" >
-   <div>DASHBOARD</div>
-</div>
-<div fxLayout="row" fxLayoutAlign="space-between center" class="con_data" >
-    <div style="background-color: white;
-    height: 485px;
-    padding: 20px;">
-      <div class="search-div">
-    
-         <!-- <mat-form-field class="search-form-field" floatLabel="never">
-           <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-           <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-             <mat-icon>close</mat-icon>
-           </button>
-         </mat-form-field> -->
-         
-         <input  [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-           <button  aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-             <!-- <mat-icon>close</mat-icon> -->
-           </button>
-       </div>
-       <div>
-         <div  class="sb_buttion"><button (click)="CreateOBF()">Create OBF</button></div>
-     
-       </div>
-
-    
- <div class="search-div col s8 offset-s4">
-    <mat-card class="example-card">Drafts : {{listData.data?.length}}</mat-card>
-    <mat-card class="example-card">Submitted : {{listData.data?.length}}</mat-card>
-    <mat-card class="example-card">Rejected : {{listData.data?.length}}</mat-card>
-    <mat-card class="example-card">Approved OBF's : {{listData.data?.length}}</mat-card>
-    <mat-card class="example-card">Approved PPL's : {{listData.data?.length}}</mat-card>
+<div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
+   <div class="com_title">dashboard</div>
+   <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
+   <div class="serch_box_ms">
+     <div class="search_con">
+       <input type="search" placeholder="Search"  autocomplete="off">
+     </div>
+     <div class="search_icon"><img src="../../../assets/images/search_icon.png"></div>
+   </div>
+   <button mat-flat-button class="creat_bt bt_sp" ><img class="creat_bt_icon" src="../../../assets/images/create_icon.png" alt="">create OBF</button>
+    <!-- <div class="creat_bt"><span><img src="../../../assets/images/create_icon.png" alt=""></span>create OBF</div> -->
   </div>
-  
-<div class="mat-elevation-z8">
-   <mat-table #table [dataSource]="listData" matSort>
-     <ng-container  [matColumnDef]="theRemovedElement.columnDef">
-       <mat-header-cell *matHeaderCellDef mat-sort-header>{{ theRemovedElement.header }}</mat-header-cell>
-       <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
-       
-     </ng-container>
-       <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-         <div *ngIf="column.columnDef == 'download'">
-         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-         <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
-       </div>
-       <div *ngIf="column.columnDef != 'download'">
-         <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-         <mat-cell  *matCellDef="let row">{{ column.cell(row) }}</mat-cell>
-       </div>
-         
-       </ng-container>
-       <ng-container  matColumnDef="Action">
-         <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-         <mat-cell *matCellDef="let row"><button mat-icon-button (click)="onEdit(row)"><mat-icon>Edit</mat-icon></button></mat-cell>
-         
-       </ng-container>
-       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-     </mat-table>
-     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator> 
 </div>
+<div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" >
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in">
+    <div class="con_fil_box p_f_apr">
+      <div class="box_shead"><img src="../../../assets/images/p_f_a.png"></div>
+      <div class="fil_hed_tit">
+        pending for approval
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box approved">
+      <div class="box_shead"><img src="../../../assets/images/approved.png"></div>
+      <div class="fil_hed_tit">
+        approved
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box rejected">
+      <div class="box_shead"><img src="../../../assets/images/rejected.png"></div>
+      <div class="fil_hed_tit">
+        rejected
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div>
+    </div>
+    <div class="con_fil_box app_obf">
+      <div class="box_shead"><img src="../../../assets/images/approved_obf.png"></div>
+      <div class="fil_hed_tit">
+        approved obf
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div> -->
+    </div>
+    <div class="con_fil_box app_ppl">
+      <div class="box_shead"><img src="../../../assets/images/approved_ppl.png"></div>
+      <div class="fil_hed_tit">
+        approved ppl
+      </div>
+      <div class="fil_had_no">
+        23,456
+      </div>
+      <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
+        <div class="lst_obf">
+          OBF: 1,058
+        </div>
+        <div class="lst_ppl">
+          PPL: 1,456
+        </div>
+      </div> -->
+    </div>
+    
+  </div>
+    <div class="fl_table_con">
+      <table mat-table [dataSource]="dataSource" class="ms_table">
+
+        
+        <ng-container matColumnDef="APPROVALSTATUS">
+          <th mat-header-cell *matHeaderCellDef> APPROVALSTATUS </th>
+          <td mat-cell *matCellDef="let element"> {{element.APPROVALSTATUS}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="PROJECTNAME">
+          <th mat-header-cell *matHeaderCellDef> PROJECTNAME </th>
+          <td mat-cell *matCellDef="let element"> {{element.PROJECTNAME}} </td>
+        </ng-container>
+      
+        <!-- Weight Column -->
+        <ng-container matColumnDef="CODE">
+          <th mat-header-cell *matHeaderCellDef> CODE </th>
+          <td mat-cell *matCellDef="let element"> {{element.CODE}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="OPPID">
+          <th mat-header-cell *matHeaderCellDef> OPPID </th>
+          <td mat-cell *matCellDef="let element"> {{element.OPPID}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
+      
     </div>
  </div>

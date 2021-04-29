@@ -4,11 +4,12 @@
     <div style="width:25%;margin-right:15px;float: left;">
     <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
         <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
-        <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
-            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-        </ngx-dropzone-preview>
+  
         
     </ngx-dropzone>
+    <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+    </ngx-dropzone-preview>
     <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
     </div>
     <div style="width:25%;margin-right:15px;float: left;">

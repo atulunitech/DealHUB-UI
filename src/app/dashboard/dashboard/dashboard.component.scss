@@ -1,13 +1,133 @@
-.filter_cont {
-    padding-top: 20px;
-    padding-bottom: 40px;
+@import '../../../assets/scss/mixins';
+@import '../../../assets/scss/variables';
 
-    padding-left: 50px;
-    padding-right: 50px;
+.filter_cont {
+    @include padding(15px,50px,15px,50px);
+}
+.com_title
+{
+    display: inline-block;
+    text-transform: capitalize;
+    @include font-size(1.4);
+    @include font-weight(semi-bold);
+    color:$thm-title-color;
 }
 .con_data
 {
-    margin-top: -21px;
-    padding-left: 50px;
-    padding-right: 50px;
+    @include padding(initial,50px,initial,50px);
+    .con_data_in
+    {
+        @include padding(0px,0px,20px,0px);
+        @include margin(initial,-10px,initial,-10px);
+        .con_fil_box
+        {
+
+            color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+            @include position(relative);
+            @include heightwidth(215px,100px);
+            @include border-radius(15px);
+            @include padding(15px,20px,15px,20px);
+            @include margin(initial,10px,initial,10px);
+            
+            .box_shead
+                {
+                    @include position(absolute,0,0,inherit,inherit);
+                    img
+                    {
+                        @include heightwidth(110px,inherit);
+                    }
+                }
+            .fil_hed_tit
+            {
+                text-transform: uppercase;
+                @include font-size(0.80);
+                @include position(relative);
+            }
+            .fil_had_no
+            {
+                @include font-size(1.4);
+                @include position(relative,1px);
+                @include font-weight(bold);
+            }
+            .obl_ppf_con
+            {
+                @include heightwidth(initial,30px);
+                @include position(relative);
+                @include font-size(0.70);
+                @include font-weight(semi-bold);
+            }
+            &.p_f_apr
+            {
+                background-color: #71b945;
+                
+            }
+            &.approved
+            {
+                background-color: #4a8cda;
+            }
+            &.rejected
+            {
+                background-color: #ec401b;
+            }
+            &.app_obf
+            {
+                background-color: #6647bf;
+            }
+            &.app_ppl
+            {
+                background-color: #f37944;
+            }
+        }
+    }
+}
+.serch_box_ms
+{
+  @include position(relative);
+    .search_con
+    {
+        border: solid 1px #eeeeee;
+        @include border-radius(60px);
+        @include heightwidth(320px,inherit);
+        @include padding(5px,40px,5px,20px);
+        background-color: $thm-bg;
+        input
+        {
+            border: none;
+            @include heightwidth(100%,30px);
+            &:focus
+            {
+                outline: none;
+            }
+            &::placeholder
+            {
+                color: #ccc;
+            }
+        }
+        
+    }
+    .fas
+        {
+            color: #eee;
+            @include position(absolute,10px,15px,inherit,inherit);
+            @include font-size(1.2);
+        }
+    .search_icon
+    {
+        @include position(absolute,11px,15px,inherit,inherit);
+        img
+        {@include heightwidth(18px,auto);}
+    }
+}
+.bt_sp
+{
+    @include margin(initial,initial,initial,10px);
+}
+.fl_table_con
+{
+    .ms_table
+    {
+        min-width: 100%;
+    }
 }
