@@ -2,9 +2,9 @@
 @import "../../../assets/scss/variables";
 
 .logo_cont {
-  text-align: center;
+  
   @include font-size(1.6);
-  @include padding(20px, inherit, 20px, inherit);
+  @include padding(20px, inherit, 20px, 15px);
   @include margin(initial, initial, 20px, inherit);
   @include heightwidth(100%, initial);
   @include font-weight(900);

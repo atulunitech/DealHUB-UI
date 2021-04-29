@@ -5,7 +5,9 @@
     @include padding(15px,50px,15px,50px);
     &.obf_form_cont
     {
-        @include margin(-28px,inherit,inherit,inherit);
+        padding-top: 0px;
+        @include margin(-20px,inherit,inherit,inherit);
+        
     }
     &.creat_bof_con
     {
@@ -24,7 +26,7 @@
                 img
                 {
                     width: 20px;
-                    @include margin(inherit,10px,initial,initial);
+                    @include margin(inherit,12px,initial,initial);
                 }
             }
         }
@@ -41,6 +43,7 @@
     &.conm_title_obf
     {
         color: $thm-bg;
+        @include margin(inherit,inherit,inherit,15px);
     }
 }
 
