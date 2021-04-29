@@ -8,23 +8,23 @@ import {Router} from "@angular/router"
 
 
   export interface PeriodicElement {
-    name: string;
-    position: number;
-    weight: number;
-    symbol: string;
+    PROJECTNAME: string;
+    APPROVALSTATUS: number;
+    CODE: number;
+    OPPID: string;
   }
   
   const ELEMENT_DATA: PeriodicElement[] = [
-    {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-    {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-    {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-    {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-    {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-    {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-    {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-    {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-    {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-    {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
+    {APPROVALSTATUS: 1, PROJECTNAME: 'Hydrogen', CODE: 1.0079, OPPID: 'H'},
+    {APPROVALSTATUS: 2, PROJECTNAME: 'Helium', CODE: 4.0026, OPPID: 'He'},
+    {APPROVALSTATUS: 3, PROJECTNAME: 'Lithium', CODE: 6.941, OPPID: 'Li'},
+    {APPROVALSTATUS: 4, PROJECTNAME: 'Beryllium', CODE: 9.0122, OPPID: 'Be'},
+    {APPROVALSTATUS: 5, PROJECTNAME: 'Boron', CODE: 10.811, OPPID: 'B'},
+    {APPROVALSTATUS: 6, PROJECTNAME: 'Carbon', CODE: 12.0107, OPPID: 'C'},
+    {APPROVALSTATUS: 7, PROJECTNAME: 'Nitrogen', CODE: 14.0067, OPPID: 'N'},
+    {APPROVALSTATUS: 8, PROJECTNAME: 'Oxygen', CODE: 15.9994, OPPID: 'O'},
+    {APPROVALSTATUS: 9, PROJECTNAME: 'Fluorine', CODE: 18.9984, OPPID: 'F'},
+    {APPROVALSTATUS: 10, PROJECTNAME: 'Neon', CODE: 20.1797, OPPID: 'Ne'},
   ];
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +33,7 @@ import {Router} from "@angular/router"
 })
 export class DashboardComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['APPROVALSTATUS', 'PROJECTNAME', 'CODE', 'OPPID'];
   dataSource = ELEMENT_DATA;
  
   
