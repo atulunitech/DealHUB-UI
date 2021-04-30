@@ -1,7 +1,8 @@
 import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-
-
+import { MatTableModule ,MatTableDataSource} from '@angular/material/table'
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {Router} from "@angular/router"
@@ -14,6 +15,11 @@ import {Router} from "@angular/router"
     OPPID: string;
   }
   
+  export class DashBoardModel
+{
+  _user_code:string;
+}
+
   const ELEMENT_DATA: PeriodicElement[] = [
     {APPROVALSTATUS: 1, PROJECTNAME: 'Hydrogen', CODE: 1.0079, OPPID: 'H'},
     {APPROVALSTATUS: 2, PROJECTNAME: 'Helium', CODE: 4.0026, OPPID: 'He'},
@@ -33,9 +39,19 @@ import {Router} from "@angular/router"
 })
 export class DashboardComponent implements OnInit {
 
-  displayedColumns: string[] = ['APPROVALSTATUS', 'PROJECTNAME', 'CODE', 'OPPID'];
-  dataSource = ELEMENT_DATA;
- 
+  // displayedColumns: string[] = ['APPROVALSTATUS', 'PROJECTNAME', 'CODE', 'OPPID'];
+  // dataSource = ELEMENT_DATA;
+  listData: MatTableDataSource<any>;
+  columns:Array<any>;
+  displayedColumns:Array<any>;
+  theRemovedElement:any;
+  dataSource:any;
+  searchKey: string;
+  dashboardData:any[]=[];
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  _dashboardmodel:DashBoardModel=new DashBoardModel();
+
   
   constructor(private _dashboardservice:DashboardService,private router: Router) { }
  
@@ -44,12 +60,92 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     // Get list of columns by gathering unique keys of objects found in DATA.
-  
+    this.CallDashBoardService();
    
   }
+  getToolTipData(issueId: any): any {
+    
+    //  alert(JSON.stringify(issueId));
+    return JSON.stringify(issueId);
+   
+}
+  CallDashBoardService()
+  {
+    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
+      debugger;
+      console.log("DashBoardData");
+      console.log(Result);
+      var loginresult =Result;
+      this.dashboardData=JSON.parse(Result);
+       this.BindGridDetails();
 
+
+
+    
+     
+    },
+    (error:HttpErrorResponse)=>{
+      debugger;
+      if (error.status==401)
+      {
+        this.router.navigateByUrl('/login');
+        
+      }
+      
+    }
+    );
+    // this.dashboardData=DATA;
+    // this.BindGridDetails();
+  }
   
 
+
+  BindGridDetails()// code given by kirti kumar shifted to new function
+  {
+    
+    const columns = this.dashboardData
+    .reduce((columns, row) => {
+      return [...columns, ...Object.keys(row)]
+    }, [])
+    .reduce((columns, column) => {
+      return columns.includes(column)
+        ? columns
+        : [...columns, column]
+    }, [])
+  // Describe the columns for <mat-table>.
+  this.columns = columns.map(column => {
+    return { 
+      columnDef: column,
+      header: column.replace("_"," "),
+      cell: (element: any) => `${element[column] ? element[column] : ``}`     
+    }
+  })
+  this.displayedColumns = this.columns.map(c => c.columnDef);
+  this.displayedColumns.push('Action');
+     
+     this.theRemovedElement  = this.columns.shift();
+     
+     console.log("columns"+this.columns);
+     console.log("theRemovedElement"+this.theRemovedElement);
+    // console.log(this.displayedColumns);
+  // Set the dataSource for <mat-table>.
+  // this.dataSource = DATA
+    
+  this.listData = new MatTableDataSource(this.dashboardData);
+  this.listData.sort = this.sort;
+  this.listData.paginator = this.paginator;
+  // this.listData.filterPredicate = (data, filter) => {
+  //   return this.displayedColumns.some(ele => {
+  //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
+  //   });
+  // };
+  }
+  CreateOBF()
+  {
+    this.router.navigate(['/DealHUB/dashboard/createobf']);
+    
+  }
  
 
 

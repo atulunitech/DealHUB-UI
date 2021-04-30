@@ -7,7 +7,7 @@
      </div>
      <div class="search_icon"><img src="../../../assets/images/search_icon.png"></div>
    </div>
-   <button mat-flat-button class="creat_bt bt_sp" ><img class="creat_bt_icon" src="../../../assets/images/create_icon.png" alt="">create OBF</button>
+   <button mat-flat-button class="creat_bt bt_sp" (click)="CreateOBF()" ><img class="creat_bt_icon" src="../../../assets/images/create_icon.png" alt="">create OBF</button>
     <!-- <div class="creat_bt"><span><img src="../../../assets/images/create_icon.png" alt=""></span>create OBF</div> -->
   </div>
 </div>
@@ -19,14 +19,14 @@
         pending for approval
       </div>
       <div class="fil_had_no">
-        23,456
+        23
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
         <div class="lst_obf">
-          OBF: 1,058
+          OBF: 10
         </div>
         <div class="lst_ppl">
-          PPL: 1,456
+          PPL: 11
         </div>
       </div>
     </div>
@@ -36,14 +36,14 @@
         approved
       </div>
       <div class="fil_had_no">
-        23,456
+        27
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
         <div class="lst_obf">
-          OBF: 1,058
+          OBF: 15
         </div>
         <div class="lst_ppl">
-          PPL: 1,456
+          PPL: 14
         </div>
       </div>
     </div>
@@ -53,14 +53,14 @@
         rejected
       </div>
       <div class="fil_had_no">
-        23,456
+        21
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
         <div class="lst_obf">
-          OBF: 1,058
+          OBF: 1
         </div>
         <div class="lst_ppl">
-          PPL: 1,456
+          PPL: 3
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
         approved obf
       </div>
       <div class="fil_had_no">
-        23,456
+        23
       </div>
       <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
         <div class="lst_obf">
@@ -87,7 +87,7 @@
         approved ppl
       </div>
       <div class="fil_had_no">
-        23,456
+        25
       </div>
       <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
         <div class="lst_obf">
@@ -101,34 +101,56 @@
     
   </div>
     <div class="fl_table_con">
-      <table mat-table [dataSource]="dataSource" class="ms_table">
-
+      <table mat-table [dataSource]="listData" class="ms_table" matSort>
+        <ng-container  [matColumnDef]="theRemovedElement.columnDef">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{ theRemovedElement.header }}</mat-header-cell>
+          <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
+          
+        </ng-container>
+          <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+            <div *ngIf="column.columnDef == 'download'">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+            <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
+          </div>
+          <div *ngIf="column.columnDef != 'download'">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+            <mat-cell  *matCellDef="let row">{{ column.cell(row) }}</mat-cell>
+          </div>
+            
+          </ng-container>
+          <ng-container  matColumnDef="Action">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+            <mat-cell *matCellDef="let row"><button mat-icon-button ><mat-icon>Edit</mat-icon></button></mat-cell>
+            
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         
-        <ng-container matColumnDef="APPROVALSTATUS">
+        <!-- <ng-container matColumnDef="APPROVALSTATUS">
           <th mat-header-cell *matHeaderCellDef> APPROVALSTATUS </th>
           <td mat-cell *matCellDef="let element"> {{element.APPROVALSTATUS}} </td>
         </ng-container>
       
         <!-- Name Column -->
-        <ng-container matColumnDef="PROJECTNAME">
+        <!-- <ng-container matColumnDef="PROJECTNAME">
           <th mat-header-cell *matHeaderCellDef> PROJECTNAME </th>
           <td mat-cell *matCellDef="let element"> {{element.PROJECTNAME}} </td>
         </ng-container>
       
         <!-- Weight Column -->
-        <ng-container matColumnDef="CODE">
+        <!-- <ng-container matColumnDef="CODE">
           <th mat-header-cell *matHeaderCellDef> CODE </th>
           <td mat-cell *matCellDef="let element"> {{element.CODE}} </td>
-        </ng-container>
+        </ng-container> -->
       
         <!-- Symbol Column -->
-        <ng-container matColumnDef="OPPID">
+        <!-- <ng-container matColumnDef="OPPID">
           <th mat-header-cell *matHeaderCellDef> OPPID </th>
           <td mat-cell *matCellDef="let element"> {{element.OPPID}} </td>
-        </ng-container>
+        </ng-container> -->
       
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>  -->
       </table>
       
       
