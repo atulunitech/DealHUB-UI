@@ -1,40 +1,434 @@
-<div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
-    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-        <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="../../../assets/images/arrow_icon.png"> Back</div>
+<div fxLayout="row" fxLayoutAlign="space-between center" class="filter_cont creat_bof_con">
+  <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+    <div class="back_rout" routerLink="/DealHUB/dashboard">
+      <img src="../../../assets/images/arrow_icon.png" /> Back
+    </div>
     <div class="com_title conm_title_obf">Creat OBF</div>
-</div>
+  </div>
 
-<div>
+  <div>
     <!-- close -->
+  </div>
 </div>
-    
- </div>
- <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
-    <div class="cust-accor">
-        <mat-accordion>
+<div fxLayout="column" fxLayoutAlign=" none" class="filter_cont obf_form_cont">
+  <div class="cust-accor">
+    <mat-accordion>
+      <mat-expansion-panel  (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+          <mat-panel-title> 1/3 Upload Document </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="mat_exp_wrp">
+          <!-- <div class="mat_exp_title">Enter details to create OBF</div> -->
+          <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
            
-              <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                  <mat-panel-title>
-                    1/3 Upload Document
-                  </mat-panel-title>
-                  
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-              </mat-expansion-panel>
-              <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                  <mat-panel-title>
-                    2/3 Enter details
-                  </mat-panel-title>
-                  
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-              </mat-expansion-panel>
-            </mat-accordion>
-            
-            
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                <div  fxFlex="50">
+                  <div class="mt-cust-fd" fxFlex="1 1 100%">
+                   fasdfasd
+                  </div>
+                </div>
+                <div class="mat_fld_box_in" fxFlex="50">
+                  <div  fxFlex="1 1 100%">
+                   adsf sd fsdf
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="mat_fot_drf" >
+                <button mat-flat-button  class="creat_bt mat_fot_bt">SAVE AS DRAFT</button>
+              </div>
+              <div class="mat_fot_drf" >
+                
+                <button mat-flat-button class="creat_bt" >
+                  NEXT
+                </button>
+              </div>
+              
+                </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+          <mat-panel-title> 2/3 Enter details </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="mat_exp_wrp">
+          <div class="mat_exp_title">Enter details to create OBF</div>
+          <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                <div class="mat_fld_box_in" fxFlex="50">
+                  <div class="mt-cust-fd" fxFlex="1 1 100%">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="mat_fld_box_in" fxFlex="50">
+                  <div class="mt-cust-fd" fxFlex="1 1 100%">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                  <div class="mt-cust-fd">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                  <div class="mt-cust-fd">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                  <div class="mt-cust-fd">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                <div class="mat_fld_box_in" fxFlex="50">
+                  <div class="mt-cust-fd" fxFlex="1 1 100%">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="mat_fld_box_in" fxFlex="50">
+                  <div class="mt-cust-fd" fxFlex="1 1 100%">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select solution category</mat-label>
+                      <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                      <mat-error *ngIf="email.invalid">{{
+                        getErrorMessage()
+                        }}</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+              <div class="mat_fot_drf" >
+                <button mat-flat-button class="creat_bt mat_fot_bt">SAVE AS DRAFT</button>
+              </div>
+              <div class="mat_fot_drf" >
+                <button mat-flat-button class="creat_bt mat_fot_bt"> BACK</button>
+                <button mat-flat-button class="creat_bt" >
+                  NEXT
+                </button>
+              </div>
+              
+                </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+          <mat-panel-title> 3/3 Preview OBF </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="mat_exp_wrp">
+          <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp">
+            <div class="mat_previe_box">
+               <div class="prev_tit">
+                Opportunity ID
+               </div>
+               <div class="prev_dis">
+                OP123456 
+               </div>
+            </div>
+            <div class="mat_previe_box">
+              <div class="prev_tit">
+                Project Name
+              </div>
+              <div class="prev_dis">
+                FLIPKART 
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              SAP Customer Code
+            </div>
+            <div class="prev_dis">
+              SAP Customer Code 
+            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+            Created On
+          </div>
+          <div class="prev_dis">
+            23/04/2021 
+          </div>
+       </div>
+       <div class="mat_previe_box">
+        <div class="prev_tit">
+          Project Primary Location / State
+        </div>
+        <div class="prev_dis">
+          Project Primary Location / State 
+        </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        Sector
+      </div>
+      <div class="prev_dis">
+        Consumer Durables
+      </div>
+   </div>
+   <div class="mat_previe_box">
+    <div class="prev_tit">
+      Vertical 
+    </div>
+    <div class="prev_dis">
+      Ankur
     </div>
  </div>
+   <div class="mat_previe_box">
+    <div class="prev_tit">
+      Sub Sector
+    </div>
+    <div class="prev_dis">
+      Consumer electronics
+    </div>
+ </div>
+ <div class="mat_previe_box">
+  <div class="prev_tit">
+    Vertical Head
+  </div>
+  <div class="prev_dis">
+    Ankur
+  </div>
+</div>
+            
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+              <div class="mat_previe_box">
+                <div class="prev_tit">
+                  total revenue <br>
+                  ₹ Cr
+                </div>
+                <div class="prev_dis">
+                 2.4 
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                Total cost <br>₹ Cr
+              </div>
+              <div class="prev_dis">
+               2.4 
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              total margin 
+            </div>
+            <div class="prev_dis">
+             2.4 
+            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+            total project Life 
+          </div>
+          <div class="prev_dis">
+           2.4 
+          </div>
+       </div>
+       <div class="mat_previe_box">
+        <div class="prev_tit">
+          Capex <br>₹ Cr 
+        </div>
+        <div class="prev_dis">
+         2.4 
+        </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        EBT % 
+      </div>
+      <div class="prev_dis">
+       2.4 
+      </div>
+   </div>
+   <div class="mat_previe_box">
+    <div class="prev_tit">
+      IRR % Surplus Cash
+    </div>
+    <div class="prev_dis">
+     2.4 
+    </div>
+ </div>
+ <div class="mat_previe_box">
+  <div class="prev_tit">
+    IRR % Borrowed <br>Fund
+  </div>
+  <div class="prev_dis">
+   2.4 
+  </div>
+</div>
+<div class="mat_previe_box">
+  <div class="prev_tit">
+    Payement Terms
+  </div>
+  <div class="prev_dis">
+   20 Days
+  </div>
+</div>
+
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp">
+             <div fxFlex="auto " class="mat_view_cont">
+              <div class="mat_previe_box">
+                <div class="prev_tit">
+                  Solution Category
+                </div>
+                <div class="prev_dis">
+                  Services , Solutions 
+                </div>
+             </div> 
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                Type of Service/Solution Category
+              </div>
+              <div class="prev_dis">
+                <div><b>Services -</b> <br>
+                  Storage Warehouses, FTL Transportation, 
+                  Express/PTL Transportation, Express/PTL Transportation
+                  More…</div>
+                <div>
+                  <b>Solutions -</b><br>
+Sort Centre Management, Pop-up Sort Centres, 
+Fulfilment Centre Management
+More…
+                </div>
+
+              </div>
+           </div> 
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Project Brief 
+            </div>
+            <div class="prev_dis">
+              Running delivery number for flickart across india 
+More…
+            </div>
+         </div> 
+             </div>
+             <div fxFlex="auto " class="mat_view_cont">
+              <div class="mat_previe_box">
+                <div class="prev_tit">
+                 Opportunity ID
+                </div>
+                <div class="prev_dis">
+                 OP123456 
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+               Opportunity ID
+              </div>
+              <div class="prev_dis">
+               OP123456 
+              </div>
+           </div>
+            </div>
+            <div fxFlex="auto " class="mat_view_comment">
+              <div class="mat_previe_box">
+                <div class="prev_dis">
+                  comments 
+                 </div>
+                 <div class="mat_comment_box">
+                  Please enter you Approval/rejection
+                  Justification here.
+                 </div>
+              </div>
+            </div>
+              
+             
+              
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
+                <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                  <div class="dwn_con_wr">
+                    <img src="../../../assets/images/dwn-load-file.png">
+                    <span>OBF Sheet</span>
+                  </div>
+                  <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                  </div>
+                  <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                    <div class="dwn_con_wr">
+                      <img src="../../../assets/images/dwn-load-file.png">
+                      <span>Supportting Document</span>
+                    </div>
+                    <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                    </div>
+                    <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                      <div class="dwn_con_wr">
+                        <img src="../../../assets/images/dwn-load-file.png">
+                        <span>LOI/PO/Agreement</span>
+                      </div>
+                      <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                      </div>
+
+                      
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp">
+                  <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="mat_fot_drf" >
+                      <!-- <button mat-flat-button class="creat_bt mat_fot_bt">SAVE AS DRAFT</button> -->
+                    </div>
+                    <div class="mat_fot_drf" >
+                      <button mat-flat-button class="creat_bt mat_fot_bt"> BACK</button>
+                      <button mat-flat-button class="creat_bt" >
+                        SUBMIT
+                      </button>
+                    </div>
+                  </div>
+                      </div>
+
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

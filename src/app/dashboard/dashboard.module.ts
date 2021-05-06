@@ -12,6 +12,9 @@ import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
 import { CreateOBFComponent } from './dashboard/create-obf/create-obf.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CreatobfComponent } from './creatobf/creatobf.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -25,6 +28,9 @@ import { CreatobfComponent } from './creatobf/creatobf.component';
     MatExpansionModule,
     MatButtonModule,
     MatTableModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
     FlexLayoutModule,
     MaterialModule,
     NgxDropzoneModule
