@@ -11,6 +11,7 @@ export class LoginModel
   _user_code:string;
   _password:string;
   _token:string;
+  privilege_name:string;
 }
 //endregion
 
@@ -88,6 +89,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("UserName",Result.user.UserName);
         localStorage.setItem("Token",Result.user.Api_Key);
         localStorage.setItem("rememberCurrentUser","true");
+
        }
       else
       {
@@ -95,6 +97,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("Token",Result.user.Api_Key);
         localStorage.setItem("rememberCurrentUser","false");
       }
+      sessionStorage.setItem("privilege_name",Result.user.privilege_name);
       localStorage.setItem("userToken",Result.user.Api_Key);
       
       console.log(Result.user.UserName);
@@ -112,8 +115,9 @@ export class LoginComponent implements OnInit {
      
     },
     (error:HttpErrorResponse)=>{
-      this.toastr.error("Incorrect UserName or Password.")
-    
+      this.toastr.error(error.message)
+     
+     
       
     }
     );
