@@ -90,6 +90,7 @@ export class CreateOBFComponent implements OnInit {
     
       uploadfiles(files:File[],types)
       {
+        
         this._dashboardservice.uploadImage(files).subscribe(
           event => {
             var path="";
