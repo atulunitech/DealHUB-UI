@@ -1,44 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
-    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-        <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="../../../assets/images/arrow_icon.png"> Back</div>
-    <div class="com_title conm_title_obf">Creat OBF</div>
-</div>
-
-<div>
-    <!-- close -->
-</div>
-    
- </div>
- <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
-    <div class="cust-accor">
-        <mat-accordion>
-           
-              <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                  <mat-panel-title>
-                    1/3 Upload Document
-                  </mat-panel-title>
-                  
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-              </mat-expansion-panel>
-              <mat-expansion-panel (opened)="panelOpenState = true"
-                                   (closed)="panelOpenState = false">
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                  <mat-panel-title>
-                    2/3 Enter details
-                  </mat-panel-title>
-                  
-                </mat-expansion-panel-header>
-                <p>I'm visible because I am open</p>
-              </mat-expansion-panel>
-            </mat-accordion>
-            
-            
-    </div>
- </div>
- <form [formGroup]="_obfservices.ObfCreateForm">
+<form [formGroup]="_obfservices.ObfCreateForm">
 
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
       <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
@@ -192,7 +152,7 @@
                     <span><label>Created on</label>{{_obfservices.ObfCreateForm.get('Createddate').value}}</span>
                     <span><label>Project Primary Location</label>{{_obfservices.obfmodel._dh_location}}</span>
                     <span><label>Sector</label>{{this.sector}}</span>
-                    <span><label>Sub Sector</label>{{this.Subsector}}</span>
+                    <span><label>Sub Sector</label>{{this.subsector}}</span>
                     <span><label>Vertical</label>{{_obfservices.ObfCreateForm.get('Vertical').value}}</span>
                     <span><label>Vertical Head</label>{{_obfservices.ObfCreateForm.get('Verticalhead').value}}</span>
                     <span><label>Customer Name</label>{{_obfservices.ObfCreateForm.get('Customername').value}}</span>
