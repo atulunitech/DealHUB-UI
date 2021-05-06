@@ -6,8 +6,10 @@ import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {Router} from "@angular/router"
-
-
+import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
+import { Moment } from 'moment';
+import { LocaleConfig } from 'ngx-daterangepicker-material';
   export interface PeriodicElement {
     PROJECTNAME: string;
     APPROVALSTATUS: number;
@@ -39,8 +41,13 @@ import {Router} from "@angular/router"
 })
 export class DashboardComponent implements OnInit {
 
-  // displayedColumns: string[] = ['APPROVALSTATUS', 'PROJECTNAME', 'CODE', 'OPPID'];
-  // dataSource = ELEMENT_DATA;
+   DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+  
+   // dataSource = ELEMENT_DATA;
+  Draft:boolean=true;
+  SubmittedScreen:boolean=false;
+
   listData: MatTableDataSource<any>;
   columns:Array<any>;
   displayedColumns:Array<any>;
@@ -51,8 +58,19 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   _dashboardmodel:DashBoardModel=new DashBoardModel();
-
+  privilege_name:string;
+  Rejected:boolean=false;
+  public Dashboardvalid: FormGroup;
   
+  // selected: {startDate: Moment, endDate: Moment};
+  // alwaysShowCalendars: boolean;
+  // locale: LocaleConfig = {
+  //   format: 'YYY-MM-DD',
+  //   displayFormat: 'YYYY MMMM DD',
+  //   separator: ' To ',
+  //   cancelLabel: 'Mégse',
+  //   applyLabel: 'Ok',
+  // };
   constructor(private _dashboardservice:DashboardService,private router: Router) { }
  
 
@@ -60,8 +78,15 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     // Get list of columns by gathering unique keys of objects found in DATA.
+    this.Dashboardvalid = new FormGroup({
+     
+    });
+    if(sessionStorage.getItem("privilege_name")!= null)
+    {
+      this.privilege_name=sessionStorage.getItem("privilege_name");
+
+    }
     this.CallDashBoardService();
-   
   }
   getToolTipData(issueId: any): any {
     
@@ -98,9 +123,7 @@ export class DashboardComponent implements OnInit {
     // this.dashboardData=DATA;
     // this.BindGridDetails();
   }
-  
-
-
+ 
   BindGridDetails()// code given by kirti kumar shifted to new function
   {
     
@@ -122,9 +145,9 @@ export class DashboardComponent implements OnInit {
     }
   })
   this.displayedColumns = this.columns.map(c => c.columnDef);
-  this.displayedColumns.push('Action');
-     
-     this.theRemovedElement  = this.columns.shift();
+  //this.displayedColumns.push('ActionDraft');
+  this.addColumn("Draft") 
+  this.theRemovedElement  = this.columns.shift();
      
      console.log("columns"+this.columns);
      console.log("theRemovedElement"+this.theRemovedElement);
@@ -135,6 +158,7 @@ export class DashboardComponent implements OnInit {
   this.listData = new MatTableDataSource(this.dashboardData);
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
+  
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -146,7 +170,46 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/DealHUB/dashboard/createobf']);
     
   }
- 
-
+  // change(event) {
+  //   console.log(event);
+  // }
+  addColumn(selection) {
+    if(selection == "Draft")
+    {
+      
+     this.displayedColumns=this.DraftColumn;
+     this.displayedColumns.forEach((value,index)=>{
+      if(value=="ActionDraft") this.displayedColumns.splice(index,1);
+      });
+     this.displayedColumns.push('ActionDraft');
+      // this.displayedColumns.push("DetailedOBF");
+    } 
+    if(selection == "Submitted" )
+    {
+     
+      this.displayedColumns=this.SubmittedScreenColumn;
+      this.displayedColumns.forEach((value,index)=>{
+        if(value=="ActionDraft") this.displayedColumns.splice(index,1);
+        });
+      this.displayedColumns.push('ActionDraft');
+    }   
+    if(selection == "Rejected" )
+    {
+     
+      this.displayedColumns=this.SubmittedScreenColumn;
+      this.displayedColumns.forEach((value,index)=>{
+        if(value=="ActionSubmitted") this.displayedColumns.splice(index,1);
+        });
+      this.displayedColumns.push('ActionSubmitted');
+    }   
+    if(selection=="Pendingforapproval")
+    {
+      this.displayedColumns=this.SubmittedScreenColumn;
+      this.displayedColumns.forEach((value,index)=>{
+        if(value=="ActionPendingforapproval") this.displayedColumns.splice(index,1);
+        });
+      this.displayedColumns.push('ActionPendingforapproval');
+    }
+  }
 
 }
