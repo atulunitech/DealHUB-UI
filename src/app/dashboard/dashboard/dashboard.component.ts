@@ -7,9 +7,7 @@ import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
-import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
-import { Moment } from 'moment';
-import { LocaleConfig } from 'ngx-daterangepicker-material';
+
   export interface PeriodicElement {
     PROJECTNAME: string;
     APPROVALSTATUS: number;
