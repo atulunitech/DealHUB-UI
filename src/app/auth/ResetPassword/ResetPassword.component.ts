@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
-import { loginservices } from './LoginServices';
+import { loginservices } from '../login/LoginServices';
 import {ActivatedRoute, Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -16,7 +16,7 @@ export class LoginModel
 @Component({
     selector: 'app-ResetPassword',
     templateUrl: './ResetPassword.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./ResetPassword.component.scss']
   })
   export class ResetPassword implements OnInit
   {

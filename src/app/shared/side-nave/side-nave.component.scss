@@ -2,9 +2,9 @@
 @import "../../../assets/scss/variables";
 
 .logo_cont {
-  text-align: center;
+  
   @include font-size(1.6);
-  @include padding(20px, inherit, 20px, inherit);
+  @include padding(20px, inherit, 20px, 15px);
   @include margin(initial, initial, 20px, inherit);
   @include heightwidth(100%, initial);
   @include font-weight(900);
@@ -14,7 +14,7 @@
 .acc_out_wr {
   @include heightwidth(200px, initial);
   .accordion {
-    @include heightwidth(97%, initial);
+    @include heightwidth(100%, initial);
     li {
       i {
         @include position(absolute, 0.8rem, initial, initial, 26px);
@@ -22,15 +22,36 @@
         color: $thm-tex-col-dar;
         @include font-size(1.4);
       }
+      .m_icon
+      {
+        display: inline-block;
+        @include position(relative);
+        @include heightwidth(auto,auto);
+        @include padding(10px,12px,8px,12px);
+        @include margin(inherit,9px,inherit,14px);
+        @include border-radius(50px);
+        img
+        {
+          @include heightwidth(18px,auto);
+        }
+      }
       .menu {
         cursor: pointer;
         display: inherit;
+        text-decoration: none;
         @include position(relative);
-        @include padding(19px, 15px, 19px, 70px);
+        @include padding(10px, 15px, 10px, 0px);
         @include font-weight(400);
         color: $thm-tex-col-dar;
         @include transition(all 0.4s ease);
+        span
+          {
+            @include font-size(0.90);
+            @include font-weight(semi-bold);
+            @include position(relative,-2px,inherit,inherit,initial);
+          }
       }
+      
       &.active
       {
         i{
@@ -43,6 +64,10 @@
             @include position(absolute,-7px,initial,initial,-10px);
             @include border-radius(20px);
           }
+        }
+        .m_icon
+        {
+          background-color: #e5eeff;
         }
       }
     }

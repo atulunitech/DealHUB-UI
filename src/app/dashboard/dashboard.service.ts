@@ -26,7 +26,7 @@ export class DashboardService {
 	    return this.http.post<any>(this.url,  
         DashBoardData, httpOptions);  
 	  }
-
+    urlimg = environment.apiUrl + '/Api/Auth/UploadImage';
     uploadImage(image:File[]) {
      // debugger;
       const formData: FormData = new FormData();
@@ -37,7 +37,7 @@ export class DashboardService {
       });
        
       // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True'}),observe:"events",reportProgress: true};  
-      return this.http.post("http://localhost:52229/Api/Auth/UploadImage", formData,{
+      return this.http.post(this.urlimg, formData,{
           headers: new HttpHeaders({ 'No-Auth':'True'}),
           reportProgress: true,
           observe: 'events'

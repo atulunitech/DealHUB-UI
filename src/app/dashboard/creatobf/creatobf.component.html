@@ -1,0 +1,206 @@
+<form [formGroup]="_obfservices.ObfCreateForm">
+
+  <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
+      <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="../../../assets/images/arrow_icon.png"> Back</div>
+      <div class="com_title conm_title_obf">Create OBF</div>
+  </div>
+  
+  <div>
+      <!-- close -->
+  </div>
+      
+   </div>
+   <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
+      <div class="cust-accor">
+          <mat-accordion>
+            <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
+                <mat-expansion-panel  [expanded]="step === 0" (opened)="setStep(0)" >
+                  <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+                    <mat-panel-title>
+                      1/3 Upload Document
+                    </mat-panel-title>
+                    
+                  </mat-expansion-panel-header>
+                  <div style="display: block;float: left;width:100%;">
+                    <div style="width:25%;margin-right:15px;float: left;">
+                    <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
+                      <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
+                      <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                      </ngx-dropzone-preview>
+                        
+                    </ngx-dropzone>
+                    <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
+                    </div>
+                    <div style="width:25%;margin-right:15px;float: left;">
+                    <ngx-dropzone (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
+                      <ngx-dropzone-label>Drop LOI/PO Agreement</ngx-dropzone-label>
+                      <ngx-dropzone-preview *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
+                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                      </ngx-dropzone-preview>
+                        
+                    </ngx-dropzone>
+                    <select formControlName="Loipodropdown">
+                        <option value="PO" selected>PO</option>
+                        <option value="LOI">LOI</option>
+                    </select>
+                    <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
+                    <label for="selfdec">This OBF is without LOI / PO </label><br>
+                     <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/> 
+                    </div>
+                    <div style="width:25%;margin-right:15px;float: left;">
+                    <ngx-dropzone (change)="onSelect($event,'support')" accept=".xlsx">
+                      <ngx-dropzone-label>Drop Supporting documents</ngx-dropzone-label>
+                      <ngx-dropzone-preview *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f)">
+                        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                      </ngx-dropzone-preview>
+                        
+                    </ngx-dropzone>
+                     <input type="button" [disabled]="!(supportfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(supportfiles,'support')" value="Upload"/> 
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Enter Comment" style="height:180px;" formControlName="comments" />
+                        
+                    </div>
+                    <div style="display: block;float: left;width:77%;" *ngIf="progress > 0">
+                      <!-- <div style="display: block;float: left;background: red;height:5px;text-align: center;color: red;"  role="progressbar" [style.width.%]="progress">
+                          {{progress}}%
+                      </div> -->
+                      <div style="display: block;float: left;width:77%;" *ngIf="progress > 0">
+                        <div style="display: block;float: left;background: red;height:5px;text-align: center;color: red;"  role="progressbar" [style.width.%]="progress">
+                            {{progress}}%
+                        </div>
+                    </div>
+                  </div>
+                    </div>
+                    <mat-action-row>
+                      <button mat-button class="btn btn-primary"  (click)="nextStep('details')">Next</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                <!--  -->
+                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+                  <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+                    <mat-panel-title>
+                      2/3 Enter details
+                    </mat-panel-title>
+                    
+                  </mat-expansion-panel-header>
+                  <mat-form-field appearance="fill">
+      <mat-label>Select solution category</mat-label>
+    <mat-select (selectionChange)="onchange($event)">
+      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.Solutioncategory"  >
+        {{Solution.Solutioncategory}}
+      </mat-option>
+    </mat-select>
+                  </mat-form-field>
+  
+                    <mat-form-field appearance="fill">
+      <mat-label>Select type of service/solution category</mat-label>
+      <!-- <mat-select  multiple (selectionChange)="onotherserviceschange($event)"> -->
+        <mat-select  multiple >
+        <mat-option>-- None --</mat-option>
+        <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
+                      >
+          <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+            {{list.viewValue}} 
+          </mat-option>
+        </mat-optgroup>
+      </mat-select>
+                     </mat-form-field>
+    <input type="text" formControlName="otherservices" style="margin-left: 10px;"  placeholder="Other Services" />
+    <input type="text" formControlName="othersolutions" style="margin-left: 10px;" placeholder="Other Solutions" />
+    <input type="text" formControlName="otherintegratedsolutions" style="margin-left: 10px;" placeholder="Other Integrated Solutions" />
+    <div style="width:100%;float:left;display:block;">
+      <label>Vertical : </label>{{_obfservices.ObfCreateForm.get('Vertical').value}}
+      <mat-form-field appearance="fill">
+        <mat-label>Select Sector</mat-label>
+      <mat-select (selectionChange)="onsectorchange($event)">
+        <mat-option *ngFor="let Sector of Sectorgrouparray" [value]="Sector.value"  >
+          {{Sector.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Select Sub Sector</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let Subsector of Subsecotarray" [value]="Subsector.value"  >
+        {{Subsector.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+    </div>
+    
+    <mat-action-row>
+      <button mat-button class="btn btn-primary" color="warn" (click)="prevStep('details')">Back</button>
+      <button mat-button class="btn btn-primary" color="primary" (click)="nextStep('preview')">Next</button> 
+      <!-- [disabled]="_obfservices.ObfCreateForm.invalid" -->
+    </mat-action-row>
+                </mat-expansion-panel>
+                <mat-expansion-panel  [expanded]="step === 2" (opened)="setStep(2)">
+                  <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+                  <mat-panel-title>
+                    3/3 Preview OBF
+                  </mat-panel-title>
+  
+                  </mat-expansion-panel-header>
+                  <div style="display:block;float:left;width:100%;background: #4e65d796;">
+                    <span><label>Opportunity Id</label>{{ _obfservices.obfmodel._opportunity_id}}</span>
+                    <span><label >Project Name</label>{{_obfservices.obfmodel._dh_project_name}}</span>
+                    <span><label>SAP IO number</label>{{_obfservices.ObfCreateForm.get('Sapio').value}}</span>
+                    <span><label>SAP Customer Code</label>{{_obfservices.ObfCreateForm.get('Sapcustomercode').value}}</span>
+                    <span><label>Created on</label>{{_obfservices.ObfCreateForm.get('Createddate').value}}</span>
+                    <span><label>Project Primary Location</label>{{_obfservices.obfmodel._dh_location}}</span>
+                    <span><label>Sector</label>{{this.sector}}</span>
+                    <span><label>Sub Sector</label>{{this.subsector}}</span>
+                    <span><label>Vertical</label>{{_obfservices.ObfCreateForm.get('Vertical').value}}</span>
+                    <span><label>Vertical Head</label>{{_obfservices.ObfCreateForm.get('Verticalhead').value}}</span>
+                    <span><label>Customer Name</label>{{_obfservices.ObfCreateForm.get('Customername').value}}</span>
+                </div>
+                <div style="display:block;float:left;width:100%;background: #b6b6b896;">
+                  <span><label>Total Revenue (Cr)</label>{{_obfservices.obfmodel._total_revenue}}</span>
+                  <span><label>Total Cost (Cr)</label>{{_obfservices.obfmodel._total_cost}}</span>
+                  <span><label>Total Margin</label>{{_obfservices.obfmodel._total_margin}}</span>
+                  <span><label>Total Project Life</label>{{_obfservices.obfmodel._total_project_life}}</span>
+                  <span><label>EBT %</label>{{_obfservices.obfmodel._ebt}}</span>
+                  <span><label>Capex Cr</label>{{_obfservices.obfmodel._capex}}</span>
+                  <span><label>IIR % Surplus Cash</label>{{_obfservices.obfmodel._irr_surplus_cash}}</span>
+                  <span><label>IIR % Borrowed Fund</label>{{_obfservices.obfmodel._irr_borrowed_fund}}</span>
+                  <span><label>Payment Terms</label>{{_obfservices.obfmodel._payment_terms}}</span>
+                </div>
+                <!-- <div>Project Date:{{OBFData.Projectdate}}</div>
+  
+                <div>Solution Category:{{OBFData.Solutioncategory}}</div>
+  
+                <div>Type Of Services/Solution Category:{{OBFData.Otherservicesandcategories}}</div> -->
+  
+                <div >Project Brief:{{(BrifreadMore) ? (_obfservices.obfmodel._dh_desc) : (_obfservices.obfmodel._dh_desc) | slice:0:50 }}  
+                  <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
+                  <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+               </div>
+           
+               <div >Assumption & Risk:{{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
+                   <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
+                   <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
+                </div>
+                  <!-- <div>LOI/Po:{{OBFData.Loipo}}</div> -->
+                  <div>
+                    <!-- <input type="text" placeholder="Enter Comment" style="height:180px;" [value]="OBFData.comments"/> -->
+                    </div>
+                    <div style="display: block;float: left;width:100%;">
+                        <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
+                        <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
+                    </div>
+                    <div style="display: block;float: right;">
+                        <div  class="sb_buttion" ><button>Edit</button></div>
+                    </div>
+                    &nbsp;
+                    <div style="display: block;float: right;">
+                    <div  class="sb_buttion"><button>Submit</button></div></div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              
+              
+      </div>
+   </div>
+  </form>

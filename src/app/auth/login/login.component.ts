@@ -3,6 +3,7 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import { loginservices } from './LoginServices';
 import {Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 //region model
 export class LoginModel
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
   NewPassword:any="";
   confirmpassword:any="";
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router) { }
+    private _loginservice:loginservices,private router: Router,private toastr: ToastrService) { }
 
 
   ngOnInit(): void {
@@ -97,17 +98,22 @@ export class LoginComponent implements OnInit {
       localStorage.setItem("userToken",Result.user.Api_Key);
       
       console.log(Result.user.UserName);
-      alert("Login Sucess");
+      
+      
+      //alert("Login Sucess");
       this.router.navigate(['/DealHUB/dashboard']);
+      this.toastr.success("Login Sucess.")
     }
     else
     {
-      alert("Login Failed");
+      this.toastr.error("Login Failed.")
+     
     }
      
     },
     (error:HttpErrorResponse)=>{
-      alert(error.message);
+      this.toastr.error("Incorrect UserName or Password.")
+    
       
     }
     );
@@ -118,6 +124,7 @@ export class LoginComponent implements OnInit {
     this.loginmodel._password=this.NewPassword;
      
     this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
+      
       alert("Password Changed Successfully.");
       this.router.navigate(['/DealHUB/dashboard']);
     });

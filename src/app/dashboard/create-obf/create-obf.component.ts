@@ -1,10 +1,10 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { DashboardService } from '../../dashboard.service';
+import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { OBFServices } from '../../services/obfservices.service';
+import { OBFServices } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -42,7 +42,11 @@ export class CreateOBFComponent implements OnInit {
       }
 
       sanitize(url:string){
-        return this.sanitizer.bypassSecurityTrustUrl(url);
+        if(url!= null)
+        {
+          return this.sanitizer.bypassSecurityTrustUrl(url);
+        }
+        
     }
 
     files: File[] = [];
@@ -307,5 +311,14 @@ export class CreateOBFComponent implements OnInit {
         this.ProjectDetails.paginator = this.paginator;
         }
         
-       
+        getToolTipData(issueId: any): any {
+    
+          //  alert(JSON.stringify(issueId));
+          return JSON.stringify(issueId);
+          //console.log(issueId);
+          // const issue = this.data.find(i => i.number === issueId);
+          // return `Title: ${issue.title} ||
+          //     State: ${issue.state} ||
+          //     Date: ${issue.created_at}`;
+      }
 }

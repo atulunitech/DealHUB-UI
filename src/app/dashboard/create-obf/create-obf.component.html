@@ -4,11 +4,12 @@
     <div style="width:25%;margin-right:15px;float: left;">
     <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
         <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
-        <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
-            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-        </ngx-dropzone-preview>
+  
         
     </ngx-dropzone>
+    <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+        <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+    </ngx-dropzone-preview>
     <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
     </div>
     <div style="width:25%;margin-right:15px;float: left;">
@@ -56,24 +57,10 @@
     <div >
         <ng-template #callAPIDialog>
      
-    <!--         
-                <mat-table #table [dataSource]="ProjectDetails" matSort>
-                 
-                    <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-                     
-                    <div>
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-                      <mat-cell  *matCellDef="let row">{{ column.cell(row) }}</mat-cell>
-                    </div>
-                      
-                    </ng-container>
-                    
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table> -->
+  
                   <div style="display:block;float:left;width:100%;background: #4e65d796;">
-                    <span><label>Project Name</label>{{OBFData.Projectname}}</span>
-                    <span><label>Project Type</label>{{OBFData.Projecttype}}</span>
+                    <span><label [matTooltip]="getToolTipData(OBFData.Projectname)">Project Name</label>{{OBFData.Projectname}}</span>
+                    <span><label [matTooltip]="getToolTipData(OBFData.Projecttype)">Project Type</label>{{OBFData.Projecttype}}</span>
                     <span><label>Opportunity Id</label>{{OBFData.Opportunityid}}</span>
                     <span><label>Location / State</label>{{OBFData.State}}</span>
                     <span><label>Vertical</label>{{OBFData.Vertical}}</span>
@@ -115,27 +102,17 @@
                         <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
                         <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
                     </div>
-                    <div>
+                    <div style="display: block;float: right;">
                         <div  class="sb_buttion" (click)="EditOBF()"><button>Edit</button></div>
-                        <div  class="sb_buttion"><button>Submit</button></div>
                     </div>
-            
+                    &nbsp;
+                    <div style="display: block;float: right;">
+                    <div  class="sb_buttion"><button>Submit</button></div></div>
         </ng-template>
         
      
         </div>
-    <!-- <table>
-        <tbody>
-            <tr *ngFor="let row of data">
-                    <td *ngFor="let cell of row">
-                            {{cell}}
-                    </td>
-            </tr>
-        </tbody>
-    </table> -->
-    <div>
-        <div  class="sb_buttion"><button>Save As Draft</button></div>
-        <div  class="sb_buttion"><button (click)="Prview()">Prview & Submit</button></div>
-    </div>
+  
+    
     
     

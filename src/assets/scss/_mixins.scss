@@ -122,6 +122,31 @@
 }
 /*@mixin e*/
 
+//start
+.creat_bt
+{
+  ::ng-deep &.mat-flat-button
+  {
+    background-color: #2258bf;
+  color:#fff;
+  text-transform: uppercase;
+  @include font-size(0.80);
+  @include font-weight(semi-bold);
+  @include border-radius(20px);
+  @include padding(3px, 30px ,3px , 30px);
+  .mat-button-wrapper
+  {
+    display: inline-block;
+    .creat_bt_icon
+    {
+      @include heightwidth(14px,initial );
+      @include margin(initial, 10px,initial ,initial );
+    }
+  }
+  }
+}
+//end
+
 // start
 .mt-cust-fd {
  
