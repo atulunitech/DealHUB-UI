@@ -57,21 +57,7 @@
     <div >
         <ng-template #callAPIDialog>
      
-    <!--         
-                <mat-table #table [dataSource]="ProjectDetails" matSort>
-                 
-                    <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-                     
-                    <div>
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-                      <mat-cell  *matCellDef="let row">{{ column.cell(row) }}</mat-cell>
-                    </div>
-                      
-                    </ng-container>
-                    
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table> -->
+  
                   <div style="display:block;float:left;width:100%;background: #4e65d796;">
                     <span><label [matTooltip]="getToolTipData(OBFData.Projectname)">Project Name</label>{{OBFData.Projectname}}</span>
                     <span><label [matTooltip]="getToolTipData(OBFData.Projecttype)">Project Type</label>{{OBFData.Projecttype}}</span>
@@ -126,15 +112,7 @@
         
      
         </div>
-    <!-- <table>
-        <tbody>
-            <tr *ngFor="let row of data">
-                    <td *ngFor="let cell of row">
-                            {{cell}}
-                    </td>
-            </tr>
-        </tbody>
-    </table> -->
+  
     
     
     
