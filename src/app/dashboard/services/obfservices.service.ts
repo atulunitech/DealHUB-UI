@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-
+import { environment } from 'src/environments/environment';
 class SaveAttachmentParameter{
   _dh_id:number;
   _dh_header_id:number;
@@ -152,31 +152,31 @@ export class OBFServices {
 
    GetCreateOBFMasters(usercode: string): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
-    return this.http.get<any>("http://localhost:52229/Api/Manage_OBF/GetMasterOBF",  
+    return this.http.get<any>(environment.apiUrl +"/Api/Manage_OBF/GetMasterOBF",  
        httpOptions);  
   }
 
   getsolutionmaster(): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.get<any>("http://localhost:52229/Api/Manage_OBF/getmastersolutions",  
+    return this.http.get<any>(environment.apiUrl +"/Api/Manage_OBF/getmastersolutions",  
        httpOptions);  
   }
 
   createobf(model:obf): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>("http://localhost:52229/Api/Manage_OBF/CreateOBF",model ,
+    return this.http.post<any>(environment.apiUrl +"/Api/Manage_OBF/CreateOBF",model ,
        httpOptions);  
   }
 
   savesolutionandservices(model:obfsolutionandservices): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>("http://localhost:52229/Api/Manage_OBF/SaveServiceSolutionSector",model ,
+    return this.http.post<any>(environment.apiUrl + "/Api/Manage_OBF/SaveServiceSolutionSector",model ,
        httpOptions);  
   }
 
   SubmitOBF(model:obfsubmit): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>("http://localhost:52229/Api/Manage_OBF/SubmitOBF",model ,
+    return this.http.post<any> (environment.apiUrl + "/Api/Manage_OBF/SubmitOBF",model ,
        httpOptions);  
   }
 }

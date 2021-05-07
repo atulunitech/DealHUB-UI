@@ -450,9 +450,98 @@ onSelect(event,types) {
     // );
        }
 
-  Saveasdraft(){
-     console.log(this._obfservices.ObfCreateForm.value);
+       Saveasdraft(type:string){
+        console.log("view model");
+        this._obfservices.obfmodel._dh_phase_id =1;
+        this._obfservices.obfmodel._parent_dh_main_id = 0;
+        this._obfservices.obfmodel._active = "A";
+        this._obfservices.obfmodel._status ="A";
+        this._obfservices.obfmodel._is_saved =1;
+        this._obfservices.obfmodel._is_submitted = 0;
+        this._obfservices.obfmodel._mode = "insert";
+        this._obfservices.obfmodel._service_category = "";
+        if(type == "details")
+        {
+          if(this._obfservices.obfmodel._dh_id === 0)
+          {
+            this._obfservices.obfmodel.save_with_solution_sector = "Y";
+            
+          let val =  this.validateform();
+          if(val)
+        {
+          this._obfservices.createobf(this._obfservices.obfmodel).subscribe(data =>{
+            console.log("data arrived after insert");
+            let res = JSON.parse(data);
+            console.log(res);
+            if(res[0].Result == "success"){
+            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
+            this._obfservices.obfmodel._dh_id = res[0].dh_id;
+            alert("Documents uploaded Successfully");
+          }
+          else{
+            alert("Technical error while uploading documents");
+          }
+          })
+        }
+          }
+          else
+          {
+          this._obfservices.obfmodel.save_with_solution_sector = "N";
+          this._obfservices.obfsolutionandservices._dh_id = this._obfservices.obfmodel._dh_id;
+          this._obfservices.obfsolutionandservices._dh_header_id = this._obfservices.obfmodel._dh_header_id;
+          this._obfservices.obfsolutionandservices._fname = this._obfservices.obfmodel._fname;
+          this._obfservices.obfsolutionandservices._fpath = this._obfservices.obfmodel._fpath;
+          this._obfservices.obfsolutionandservices._created_by = this._obfservices.obfmodel._created_by;
+          this._obfservices.obfsolutionandservices._Sector_Id = this._obfservices.obfmodel._Sector_Id;
+          this._obfservices.obfsolutionandservices._SubSector_Id = this._obfservices.obfmodel._SubSector_Id;
+          this._obfservices.obfsolutionandservices.Services = this._obfservices.obfmodel.Services;
+    
+          let val =  this.validateform();
+          if(val)
+        {
+          this._obfservices.savesolutionandservices(this._obfservices.obfsolutionandservices).subscribe(data =>{
+            console.log("data arrived after services update");
+            let res = JSON.parse(data);
+            console.log(res);
+            if(res[0].status == "Success"){
+               this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
+               this._obfservices.obfmodel._dh_id = res[0].dh_id;
+              alert("Details updated Successfully");
+            }
+            else{
+              alert("Technical error while updating details");
+            }
+            // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
+            // this._obfservices.obfmodel._dh_id = res.dh_id;
+          })
+        }
+      }
+        }
+        else if(type == "upload")
+        {
+          this._obfservices.obfmodel.save_with_solution_sector = "N";
+          let val =  this.validateform();
+          if(val)
+        {
+          this._obfservices.createobf(this._obfservices.obfmodel).subscribe(data =>{
+            console.log("data arrived after insert");
+            let res = JSON.parse(data);
+            console.log(res);
+            if(res[0].Result == "success"){
+            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
+            this._obfservices.obfmodel._dh_id = res[0].dh_id;
+            alert("Documents uploaded Successfully");
+          }
+          else{
+            alert("Technical error while uploading documents");
+          }
+          })
+        }
+        console.log("check why form not valid");
+        console.log(this._obfservices.obfmodel);
+        }
        }
+    
 
   onCheckboxChange(e) {
     if(e.currentTarget.checked)
