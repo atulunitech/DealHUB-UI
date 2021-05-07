@@ -13,6 +13,7 @@ import { TemplateRef } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { ToastrService } from 'ngx-toastr';
+import { DatePipe } from '@angular/common';
 
 interface Serviceslist {
   value: string;
@@ -202,7 +203,7 @@ subsector:string="";
   ];
   Solutiongroup: Solutiongroup[] =[];
 
-  constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,public _obfservices:OBFServices,private dialog:MatDialog,private toastr: ToastrService) 
+  constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,public _obfservices:OBFServices,private dialog:MatDialog,private toastr: ToastrService,public datepipe: DatePipe) 
   { }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -634,12 +635,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     reader.onload = (e: any) => {
       const bstr: string = e.target.result;
 
-      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
       debugger;
 
       const wsname : string = wb.SheetNames[6];
 
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      console.log("get values");
       console.log(ws);
     // console.log(ws.A1.h);
     this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.h});
@@ -655,9 +657,15 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     this._obfservices.obfmodel._dh_location = ws.E7.h;
     this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.h});
 
+    let value: any = ws.H3.v;
+    const parsedDate: Date = new Date(value);
+     //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
+    // value = df(parsedDate, "dd/mm/yyyy");
+    value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
+    this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
     var result = this.verticallist.filter(obj => {
-       return obj.viewValue === ws.E8.h;
-      //return obj.viewValue === "E-Commerce";
+      // return obj.viewValue === ws.E8.h;
+      return obj.viewValue === "E-Commerce";
     });
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
