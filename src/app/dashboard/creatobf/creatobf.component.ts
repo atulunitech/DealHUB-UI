@@ -159,7 +159,7 @@ export class CreatobfComponent implements OnInit {
   visiblePreview:boolean=false;
   readMore = false;
   BrifreadMore=false;
-  
+  service:string ="";
 sector:string="";
 
 subsector:string="";
@@ -213,10 +213,12 @@ subsector:string="";
   verticallist:verticallist[]=[];
   Verticalheadlist:Verticalhead[];
   
-   visible = true;
+  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  ServiceMore=false;
+  servicecate:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   
@@ -778,6 +780,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsolutionandservices._sap_customer_code = this._obfservices.obfmodel._sap_customer_code;
       this._obfservices.obfsolutionandservices.sapio = this._obfservices.obfmodel.sapio;
 
+
       let val =  this.validateform();
       if(val)
     {
@@ -803,6 +806,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         //alert(error.message);
       })
     }
+    this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+    {
+     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+    
+    }
+    this.service= this.service.substring(1)
   }
     }
     else if(type == "upload")
@@ -822,7 +832,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this.toastr.success("Documents uploaded Successfully");
       }
       else{
-        alert("Technical error while uploading documents");
+        //alert("Technical error while uploading documents");
+        this.toastr.error("Technical error while uploading documents");
       }
       },
       (error:HttpErrorResponse)=>{
@@ -904,12 +915,14 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
   {
     if(this._obfservices.ObfCreateForm.get('Projectname').errors)
     {
-      alert("Project name is required");
+      //alert("Project name is required");
+      this.toastr.warning("Project name is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Customername').errors)
     {
-      alert("Customer name is required");
+     // alert("Customer name is required");
+      this.toastr.warning("Customer name is required");
       return false;
     }
     // else if(this._obfservices.ObfCreateForm.get('Solutioncategory').errors)
@@ -924,17 +937,20 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     // }
     else if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
     {
-      alert("Opportunityid is required");
+     // alert("Opportunityid is required");
+      this.toastr.warning("Opportunityid is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('State').errors)
     {
-      alert("Project primay location is required");
+      //alert("Project primay location is required");
+      this.toastr.warning("Project primay location is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Vertical').errors)
     {
-      alert("Vertical field is required");
+     // alert("Vertical field is required");
+     this.toastr.warning("Vertical field is required");
       return false;
     }
     // else if(this._obfservices.ObfCreateForm.get('Sector').errors)
@@ -944,52 +960,62 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     // }
     else if(this._obfservices.ObfCreateForm.get('Verticalhead').errors)
     {
-      alert("Vertical head field is required");
+     // alert("Vertical head field is required");
+      this.toastr.warning("Vertical head field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
     {
-      alert("Project brief is required");
+     // alert("Project brief is required");
+     this.toastr.warning("Project brief is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
     {
-      alert("Total revenue field is required");
+      //alert("Total revenue field is required");
+      this.toastr.warning("Total revenue field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
     {
-      alert("Total cost field is required");
+     // alert("Total cost field is required");
+       this.toastr.warning("Total cost field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
     {
-      alert("Total margin field is required");
+      // alert("Total margin field is required");
+      this.toastr.warning("Total margin field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
     {
-      alert("Total project life field is required");
+     // alert("Total project life field is required");
+     this.toastr.warning("Total project life field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Capex').errors)
     {
-      alert("Capex field is required");
+      //alert("Capex field is required");
+      this.toastr.warning("Capex field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Paymentterms').errors)
     {
-      alert("Payment terms field is required");
+     // alert("Payment terms field is required");
+     this.toastr.warning("Payment terms field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
     {
-      alert("Assumption and risks  field is required");
+     // alert("Assumption and risks  field is required");
+     this.toastr.warning("Assumption and risks  field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Loipo').errors)
     {
-      alert("Loi / po  field is required");
+     // alert("Loi / po  field is required");
+      this.toastr.warning("Loi / po  field is required");
       return false;
     }
     return true;
@@ -1098,10 +1124,12 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         if(res[0].Result == "success"){
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
-        alert("Documents uploaded Successfully");
+        // alert("Documents uploaded Successfully");
+        this.toastr.success("Documents uploaded Successfully");
       }
       else{
-        alert("Technical error while uploading documents");
+        //alert("Technical error while uploading documents");
+        this.toastr.error("Technical error while uploading documents");
       }
       },
       (error:HttpErrorResponse)=>{
@@ -1132,10 +1160,12 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         if(String(res[0].status).toLowerCase() == "success"){
            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
            this._obfservices.obfmodel._dh_id = res[0].dh_id;
-          alert("Details updated Successfully");
+          // alert("Details updated Successfully");
+          this.toastr.success("Details updated Successfully");
         }
         else{
-          alert("Technical error while updating details");
+          //alert("Technical error while updating details");
+          this.toastr.error("Technical error while updating details");
         }
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
