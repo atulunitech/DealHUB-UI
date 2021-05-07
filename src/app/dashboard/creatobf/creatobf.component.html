@@ -29,7 +29,7 @@
           
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                          <div >
+                          <div style="width: 100%;">
                             <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
                              
@@ -60,7 +60,7 @@
                           </div>
                         </div>
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                          <div style="width:25%;margin-right:15px;float: left;">
+                          <div style="width:100%;">
                             <ngx-dropzone (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
                               <ngx-dropzone-label>Drop LOI/PO Agreement</ngx-dropzone-label>
                               <ngx-dropzone-preview *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
@@ -78,7 +78,7 @@
                             </div>
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                            <div style="width:25%;margin-right:15px;float: left;">
+                            <div style="width:100%;">
                               <ngx-dropzone (change)="onSelect($event,'support')" accept=".xlsx">
                                 <ngx-dropzone-label>Drop Supporting documents</ngx-dropzone-label>
                                 <ngx-dropzone-preview *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f)">
