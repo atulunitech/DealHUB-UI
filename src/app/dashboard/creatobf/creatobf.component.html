@@ -80,9 +80,13 @@
                   </div>
                     </div>
                     <mat-action-row>
-                      <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')" value="Save as Draft"/>
-                      <button mat-button class="btn btn-primary" [disabled]="_obfservices.ObfCreateForm.invalid"  (click)="nextStep('details')">Next</button>
-                    </mat-action-row>
+                      <div class="mat_fot_drf" >
+                        <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')" > Save As Draft</button>
+                         <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
+                          Next
+                        </button>
+                      </div>
+                </mat-action-row>
                 </mat-expansion-panel>
                 <!--  -->
                 <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
@@ -105,7 +109,6 @@
                   
                    <mat-form-field appearance="fill">
                       <mat-label>Select type of service/solution category</mat-label>
-                      <!-- <mat-select  multiple (selectionChange)="onotherserviceschange($event)"> -->
                         <mat-select  multiple >
                         <mat-option>-- None --</mat-option>
                         <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
@@ -116,9 +119,40 @@
                         </mat-optgroup>
                       </mat-select>
                     </mat-form-field>
+
+                    <!-- <div class="mat_fld_box_in" fxFlex="50">
+                      <div class="mt-cust-fd" fxFlex="1 1 100%">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label>Select solution category</mat-label>
+                          <mat-select >
+                            <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
+                              {{Solution.Solutioncategory}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="mat_fld_box_in" fxFlex="50">
+                      <div class="mt-cust-fd" fxFlex="1 1 100%">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label>Select type of service/solution category</mat-label>
+                          <mat-select  multiple >
+                            <mat-option>-- None --</mat-option>
+                            <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
+                                          >
+                              <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+                                {{list.viewValue}} 
+                              </mat-option>
+                            </mat-optgroup>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div> -->
+
                     <input type="text" formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" placeholder="Other Services" />
                     <input type="text" formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" placeholder="Other Solutions" />
                     <input type="text" formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" placeholder="Other Integrated Solutions" />
+                   
                     <div style="width:100%;float:left;display:block;">
                       <label>Vertical : </label>{{_obfservices.ObfCreateForm.get('Vertical').value}}
                       <mat-form-field appearance="fill">
@@ -161,10 +195,17 @@
                     </div>
     
     <mat-action-row>
-      <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')" value="Save as Draft"/>
+      <div class="mat_fot_drf" >
+        <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')"> Save As Draft</button>
+        <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
+        <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
+          Next
+        </button>
+      </div>
+      <!-- <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')" value="Save as Draft"/>
       <button mat-button class="btn btn-primary" color="warn" (click)="prevStep('details')">Previous</button>
       <button mat-button class="btn btn-primary" color="primary" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">Next</button>
-      <!-- [disabled]="_obfservices.ObfCreateForm.invalid" -->
+      [disabled]="_obfservices.ObfCreateForm.invalid" -->
     </mat-action-row>
                 </mat-expansion-panel>
                 <mat-expansion-panel  [expanded]="step === 2" (opened)="setStep(2)">
@@ -174,61 +215,274 @@
                   </mat-panel-title>
   
                   </mat-expansion-panel-header>
-                  <div style="display:block;float:left;width:100%;background: #4e65d796;">
-                    <span><label>Opportunity Id</label>{{ _obfservices.obfmodel._opportunity_id}}</span>
-                    <span><label >Project Name</label>{{_obfservices.obfmodel._dh_project_name}}</span>
-                    <span><label>SAP IO number</label>{{_obfservices.ObfCreateForm.get('Sapio').value}}</span>
-                    <span><label>SAP Customer Code</label>{{_obfservices.ObfCreateForm.get('Sapcustomercode').value}}</span>
-                    <span><label>Created on</label>{{_obfservices.ObfCreateForm.get('Createddate').value}}</span>
-                    <span><label>Project Primary Location</label>{{_obfservices.obfmodel._dh_location}}</span>
-                    <span><label>Sector</label>{{this.sector}}</span>
-                    <span><label>Sub Sector</label>{{this.subsector}}</span>
-                    <span><label>Vertical</label>{{_obfservices.ObfCreateForm.get('Vertical').value}}</span>
-                    <span><label>Vertical Head</label>{{_obfservices.ObfCreateForm.get('Verticalhead').value}}</span>
-                    <span><label>Customer Name</label>{{_obfservices.ObfCreateForm.get('Customername').value}}</span>
-                </div>
-                <div style="display:block;float:left;width:100%;background: #b6b6b896;">
-                  <span><label>Total Revenue (Cr)</label>{{_obfservices.obfmodel._total_revenue}}</span>
-                  <span><label>Total Cost (Cr)</label>{{_obfservices.obfmodel._total_cost}}</span>
-                  <span><label>Total Margin</label>{{_obfservices.obfmodel._total_margin}}</span>
-                  <span><label>Total Project Life</label>{{_obfservices.obfmodel._total_project_life}}</span>
-                  <span><label>EBT %</label>{{_obfservices.obfmodel._ebt}}</span>
-                  <span><label>Capex Cr</label>{{_obfservices.obfmodel._capex}}</span>
-                  <span><label>IIR % Surplus Cash</label>{{_obfservices.obfmodel._irr_surplus_cash}}</span>
-                  <span><label>IIR % Borrowed Fund</label>{{_obfservices.obfmodel._irr_borrowed_fund}}</span>
-                  <span><label>Payment Terms</label>{{_obfservices.obfmodel._payment_terms}}</span>
-                </div>
-                <!-- <div>Project Date:{{OBFData.Projectdate}}</div>
-  
-                <div>Solution Category:{{OBFData.Solutioncategory}}</div>
-  
-                <div>Type Of Services/Solution Category:{{OBFData.Otherservicesandcategories}}</div> -->
-  
-                <div >Project Brief:{{(BrifreadMore) ? (_obfservices.obfmodel._dh_desc) : (_obfservices.obfmodel._dh_desc) | slice:0:50 }}  
-                  <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
-                  <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                  <div class="mat_exp_wrp">
+                    <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp">
+                      <div class="mat_previe_box">
+                         <div class="prev_tit">
+                          Opportunity ID
+                         </div>
+                         <div class="prev_dis">
+                          {{ _obfservices.obfmodel._opportunity_id}}
+                         </div>
+                      </div>
+                      <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          Project Name
+                        </div>
+                        <div class="prev_dis">
+                          {{_obfservices.obfmodel._dh_project_name}}
+                        </div>
+                     </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        SAP Customer Code
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.ObfCreateForm.get('Sapcustomercode').value}}
+                      </div>
+                   </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      Created On
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.ObfCreateForm.get('Createddate').value}}
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    Project Primary Location / State
+                  </div>
+                  <div class="prev_dis">
+                    {{_obfservices.obfmodel._dh_location}}
+                  </div>
                </div>
-           
-               <div >Assumption & Risk:{{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
-                   <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
-                   <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                  Sector
                 </div>
-                  <!-- <div>LOI/Po:{{OBFData.Loipo}}</div> -->
-                  <div>
-                    <!-- <input type="text" placeholder="Enter Comment" style="height:180px;" [value]="OBFData.comments"/> -->
+                <div class="prev_dis">
+                  Consumer Durables
+                </div>
+             </div>
+            
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                Sub Sector
+              </div>
+              <div class="prev_dis">
+                Consumer electronics
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Vertical 
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.ObfCreateForm.get('Vertical').value}}
+            </div>
+         </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Vertical Head
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
+            </div>
+          </div>
+                      
+                      </div>
+                      <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+                        <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            total revenue <br>
+                            ₹ Cr
+                          </div>
+                          <div class="prev_dis">
+                            {{_obfservices.obfmodel._total_revenue}}
+                          </div>
+                       </div>
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          Total cost <br>₹ Cr
+                        </div>
+                        <div class="prev_dis">
+                          {{_obfservices.obfmodel._total_cost}}
+                        </div>
+                     </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        total margin 
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfmodel._total_margin}}
+                      </div>
+                   </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      total project Life 
                     </div>
-                    <div style="display: block;float: left;width:100%;">
-                        <a [href]="sanitize(coversheetpath)" target="_blank"   style="margin-right:10px;">Download Coversheet</a>
-                        <a [href]="sanitize(loipopath)" target="_blank">Download Loi Po </a>
+                    <div class="prev_dis">
+                      {{_obfservices.obfmodel._total_project_life}}
                     </div>
-                    <div style="display: block;float: right;">
-                        <div  class="sb_buttion" ><button>Edit</button></div>
-                    </div>
-                    &nbsp;
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    Capex <br>₹ Cr 
+                  </div>
+                  <div class="prev_dis">
+                    {{_obfservices.obfmodel._capex}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                  EBT % 
+                </div>
+                <div class="prev_dis">
+                  {{_obfservices.obfmodel._ebt}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                IRR % Surplus Cash
+              </div>
+              <div class="prev_dis">
+                {{_obfservices.obfmodel._irr_surplus_cash}}
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              IRR % Borrowed <br>Fund
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.obfmodel._irr_borrowed_fund}}
+            </div>
+          </div>
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+              Payement Terms
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.obfmodel._payment_terms}}
+            </div>
+          </div>
+          
+                      </div>
+                      <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp">
+                       <div fxFlex="auto " class="mat_view_cont">
+                        <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Solution Category
+                          </div>
+                          <div class="prev_dis">
+                          {{  this.servicecate }}
+                          </div>
+                       </div> 
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          Type of Service/Solution Category
+                        </div>
+                        <div class="prev_dis">
+                          <div><b>Services -</b> <br>
+                            {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                           </div>
+                        </div>
+                     </div> 
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        Project Brief 
+                      </div>
+                      <div class="prev_dis">
+                        {{(BrifreadMore) ? (_obfservices.obfmodel._dh_desc) : (_obfservices.obfmodel._dh_desc) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                      </div>
+                   </div> 
+                       </div>
+                       <div fxFlex="auto " class="mat_view_cont">
+                        <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Assumption & Risk
+                          </div>
+                          <div class="prev_dis">
+                            {{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
+                            <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
+                            <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
+                          </div>
+                       </div>
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          LOI/Po
+                        </div>
+                        <div class="prev_dis">
+                         Rate Card Attached
+                        </div>
+                     </div>
+                      </div>
+                      <div fxFlex="auto " class="mat_view_comment">
+                        <div class="mat_previe_box">
+                          <div class="prev_dis">
+                            comments 
+                           </div>
+                           <div class="mat_comment_box">
+                            Please enter you Approval/rejection
+                            Justification here.
+                           </div>
+                        </div>
+                      </div>
+                        
+                       
+                        
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
+                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div class="dwn_con_wr">
+                              <img [href]="sanitize(coversheetpath)" src="../../../assets/images/dwn-load-file.png">
+                              <span>OBF Sheet</span>
+                            </div>
+                            <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                            </div>
+                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                              <div class="dwn_con_wr">
+                                <img src="../../../assets/images/dwn-load-file.png">
+                                <span>Supportting Document</span>
+                              </div>
+                              <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                              </div>
+                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                                <div class="dwn_con_wr">
+                                  <img [href]="sanitize(loipopath)" src="../../../assets/images/dwn-load-file.png">
+                                  <span>LOI/PO/Agreement</span>
+                                </div>
+                                <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                                </div>
+          
+                                
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp">
+                            <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+                              <div class="mat_fot_drf" >
+                                <!-- <button mat-flat-button class="creat_bt mat_fot_bt">SAVE AS DRAFT</button> -->
+                              </div>
+                              <div class="mat_fot_drf" >
+                                <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
+                                <button mat-flat-button class="creat_bt" (click)="FinalSubmit()">
+                                  SUBMIT
+                                </button>
+                              </div>
+                            </div>
+                                </div>
+          
+                  </div>
+
+              
+                    <!-- &nbsp;
                     <div style="display: block;float: right;">
                       <div  class="sb_buttion" (click)="EditOBF()"><button>Edit</button></div>
                       <div  class="sb_buttion" (click)="FinalSubmit()"><button>Submit</button></div>
-                      </div>
+                      </div> -->
                 </mat-expansion-panel>
               </mat-accordion>
               

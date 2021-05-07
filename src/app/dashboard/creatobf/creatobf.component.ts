@@ -159,7 +159,7 @@ export class CreatobfComponent implements OnInit {
   visiblePreview:boolean=false;
   readMore = false;
   BrifreadMore=false;
-  
+  service:string ="";
 sector:string="";
 
 subsector:string="";
@@ -213,10 +213,12 @@ subsector:string="";
   verticallist:verticallist[]=[];
   Verticalheadlist:Verticalhead[];
   
-   visible = true;
+  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
+  ServiceMore=false;
+  servicecate:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   
@@ -778,6 +780,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsolutionandservices._sap_customer_code = this._obfservices.obfmodel._sap_customer_code;
       this._obfservices.obfsolutionandservices.sapio = this._obfservices.obfmodel.sapio;
 
+
       let val =  this.validateform();
       if(val)
     {
@@ -803,6 +806,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         //alert(error.message);
       })
     }
+    this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+    {
+     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+    
+    }
+    this.service= this.service.substring(1)
   }
     }
     else if(type == "upload")
