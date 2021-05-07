@@ -89,7 +89,7 @@
                 </mat-action-row>
                 </mat-expansion-panel>
                 <!--  -->
-                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel [disabled]="_obfservices.ObfCreateForm.invalid" [expanded]="step === 1" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                       2/3 Enter details
@@ -208,7 +208,7 @@
       [disabled]="_obfservices.ObfCreateForm.invalid" -->
     </mat-action-row>
                 </mat-expansion-panel>
-                <mat-expansion-panel  [expanded]="step === 2" (opened)="setStep(2)">
+                <mat-expansion-panel [disabled]="_obfservices.ObfCreateForm.invalid"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
                     3/3 Preview OBF
