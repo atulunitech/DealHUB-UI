@@ -1,10 +1,10 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { DashboardService } from '../dashboard.service';
+import { DashboardService } from '../../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { OBFServices } from '../services/obfservices.service';
+import { OBFServices } from '../../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -42,11 +42,7 @@ export class CreateOBFComponent implements OnInit {
       }
 
       sanitize(url:string){
-        if(url!= null)
-        {
-          return this.sanitizer.bypassSecurityTrustUrl(url);
-        }
-        
+        return this.sanitizer.bypassSecurityTrustUrl(url);
     }
 
     files: File[] = [];
@@ -92,45 +88,7 @@ export class CreateOBFComponent implements OnInit {
          
         }
     
-      // uploadfiles(files:File[],types)
-      // {
         
-      //   this._dashboardservice.uploadImage(files).subscribe(
-      //     event => {
-      //       var path="";
-      //       if(event.type === HttpEventType.UploadProgress)
-      //       {
-      //         console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
-      //         this.progress = Math.round(event.loaded/event.total * 100);
-      //       }
-      //       else if(event.type === HttpEventType.Response)
-      //       {
-      //       console.log(event.body);
-      //       path = JSON.stringify(event.body);
-      //     }
-      //     debugger;
-      //     path=path.split('"').join('');
-      //     path = path.substring(0,path.length -1);
-      //     if(types == "coversheet")
-      //     {
-      //      this.coversheetpath = path;
-      //      this._obfservices.ObfCreateForm.patchValue({coversheet: path});
-      //     }
-      //     else if(types == "loipo")
-      //     {
-      //      this.loipopath = path;
-      //      this._obfservices.ObfCreateForm.patchValue({Loiposheet: path});
-      //     }
-      //     else if(types == "support")
-      //     {
-      //       this.supportdocpath = path;
-      //       this._obfservices.ObfCreateForm.patchValue({Supportpath: path});
-      //     }
-           
-      //     }
-      //   );
-    
-      // }
     
         onRemove(files:File[],event) {
             console.log(event);
@@ -311,14 +269,5 @@ export class CreateOBFComponent implements OnInit {
         this.ProjectDetails.paginator = this.paginator;
         }
         
-        getToolTipData(issueId: any): any {
-    
-          //  alert(JSON.stringify(issueId));
-          return JSON.stringify(issueId);
-          //console.log(issueId);
-          // const issue = this.data.find(i => i.number === issueId);
-          // return `Title: ${issue.title} ||
-          //     State: ${issue.state} ||
-          //     Date: ${issue.created_at}`;
-      }
+       
 }
