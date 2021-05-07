@@ -656,8 +656,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.h});
 
     var result = this.verticallist.filter(obj => {
-      // return obj.viewValue === ws.E8.h;
-      return obj.viewValue === "E-Commerce";
+       return obj.viewValue === ws.E8.h;
+      //return obj.viewValue === "E-Commerce";
     });
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
