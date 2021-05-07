@@ -291,6 +291,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
+ },
+ (error:HttpErrorResponse)=>{
+   this.toastr.error(error.message);
+   //alert(error.message);
  });
   }
 
@@ -753,6 +757,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
        // alert("Technical error while uploading documents");
         this.toastr.error("Technical error while uploading documents");
       }
+      },
+      (error:HttpErrorResponse)=>{
+        this.toastr.error(error.message);
+        //alert(error.message);
       })
     }
       }
@@ -789,6 +797,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         }
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
+      },
+      (error:HttpErrorResponse)=>{
+        this.toastr.error(error.message);
+        //alert(error.message);
       })
     }
   }
@@ -812,6 +824,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       else{
         alert("Technical error while uploading documents");
       }
+      },
+      (error:HttpErrorResponse)=>{
+        this.toastr.error(error.message);
+        //alert(error.message);
       })
     }
     console.log("check why form not valid");
@@ -1087,6 +1103,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       else{
         alert("Technical error while uploading documents");
       }
+      },
+      (error:HttpErrorResponse)=>{
+        this.toastr.error(error.message);
+        //alert(error.message);
       })
     }
       }
@@ -1109,7 +1129,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         console.log("data arrived after services update");
         let res = JSON.parse(data);
         console.log(res);
-        if(String(res[0].status).toLowerCase() == "sucess"){
+        if(String(res[0].status).toLowerCase() == "success"){
            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
            this._obfservices.obfmodel._dh_id = res[0].dh_id;
           alert("Details updated Successfully");
@@ -1119,6 +1139,10 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         }
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
+      },
+      (error:HttpErrorResponse)=>{
+        this.toastr.error(error.message);
+        //alert(error.message);
       })
     }
     
