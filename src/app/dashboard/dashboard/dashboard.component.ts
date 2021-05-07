@@ -40,8 +40,10 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 export class DashboardComponent implements OnInit {
 
    DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
-   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
+   PendingReviewercolumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
   
+   
    // dataSource = ELEMENT_DATA;
   Draft:boolean=true;
   SubmittedScreen:boolean=false;
@@ -186,27 +188,18 @@ export class DashboardComponent implements OnInit {
     {
      
       this.displayedColumns=this.SubmittedScreenColumn;
-      this.displayedColumns.forEach((value,index)=>{
-        if(value=="ActionDraft") this.displayedColumns.splice(index,1);
-        });
-      this.displayedColumns.push('ActionDraft');
+     
     }   
     if(selection == "Rejected" )
     {
      
       this.displayedColumns=this.SubmittedScreenColumn;
-      this.displayedColumns.forEach((value,index)=>{
-        if(value=="ActionSubmitted") this.displayedColumns.splice(index,1);
-        });
-      this.displayedColumns.push('ActionSubmitted');
+     
     }   
     if(selection=="Pendingforapproval")
     {
-      this.displayedColumns=this.SubmittedScreenColumn;
-      this.displayedColumns.forEach((value,index)=>{
-        if(value=="ActionPendingforapproval") this.displayedColumns.splice(index,1);
-        });
-      this.displayedColumns.push('ActionPendingforapproval');
+      this.displayedColumns=this.PendingReviewercolumn;
+    
     }
   }
 
