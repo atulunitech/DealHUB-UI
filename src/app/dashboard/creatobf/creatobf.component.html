@@ -98,7 +98,7 @@
                         </div>
                         <div class="mat_fot_drf" >
                           
-                          <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
+                          <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
                             NEXT
                           </button>
                         </div>
@@ -261,7 +261,7 @@
                         </div>
                         <div class="mat_fot_drf" >
                           <button mat-flat-button class="creat_bt mat_fot_bt" class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
-                          <button mat-flat-button class="creat_bt"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
+                          <button mat-flat-button class="creat_bt"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
                             NEXT
                           </button>
                         </div>
@@ -305,7 +305,7 @@
                         SAP Customer Code
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.ObfCreateForm.get('Sapcustomercode').value}}
+                        {{this._obfservices.obfmodel._sap_customer_code}}
                       </div>
                    </div>
                    <div class="mat_previe_box">
@@ -329,7 +329,7 @@
                   Sector
                 </div>
                 <div class="prev_dis">
-                  Consumer Durables
+                  {{this.visiblesector}}
                 </div>
              </div>
             
@@ -338,7 +338,7 @@
                 Sub Sector
               </div>
               <div class="prev_dis">
-                Consumer electronics
+               {{this.visiblesubsector}}
               </div>
            </div>
            <div class="mat_previe_box">
@@ -362,7 +362,7 @@
                       <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                         <div class="mat_previe_box">
                           <div class="prev_tit">
-                            total revenue <br>
+                            Total Revenue <br>
                             ₹ Cr
                           </div>
                           <div class="prev_dis">
@@ -371,7 +371,7 @@
                        </div>
                        <div class="mat_previe_box">
                         <div class="prev_tit">
-                          Total cost <br>₹ Cr
+                          Total Cost <br>₹ Cr
                         </div>
                         <div class="prev_dis">
                           {{_obfservices.obfmodel._total_cost}}
@@ -379,15 +379,15 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
-                        total margin 
+                        Total Margin 
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfmodel._total_margin}}
+                        {{_obfservices.obfmodel._total_margin}} %
                       </div>
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      total project Life 
+                      Total Project Life 
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfmodel._total_project_life}}
@@ -406,7 +406,7 @@
                   EBT % 
                 </div>
                 <div class="prev_dis">
-                  {{_obfservices.obfmodel._ebt}}
+                  {{_obfservices.obfmodel._ebt}} %
                 </div>
              </div>
              <div class="mat_previe_box">
@@ -414,7 +414,7 @@
                 IRR % Surplus Cash
               </div>
               <div class="prev_dis">
-                {{_obfservices.obfmodel._irr_surplus_cash}}
+                {{_obfservices.obfmodel._irr_surplus_cash}} %
               </div>
            </div>
            <div class="mat_previe_box">
@@ -422,7 +422,7 @@
               IRR % Borrowed <br>Fund
             </div>
             <div class="prev_dis">
-              {{_obfservices.obfmodel._irr_borrowed_fund}}
+              {{_obfservices.obfmodel._irr_borrowed_fund}} %
             </div>
           </div>
           <div class="mat_previe_box">
@@ -430,7 +430,7 @@
               Payement Terms
             </div>
             <div class="prev_dis">
-              {{_obfservices.obfmodel._payment_terms}}
+              {{_obfservices.obfmodel._payment_terms}} Days
             </div>
           </div>
           
@@ -442,7 +442,7 @@
                             Solution Category
                           </div>
                           <div class="prev_dis">
-                          {{  this.servicecate }}
+                          {{this.servicecate}}
                           </div>
                        </div> 
                        <div class="mat_previe_box">
@@ -452,8 +452,8 @@
                         <div class="prev_dis">
                           <div><b>Services -</b> <br>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
-                        <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                        <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
                         </div>
                      </div> 
@@ -491,7 +491,7 @@
                       <div fxFlex="auto " class="mat_view_comment">
                         <div class="mat_previe_box">
                           <div class="prev_dis">
-                            comments 
+                            Comments 
                            </div>
                            <div class="mat_comment_box">
                             Please enter you Approval/rejection
@@ -514,7 +514,7 @@
                             <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="../../../assets/images/dwn-load-file.png">
-                                <span>Supportting Document</span>
+                                <span>supporting Document</span>
                               </div>
                               <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                               </div>
