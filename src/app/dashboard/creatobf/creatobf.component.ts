@@ -221,7 +221,6 @@ subsector:string="";
   servicecate:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  
   progressInfos: any[] = [];
   
     @ViewChild(MatSort) sort: MatSort;
@@ -1217,5 +1216,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       //     Date: ${issue.created_at}`;
   }
   
+  email = new FormControl('', [Validators.required, Validators.email]);
+  getErrorMessage() {
+    if (this.email.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
 
 }
