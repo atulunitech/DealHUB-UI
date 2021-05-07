@@ -145,14 +145,14 @@
              <ng-container  matColumnDef="ActionPendingforapproval">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
-                <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Primary</button></mat-cell>
-                <mat-cell *matCellDef="let row" ><button mat-icon-button><mat-icon>Edit</mat-icon></button></mat-cell>
-                <mat-cell *matCellDef="let row" ><button mat-icon-button><mat-icon>Edit</mat-icon></button></mat-cell>
+                <mat-cell *matCellDef="let row" >
+                  <button mat-raised-button color="primary">Edit</button>&nbsp;
+                  <button mat-raised-button color="primary">Reject</button>
+                 </mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionSubmitted">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Rejected</mat-header-cell>
-            
-                <mat-cell *matCellDef="let row" ><button mat-icon-button><mat-icon>Edit</mat-icon></button></mat-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
              </ng-container>
            
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
