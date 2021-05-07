@@ -8,8 +8,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 
-
-import { LocaleConfig } from 'ngx-daterangepicker-material';
   export interface PeriodicElement {
     PROJECTNAME: string;
     APPROVALSTATUS: number;

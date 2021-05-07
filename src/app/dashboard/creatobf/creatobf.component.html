@@ -73,10 +73,15 @@
                         </div>
                     </div>
                   </div>
+                  <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+                    <ul *ngFor="let msg of message; let i = index">
+                      <li>{{ msg }}</li>
+                    </ul>
+                  </div>
                     </div>
                     <mat-action-row>
-                      <button mat-button class="btn btn-primary" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')">Save as Draft</button>
-                      <button mat-button class="btn btn-primary"  (click)="nextStep('details')">Next</button>
+                      <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')" value="Save as Draft"/>
+                      <button mat-button class="btn btn-primary" [disabled]="_obfservices.ObfCreateForm.invalid"  (click)="nextStep('details')">Next</button>
                     </mat-action-row>
                 </mat-expansion-panel>
                 <!--  -->
@@ -87,55 +92,78 @@
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
-                  <mat-form-field appearance="fill">
-      <mat-label>Select solution category</mat-label>
-    <mat-select (selectionChange)="onchange($event)">
-      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.Solutioncategory"  >
-        {{Solution.Solutioncategory}}
-      </mat-option>
-    </mat-select>
-                  </mat-form-field>
+                  <div style="display: block;float: left;width:100%;">
   
                     <mat-form-field appearance="fill">
-      <mat-label>Select type of service/solution category</mat-label>
-      <!-- <mat-select  multiple (selectionChange)="onotherserviceschange($event)"> -->
-        <mat-select  multiple >
-        <mat-option>-- None --</mat-option>
-        <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
-                      >
-          <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
-            {{list.viewValue}} 
-          </mat-option>
-        </mat-optgroup>
-      </mat-select>
-                     </mat-form-field>
-    <input type="text" formControlName="otherservices" style="margin-left: 10px;"  placeholder="Other Services" />
-    <input type="text" formControlName="othersolutions" style="margin-left: 10px;" placeholder="Other Solutions" />
-    <input type="text" formControlName="otherintegratedsolutions" style="margin-left: 10px;" placeholder="Other Integrated Solutions" />
-    <div style="width:100%;float:left;display:block;">
-      <label>Vertical : </label>{{_obfservices.ObfCreateForm.get('Vertical').value}}
-      <mat-form-field appearance="fill">
-        <mat-label>Select Sector</mat-label>
-      <mat-select (selectionChange)="onsectorchange($event)">
-        <mat-option *ngFor="let Sector of Sectorgrouparray" [value]="Sector.value"  >
-          {{Sector.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Select Sub Sector</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let Subsector of Subsecotarray" [value]="Subsector.value"  >
-        {{Subsector.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-    </div>
+                      <mat-label>Select solution category</mat-label>
+                    <mat-select >
+                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
+                        {{Solution.Solutioncategory}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  
+                   <mat-form-field appearance="fill">
+                      <mat-label>Select type of service/solution category</mat-label>
+                      <!-- <mat-select  multiple (selectionChange)="onotherserviceschange($event)"> -->
+                        <mat-select  multiple >
+                        <mat-option>-- None --</mat-option>
+                        <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
+                                      >
+                          <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+                            {{list.viewValue}} 
+                          </mat-option>
+                        </mat-optgroup>
+                      </mat-select>
+                    </mat-form-field>
+                    <input type="text" formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" placeholder="Other Services" />
+                    <input type="text" formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" placeholder="Other Solutions" />
+                    <input type="text" formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" placeholder="Other Integrated Solutions" />
+                    <div style="width:100%;float:left;display:block;">
+                      <label>Vertical : </label>{{_obfservices.ObfCreateForm.get('Vertical').value}}
+                      <mat-form-field appearance="fill">
+                        <mat-label>Select Sector</mat-label>
+                      <mat-select (selectionChange)="onsectorchange($event)" formControlName="Sector">
+                        <mat-option *ngFor="let Sector of sectorlist" [value]="Sector.value"  >
+                          {{Sector.viewValue}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Select Sub Sector</mat-label>
+                    <mat-select (selectionChange)="onsubsectorchange($event)" formControlName="Subsector">
+                      <mat-option *ngFor="let Subsector of subsectorlisdisplay" [value]="Subsector.value"  >
+                        {{Subsector.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Enter SAP Customer Code</mat-label>
+                    <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" />
+                  </mat-form-field>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Enter SAP IO Number</mat-label>
+                    <mat-chip-list #chipList >
+                      <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" [selectable]="selectable"
+                               [removable]="removable" (removed)="remove(sapio)">
+                        {{sapio._Cust_SAP_IO_Number}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input placeholder="SAP IO ..."
+                      type="number"
+                      [matChipInputFor]="chipList"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      [matChipInputAddOnBlur]="addOnBlur"
+                      (matChipInputTokenEnd)="add($event)">
+                    </mat-chip-list>
+                  </mat-form-field>
+                    </div>
+                    </div>
     
     <mat-action-row>
-      <button mat-button class="btn btn-primary" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('preview')">Save as Draft</button>
-      <button mat-button class="btn btn-primary" color="warn" (click)="prevStep('details')">Back</button>
-      <button mat-button class="btn btn-primary" color="primary" (click)="nextStep('preview')">Next</button> 
+      <input type="button" class="btn btn-primary" style="margin-right:5px;" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')" value="Save as Draft"/>
+      <button mat-button class="btn btn-primary" color="warn" (click)="prevStep('details')">Previous</button>
+      <button mat-button class="btn btn-primary" color="primary" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">Next</button>
       <!-- [disabled]="_obfservices.ObfCreateForm.invalid" -->
     </mat-action-row>
                 </mat-expansion-panel>
@@ -198,7 +226,9 @@
                     </div>
                     &nbsp;
                     <div style="display: block;float: right;">
-                    <div  class="sb_buttion"><button>Submit</button></div></div>
+                      <div  class="sb_buttion" (click)="EditOBF()"><button>Edit</button></div>
+                      <div  class="sb_buttion" (click)="FinalSubmit()"><button>Submit</button></div>
+                      </div>
                 </mat-expansion-panel>
               </mat-accordion>
               
