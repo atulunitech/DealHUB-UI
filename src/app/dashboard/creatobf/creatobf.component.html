@@ -29,16 +29,12 @@
           
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                          <div style="width:25%;margin-right:15px;float: left;">
+                          <div >
                             <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
-                              <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
-                                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                              </ngx-dropzone-preview>
+                             
                                 
                             </ngx-dropzone>
-                            <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
-                            </div>
                             <div style="display: block;float: left;width:77%;" *ngIf="progress > 0">
                               <!-- <div style="display: block;float: left;background: red;height:5px;text-align: center;color: red;"  role="progressbar" [style.width.%]="progress">
                                   {{progress}}%
@@ -49,6 +45,14 @@
                                 </div>
                             </div>
                           </div>
+                            <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+                              
+                              <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+
+                            <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
+                            </div>
+                            
                           <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
                             <ul *ngFor="let msg of message; let i = index">
                               <li>{{ msg }}</li>
