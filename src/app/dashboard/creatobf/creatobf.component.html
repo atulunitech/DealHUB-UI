@@ -93,9 +93,9 @@
                           
                           </div>
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
-                        <div class="mat_fot_drf" >
+                        <!-- <div class="mat_fot_drf" >
                           <button mat-flat-button  class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')">SAVE AS DRAFT</button>
-                        </div>
+                        </div> -->
                         <div class="mat_fot_drf" >
                           
                           <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
@@ -125,18 +125,21 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category</mat-label>
-                    <mat-select >
+                    <mat-select formControlName="Solutioncategory">
                       <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
                         {{Solution.Solutioncategory}}
                       </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
+                      Solution Category is <strong>required</strong>
+                    </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-select  multiple >
+                                <mat-select formControlName="Otherservicesandcategories"  multiple >
                                   <mat-option>-- None --</mat-option>
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
@@ -145,6 +148,9 @@
                                     </mat-option>
                                   </mat-optgroup>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Otherservicesandcategories.errors?.required">
+                                  Services is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -155,6 +161,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
                                 <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" required/>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
+                                  Services:Other is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -164,6 +173,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Solutions</mat-label>
                                 <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" required/>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
+                                  Solution:Other is <strong>required</strong>
+                                </mat-error>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -172,6 +184,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Integrated Solutions</mat-label>
                                   <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" required/>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
+                                    Integrated Solution:Other is <strong>required</strong>
+                                  </mat-error>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -198,6 +213,9 @@
                                     {{Sector.viewValue}}
                                   </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sector.errors?.required">
+                                  Sector is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -213,6 +231,9 @@
                                     {{Subsector.viewValue}}
                                   </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Subsector.errors?.required">
+                                  Subsector is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
