@@ -28,29 +28,62 @@
                      
           
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
-                        <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                          <div style="width: 100%;">
-                            <ngx-dropzone (change)="onSelect($event,'coversheet')" accept=".xlsx">
-                              <ngx-dropzone-label>Drop OBFSheet</ngx-dropzone-label>
+                        <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
+                          <div fxFlex="auto " class="mat_upload_in_wr">
+                            <div class="mat_upload_tit">
+                              Attach PPL SHEET 
+                            </div>
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
+                              <ngx-dropzone-label class="matUp_lable">
+                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div class="drap_titl">
+                                  Drag & Drop
+                                  <div class="in_titl">Or select file from your system</div>
+                                </div>
+                                
+                              </ngx-dropzone-label>
                              
                                 
                             </ngx-dropzone>
-                            <div style="display: block;float: left;width:77%;" *ngIf="progress > 0">
+                            <div class="bt_uplad_con">
+                              <button [disabled]="!(coversheetfiles.length >0)" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
+                            </div>
+                            <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div class="doc_icon">
+                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont">
+                                  {{ f.name }}
+                                 <div>{{ f.type }}</div> 
+
+                                </div> 
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+
+                            <div style="display: block;float: left;width:100%;" *ngIf="progress > 0">
                               <!-- <div style="display: block;float: left;background: red;height:5px;text-align: center;color: red;"  role="progressbar" [style.width.%]="progress">
                                   {{progress}}%
                               </div> -->
-                              <div style="display: block;float: left;width:77%;" *ngIf="progress > 0">
-                                <div style="display: block;float: left;background: red;height:5px;text-align: center;color: red;"  role="progressbar" [style.width.%]="progress">
+                              <div style="display: block;float: left;width:100%;" *ngIf="progress > 0">
+                                <div style="display: block;
+                                float: left;
+                                background: rgb(35, 88, 192);
+                                height: auto;
+                                text-align: center;
+                                width: 100%;
+                                color: white;
+                                border-radius: 10px;
+                                font-size: 7px;
+                                line-height: initial;
+                                font-weight: bold;"  role="progressbar" [style.width.%]="progress">
                                     {{progress}}%
                                 </div>
                             </div>
                           </div>
-                            <ngx-dropzone-preview *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
-                              
-                              <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                            </ngx-dropzone-preview>
-
-                            <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/>
                             </div>
                             
                           <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
@@ -59,34 +92,101 @@
                             </ul>
                           </div>
                         </div>
-                        <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                          <div style="width:100%;">
-                            <ngx-dropzone (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
-                              <ngx-dropzone-label>Drop LOI/PO Agreement</ngx-dropzone-label>
-                              <ngx-dropzone-preview *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
-                                <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                              </ngx-dropzone-preview>
+                        <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
+                          <div fxFlex="auto " class="mat_upload_in_wr">
+                            <div class="mat_upload_tit">
+                              LOI/PO/Agreement or Self Declaration 
+                            </div>
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
+                              <ngx-dropzone-label class="matUp_lable">
+                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div class="drap_titl">
+                                  Drag & Drop
+                                  <div class="in_titl">Or select file from your system</div>
+                                </div>
                                 
+                              </ngx-dropzone-label>
+                             
+                              
                             </ngx-dropzone>
-                            <select formControlName="Loipodropdown">
-                                <option value="PO" selected>PO</option>
-                                <option value="LOI">LOI</option>
-                            </select>
-                            <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
-                            <label for="selfdec">This OBF is without LOI / PO </label><br>
-                             <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/> 
+                            <div class="bt_uplad_con">
+                              <div class="mt-cust-fd upl_sec_cut">
+                                <mat-form-field appearance="fill" class="example-full-width">
+                                  <mat-label>Select Type</mat-label>
+                                  <mat-select>
+                                    <mat-option value="PO">
+                                      PO
+                                    </mat-option>
+                                    <mat-option value="LOL">
+                                      LOI
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                              <button [disabled]="!(loipofiles.length >0)" (click)="uploadfiles(loipofiles,'loipo')" class="creat_bt" mat-flat-button>Upload</button>
+                           <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
+                            </div>
+                            <div style="margin-top: 5px;">
+                              <!-- <div class="cus_check">
+                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
+                              </div> -->
+                              <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
+                              <label for="selfdec">This OBF is without LOI / PO </label><br>  
+                            </div>
+
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div class="doc_icon">
+                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont">
+                                  {{ f.name }}
+                                 <div>{{ f.type }}</div> 
+
+                                </div> 
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
                             </div>
                           </div>
-                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
-                            <div style="width:100%;">
-                              <ngx-dropzone (change)="onSelect($event,'support')" accept=".xlsx">
-                                <ngx-dropzone-label>Drop Supporting documents</ngx-dropzone-label>
-                                <ngx-dropzone-preview *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f)">
-                                  <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-                                </ngx-dropzone-preview>
-                                  
-                              </ngx-dropzone>
-                               <input type="button" [disabled]="!(supportfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(supportfiles,'support')" value="Upload"/> 
+                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
+                            <div fxFlex="auto " class="mat_upload_in_wr">
+                              <div class="mat_upload_tit">
+                                <div class="cus_check">
+                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
+                              </div>
+                              </div>
+                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx">
+                              <ngx-dropzone-label class="matUp_lable">
+                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div class="drap_titl">
+                                  Drag & Drop
+                                  <div class="in_titl">Or select file from your system</div>
+                                </div>
+                                
+                              </ngx-dropzone-label>
+                             
+                              
+                            </ngx-dropzone>
+                            <div class="bt_uplad_con">
+                              <button [disabled]="!(loipofiles.length >0)" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
+                              
+                            </div>
+
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f)">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div class="doc_icon">
+                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont">
+                                  {{ f.name }}
+                                 <div>{{ f.type }}</div> 
+
+                                </div> 
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                               
                               </div>
                          </div>
                          
