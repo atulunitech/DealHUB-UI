@@ -15,7 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './auth/auth.guard';
  import { AuthInterceptor } from './auth/auth.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ToastrModule } from 'ngx-toastr';
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //import { CreateOBFComponent } from './dashboard/dashboard/create-obf/create-obf.component';
@@ -38,17 +39,17 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,MatDialogModule,
+    MatSnackBarModule
   //  BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      timeOut: 1000,
-      positionClass: 'toast-top-right'
-    })
+    
     ],
     providers: [AuthGuard,{
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
       multi : true
-    }],
+    }]
+    
+    ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

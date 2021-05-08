@@ -12,7 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { TemplateRef } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-import { ToastrService } from 'ngx-toastr';
+import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 
 interface Serviceslist {
   value: string;
@@ -204,7 +204,8 @@ export class CreatobfComponent implements OnInit {
   ];
   Solutiongroup: Solutiongroup[] =[];
 
-  constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,public _obfservices:OBFServices,private dialog:MatDialog,private toastr: ToastrService) 
+  constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent) 
   { }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -273,7 +274,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
   this.Solutiongroup= res;
 },
 (error:HttpErrorResponse)=>{
-  this.toastr.error(error.message);
+  this._mesgBox.showSnackbar(error.message);
   //alert(error.message);
 }
 );
@@ -296,7 +297,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
        this.Verticalheadlist = res.verticalhead;
  },
  (error:HttpErrorResponse)=>{
-   this.toastr.error(error.message);
+   this._mesgBox.showSnackbar(error.message);
    //alert(error.message);
  });
   }
@@ -512,7 +513,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         if(this.coversheetfiles.length > 1)
         {
          // alert("Kindly upload only one Coversheet file");
-         this.toastr.warning("Kindly upload only one Coversheet file");
+         this._mesgBox.showSnackbar("Kindly upload only one Coversheet file");
           return false;
         }
         else{
@@ -527,7 +528,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
          if(this.loipofiles.length > 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
-          this.toastr.warning("Kindly upload only one Loi / Po file");
+          this._mesgBox.showSnackbar("Kindly upload only one Loi / Po file");
           return false;
          }
          else{
@@ -766,15 +767,15 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this.toastr.success("Documents uploaded Successfully");
+        this._mesgBox.showSnackbar("Documents uploaded Successfully");
       }
       else{
        // alert("Technical error while uploading documents");
-        this.toastr.error("Technical error while uploading documents");
+        this._mesgBox.showSnackbar("Technical error while uploading documents");
       }
       },
       (error:HttpErrorResponse)=>{
-        this.toastr.error(error.message);
+        this._mesgBox.showSnackbar(error.message);
         //alert(error.message);
       })
     }
@@ -805,17 +806,17 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
           //  this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
           //  this._obfservices.obfmodel._dh_id = res[0].dh_id;
           //alert("Details updated Successfully");
-          this.toastr.success("Details updated Successfully");
+          this._mesgBox.showSnackbar("Details updated Successfully");
         }
         else{
           // alert("Technical error while updating details");
-          this.toastr.error("Technical error while updating details");
+          this._mesgBox.showSnackbar("Technical error while updating details");
         }
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this.toastr.error(error.message);
+        this._mesgBox.showSnackbar(error.message);
         //alert(error.message);
       })
     }
@@ -847,15 +848,15 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this.toastr.success("Documents uploaded Successfully");
+        this._mesgBox.showSnackbar("Documents uploaded Successfully");
       }
       else{
         //alert("Technical error while uploading documents");
-        this.toastr.error("Technical error while uploading documents");
+        this._mesgBox.showSnackbar("Technical error while uploading documents");
       }
       },
       (error:HttpErrorResponse)=>{
-        this.toastr.error(error.message);
+        this._mesgBox.showSnackbar(error.message);
         //alert(error.message);
       })
     }
@@ -934,13 +935,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     if(this._obfservices.ObfCreateForm.get('Projectname').errors)
     {
       //alert("Project name is required");
-      this.toastr.warning("Project name is required");
+      this._mesgBox.showSnackbar("Project name is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Customername').errors)
     {
      // alert("Customer name is required");
-      this.toastr.warning("Customer name is required");
+      this._mesgBox.showSnackbar("Customer name is required");
       return false;
     }
     // else if(this._obfservices.ObfCreateForm.get('Solutioncategory').errors)
@@ -956,19 +957,19 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     else if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
     {
      // alert("Opportunityid is required");
-      this.toastr.warning("Opportunityid is required");
+      this._mesgBox.showSnackbar("Opportunityid is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('State').errors)
     {
       //alert("Project primay location is required");
-      this.toastr.warning("Project primay location is required");
+      this._mesgBox.showSnackbar("Project primay location is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Vertical').errors)
     {
      // alert("Vertical field is required");
-     this.toastr.warning("Vertical field is required");
+     this._mesgBox.showSnackbar("Vertical field is required");
       return false;
     }
     // else if(this._obfservices.ObfCreateForm.get('Sector').errors)
@@ -979,61 +980,61 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     else if(this._obfservices.ObfCreateForm.get('Verticalhead').errors)
     {
      // alert("Vertical head field is required");
-      this.toastr.warning("Vertical head field is required");
+      this._mesgBox.showSnackbar("Vertical head field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
     {
      // alert("Project brief is required");
-     this.toastr.warning("Project brief is required");
+     this._mesgBox.showSnackbar("Project brief is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
     {
       //alert("Total revenue field is required");
-      this.toastr.warning("Total revenue field is required");
+      this._mesgBox.showSnackbar("Total revenue field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
     {
      // alert("Total cost field is required");
-       this.toastr.warning("Total cost field is required");
+       this._mesgBox.showSnackbar("Total cost field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
     {
       // alert("Total margin field is required");
-      this.toastr.warning("Total margin field is required");
+      this._mesgBox.showSnackbar("Total margin field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
     {
      // alert("Total project life field is required");
-     this.toastr.warning("Total project life field is required");
+     this._mesgBox.showSnackbar("Total project life field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Capex').errors)
     {
       //alert("Capex field is required");
-      this.toastr.warning("Capex field is required");
+      this._mesgBox.showSnackbar("Capex field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Paymentterms').errors)
     {
      // alert("Payment terms field is required");
-     this.toastr.warning("Payment terms field is required");
+     this._mesgBox.showSnackbar("Payment terms field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
     {
      // alert("Assumption and risks  field is required");
-     this.toastr.warning("Assumption and risks  field is required");
+     this._mesgBox.showSnackbar("Assumption and risks  field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Loipo').errors)
     {
      // alert("Loi / po  field is required");
-      this.toastr.warning("Loi / po  field is required");
+      this._mesgBox.showSnackbar("Loi / po  field is required");
       return false;
     }
     return true;
@@ -1143,15 +1144,15 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this.toastr.success("Documents uploaded Successfully");
+        this._mesgBox.showSnackbar("Documents uploaded Successfully");
       }
       else{
         //alert("Technical error while uploading documents");
-        this.toastr.error("Technical error while uploading documents");
+        this._mesgBox.showSnackbar("Technical error while uploading documents");
       }
       },
       (error:HttpErrorResponse)=>{
-        this.toastr.error(error.message);
+        this._mesgBox.showSnackbar(error.message);
         //alert(error.message);
       })
     }
@@ -1179,17 +1180,17 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
            this._obfservices.obfmodel._dh_id = res[0].dh_id;
           // alert("Details updated Successfully");
-          this.toastr.success("Details updated Successfully");
+          this._mesgBox.showSnackbar("Details updated Successfully");
         }
         else{
           //alert("Technical error while updating details");
-          this.toastr.error("Technical error while updating details");
+          this._mesgBox.showSnackbar("Technical error while updating details");
         }
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this.toastr.error(error.message);
+        this._mesgBox.showSnackbar(error.message);
         //alert(error.message);
       })
     }

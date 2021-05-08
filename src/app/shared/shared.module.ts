@@ -8,6 +8,8 @@ import { FooterComponent } from './footer/footer.component';
 import { BackendHeaderComponent } from './backend-header/backend-header.component';
 import { BackendFooterComponent } from './backend-footer/backend-footer.component';
 import { SideNaveComponent } from './side-nave/side-nave.component';
+import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
+
 
 
 @NgModule({
@@ -15,17 +17,20 @@ import { SideNaveComponent } from './side-nave/side-nave.component';
     HeaderComponent,
     FooterComponent,
     BackendHeaderComponent, 
-    BackendFooterComponent, SideNaveComponent],
+    BackendFooterComponent, SideNaveComponent, MessageBoxComponent],
   exports: [
     HeaderComponent,
     FooterComponent,
     BackendHeaderComponent,
-    BackendFooterComponent,SideNaveComponent
+    BackendFooterComponent,SideNaveComponent,MessageBoxComponent
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     SharedRoutingModule
   ],
+  providers:[
+    MessageBoxComponent
+  ]
 })
 export class SharedModule { }
