@@ -161,9 +161,11 @@ export class CreatobfComponent implements OnInit {
   readMore = false;
   BrifreadMore=false;
   service:string ="";
-sector:string="";
+  sector:any;
 
-subsector:string="";
+  subsector:string="";
+  visiblesubsector:string="";
+  visiblesector:string="";
 
   pokemonControl = new FormControl();
   Solutionservicesarray:Solutionservices[] =[];
@@ -319,7 +321,19 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
 
     }
     else if(section == "preview"){
-      this.OBFData = this._obfservices.ObfCreateForm.getRawValue();
+         this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+    {
+     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+    }
+    
+    var temp= this.sectorlist.filter(x=>x.value==this._obfservices.obfmodel._Sector_Id);
+    this.visiblesector = temp[0].viewValue
+
+    var tempsector=this.subsectorlisdisplay.filter(x=>x.value==this._obfservices.obfmodel._SubSector_Id);
+    this.visiblesubsector=tempsector[0].viewValue;
+
+     this.OBFData = this._obfservices.ObfCreateForm.getRawValue();
       console.log(this._obfservices.ObfCreateForm.value);
     }
     this.step++;
@@ -820,6 +834,11 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     
     }
     this.service= this.service.substring(1)
+    var temp= this.sectorlist.filter(x=>x.value==this._obfservices.obfmodel._Sector_Id);
+    this.visiblesector = temp[0].viewValue
+
+    var tempsector=this.subsectorlisdisplay.filter(x=>x.value==this._obfservices.obfmodel._SubSector_Id);
+    this.visiblesubsector=tempsector[0].viewValue;
   }
     }
     else if(type == "upload")
