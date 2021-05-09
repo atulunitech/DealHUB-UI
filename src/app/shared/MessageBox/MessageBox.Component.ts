@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-messgae',
   templateUrl: './MessageBox.Component.html',
   styleUrls: ['./MessageBox.Component.scss']
 })

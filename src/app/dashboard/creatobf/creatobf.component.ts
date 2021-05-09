@@ -161,7 +161,8 @@ export class CreatobfComponent implements OnInit {
   BrifreadMore=false;
   service:string ="";
   sector:any;
-
+  paymentRead=false;
+  
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";
@@ -222,6 +223,7 @@ export class CreatobfComponent implements OnInit {
   addOnBlur = true;
   ServiceMore=false;
   servicecate:string="";
+  SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   progressInfos: any[] = [];
@@ -321,11 +323,24 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
 
     }
     else if(section == "preview"){
-         this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+    
+      if(this.servicecate !=null&& this.service !=null)
+      {
+        this.servicecate="";
+        this.service="";
+      }
+     this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
     for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
     {
+
      this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
     }
+    this.SAPIONum="";
+    for (let j=0;j<this._obfservices.obfmodel.sapio.length;j++)
+    {
+      this.SAPIONum += "," +this._obfservices.obfmodel.sapio[j]._Cust_SAP_IO_Number;
+    }
+    this.SAPIONum = this.SAPIONum.substring(1)
     
     var temp= this.sectorlist.filter(x=>x.value==this._obfservices.obfmodel._Sector_Id);
     this.visiblesector = temp[0].viewValue

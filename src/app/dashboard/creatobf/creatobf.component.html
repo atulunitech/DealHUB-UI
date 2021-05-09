@@ -184,7 +184,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Vertical</mat-label>
-                                  <input matInput formControlName="Vartical" style="margin-left: 10px;" value="{{_obfservices.ObfCreateForm.get('Vertical').value}}" required/>
+                                  <input matInput formControlName="Vertical" style="margin-left: 10px;" value="{{_obfservices.ObfCreateForm.get('Vertical').value}}" required/>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -302,6 +302,14 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
+                        SAP IO Number
+                      </div>
+                      <div class="prev_dis">
+                        {{this.SAPIONum}}
+                      </div>
+                   </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
                         SAP Customer Code
                       </div>
                       <div class="prev_dis">
@@ -357,7 +365,15 @@
               {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
             </div>
           </div>
-                      
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+              Customer Name
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.obfmodel._customer_name}}
+            </div>
+          </div>
+           
                       </div>
                       <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                         <div class="mat_previe_box">
@@ -450,7 +466,7 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div><b>Services -</b> <br>
+                          <div><b> {{this.servicecate}}-</b> <br>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
@@ -479,14 +495,25 @@
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
                        </div>
-                       <div class="mat_previe_box">
-                        <div class="prev_tit">
-                          LOI/Po
-                        </div>
-                        <div class="prev_dis">
-                         Rate Card Attached
-                        </div>
-                     </div>
+                      
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        Payment Terms Description
+                      </div>
+                      <div class="prev_dis">
+                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Loipo').value) : (_obfservices.ObfCreateForm.get('Loipo').value) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
+                        <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
+                       </div>
+                   </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      LOI/Po
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.ObfCreateForm.get('Loipo').value}}
+                    </div>
+                 </div>
                       </div>
                       <div fxFlex="auto " class="mat_view_comment">
                         <div class="mat_previe_box">
@@ -504,26 +531,26 @@
                         
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
-                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" (click)="sanitize(coversheetpath)">
                             <div class="dwn_con_wr">
                               <img  src="../../../assets/images/dwn-load-file.png">
-                              <span>OBF Sheet</span>
+                              <span><a [href]="sanitize(coversheetpath)">OBF Sheet</a></span>
                             </div>
                             <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con"  >
                               <div class="dwn_con_wr">
                                 <img src="../../../assets/images/dwn-load-file.png">
-                                <span>supporting Document</span>
+                                <span>Supporting Document</span>
                               </div>
                               <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                               </div>
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="../../../assets/images/dwn-load-file.png">
-                                  <span>LOI/PO/Agreement</span>
+                                  <span ><a [href]="sanitize(loipopath)">LOI/PO/Agreement</a></span>
                                 </div>
-                                <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                                <div class="dwn_con_wr" ><img src="../../../assets/images/dwn_fil_icon.png" ></div>
                                 </div>
           
                                 
