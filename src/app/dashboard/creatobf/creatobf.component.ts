@@ -115,6 +115,9 @@ class SaveServiceParameter{
   Solutioncategory:string;
   value:string;
   Serviceslist:Serviceslist[] = [];
+
+ 
+
   constructor(soltioncat:string,solval:string,element:Serviceslist)
   {
     this.Solutioncategory = soltioncat;
@@ -163,7 +166,7 @@ export class CreatobfComponent implements OnInit {
   service:string ="";
   sector:any;
   paymentRead=false;
-  
+  today:any=new Date();
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";

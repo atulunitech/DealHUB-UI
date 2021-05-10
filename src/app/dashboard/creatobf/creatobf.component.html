@@ -454,7 +454,7 @@
                       Created On
                     </div>
                     <div class="prev_dis">
-                      {{_obfservices.ObfCreateForm.get('Createddate').value}}
+                      {{this.today | date:'shortDate'}}
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -639,6 +639,14 @@
                         <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
                        </div>
                    </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      Project Date
+                    </div>
+                    <div class="prev_dis">{{this.today | date:'shortDate' }}
+                     </div>
+                 </div>
+                   
                    <div class="mat_previe_box">
                     <div class="prev_tit">
                       LOI/Po
