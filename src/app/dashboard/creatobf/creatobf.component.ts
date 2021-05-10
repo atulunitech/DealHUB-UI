@@ -618,6 +618,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+
         }
       }
       }
@@ -847,6 +848,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
 
     var tempsector=this.subsectorlisdisplay.filter(x=>x.value==this._obfservices.obfmodel._SubSector_Id);
     this.visiblesubsector=tempsector[0].viewValue;
+    this.SAPIONum="";
+    for (let j=0;j<this._obfservices.obfmodel.sapio.length;j++)
+    {
+      this.SAPIONum += "," +this._obfservices.obfmodel.sapio[j]._Cust_SAP_IO_Number;
+    }
+    this.SAPIONum = this.SAPIONum.substring(1)
+    
   }
     }
     else if(type == "upload")
