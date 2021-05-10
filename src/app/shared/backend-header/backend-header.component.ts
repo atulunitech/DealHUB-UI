@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-backend-header',
@@ -7,16 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BackendHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(public commonService:CommonService) { }
 
   ngOnInit(): void {
   }
 
-  menu_status: boolean = false;
-  menuevent(){
-    this.menu_status = !this.menu_status;       
-}
-
+ 
+  hamev()
+  {
+    this.commonService.menuevent();
+  }
 
 
 }

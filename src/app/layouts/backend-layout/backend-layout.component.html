@@ -1,8 +1,10 @@
-<app-side-nave class="side-navbar"></app-side-nave>
-<div class="page">
-<app-backend-header fxLayout="row" fxLayoutAlign="space-between center"  class="back_head"></app-backend-header>
+<app-side-nave class="side-navbar" [ngClass]="this.commonService.menu_status ? 'open' : 'close'"></app-side-nave>
+<div class="page" [ngClass]="this.commonService.menu_status ? 'open' : 'close'">
+<app-backend-header fxLayout="row" fxLayoutAlign="space-between center"  class="back_head" >
+
+</app-backend-header>
 <div class="backend-wrap">
     <router-outlet></router-outlet>
 </div>
-<app-backend-footer class="back_footer"></app-backend-footer>
+<!-- <app-backend-footer class="back_footer"></app-backend-footer> -->
 </div>

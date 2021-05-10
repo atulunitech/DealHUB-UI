@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { OBFServicesService } from './obfservices.service';
+import { OBFServices } from './obfservices.service';
 
-describe('OBFServicesService', () => {
-  let service: OBFServicesService;
+describe('OBFServices', () => {
+  let service: OBFServices;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(OBFServicesService);
+    service = TestBed.inject(OBFServices);
   });
 
   it('should be created', () => {

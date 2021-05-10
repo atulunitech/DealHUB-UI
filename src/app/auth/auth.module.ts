@@ -11,7 +11,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import {ResetPassword} from './login/ResetPassword.component';
+import {ResetPassword} from './ResetPassword/ResetPassword.component';
 
 @NgModule({
   declarations: [SignupComponent, LoginComponent,ResetPassword],

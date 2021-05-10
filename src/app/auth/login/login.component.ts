@@ -3,13 +3,15 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import { loginservices } from './LoginServices';
 import {Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
-
+import {MessageBoxComponent} from '../../shared/MessageBox/MessageBox.Component';
+import { Action } from 'rxjs/internal/scheduler/Action';
 //region model
 export class LoginModel
 {
   _user_code:string;
   _password:string;
   _token:string;
+  privilege_name:string;
 }
 //endregion
 
@@ -32,7 +34,7 @@ export class LoginComponent implements OnInit {
   NewPassword:any="";
   confirmpassword:any="";
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router) { }
+    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent) { }
 
 
   ngOnInit(): void {
@@ -87,6 +89,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("UserName",Result.user.UserName);
         localStorage.setItem("Token",Result.user.Api_Key);
         localStorage.setItem("rememberCurrentUser","true");
+
        }
       else
       {
@@ -94,23 +97,36 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("Token",Result.user.Api_Key);
         localStorage.setItem("rememberCurrentUser","false");
       }
+      sessionStorage.setItem("privilege_name",Result.user.privilege_name);
       localStorage.setItem("userToken",Result.user.Api_Key);
       
       console.log(Result.user.UserName);
-      alert("Login Sucess");
+      
+      
+      //alert("Login Sucess");
       this.router.navigate(['/DealHUB/dashboard']);
+     
+      
+      this.showSnackbar("Login Sucess.");
     }
     else
     {
-      alert("Login Failed");
+      this.showSnackbar("Login Failed.");
+ 
+     
     }
      
     },
     (error:HttpErrorResponse)=>{
-      alert(error.message);
+     this.showSnackbar(error.message);
+     
       
     }
     );
+  }
+  
+  showSnackbar(content) {
+    this._mesgBox.showSnackbar(content);
   }
   ResetPassword()
   {
@@ -118,6 +134,7 @@ export class LoginComponent implements OnInit {
     this.loginmodel._password=this.NewPassword;
      
     this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
+      
       alert("Password Changed Successfully.");
       this.router.navigate(['/DealHUB/dashboard']);
     });

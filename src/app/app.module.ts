@@ -15,15 +15,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from './auth/auth.guard';
  import { AuthInterceptor } from './auth/auth.interceptor';
 import { MatDialogModule } from '@angular/material/dialog';
-//import { CreateOBFComponent } from './dashboard/dashboard/create-obf/create-obf.component';
- 
+
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
     BackendLayoutComponent,
-  //  CreateOBFComponent
+  
     
   ],
   imports: [
@@ -34,10 +36,18 @@ import { MatDialogModule } from '@angular/material/dialog';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule,MatDialogModule
+    FormsModule,MatDialogModule,
+    MatSnackBarModule
+  //  BrowserAnimationsModule,
     
-  ],
-  providers: [],
+    ],
+    providers: [AuthGuard,{
+      provide : HTTP_INTERCEPTORS,
+      useClass : AuthInterceptor,
+      multi : true
+    }]
+    
+    ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

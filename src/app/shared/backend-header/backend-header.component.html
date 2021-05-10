@@ -1,6 +1,6 @@
 <div xLayout="row" fxLayoutAlign="start center">
-    <div id="nav-icon1" class="" (click)="menuevent()"  
-    [ngClass]="menu_status ? 'open' : 'close'">
+    <div id="nav-icon1" class="" (click)="hamev()"  
+    [ngClass]="this.commonService.menu_status ? 'open' : 'close'">
         <span></span>
         <span></span>
         <span></span>
@@ -10,6 +10,6 @@
     </div>
 </div>
 
-<div>
-    
+<div class="not_alt">
+    <img src="../../../assets/images/notification_icon.png">
 </div>

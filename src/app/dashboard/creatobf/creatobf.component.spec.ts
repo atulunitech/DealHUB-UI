@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateOBFComponent } from './create-obf.component';
+import { CreatobfComponent } from './creatobf.component';
 
-describe('CreateOBFComponent', () => {
-  let component: CreateOBFComponent;
-  let fixture: ComponentFixture<CreateOBFComponent>;
+describe('CreatobfComponent', () => {
+  let component: CreatobfComponent;
+  let fixture: ComponentFixture<CreatobfComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateOBFComponent ]
+      declarations: [ CreatobfComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateOBFComponent);
+    fixture = TestBed.createComponent(CreatobfComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
