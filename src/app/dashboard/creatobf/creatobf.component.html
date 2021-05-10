@@ -112,11 +112,11 @@
                               <div class="mt-cust-fd upl_sec_cut">
                                 <mat-form-field appearance="fill" class="example-full-width">
                                   <mat-label>Select Type</mat-label>
-                                  <mat-select>
-                                    <mat-option value="PO">
+                                  <mat-select formControlName="Loipodropdown">
+                                    <mat-option value="PO" >
                                       PO
                                     </mat-option>
-                                    <mat-option value="LOL">
+                                    <mat-option value="LOI">
                                       LOI
                                     </mat-option>
                                   </mat-select>
@@ -126,11 +126,11 @@
                            <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
                             </div>
                             <div style="margin-top: 5px;">
-                              <!-- <div class="cus_check">
-                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
-                              </div> -->
-                              <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
-                              <label for="selfdec">This OBF is without LOI / PO </label><br>  
+                             <div class="cus_check">
+                                <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">This OBF is without LOI / PO </mat-checkbox>
+                              </div> 
+                              <!-- <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
+                              <label for="selfdec">This OBF is without LOI / PO </label><br>   -->
                             </div>
                              <div *ngIf="LoiPoprogress.length == 0">
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
@@ -271,7 +271,7 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select type of service/solution category</mat-label>
                                 <mat-select  multiple >
-                                  <mat-option>-- None --</mat-option>
+                                  <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
                                     <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">

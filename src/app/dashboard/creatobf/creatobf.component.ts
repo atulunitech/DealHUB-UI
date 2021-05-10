@@ -14,6 +14,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { DatePipe } from '@angular/common';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 interface Serviceslist {
   value: string;
@@ -655,7 +656,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
          this._obfservices.ObfCreateForm.patchValue({Loiposheet: path});
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
-         this.SaveAttachmentParameter._description = "loi";
+         this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
          this._obfservices.obfmodel._is_loi_po_uploaded = "yes";
         }
@@ -957,8 +958,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     }
    }
 
-  onCheckboxChange(e) {
-    if(e.currentTarget.checked)
+  onCheckboxChange(e:MatCheckboxChange) {
+    if(e.checked)
     {
       this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
