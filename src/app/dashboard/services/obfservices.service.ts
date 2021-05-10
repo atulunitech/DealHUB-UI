@@ -106,6 +106,7 @@ class obf{
   _customer_name:string;
   _sap_customer_code:string;
   sapio:SAPIO[] = [];
+  _dh_comment:string ;
 }
 
 @Injectable({
