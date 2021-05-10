@@ -10,14 +10,13 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
-import { CreateOBFComponent } from './create-obf/create-obf.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CreatobfComponent } from './creatobf/creatobf.component';
 
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreateOBFComponent, CreatobfComponent],
+  declarations: [DashboardComponent, CreatobfComponent],
   imports: [
     CommonModule,
     FormsModule,

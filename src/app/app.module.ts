@@ -19,15 +19,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-//import { CreateOBFComponent } from './dashboard/dashboard/create-obf/create-obf.component';
- 
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
     BackendLayoutComponent,
-  //  CreateOBFComponent
+  
     
   ],
   imports: [
