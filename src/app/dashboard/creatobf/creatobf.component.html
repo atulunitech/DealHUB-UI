@@ -46,6 +46,7 @@
                                 
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
+                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
                               <button [disabled]="!(coversheetfiles.length >0)" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
@@ -109,7 +110,9 @@
                               
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
+                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
                               <div class="mt-cust-fd upl_sec_cut">
+                                
                                 <mat-form-field appearance="fill" class="example-full-width">
                                   <mat-label>Select Type</mat-label>
                                   <mat-select>
@@ -125,7 +128,7 @@
                               <button [disabled]="!(loipofiles.length >0)" (click)="uploadfiles(loipofiles,'loipo')" class="creat_bt" mat-flat-button>Upload</button>
                            <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
                             </div>
-                            <div style="margin-top: 5px;">
+                            <div style="margin-top: 5px;position: relative;">
                               <!-- <div class="cus_check">
                                 <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
                               </div> -->
@@ -184,6 +187,7 @@
                               
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
+                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
                               <button [disabled]="!(supportfiles.length >0)" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
                               
                             </div>
@@ -353,7 +357,7 @@
                           
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
-                          <div class="mat_fld_box_in" fxFlex="50">
+                          <div class="mat_fld_box_in" fxFlex="100">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select Sub Sector</mat-label>
@@ -373,8 +377,8 @@
                         </div>
                       </div>
                       <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
-                          <div class="mat_fld_box_in" fxFlex="50">
+                        <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
+                          <div class="mat_fld_box_in" fxFlex="23.4">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                
@@ -384,7 +388,7 @@
                               </mat-form-field>
                             </div>
                           </div>
-                          <div class="mat_fld_box_in" fxFlex="50">
+                          <div class="mat_fld_box_in" fxFlex="80">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Enter SAP IO Number</mat-label>

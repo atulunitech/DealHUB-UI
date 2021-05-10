@@ -274,6 +274,15 @@
     display: none;
   }
 }
+
+::ng-deep.mat-snack-bar-container
+{
+    &.custom_sneak_bar{
+    background: #2258bf;
+    color: white;
+    font-weight: bold;
+             }
+}
 //end
 
 .cus_check {

@@ -14,10 +14,11 @@ export class MessageBoxComponent implements OnInit {
   }
   
   showSnackbar(content) {
-    this._snackBar.open(content,'Cancel', {
+    this._snackBar.open(content,'', {
       duration: 3000,
       verticalPosition: 'top',
-      horizontalPosition:'right'      
+      horizontalPosition:'right',
+      panelClass:"custom_sneak_bar"
     });
   }
 
