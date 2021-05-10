@@ -217,11 +217,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.obfmodel._dh_header_id =0;
     this.getcreateobfmasters();
     this.getsolutionmaster();
-<<<<<<< HEAD
     this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
-=======
-    
->>>>>>> 907e20c31ca7638294b8fc7c970f7cba427bebfa
   }
 
   add(event: MatChipInputEvent): void {
