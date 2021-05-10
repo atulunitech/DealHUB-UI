@@ -167,8 +167,10 @@
                                     .doc_cont
                                     {
                                         line-height: initial;
+                                        background-color: transparent;
                                         @include font-weight(semi-bold);
                                         @include font-size(0.8);
+
                                         div
                                         {
                                             margin-bottom: 2px;
