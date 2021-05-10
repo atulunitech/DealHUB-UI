@@ -169,6 +169,7 @@ export class CreatobfComponent implements OnInit {
   sector:any;
 
   today:any=new Date();
+  
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";
@@ -177,38 +178,7 @@ export class CreatobfComponent implements OnInit {
   Solutionservicesarray:Solutionservices[] =[];
   Subsecotarray:subsecorlist[] =[];
   serviceslist:SaveServiceParameter[] = [];
-  Sectorgrouparray:SectotGroup[] = [
-    {
-      value:'Online Marketplace',
-      viewValue:'Online Marketplace',
-      subsecorlist:[{value:'Multi-category',viewValue:'Multi-category'},
-                    {value:'Single category',viewValue:'Single category'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    },
-    {
-      value:'Online Retail',
-      viewValue:'Online Retail',
-      subsecorlist:[{value:'Online Retail',viewValue:'Online Retail'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    }
-    ,
-    {
-      value:'Food and Hyperlocal',
-      viewValue:'Food and Hyperlocal',
-      subsecorlist:[{value:'Food and Hyperlocal',viewValue:'Food and Hyperlocal'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    },
-    {
-      value:'Other',
-      viewValue:'Other',
-      subsecorlist:[
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    }
-  ];
+
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
@@ -245,6 +215,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.obfmodel._dh_header_id =0;
     this.getcreateobfmasters();
     this.getsolutionmaster();
+    this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
   }
 
   add(event: MatChipInputEvent): void {
