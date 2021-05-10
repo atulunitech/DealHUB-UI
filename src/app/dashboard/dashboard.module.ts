@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
@@ -24,6 +25,7 @@ import { CreatobfComponent } from './creatobf/creatobf.component';
     DashboardRoutingModule,
     MatExpansionModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatTableModule,
     FlexLayoutModule,
     MaterialModule,

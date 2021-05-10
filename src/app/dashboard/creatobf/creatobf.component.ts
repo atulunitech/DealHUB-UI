@@ -221,6 +221,7 @@ export class CreatobfComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  checked_d = false;
   ServiceMore=false;
   servicecate:string="";
   SAPIONum:string="";
