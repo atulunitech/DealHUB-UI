@@ -875,6 +875,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsolutionandservices.Services = this._obfservices.obfmodel.Services;
       this._obfservices.obfsolutionandservices._sap_customer_code = this._obfservices.obfmodel._sap_customer_code;
       this._obfservices.obfsolutionandservices.sapio = this._obfservices.obfmodel.sapio;
+      this._obfservices.obfsolutionandservices._dh_comment = this._obfservices.obfmodel._dh_comment;
 
 
       let val =  this.validateform();
@@ -1198,9 +1199,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       res[0].Serviceslist.push(elements);
     
   }
+  SavetoModel(){
+this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("comments").value;
 
+  }
   FinalSubmit()
   {
+    console.log(this._obfservices.obfmodel);
     this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
     this._obfservices.obfmodel._active = "A";
@@ -1256,6 +1261,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsumbitmodel._created_by = this._obfservices.obfmodel._created_by;
       this._obfservices.obfsumbitmodel._active = this._obfservices.obfmodel._active;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
+      
       
 
       let val =  this.validateform();

@@ -401,12 +401,16 @@
                       (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
                               </mat-form-field>
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Leave a comment</mat-label>
+                                <textarea matInput formControlName="comments" (change)="SavetoModel()"></textarea>
+                              </mat-form-field>
                             </div>
                           </div>
                         </div>
                      
                       </div>
-                      <div fxFlex="auto " class="mat_view_comment">
+                      <!-- <div fxFlex="auto " class="mat_view_comment">
                         <div class="mat_previe_box">
                           <div class="prev_dis">
                             Comments 
@@ -416,7 +420,7 @@
                             Justification here.
                            </div>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="mat_fot_drf" >
                           <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')">SAVE AS DRAFT</button>

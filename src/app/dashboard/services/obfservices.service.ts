@@ -63,6 +63,7 @@ class obfsolutionandservices
   _SubSector_Id:number;
   _sap_customer_code:string;
   sapio:SAPIO[] = [];
+  _dh_comment:string;
 }
 
 
