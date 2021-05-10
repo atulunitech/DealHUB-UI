@@ -42,7 +42,8 @@ export class DashboardComponent implements OnInit {
    DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
    PendingReviewercolumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
-  
+   RejectedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
+   
    
    // dataSource = ELEMENT_DATA;
   Draft:boolean=true;
@@ -88,6 +89,10 @@ export class DashboardComponent implements OnInit {
     }
     this.CallDashBoardService();
   }
+  ngAfterViewInit() {
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator
+}
   getToolTipData(issueId: any): any {
     
     //  alert(JSON.stringify(issueId));
@@ -193,7 +198,7 @@ export class DashboardComponent implements OnInit {
     if(selection == "Rejected" )
     {
      
-      this.displayedColumns=this.SubmittedScreenColumn;
+      this.displayedColumns=this.RejectedScreenColumn;
      
     }   
     if(selection=="Pendingforapproval")

@@ -31,7 +31,7 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit">
-                              Attach PPL SHEET 
+                              Attach OBF SHEET 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
@@ -95,7 +95,7 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit">
-                              LOI/PO/Agreement or Self Declaration 
+                              LOI/PO Agreement or Self Declaration 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
@@ -153,7 +153,7 @@
                             <div fxFlex="auto " class="mat_upload_in_wr">
                               <div class="mat_upload_tit">
                                 <div class="cus_check">
-                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
+                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
                               </div>
                               <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx">
@@ -193,9 +193,9 @@
                           
                           </div>
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
-                        <div class="mat_fot_drf" >
-                          <button mat-flat-button  class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')">SAVE AS DRAFT</button>
-                        </div>
+                         <div class="mat_fot_drf" >
+                          <!-- <button mat-flat-button  class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('upload')">SAVE AS DRAFT</button> -->
+                        </div> 
                         <div class="mat_fot_drf" >
                           
                           <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
@@ -209,10 +209,10 @@
                  
                 </mat-expansion-panel>
                 <!--  -->
-                <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel [disabled]="_obfservices.ObfCreateForm.invalid" [expanded]="step === 1" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      2/3 Enter details 
+                      2/3 Enter Details 
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
@@ -225,17 +225,21 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category</mat-label>
-                    <mat-select >
+                    <mat-select formControlName="Solutioncategory">
                       <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
                         {{Solution.Solutioncategory}}
                       </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
+                      Solution Category is <strong>required</strong>
+                    </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
+                                <mat-label>Select type of service/solution category</mat-label>
                                 <mat-select  multiple >
                                   <mat-option>-- None --</mat-option>
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
@@ -245,6 +249,9 @@
                                     </mat-option>
                                   </mat-optgroup>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Otherservicesandcategories.errors?.required">
+                                  Services is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -255,6 +262,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
                                 <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" required/>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
+                                  Services:Other is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -264,6 +274,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Solutions</mat-label>
                                 <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" required/>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
+                                  Solution:Other is <strong>required</strong>
+                                </mat-error>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -272,6 +285,9 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Integrated Solutions</mat-label>
                                   <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" required/>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
+                                    Integrated Solution:Other is <strong>required</strong>
+                                  </mat-error>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -284,7 +300,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Vertical</mat-label>
-                                  <input matInput formControlName="Vartical" style="margin-left: 10px;" value="{{_obfservices.ObfCreateForm.get('Vertical').value}}" required/>
+                                  <input matInput formControlName="Vertical" style="margin-left: 10px;" value="{{_obfservices.ObfCreateForm.get('Vertical').value}}" required/>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -298,6 +314,9 @@
                                     {{Sector.viewValue}}
                                   </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sector.errors?.required">
+                                  Sector is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -313,6 +332,9 @@
                                     {{Subsector.viewValue}}
                                   </mat-option>
                                 </mat-select>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Subsector.errors?.required">
+                                  Subsector is <strong>required</strong>
+                                </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
@@ -355,6 +377,17 @@
                         </div>
                      
                       </div>
+                      <div fxFlex="auto " class="mat_view_comment">
+                        <div class="mat_previe_box">
+                          <div class="prev_dis">
+                            Comments 
+                           </div>
+                           <div class="mat_comment_box">
+                            Please enter you Approval/rejection
+                            Justification here.
+                           </div>
+                        </div>
+                      </div>
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="mat_fot_drf" >
                           <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')">SAVE AS DRAFT</button>
@@ -375,7 +408,7 @@
     
    
                 </mat-expansion-panel>
-                <mat-expansion-panel  [expanded]="step === 2" (opened)="setStep(2)">
+                <mat-expansion-panel [disabled]="_obfservices.ObfCreateForm.invalid"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
                     3/3 Preview OBF
@@ -400,6 +433,14 @@
                           {{_obfservices.obfmodel._dh_project_name}}
                         </div>
                      </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        SAP IO Number
+                      </div>
+                      <div class="prev_dis">
+                        {{this.SAPIONum}}
+                      </div>
+                   </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
                         SAP Customer Code
@@ -457,7 +498,15 @@
               {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
             </div>
           </div>
-                      
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+              Customer Name
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.obfmodel._customer_name}}
+            </div>
+          </div>
+           
                       </div>
                       <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                         <div class="mat_previe_box">
@@ -527,7 +576,7 @@
           </div>
           <div class="mat_previe_box">
             <div class="prev_tit">
-              Payement Terms
+              Payment Terms
             </div>
             <div class="prev_dis">
               {{_obfservices.obfmodel._payment_terms}} Days
@@ -550,7 +599,7 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div><b>Services -</b> <br>
+                          <div><b> {{this.servicecate}}-</b> <br>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
@@ -579,51 +628,52 @@
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
                        </div>
-                       <div class="mat_previe_box">
-                        <div class="prev_tit">
-                          LOI/Po
-                        </div>
-                        <div class="prev_dis">
-                         Rate Card Attached
-                        </div>
-                     </div>
+                      
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        Payment Terms Description
                       </div>
-                      <div fxFlex="auto " class="mat_view_comment">
-                        <div class="mat_previe_box">
-                          <div class="prev_dis">
-                            Comments 
-                           </div>
-                           <div class="mat_comment_box">
-                            Please enter you Approval/rejection
-                            Justification here.
-                           </div>
-                        </div>
+                      <div class="prev_dis">
+                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
+                        <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
+                       </div>
+                   </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      LOI/Po
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.ObfCreateForm.get('Loipo').value}}
+                    </div>
+                 </div>
                       </div>
+                     
                         
                        
                         
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
-                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" (click)="sanitize(coversheetpath)">
                             <div class="dwn_con_wr">
                               <img  src="../../../assets/images/dwn-load-file.png">
-                              <span>OBF Sheet</span>
+                              <span><a [href]="sanitize('coversheetpath')" target="_blank" >OBF Sheet</a></span>
                             </div>
                             <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con"  >
                               <div class="dwn_con_wr">
                                 <img src="../../../assets/images/dwn-load-file.png">
-                                <span>supporting Document</span>
+                                <span><a [href]="sanitize('support')" target="_blank" >Supporting Document</a></span>
                               </div>
                               <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                               </div>
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="../../../assets/images/dwn-load-file.png">
-                                  <span>LOI/PO/Agreement</span>
+                                  <span ><a [href]="sanitize('loipopath')" target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
-                                <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                                <div class="dwn_con_wr" ><img src="../../../assets/images/dwn_fil_icon.png" ></div>
                                 </div>
           
                                 

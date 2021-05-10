@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -31,6 +31,7 @@ import { CreatobfComponent } from './creatobf/creatobf.component';
     MaterialModule,
     NgxDropzoneModule
     
-  ]
+  ],
+  providers:[DatePipe]
 })
 export class DashboardModule { }
