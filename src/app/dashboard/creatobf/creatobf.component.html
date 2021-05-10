@@ -31,7 +31,7 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit">
-                              Attach PPL SHEET 
+                              Attach OBF SHEET 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
@@ -95,7 +95,7 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit">
-                              LOI/PO/Agreement or Self Declaration 
+                              LOI/PO Agreement or Self Declaration 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
@@ -153,7 +153,7 @@
                             <div fxFlex="auto " class="mat_upload_in_wr">
                               <div class="mat_upload_tit">
                                 <div class="cus_check">
-                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">This OBF is without LOI / PO </mat-checkbox>
+                                <mat-checkbox  class="example-margin" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
                               </div>
                               <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx">
@@ -239,9 +239,9 @@
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Select type of Service / Solution category</mat-label>
-                                <mat-select formControlName="Otherservicesandcategories"  multiple >
-                                  <!-- <mat-option>-- None --</mat-option> -->
+                                <mat-label>Select type of service/solution category</mat-label>
+                                <mat-select  multiple >
+                                  <mat-option>-- None --</mat-option>
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
                                     <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
@@ -376,6 +376,17 @@
                           </div>
                         </div>
                      
+                      </div>
+                      <div fxFlex="auto " class="mat_view_comment">
+                        <div class="mat_previe_box">
+                          <div class="prev_dis">
+                            Comments 
+                           </div>
+                           <div class="mat_comment_box">
+                            Please enter you Approval/rejection
+                            Justification here.
+                           </div>
+                        </div>
                       </div>
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="mat_fot_drf" >
@@ -623,7 +634,7 @@
                         Payment Terms Description
                       </div>
                       <div class="prev_dis">
-                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Loipo').value) : (_obfservices.ObfCreateForm.get('Loipo').value) | slice:0:50 }}  
+                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
                         <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
                        </div>
@@ -637,17 +648,7 @@
                     </div>
                  </div>
                       </div>
-                      <div fxFlex="auto " class="mat_view_comment">
-                        <div class="mat_previe_box">
-                          <div class="prev_dis">
-                            Comments 
-                           </div>
-                           <div class="mat_comment_box">
-                            Please enter you Approval/rejection
-                            Justification here.
-                           </div>
-                        </div>
-                      </div>
+                     
                         
                        
                         

@@ -154,6 +154,7 @@ export class OBFServices {
     Projectdate:new FormControl(""),
     Projectbrief:new FormControl("",Validators.required),
     Assumptionrisks:new FormControl("",Validators.required),
+    Payment_Terms_description:new FormControl(""),
     Loipo:new FormControl("",Validators.required),
     otherservices:new FormControl({value:"",disabled:true}),
     othersolutions:new FormControl({value:"",disabled:true}),

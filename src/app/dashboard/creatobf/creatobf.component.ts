@@ -315,8 +315,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     {
       this._obfservices.ObfCreateForm.get('Solutioncategory').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Solutioncategory').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
+      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
@@ -731,7 +731,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15.w.toString().replace('%',""));
     this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
     this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
-     
+    this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.h})
     this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.h});
     this._obfservices.obfmodel._assumptions_and_risks = ws.D17.h;
     this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.h});
