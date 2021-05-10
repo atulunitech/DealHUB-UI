@@ -114,6 +114,117 @@
                     &.con_dwn_wrp
                     {
                         @include margin(inherit,0px,10px,0px);
+                        .mat_upload_box
+                        {
+                            cursor: pointer;
+                        @include margin(inherit,10px,inherit,10px);
+                        @include padding(0px,10px,10px,10px);
+                        @include border-radius(2px);
+                        .mat_upload_in_wr
+                        {
+                            .dro_wrp
+                            {
+                                position: relative !important; 
+                                padding: 19px !important;
+                                margin: 0 !important;
+                                display: inline-block !important;
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin-top: 10px !important;
+                                margin-bottom: 10px !important;
+                                padding-right: 40px !important;
+                                min-height: auto !important;
+                                min-width: 100% !important;
+                                height: auto !important;
+                                background: #fff !important;
+                                .ng-star-inserted
+                                {
+                                    opacity: 9;
+                                    background-color: #fc625d;
+                                }
+                                .drop_lab_cs
+                                {
+                                    @include flexbox();
+                                    align-items: center;
+                                    .doc_icon
+                                    {
+                                        img
+                                        {
+                                            @include heightwidth(22px,initial);
+                                        }
+                                    }
+                                    .doc_cont
+                                    {
+                                        line-height: initial;
+                                        @include font-weight(semi-bold);
+                                        @include font-size(0.8);
+                                        div
+                                        {
+                                            margin-bottom: 2px;
+                                            @include font-size(0.75);
+                                            @include font-weight(normal);
+                                        }
+                                    }
+                                }
+                            }
+                            .bt_uplad_con
+                            {
+                                text-align: right;
+                                align-items: center;
+                                justify-content: flex-end;
+                                @include margin(-65px,initial,initial,initial);
+                                @include padding(10px,15px,10px,10px);
+                                @include flexbox();
+                                .creat_bt
+                                {
+                                    @include border-radius(4px);
+                                }
+                            }
+                           .mat_upload_tit
+                           {
+                               .cus_check
+                               {
+                                   @include font-size(0.85);
+                                   margin-top: -4px;
+    position: relative;
+    top: 4px;
+                               }
+                            text-transform: uppercase;
+                            @include font-size(0.85);
+                            @include font-weight(semi-bold);
+                            @include padding(0px,0px,10px,0px);
+                           }
+                           .mat_up_con
+                           {
+                            border: 2px dashed #2258bf;
+                            background-color: #e5eeff;
+                            justify-content: start;
+                            align-items: baseline;
+                            
+                            .matUp_lable
+                            {
+                                text-align: left;
+                                @include flexbox();
+                                @include margin(0,0,0,0);
+                                @include padding(18px,initial,initial,18px);
+                                img{margin-right: 7px}
+                                .drap_titl
+                                {
+                                    line-height: initial;
+                                    @include font-weight(semi-bold);
+                                    @include font-size(1);
+                                    color: $thm-text-color;
+                                    
+                                    .in_titl
+                                    {
+                                        @include font-weight(normal);
+                                        @include font-size(0.9);
+                                    }
+                                }
+                            }
+                           }
+                        }
+                        }
                         .mat_dwn_lod_con
                     {
                         cursor: pointer;
@@ -245,3 +356,26 @@
     }
 }
 
+
+.upl_sec_cut
+{
+    width: 125px;
+    display: inline-block;
+    margin-right: 10px;
+    ::ng-deep.mat-form-field-wrapper
+        {
+            padding-bottom: 0px;
+            background-color: #fff;
+            border: solid 1px rgba(0, 0, 0, 0.09);
+        }
+        ::ng-deep.mat-form-field-appearance-fill .mat-form-field-flex
+        {
+            padding: .20em 0.75em 0px .75em;
+        }
+        ::ng-deep.mat-form-field-appearance-fill .mat-form-field-infix
+        {
+            padding: .25em 0 .20em 0;
+        }
+    
+    
+}
