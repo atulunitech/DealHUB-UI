@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-   apiUrl: 'http://103.81.89.7/DealhubAPI/'
-  //apiUrl:'http://localhost:52229/'
+   //apiUrl: 'http://103.81.89.7/DealhubAPI/'
+  apiUrl:'http://localhost:52229/'
 };
 
 /*
