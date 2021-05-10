@@ -695,7 +695,7 @@
                         
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
-                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" (click)="sanitize(coversheetpath)">
+                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="../../../assets/images/dwn-load-file.png">
                               <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
@@ -705,14 +705,14 @@
                             <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con"  >
                               <div class="dwn_con_wr">
                                 <img src="../../../assets/images/dwn-load-file.png">
-                                <span><a [href]="sanitize('support')" target="_blank" >Supporting Document</a></span>
+                                <span><a [href]="sanitize(supportdocpath)" target="_blank" >Supporting Document</a></span>
                               </div>
                               <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                               </div>
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="../../../assets/images/dwn-load-file.png">
-                                  <span ><a [href]="sanitize('loipopath')" target="_blank" >LOI/PO/Agreement</a></span>
+                                  <span ><a [href]="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
                                 <div class="dwn_con_wr" ><img src="../../../assets/images/dwn_fil_icon.png" ></div>
                                 </div>
