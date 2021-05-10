@@ -3,8 +3,8 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import { loginservices } from './LoginServices';
 import {Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
-
+import {MessageBoxComponent} from '../../shared/MessageBox/MessageBox.Component';
+import { Action } from 'rxjs/internal/scheduler/Action';
 //region model
 export class LoginModel
 {
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   NewPassword:any="";
   confirmpassword:any="";
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router,private toastr: ToastrService) { }
+    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent) { }
 
 
   ngOnInit(): void {
@@ -105,22 +105,28 @@ export class LoginComponent implements OnInit {
       
       //alert("Login Sucess");
       this.router.navigate(['/DealHUB/dashboard']);
-      this.toastr.success("Login Sucess.")
+     
+      
+      this.showSnackbar("Login Sucess.");
     }
     else
     {
-      this.toastr.error("Login Failed.")
+      this.showSnackbar("Login Failed.");
+ 
      
     }
      
     },
     (error:HttpErrorResponse)=>{
-      this.toastr.error(error.message)
-     
+     this.showSnackbar(error.message);
      
       
     }
     );
+  }
+  
+  showSnackbar(content) {
+    this._mesgBox.showSnackbar(content);
   }
   ResetPassword()
   {
