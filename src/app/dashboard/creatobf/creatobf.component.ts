@@ -228,7 +228,9 @@ export class CreatobfComponent implements OnInit {
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  progressInfos: any[] = [];
+  Coversheetprogress: any[] = [];
+  LoiPoprogress: any[] = [];
+  SupportPoprogress: any[] = [];
   
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -240,6 +242,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.obfmodel._dh_header_id =0;
     this.getcreateobfmasters();
     this.getsolutionmaster();
+    
   }
 
   add(event: MatChipInputEvent): void {
@@ -523,7 +526,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
   message: string[] = [];
 
 	onSelect(event,types) {
-
+    this.progress = 0;
     if(types == "coversheet")
        {
 
@@ -558,13 +561,28 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this.supportfiles.push(...event.addedFiles);
         // this.files = this.supportfiles;
        }
+       console.log("check progrss value");
+       console.log(this.progress);
 		// this.files.push(...event.addedFiles);
 
 	}
   SaveAttachmentParameter:SaveAttachmentParameter;
   uploadfiles(files:File[],types)
   {
-    this.progressInfos = [];
+    if(types == "coversheet")
+    {
+      this.Coversheetprogress = [];
+    }
+    else if(types == "loipo")
+    {
+      this.LoiPoprogress = [];
+      
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress = [];
+    }
+    
     this.message= [];
     var path="";
     var consolidatedpath="";
@@ -572,7 +590,19 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     if(val)
     {
     for (let i = 0; i < files.length; i++) {
-      this.progressInfos[i] = { value: 0, fileName: files[i].name };
+      if(types == "coversheet")
+    {
+      this.Coversheetprogress[i] = { value: 0, fileName: files[i].name };
+    }
+    else if(types == "loipo")
+    {
+      this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
+    }
+      
       path="";
     this._dashboardservice.uploadImage(files[i]).subscribe(
       event => {
@@ -581,7 +611,19 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         {
           console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
           this.progress = Math.round(event.loaded/event.total * 100);
-          this.progressInfos[i].value = Math.round(event.loaded/event.total * 100);
+          
+          if(types == "coversheet")
+    { 
+      this.Coversheetprogress[i].value = Math.round(event.loaded/event.total * 100);
+    }
+    else if(types == "loipo")
+    {
+      this.LoiPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+    }
         }
         else if(event.type === HttpEventType.Response)
         {
@@ -626,7 +668,19 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
      
       },
       (err:any)=>{
-        this.progressInfos[i].value = 0;
+        if(types == "coversheet")
+    {
+      this.Coversheetprogress[i].value = 0;
+    }
+    else if(types == "loipo")
+    {
+      this.LoiPoprogress[i].value = 0;
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i].value = 0;
+    }
+        
         const msg = 'Could not upload the file: ' + files[i].name;
         this.message.push(msg);
       }
