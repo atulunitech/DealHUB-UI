@@ -163,9 +163,11 @@ export class CreatobfComponent implements OnInit {
   visiblePreview:boolean=false;
   readMore = false;
   BrifreadMore=false;
+  paymentRead=false;
+
   service:string ="";
   sector:any;
-  paymentRead=false;
+
   today:any=new Date();
   subsector:string="";
   visiblesubsector:string="";
@@ -318,8 +320,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     {
       this._obfservices.ObfCreateForm.get('Solutioncategory').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Solutioncategory').updateValueAndValidity();
-      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
-      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
