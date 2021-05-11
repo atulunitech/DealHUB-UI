@@ -747,8 +747,8 @@ downloaddocument(event)
     value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
     this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
     var result = this.verticallist.filter(obj => {
-      // return obj.viewValue === ws.E8.h;
-      return obj.viewValue === "E-Commerce";
+       return obj.viewValue === ws.E8.h;
+     // return obj.viewValue === "E-Commerce";
     });
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
