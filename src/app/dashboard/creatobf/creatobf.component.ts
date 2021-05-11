@@ -140,6 +140,7 @@ interface Solutiongroup {
   viewValue:string;
 }
 
+
 @Component({
   selector: 'app-creatobf',
   templateUrl: './creatobf.component.html',
@@ -149,6 +150,7 @@ export class CreatobfComponent implements OnInit {
 
   sectorlist:sectors[] = [];
   subsectorlist:subsectors[] = [];
+  servicesControl = new FormControl('', Validators.required);
   data: [][];
     coversheetpath:string="";
     loipopath:string="";
