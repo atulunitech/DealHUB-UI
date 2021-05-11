@@ -1,6 +1,17 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
    <div class="com_title">dashboard</div>
    <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
+     <div>
+      <input type="text" matInput
+      ngxDaterangepickerMd
+      [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
+      [(ngModel)]="selected"
+      name="daterange"/>
+  <p>
+    <button class="ngx-daterangepicker-action" type="button" (click)="open()">Open</button>
+   Selected: {{selected | json}}
+  </p>
+     </div>
    <div class="serch_box_ms">
      <div class="search_con">
        <input type="search" placeholder="Search"  autocomplete="off">

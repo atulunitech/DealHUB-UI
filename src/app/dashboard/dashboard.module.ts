@@ -15,6 +15,7 @@ import { CreatobfComponent } from './creatobf/creatobf.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 
 
@@ -23,6 +24,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   imports: [
     CommonModule,
     FormsModule,
+    NgxDaterangepickerMd.forRoot(),
     ReactiveFormsModule,
     DashboardRoutingModule,
     MatExpansionModule,

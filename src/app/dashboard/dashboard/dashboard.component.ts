@@ -1,10 +1,11 @@
 import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-
+import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import {Router} from "@angular/router"
+import {Router} from "@angular/router";
+import * as moment from 'moment';
 
 
   export interface PeriodicElement {
@@ -33,6 +34,9 @@ import {Router} from "@angular/router"
 })
 export class DashboardComponent implements OnInit {
 
+  @ViewChild(DaterangepickerDirective, {static: true}) picker: DaterangepickerDirective;
+  selected: {startDate: moment.Moment, endDate: moment.Moment};
+
   displayedColumns: string[] = ['APPROVALSTATUS', 'PROJECTNAME', 'CODE', 'OPPID'];
   dataSource = ELEMENT_DATA;
  
@@ -48,7 +52,10 @@ export class DashboardComponent implements OnInit {
    
   }
 
-  
+  open() {
+    this.picker.open();
+    
+  }
 
  
 
