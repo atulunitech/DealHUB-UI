@@ -495,6 +495,18 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
 
   sanitize(url:string){
     return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+downloaddocument(event)
+{
+  event.preventDefault();
+  for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
+  {
+    if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+    {
+      var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+      window.open(url);
+    }
+  }
 }
 
   
@@ -1310,6 +1322,20 @@ this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("co
     }
 
     return this.email.hasError('email') ? 'Not a valid email' : '';
+  }
+  supportingDocumnet(url:string)
+  {
+    //alert("supporting document");
+   
+    for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
+    {
+      if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+      {
+        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+        //this.sanitize(url);
+      }
+    }
+    
   }
 
 }
