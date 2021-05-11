@@ -13,7 +13,7 @@ export class MessageBoxComponent implements OnInit {
   ngOnInit(): void {
   }
   
-  showSnackbar(content) {
+  showSucess(content) {
     this._snackBar.open(content,'', {
       duration: 3000,
       verticalPosition: 'top',
@@ -21,5 +21,22 @@ export class MessageBoxComponent implements OnInit {
       panelClass:"custom_sneak_bar"
     });
   }
+  showUpdate(content) {
+    this._snackBar.open(content,'', {
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition:'right',
+      panelClass:"custom_sneak_bar"
+    });
+  }
+  showError(content) {
+    this._snackBar.open(content,'', {
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition:'right',
+      panelClass:"custom_sneak_bar"
+    });
+  }
+
 
 }
