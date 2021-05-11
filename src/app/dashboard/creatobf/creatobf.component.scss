@@ -77,6 +77,17 @@
                         color: $thm-text-color;
                         @include font-size(0.9);
                         @include font-weight(semi-bold);
+                        
+                            a {color: $thm-text-color;text-decoration: none;    font-weight: 400;
+                                font-style: italic;
+                            }
+                            &:focus{
+                                color: $thm-text-color;
+                                text-decoration: none;
+                                font-weight: 400;
+                                font-style: italic;                            
+                            }
+                        
                     }
                 }
                 .mat_exp_fot
@@ -156,8 +167,10 @@
                                     .doc_cont
                                     {
                                         line-height: initial;
+                                        background-color: transparent;
                                         @include font-weight(semi-bold);
                                         @include font-size(0.8);
+
                                         div
                                         {
                                             margin-bottom: 2px;
@@ -172,12 +185,27 @@
                                 text-align: right;
                                 align-items: center;
                                 justify-content: flex-end;
+                                @include position(relative);
                                 @include margin(-65px,initial,initial,initial);
                                 @include padding(10px,15px,10px,10px);
                                 @include flexbox();
                                 .creat_bt
                                 {
                                     @include border-radius(4px);
+                                }
+                                .cr_corner
+                                {
+                                    @include position(absolute,initial,initial,-9px,0);
+                                    &::after
+                            {
+                                content: "";
+                                position: absolute;
+                                top: -9px;
+                                right: -6px;
+                                border-top: 80px solid transparent;
+                                border-left: 80px solid #eaeaea;
+                                width: 0;
+                            }
                                 }
                             }
                            .mat_upload_tit
@@ -198,6 +226,7 @@
                            {
                             border: 2px dashed #2258bf;
                             background-color: #e5eeff;
+                            position: relative;
                             justify-content: start;
                             align-items: baseline;
                             
@@ -222,7 +251,9 @@
                                     }
                                 }
                             }
+                            
                            }
+                          
                         }
                         }
                         .mat_dwn_lod_con
@@ -241,6 +272,7 @@
                             {
                                 line-height: initial;
                                 @include font-size(0.8);
+                                a{text-decoration: none;color: $thm-bg;}
                             }
                             img
                             {
@@ -309,7 +341,8 @@
                         .mat_previe_box
                         {
                             max-width: 164px;
-                            @include padding(initial,22px,initial,22px);
+                            @include padding(initial,12px,initial,12px);
+                            flex: 1;
                         }
                     }
                 }

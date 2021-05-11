@@ -115,6 +115,9 @@ class SaveServiceParameter{
   Solutioncategory:string;
   value:string;
   Serviceslist:Serviceslist[] = [];
+
+ 
+
   constructor(soltioncat:string,solval:string,element:Serviceslist)
   {
     this.Solutioncategory = soltioncat;
@@ -160,9 +163,12 @@ export class CreatobfComponent implements OnInit {
   visiblePreview:boolean=false;
   readMore = false;
   BrifreadMore=false;
+  paymentRead=false;
+
   service:string ="";
   sector:any;
-  paymentRead=false;
+
+  today:any=new Date();
   
   subsector:string="";
   visiblesubsector:string="";
@@ -172,38 +178,7 @@ export class CreatobfComponent implements OnInit {
   Solutionservicesarray:Solutionservices[] =[];
   Subsecotarray:subsecorlist[] =[];
   serviceslist:SaveServiceParameter[] = [];
-  Sectorgrouparray:SectotGroup[] = [
-    {
-      value:'Online Marketplace',
-      viewValue:'Online Marketplace',
-      subsecorlist:[{value:'Multi-category',viewValue:'Multi-category'},
-                    {value:'Single category',viewValue:'Single category'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    },
-    {
-      value:'Online Retail',
-      viewValue:'Online Retail',
-      subsecorlist:[{value:'Online Retail',viewValue:'Online Retail'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    }
-    ,
-    {
-      value:'Food and Hyperlocal',
-      viewValue:'Food and Hyperlocal',
-      subsecorlist:[{value:'Food and Hyperlocal',viewValue:'Food and Hyperlocal'},
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    },
-    {
-      value:'Other',
-      viewValue:'Other',
-      subsecorlist:[
-                    {value:'Other',viewValue:'Other'}
-                   ]
-    }
-  ];
+
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
@@ -242,7 +217,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.obfmodel._dh_header_id =0;
     this.getcreateobfmasters();
     this.getsolutionmaster();
-    
+    this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
   }
 
   add(event: MatChipInputEvent): void {
@@ -318,8 +293,8 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     {
       this._obfservices.ObfCreateForm.get('Solutioncategory').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Solutioncategory').updateValueAndValidity();
-      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
-      // this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
@@ -872,6 +847,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsolutionandservices.Services = this._obfservices.obfmodel.Services;
       this._obfservices.obfsolutionandservices._sap_customer_code = this._obfservices.obfmodel._sap_customer_code;
       this._obfservices.obfsolutionandservices.sapio = this._obfservices.obfmodel.sapio;
+      this._obfservices.obfsolutionandservices._dh_comment = this._obfservices.obfmodel._dh_comment;
 
 
       let val =  this.validateform();
@@ -1195,9 +1171,13 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       res[0].Serviceslist.push(elements);
     
   }
+  SavetoModel(){
+this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("comments").value;
 
+  }
   FinalSubmit()
   {
+    console.log(this._obfservices.obfmodel);
     this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
     this._obfservices.obfmodel._active = "A";
@@ -1253,6 +1233,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
       this._obfservices.obfsumbitmodel._created_by = this._obfservices.obfmodel._created_by;
       this._obfservices.obfsumbitmodel._active = this._obfservices.obfmodel._active;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
+      
       
 
       let val =  this.validateform();
