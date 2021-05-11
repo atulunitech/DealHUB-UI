@@ -107,27 +107,25 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/DealHUB/dashboard']);
      
       
-      this.showSnackbar("Login Sucess.");
+      this._mesgBox.showSucess("Login Sucess.");
     }
     else
     {
-      this.showSnackbar("Login Failed.");
+      this._mesgBox.showError("Login Failed.");
  
      
     }
      
     },
     (error:HttpErrorResponse)=>{
-     this.showSnackbar(error.message);
+     this._mesgBox.showError(error.message);
      
       
     }
     );
   }
   
-  showSnackbar(content) {
-    this._mesgBox.showSnackbar(content);
-  }
+
   ResetPassword()
   {
     this.loginmodel._user_code=this.Usercode;
