@@ -2,7 +2,7 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
       <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="../../../assets/images/arrow_icon.png"> Back</div>
+          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> Back</div>
       <div class="com_title conm_title_obf">Create OBF</div>
   </div>
   
@@ -35,7 +35,7 @@
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
-                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
                                   Drag & Drop
                                   <div class="in_titl">Or select file from your system</div>
@@ -46,7 +46,7 @@
                                 
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
-                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
+                              <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <button [disabled]="!(coversheetfiles.length >0)" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
@@ -55,7 +55,7 @@
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
-                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" *ngIf="Coversheetprogress.length == 0">
                                   {{ f.name }}
@@ -72,7 +72,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon" >
-                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -99,7 +99,7 @@
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
-                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
                                   Drag & Drop
                                   <div class="in_titl">Or select file from your system</div>
@@ -110,7 +110,7 @@
                               
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
-                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
+                              <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <div class="mt-cust-fd upl_sec_cut">
                                 
                                 <mat-form-field appearance="fill" class="example-full-width">
@@ -140,7 +140,7 @@
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
-                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
                                   {{ f.name }}
@@ -156,7 +156,7 @@
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                   <div class="doc_icon">
-                                    <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                    <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                   </div>
                                   <div class="doc_cont" style="position: relative;" >
                                     {{ f.fileName }}
@@ -177,7 +177,7 @@
                               </div>
                               <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx" [disabled]="supportchecked">
                               <ngx-dropzone-label class="matUp_lable">
-                                <div><img src="../../../assets/images/Group Upload.png"></div>
+                                <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
                                   Drag & Drop
                                   <div class="in_titl">Or select file from your system</div>
@@ -188,7 +188,7 @@
                               
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
-                              <div class="cr_corner"><img src="../../../assets/images/fold_icon.png"></div>
+                              <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <button [disabled]="!(supportfiles.length >0)" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
                               
                             </div>
@@ -197,7 +197,7 @@
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
-                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
                                   {{ f.name }}
@@ -213,7 +213,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon">
-                                  <img src="../../../assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -703,25 +703,25 @@
                         <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
-                              <img  src="../../../assets/images/dwn-load-file.png">
+                              <img  src="assets/images/dwn-load-file.png">
                               <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
                             </div>
-                            <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                            <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                             </div>
                             <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
-                                <img src="../../../assets/images/dwn-load-file.png">
+                                <img src="assets/images/dwn-load-file.png">
                                 <span>
                                   <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                               </div>
-                              <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
+                              <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                               </div>
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
-                                  <img  src="../../../assets/images/dwn-load-file.png">
+                                  <img  src="assets/images/dwn-load-file.png">
                                   <span ><a [href]="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
-                                <div class="dwn_con_wr" ><img src="../../../assets/images/dwn_fil_icon.png" ></div>
+                                <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
                                 </div>
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
