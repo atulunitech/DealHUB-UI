@@ -708,10 +708,11 @@
                             </div>
                             <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con"  >
+                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="../../../assets/images/dwn-load-file.png">
-                                <span><a [href]="sanitize(supportdocpath)" target="_blank" >Supporting Document</a></span>
+                                <span>
+                                  <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                               </div>
                               <div class="dwn_con_wr"><img src="../../../assets/images/dwn_fil_icon.png"></div>
                               </div>
@@ -722,7 +723,7 @@
                                 </div>
                                 <div class="dwn_con_wr" ><img src="../../../assets/images/dwn_fil_icon.png" ></div>
                                 </div>
-          
+                                <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
                             <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp">
