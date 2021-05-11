@@ -15,7 +15,7 @@ export class MessageBoxComponent implements OnInit {
   
   showSucess(content) {
     this._snackBar.open(content,'', {
-      duration: 3000,
+      duration: 1000,
       verticalPosition: 'top',
       horizontalPosition:'right',
       panelClass:"custom_sneak_bar"
@@ -23,7 +23,7 @@ export class MessageBoxComponent implements OnInit {
   }
   showUpdate(content) {
     this._snackBar.open(content,'', {
-      duration: 3000,
+      duration: 1000,
       verticalPosition: 'top',
       horizontalPosition:'right',
       panelClass:"custom_sneak_bar"

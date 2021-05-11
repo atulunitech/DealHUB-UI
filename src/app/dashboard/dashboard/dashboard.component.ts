@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   listData: MatTableDataSource<any>;
   columns:Array<any>;
   displayedColumns:Array<any>;
-  theRemovedElement:any;
+  theRemovedElement:any="";
   dataSource:any;
   searchKey: string;
   dashboardData:any[]=[];
