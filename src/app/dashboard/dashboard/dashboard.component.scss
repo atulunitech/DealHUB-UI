@@ -131,3 +131,31 @@
         min-width: 100%;
     }
 }
+.dash_date_wrp
+{
+    background-color: #fff;
+    border: solid 1px #eeeeee;
+    color: #342e59;
+    @include padding(0,10px,0,10px);
+    @include margin(initial,10px,initial,0px);
+    @include heightwidth(215px,42px);
+    @include flexbox();
+    @include font-weight(normal);
+    @include font-size(0.80);
+    .d_icon
+    {
+        align-items: center;
+        @include position(relative,0px,initial,initial,initial);
+        @include flexbox();
+        
+        img{
+            display: inherit;
+            @include heightwidth(20px,initial);
+        }
+    }
+    input{
+        border-left: solid 1px #eeeeee;
+        @include padding(0,0px,0,10px);
+        @include margin(0,0px,0,10px);
+    }
+}
