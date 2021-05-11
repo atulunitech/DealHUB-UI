@@ -131,7 +131,7 @@ export class OBFServices {
     Projectname:new FormControl("",Validators.required),
     Projecttype:new FormControl(""),
     Solutioncategory:new FormControl(""),
-    Otherservicesandcategories:new FormControl(""),
+    Otherservicesandcategories:new FormControl(null),
     Opportunityid:new FormControl("",Validators.required),
     State:new FormControl("",Validators.required),
     Vertical:new FormControl("",Validators.required),

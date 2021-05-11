@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
@@ -14,6 +14,8 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { DatePipe } from '@angular/common';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 interface Serviceslist {
   value: string;
@@ -57,6 +59,13 @@ interface subsectors{
   tablename:string;
   value:number;
   viewValue:string;
+}
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && control.touched);
+  }
 }
 
 class SaveAttachmentParameter{
@@ -139,6 +148,7 @@ interface Solutiongroup {
   viewValue:string;
 }
 
+
 @Component({
   selector: 'app-creatobf',
   templateUrl: './creatobf.component.html',
@@ -148,6 +158,7 @@ export class CreatobfComponent implements OnInit {
 
   sectorlist:sectors[] = [];
   subsectorlist:subsectors[] = [];
+  servicesControl = new FormControl('', Validators.required);
   data: [][];
     coversheetpath:string="";
     loipopath:string="";
@@ -164,7 +175,7 @@ export class CreatobfComponent implements OnInit {
   readMore = false;
   BrifreadMore=false;
   paymentRead=false;
-
+  matcher = new MyErrorStateMatcher();
   service:string ="";
   sector:any;
 
@@ -637,7 +648,7 @@ downloaddocument(event)
          this._obfservices.ObfCreateForm.patchValue({Loiposheet: path});
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
-         this.SaveAttachmentParameter._description = "loi";
+         this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
          this._obfservices.obfmodel._is_loi_po_uploaded = "yes";
         }
@@ -938,9 +949,21 @@ downloaddocument(event)
     console.log(this._obfservices.obfmodel);
     }
    }
+    
+   supportchecked:boolean=true;
+   Supportcheckboxchange(e:MatCheckboxChange)
+   {
+     if(e.checked)
+     {
+      this.supportchecked =false;
+     }
+     else{
+      this.supportchecked =true;
+     }
+   }
 
-  onCheckboxChange(e) {
-    if(e.currentTarget.checked)
+  onCheckboxChange(e:MatCheckboxChange) {
+    if(e.checked)
     {
       this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
