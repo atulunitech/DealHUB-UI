@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
@@ -15,6 +15,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 interface Serviceslist {
   value: string;
@@ -58,6 +59,13 @@ interface subsectors{
   tablename:string;
   value:number;
   viewValue:string;
+}
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && control.touched);
+  }
 }
 
 class SaveAttachmentParameter{
@@ -167,7 +175,7 @@ export class CreatobfComponent implements OnInit {
   readMore = false;
   BrifreadMore=false;
   paymentRead=false;
-
+  matcher = new MyErrorStateMatcher();
   service:string ="";
   sector:any;
 
@@ -958,6 +966,18 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     console.log("check why form not valid");
     console.log(this._obfservices.obfmodel);
     }
+   }
+    
+   supportchecked:boolean=true;
+   Supportcheckboxchange(e:MatCheckboxChange)
+   {
+     if(e.checked)
+     {
+      this.supportchecked =false;
+     }
+     else{
+      this.supportchecked =true;
+     }
    }
 
   onCheckboxChange(e:MatCheckboxChange) {
