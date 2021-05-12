@@ -1226,7 +1226,7 @@ downloaddocument(event)
   }
   SavetoModel(){
 this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("comments").value;
-
+this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   }
   FinalSubmit()
   {
