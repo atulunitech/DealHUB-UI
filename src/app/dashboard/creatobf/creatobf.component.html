@@ -7,7 +7,9 @@
   </div>
   
   <div>
-      <!-- close -->
+    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+      <div class="back_rout" routerLink="/DealHUB/dashboard">Close</div>
+    </div>
   </div>
       
    </div>
@@ -262,7 +264,8 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category</mat-label>
                     <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher">
-                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
+                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+
                         {{Solution.Solutioncategory}}
                       </mat-option>
                     </mat-select>
@@ -694,6 +697,16 @@
                       {{_obfservices.ObfCreateForm.get('Loipo').value}}
                     </div>
                  </div>
+
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    Comments
+                  </div>
+                  <div class="prev_dis">
+                    {{this._obfservices.ObfCreateForm.get("comments").value}}
+                  </div>
+               </div>
+
                       </div>
                      
                         
