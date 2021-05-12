@@ -114,7 +114,7 @@
                               <div class="mt-cust-fd upl_sec_cut">
                                 
                                 <mat-form-field appearance="fill" class="example-full-width">
-                                  <mat-label>Select Type</mat-label>
+                                  <mat-label>LOI/PO</mat-label>
                                   <mat-select formControlName="Loipodropdown" [disabled]="loiopdisabled">
                                     <mat-option value="PO"  >
                                       PO
@@ -402,12 +402,13 @@
                       </mat-chip>
                       <input placeholder="SAP IO ..." 
                       type="number"
+                      formControlName="Sapio"
                       [matChipInputFor]="chipList"
                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                       [matChipInputAddOnBlur]="addOnBlur"
                       (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
-                    <mat-error >
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
                       SAP IO Number length must be <strong>8 digits</strong>
                     </mat-error>
                               </mat-form-field>

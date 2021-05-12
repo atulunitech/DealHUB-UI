@@ -246,12 +246,21 @@ export class CreatobfComponent implements OnInit {
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
-    //   this._obfservices.ObfCreateForm.get('Sapio').status;
-    //    if(this._obfservices.ObfCreateForm.get('Sapio').status.toLowerCase() === "valid")
-    //    {
-    //    this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
-    //  }
-    this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
+      
+         if(this._obfservices.ObfCreateForm.get('Sapio').status.toLowerCase() === "valid")
+         {
+         this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
+         }
+         else{
+           const index = this._obfservices.obfmodel.sapio.indexOf(this._obfservices.ObfCreateForm.get("Sapio").value);
+            this._obfservices.ObfCreateForm.get("Sapio").setValue("");
+           if (index >= 0) {
+             this._obfservices.obfmodel.sapio.splice(index, 1);
+            
+           }
+         }
+    //this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
+    //this._obfservices.ObfCreateForm.get("Sapionumber").setValue("");
     }
 
     // Reset the input value
@@ -267,6 +276,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get("Sapio").setValue('');
     if (index >= 0) {
       this._obfservices.obfmodel.sapio.splice(index, 1);
+      // this._obfservices.ObfCreateForm.get("Sapio").setValue(io);
+      // this._obfservices.ObfCreateForm.get("Sapionumber").setValue("");
       
     }
   }
@@ -988,9 +999,13 @@ downloaddocument(event)
      if(e.checked)
      {
       this.supportchecked =false;
+      this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
      }
      else{
       this.supportchecked =true;
+      this._obfservices.ObfCreateForm.get('Supportpath').clearValidators();
+      this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
      }
    }
 
