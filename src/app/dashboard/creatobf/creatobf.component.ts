@@ -342,17 +342,34 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     }
     else if(section == "preview"){
     
-      if(this.servicecate !=null&& this.service !=null)
+      if(this.service !=null)
       {
-        this.servicecate="";
+        
         this.service="";
       }
-     this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
-    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+     
+    var finalservicecat="";
+    for(let i=0 ;i<this._obfservices.obfmodel.Services.length ; i++)
     {
-
-     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+      var Tempservice="";
+      var tempservicecat="";
+      Tempservice += this._obfservices.obfmodel.Services[i].Solutioncategory;
+      
+      for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
+      {
+        if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
+        {
+          
+          tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
+        }
+      }
+    
+     tempservicecat=tempservicecat.substring(1);
+     finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+     
     }
+    // this.service = this.service.substring(1);
+    this.service=finalservicecat;
     this.SAPIONum="";
     for (let j=0;j<this._obfservices.obfmodel.sapio.length;j++)
     {
@@ -532,19 +549,27 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
   }
 
   sanitize(url:string){
-    return this.sanitizer.bypassSecurityTrustUrl(url);
+    if(url != "")
+    {
+      return this.sanitizer.bypassSecurityTrustUrl(url);
+    }
   }
 downloaddocument(event)
 {
   event.preventDefault();
-  for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
+  
+  if(this._obfservices.obfmodel.Attachments.length != 0)
   {
-    if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+    for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
     {
-      var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-      window.open(url);
+      if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+      {
+        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+        window.open(url);
+      }
     }
   }
+  
 }
 
   
@@ -942,7 +967,7 @@ downloaddocument(event)
         //alert(error.message);
       })
     }
-    this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+  
     for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
     {
      this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
@@ -1194,6 +1219,7 @@ downloaddocument(event)
     var result = this.Solutiongroup.filter(obj => {
       return obj.Solutioncategory === solutioncategory;
     });
+    this.servicecate=solutioncategory;
     this.Solutionservicesarray = result[0].Solutionservices;
     this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
   }
@@ -1256,7 +1282,7 @@ downloaddocument(event)
   }
   SavetoModel(){
 this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("comments").value;
-
+this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   }
   FinalSubmit()
   {

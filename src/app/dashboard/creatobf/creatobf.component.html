@@ -7,7 +7,9 @@
   </div>
   
   <div>
-      <!-- close -->
+    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+      <div class="back_rout" routerLink="/DealHUB/dashboard">Close</div>
+    </div>
   </div>
       
    </div>
@@ -133,7 +135,7 @@
                               <button [disabled]="!(loipofiles.length >0) || isloipo" (click)="uploadfiles(loipofiles,'loipo')" class="creat_bt" mat-flat-button>Upload</button>
                            <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
                             </div>
-                            <div style="margin-top: 5px;">
+                            <div style="margin-top: 5px;position: relative;">
                              <div class="cus_check">
                                 <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">This OBF is without LOI / PO </mat-checkbox>
                               </div> 
@@ -273,7 +275,8 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category</mat-label>
                     <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher">
-                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
+                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+
                         {{Solution.Solutioncategory}}
                       </mat-option>
                     </mat-select>
@@ -653,7 +656,7 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div><b> {{this.servicecate}}-</b> <br>
+                          <div>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
@@ -709,6 +712,16 @@
                       {{_obfservices.ObfCreateForm.get('Loipo').value}}
                     </div>
                  </div>
+
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    Comments
+                  </div>
+                  <div class="prev_dis">
+                    {{this._obfservices.ObfCreateForm.get("comments").value}}
+                  </div>
+               </div>
+
                       </div>
                      
                         
@@ -719,11 +732,11 @@
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
+                              <span><a (click)="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
                             </div>
                             <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
@@ -734,10 +747,10 @@
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
-                                  <span ><a [href]="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
+                                  <span ><a  (click)="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
                                 <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
-                                </div>
+                              </div>
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
