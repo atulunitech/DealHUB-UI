@@ -21,15 +21,15 @@ export class LoginModel
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  public ResetPasswordForm:FormGroup;
   public loginvalid: FormGroup;
   log_in:boolean=true;
   lost_pass:boolean= false;
   loginDetail:any;
   message:string;
   loginmodel:LoginModel=new LoginModel();
-  Usercode:any;
-  Password:any;
-  RememberMe:any;
+  
+  RememberMe:any=false;
   ResetPass:boolean=false;
   NewPassword:any="";
   confirmpassword:any="";
@@ -42,8 +42,12 @@ export class LoginComponent implements OnInit {
     this.loginvalid = new FormGroup({
      
       userID : new FormControl('', [Validators.required]),
-      Password : new FormControl('', [Validators.required])
+      Password : new FormControl('', [Validators.required]),
+      RememberMe:new FormControl("")
+    });
+    this.ResetPasswordForm=new FormGroup({
 
+      ResetPasswordUserid:new FormControl('',[Validators.required])
     });
     if(this.ResetPass != true)
     {
@@ -61,7 +65,7 @@ export class LoginComponent implements OnInit {
      }
     }
   }
-  email = new FormControl('', [Validators.required, Validators.email]);
+  
 
   GetToken(loginmodel)
   {
@@ -76,13 +80,14 @@ export class LoginComponent implements OnInit {
   }
   onFormSubmit()
   {
-    
-     this.loginmodel._user_code=this.Usercode;
-     this.loginmodel._password=this.Password;
-    
+    this.loginmodel._user_code=this.loginvalid.get('userID').value;
+    this.loginmodel._password=this.loginvalid.get('Password').value;
+    this.RememberMe = this.loginvalid.get('RememberMe').value;
+
     this._loginservice.getLoginDetails(this.loginmodel).subscribe(Result=>{
       console.log(Result);
       var loginresult =Result;
+
       if(loginresult.hasOwnProperty("user")){
       if(this.RememberMe)
       {
@@ -125,18 +130,6 @@ export class LoginComponent implements OnInit {
     );
   }
   
-
-  ResetPassword()
-  {
-    this.loginmodel._user_code=this.Usercode;
-    this.loginmodel._password=this.NewPassword;
-     
-    this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
-      
-      alert("Password Changed Successfully.");
-      this.router.navigate(['/DealHUB/dashboard']);
-    });
-  }
   LostPass(event)
   {
     event.preventDefault();
@@ -144,23 +137,26 @@ export class LoginComponent implements OnInit {
   }
   GetEmail()
   {
-    this.loginmodel._user_code=this.Usercode;
-    this.loginmodel._password=this.Password;
+    this.loginmodel._user_code=this.loginvalid.get('userID').value;
+    this.loginmodel._password=this.loginvalid.get('Password').value;
     this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
       alert("Email Send.");
      
     });
   }
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
+  // getErrorMessage() {
+  //   if (this.email.hasError('required')) {
+  //     return 'You must enter a value';
+  //   }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
-  }
+  //   return this.email.hasError('email') ? 'Not a valid email' : '';
+  // }
 
   public checkError = (controlName: string, errorName: string) => {
     return this.loginvalid.controls[controlName].hasError(errorName);
+  }
+  public checkResetError = (controlName: string, errorName: string) => {
+    return this.ResetPasswordForm.controls[controlName].hasError(errorName);
   }
   
   lostPass()
