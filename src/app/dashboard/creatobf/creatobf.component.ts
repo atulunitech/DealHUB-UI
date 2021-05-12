@@ -11,7 +11,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { TemplateRef } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import {MatChipInputEvent, MatChipList} from '@angular/material/chips';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -44,6 +44,8 @@ interface SectotGroup {
 interface sectors{
   value: number;
   viewValue: string;
+  vertical_id:number;
+  vertical_name:string;
   tablename:string;
 }
 
@@ -221,6 +223,7 @@ export class CreatobfComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+  @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
     this._obfservices.ObfCreateForm.reset();
@@ -229,7 +232,12 @@ export class CreatobfComponent implements OnInit {
     this.getcreateobfmasters();
     this.getsolutionmaster();
     this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
+    this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
+      status => this.SAPIOchiplist.errorState = status === 'INVALID'
+    );
   }
+
+  
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -237,7 +245,13 @@ export class CreatobfComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
+      this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
+    //   this._obfservices.ObfCreateForm.get('Sapio').status;
+    //    if(this._obfservices.ObfCreateForm.get('Sapio').status.toLowerCase() === "valid")
+    //    {
+    //    this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
+    //  }
+    this._obfservices.obfmodel.sapio.push({_Cust_SAP_IO_Number: parseInt(value.trim())});
     }
 
     // Reset the input value
@@ -250,9 +264,10 @@ export class CreatobfComponent implements OnInit {
 
   remove(io: SAPIO): void {
     const index = this._obfservices.obfmodel.sapio.indexOf(io);
-
+    this._obfservices.ObfCreateForm.get("Sapio").setValue('');
     if (index >= 0) {
       this._obfservices.obfmodel.sapio.splice(index, 1);
+      
     }
   }
 
@@ -284,7 +299,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
        console.log(res.vertical);
        console.log("Vertical head Master");
        console.log(res.verticalhead);
-       this.sectorlist = res.sectors;
+       this.sectorlist = res.verticalsectorwise;
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
@@ -522,13 +537,17 @@ downloaddocument(event)
 
   
   message: string[] = [];
+  iscoversheet:boolean=true;
+  isloipo:boolean=true;
+  isSupport:boolean=true;
+
 
 	onSelect(event,types) {
     this.progress = 0;
     if(types == "coversheet")
        {
-
-        if(this.coversheetfiles.length > 1)
+        
+        if(this.coversheetfiles.length >= 1)
         {
          // alert("Kindly upload only one Coversheet file");
          this._mesgBox.showError("Kindly upload only one Coversheet file");
@@ -536,14 +555,17 @@ downloaddocument(event)
         }
         else{
           this.coversheetfiles.push(...event.addedFiles);
+          this.iscoversheet = !this.iscoversheet;
         }
+        
         // this.files = this.coversheetfiles;
         this.updatedatafromcoversheet(event);
 
        }
        else if(types == "loipo")
        {
-         if(this.loipofiles.length > 1 )
+         
+         if(this.loipofiles.length >= 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
           this._mesgBox.showError("Kindly upload only one Loi / Po file");
@@ -551,11 +573,13 @@ downloaddocument(event)
          }
          else{
         this.loipofiles.push(...event.addedFiles);
+        this.isloipo = !this.isloipo;
         }
         // this.files = this.loipofiles;
        }
        else
        {
+         this.isSupport = !this.isSupport;
         this.supportfiles.push(...event.addedFiles);
         // this.files = this.supportfiles;
        }
@@ -569,15 +593,18 @@ downloaddocument(event)
   {
     if(types == "coversheet")
     {
+      this.iscoversheet = !this.iscoversheet;
       this.Coversheetprogress = [];
     }
     else if(types == "loipo")
     {
+      this.isloipo = !this.isloipo;
       this.LoiPoprogress = [];
       
     }
     else if(types == "support")
     {
+      this.isSupport = !this.isSupport;
       this.SupportPoprogress = [];
     }
     
@@ -747,12 +774,17 @@ downloaddocument(event)
     value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
     this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
     var result = this.verticallist.filter(obj => {
-       return obj.viewValue === ws.E8.h;
-     // return obj.viewValue === "E-Commerce";
+     //  return obj.viewValue === ws.E8.h;
+      return obj.viewValue === "E-Commerce";
     });
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
     this._obfservices.obfmodel._vertical_id = verticalid;
+
+    var ressec = this.sectorlist.filter(obj =>{
+      return obj.vertical_id === verticalid;
+    });
+    this.sectorlist = <sectors[]>ressec;
      this._obfservices.ObfCreateForm.patchValue({Verticalhead: ws.E9.w});
      var res = this.Verticalheadlist.filter(obj => {
       // return obj.viewValue === ws.E8.h;

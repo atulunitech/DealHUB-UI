@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -137,7 +137,7 @@ export class OBFServices {
     Vertical:new FormControl("",Validators.required),
     Verticalhead:new FormControl("",Validators.required),
     Createddate:new FormControl(""),
-    Sapio:new FormControl(""),
+    Sapio:new FormControl(null,[this.SIOnumbervalidate]),
     Customername:new FormControl("",Validators.required),
     Sapcustomercode:new FormControl(""),
     Projectprimarylocation:new FormControl(""),
@@ -192,5 +192,12 @@ export class OBFServices {
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SubmitOBF",model ,
        httpOptions);  
+  }
+
+   SIOnumbervalidate(control: AbstractControl): {[key: string]: any} | null  {
+    if (control.value && control.value.length != 8) {
+      return { 'Sionumberinvalid': true };
+    }
+    return null;
   }
 }
