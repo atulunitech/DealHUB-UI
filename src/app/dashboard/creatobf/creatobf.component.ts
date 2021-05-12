@@ -16,6 +16,7 @@ import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Compon
 import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
 
 interface Serviceslist {
   value: string;
@@ -195,7 +196,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router) 
   { }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -785,8 +786,8 @@ downloaddocument(event)
     value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
     this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
     var result = this.verticallist.filter(obj => {
-     //  return obj.viewValue === ws.E8.h;
-      return obj.viewValue === "E-Commerce";
+       return obj.viewValue === ws.E8.h;
+     // return obj.viewValue === "E-Commerce";
     });
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
@@ -1293,6 +1294,7 @@ this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("co
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
         this._mesgBox.showSucess("Documents uploaded Successfully");
+        this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
         //alert("Technical error while uploading documents");
@@ -1330,6 +1332,7 @@ this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("co
            this._obfservices.obfmodel._dh_id = res[0].dh_id;
           // alert("Details updated Successfully");
           this._mesgBox.showSucess("Details updated Successfully");
+          this.router.navigate(['/DealHUB/dashboard']);
         }
         else{
           //alert("Technical error while updating details");
