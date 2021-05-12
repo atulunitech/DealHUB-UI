@@ -130,7 +130,7 @@
                               <button [disabled]="!(loipofiles.length >0)" (click)="uploadfiles(loipofiles,'loipo')" class="creat_bt" mat-flat-button>Upload</button>
                            <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
                             </div>
-                            <div style="margin-top: 5px;">
+                            <div style="margin-top: 5px;position: relative;">
                              <div class="cus_check">
                                 <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">This OBF is without LOI / PO </mat-checkbox>
                               </div> 
