@@ -315,17 +315,12 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     }
     else if(section == "preview"){
     
-      if(this.servicecate !=null&& this.service !=null)
+      if(this.service !=null)
       {
-        this.servicecate="";
+        
         this.service="";
       }
-      for (let k=0;k<this._obfservices.obfmodel.Services.length;k++)
-      {
-        this.servicecate += "," + this._obfservices.obfmodel.Services[k].Solutioncategory;
-      }
-      this.servicecate = this.servicecate.substring(1);
-    
+     
     var finalservicecat="";
     for(let i=0 ;i<this._obfservices.obfmodel.Services.length ; i++)
     {
@@ -920,7 +915,7 @@ downloaddocument(event)
         //alert(error.message);
       })
     }
-    this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
+  
     for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
     {
      this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
@@ -1168,6 +1163,7 @@ downloaddocument(event)
     var result = this.Solutiongroup.filter(obj => {
       return obj.Solutioncategory === solutioncategory;
     });
+    this.servicecate=solutioncategory;
     this.Solutionservicesarray = result[0].Solutionservices;
     this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
   }
