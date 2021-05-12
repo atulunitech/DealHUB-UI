@@ -638,7 +638,7 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div><b> {{this.servicecate}}-</b> <br>
+                          <div>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>

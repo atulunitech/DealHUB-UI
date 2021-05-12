@@ -320,12 +320,34 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
         this.servicecate="";
         this.service="";
       }
-     this.servicecate= this._obfservices.obfmodel.Services[0].Solutioncategory;
-    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+      for (let k=0;k<this._obfservices.obfmodel.Services.length;k++)
+      {
+        this.servicecate += "," + this._obfservices.obfmodel.Services[k].Solutioncategory;
+      }
+      this.servicecate = this.servicecate.substring(1);
+    
+    var finalservicecat="";
+    for(let i=0 ;i<this._obfservices.obfmodel.Services.length ; i++)
     {
-
-     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+      var Tempservice="";
+      var tempservicecat="";
+      Tempservice += this._obfservices.obfmodel.Services[i].Solutioncategory;
+      
+      for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
+      {
+        if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
+        {
+          
+          tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
+        }
+      }
+    
+     tempservicecat=tempservicecat.substring(1);
+     finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+     
     }
+    // this.service = this.service.substring(1);
+    this.service=finalservicecat;
     this.SAPIONum="";
     for (let j=0;j<this._obfservices.obfmodel.sapio.length;j++)
     {
