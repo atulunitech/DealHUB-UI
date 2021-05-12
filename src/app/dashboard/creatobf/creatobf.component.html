@@ -720,11 +720,11 @@
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
+                              <span><a (click)="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
                             </div>
                             <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
@@ -735,10 +735,10 @@
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
-                                  <span ><a [href]="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
+                                  <span ><a  (click)="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
                                 <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
-                                </div>
+                              </div>
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>

@@ -537,19 +537,27 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
   }
 
   sanitize(url:string){
-    return this.sanitizer.bypassSecurityTrustUrl(url);
+    if(url != "")
+    {
+      return this.sanitizer.bypassSecurityTrustUrl(url);
+    }
   }
 downloaddocument(event)
 {
   event.preventDefault();
-  for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
+  
+  if(this._obfservices.obfmodel.Attachments.length != 0)
   {
-    if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+    for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
     {
-      var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-      window.open(url);
+      if(this._obfservices.obfmodel.Attachments[i]._description=="support")
+      {
+        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+        window.open(url);
+      }
     }
   }
+  
 }
 
   
