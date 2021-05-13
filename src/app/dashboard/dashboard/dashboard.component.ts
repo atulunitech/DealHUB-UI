@@ -7,6 +7,8 @@ import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import * as moment from 'moment';
+import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 
   export interface PeriodicElement {
     PROJECTNAME: string;
@@ -38,6 +40,12 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
+  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
+  selected: {startDate: moment.Moment, endDate: moment.Moment};
+  open() {
+    this.picker.open();
+  }
 
    DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];

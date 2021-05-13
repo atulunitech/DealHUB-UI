@@ -10,7 +10,18 @@
       name="SearchDate"
       id="SearchDate"
       (change)="change($event)"  /> -->
-  
+  <div class="dash_date_wrp">
+    <div class="d_icon"><img src="../../../assets/images/date_icon.JPG"></div>
+    <input type="text" matInput autocomplete="off"
+    ngxDaterangepickerMd
+    [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
+    [(ngModel)]="selected" placeholder="Start Date -- End Date"
+    name="daterange"/>
+<!-- <p>
+  <button class="ngx-daterangepicker-action" type="button" (click)="open()">Open</button>
+ Selected: {{selected | json}}
+</p> -->
+  </div>
       <div class="serch_box_ms">
        <div class="search_con">
          <input type="search" placeholder="Search"  autocomplete="off">
