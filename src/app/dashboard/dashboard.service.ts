@@ -15,32 +15,29 @@ export class DashboardService {
 
   }
   
-
-  url = environment.apiUrl + '/Api/DashBoard/GetDashBoardData';
-
-    // getLoginDetails(logindetail:LoginModel): Observable<any>{
-    //     return this.http.post<any>(this.url,logindetail);
-    // }
     GetDashBoardData(DashBoardData: any): Observable<any> {  
 	    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-	    return this.http.post<any>(this.url,  
+	    return this.http.post<any>(environment.apiUrl + '/Api/DashBoard/GetDashBoardData',  
         DashBoardData, httpOptions);  
 	  }
-    urlimg = environment.apiUrl + '/Api/Auth/UploadImage';
+ 
     uploadImage(image:File) {
-      // debugger;
-       const formData: FormData = new FormData();
+      const formData: FormData = new FormData();
        let count=0;
-       // image.forEach(value=>{
-       //   formData.append('Image'+count, value, value.name);
-       //   count++;
-       // });
        formData.append('Image', image, image.name);
        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True'}),observe:"events",reportProgress: true};  
-       return this.http.post(this.urlimg, formData,{
+       return this.http.post(environment.apiUrl + '/Api/Auth/UploadImage', formData,{
            headers: new HttpHeaders({ 'No-Auth':'True'}),
            reportProgress: true,
            observe: 'events'
          });
+    }
+ 
+ GetDashboardCount(DashBoardData: any): Observable<any> 
+ {
+  const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
+  return this.http.post<any>(environment.apiUrl + '/Api/DashBoard/GetDashBoardDataCount',  
+    DashBoardData, httpOptions);  
+
  }
 }

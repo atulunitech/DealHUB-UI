@@ -39,20 +39,29 @@
       <div class="con_fil_box p_f_apr">
         <div class="box_shead"><img src="assets/images/p_f_a.png"></div>
         <div class="fil_hed_tit" *ngIf="this.privilege_name == 'OBF Initiator'" (click)="addColumn('Draft')">
-           Draft
+          Draft
         </div>
         <div class="fil_hed_tit" *ngIf="this.privilege_name == 'OBF Reviewer'" (click)="addColumn('Pendingforapproval')">
           Pending for approval
         </div>
-        <div class="fil_had_no">
-          23
+        <div class="fil_had_no"  *ngIf="this.privilege_name == 'OBF Initiator'">
+          {{this._dashboardcountModel[0]._draft}}
+        </div>
+        <div class="fil_had_no"  *ngIf="this.privilege_name == 'OBF Reviewer'">
+          {{this._dashboardcountModel[0]._draft}}
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
-          <div class="lst_obf">
-            OBF: 10
+          <div class="lst_obf" *ngIf="this.privilege_name == 'OBF Initiator'">
+            OBF: {{this._dashboardcountModel[0]._draft_obf}}
           </div>
-          <div class="lst_ppl">
-            PPL: 11
+          <div class="lst_obf" *ngIf="this.privilege_name == 'OBF Reviewer'">
+            OBF: {{this._dashboardcountModel[0]._draft_obf}}
+          </div>
+          <div class="lst_ppl" *ngIf="this.privilege_name == 'OBF Initiator'">
+            PPL: {{this._dashboardcountModel[0]._draft_ppl}}
+          </div>
+          <div class="lst_obf" *ngIf="this.privilege_name == 'OBF Reviewer'">
+            PPL: {{this._dashboardcountModel[0]._draft_ppl}}
           </div>
         </div>
       </div>
@@ -64,15 +73,24 @@
         <div class="fil_hed_tit"  *ngIf="this.privilege_name == 'OBF Reviewer'">
           Approved
         </div>
-        <div class="fil_had_no">
-          27
+        <div class="fil_had_no"  *ngIf="this.privilege_name == 'OBF Initiator'">
+          {{this._dashboardcountModel[0]._submitted}}
+        </div>
+        <div class="fil_had_no"  *ngIf="this.privilege_name == 'OBF Reviewer'">
+          {{this._dashboardcountModel[0]._submitted}}
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
-          <div class="lst_obf">
-            OBF: 15
+          <div class="lst_obf" *ngIf="this.privilege_name == 'OBF Initiator'">
+            OBF: {{this._dashboardcountModel[0]._submitted_obf}}
           </div>
-          <div class="lst_ppl">
-            PPL: 14
+          <div class="lst_obf" *ngIf="this.privilege_name == 'OBF Reviewer'">
+            OBF: {{this._dashboardcountModel[0]._submitted_obf}}
+          </div>
+          <div class="lst_ppl"  *ngIf="this.privilege_name == 'OBF Initiator'">
+            PPL: {{this._dashboardcountModel[0]._submitted_ppl}}
+          </div>
+          <div class="lst_ppl" *ngIf="this.privilege_name == 'OBF Reviewer'">
+            PPL: {{this._dashboardcountModel[0]._submitted_ppl}}
           </div>
         </div>
       </div>
@@ -82,14 +100,14 @@
           Rejected
         </div>
         <div class="fil_had_no">
-          21
+          {{this._dashboardcountModel[0]._rejected}}
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
-            OBF: 1
+            OBF: {{this._dashboardcountModel[0]._rejected_obf}}
           </div>
           <div class="lst_ppl">
-            PPL: 3
+            PPL: {{this._dashboardcountModel[0]._rejected_ppl}}
           </div>
         </div>
       </div>
@@ -99,7 +117,7 @@
           approved obf
         </div>
         <div class="fil_had_no">
-          23
+         {{this._dashboardcountModel[0]._approved_obf}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -116,7 +134,7 @@
           approved ppl
         </div>
         <div class="fil_had_no">
-          25
+          {{this._dashboardcountModel[0]._approved_ppl}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">

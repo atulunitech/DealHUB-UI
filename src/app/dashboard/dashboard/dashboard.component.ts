@@ -10,30 +10,26 @@ import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 
-  export interface PeriodicElement {
-    PROJECTNAME: string;
-    APPROVALSTATUS: number;
-    CODE: number;
-    OPPID: string;
-  }
-  
-  export class DashBoardModel
+//region Model
+export class DashBoardModel
 {
   _user_code:string;
 }
-
-  const ELEMENT_DATA: PeriodicElement[] = [
-    {APPROVALSTATUS: 1, PROJECTNAME: 'Hydrogen', CODE: 1.0079, OPPID: 'H'},
-    {APPROVALSTATUS: 2, PROJECTNAME: 'Helium', CODE: 4.0026, OPPID: 'He'},
-    {APPROVALSTATUS: 3, PROJECTNAME: 'Lithium', CODE: 6.941, OPPID: 'Li'},
-    {APPROVALSTATUS: 4, PROJECTNAME: 'Beryllium', CODE: 9.0122, OPPID: 'Be'},
-    {APPROVALSTATUS: 5, PROJECTNAME: 'Boron', CODE: 10.811, OPPID: 'B'},
-    {APPROVALSTATUS: 6, PROJECTNAME: 'Carbon', CODE: 12.0107, OPPID: 'C'},
-    {APPROVALSTATUS: 7, PROJECTNAME: 'Nitrogen', CODE: 14.0067, OPPID: 'N'},
-    {APPROVALSTATUS: 8, PROJECTNAME: 'Oxygen', CODE: 15.9994, OPPID: 'O'},
-    {APPROVALSTATUS: 9, PROJECTNAME: 'Fluorine', CODE: 18.9984, OPPID: 'F'},
-    {APPROVALSTATUS: 10, PROJECTNAME: 'Neon', CODE: 20.1797, OPPID: 'Ne'},
-  ];
+export class DashboardcountModel
+{
+  _draft_obf:number;
+  _draft_ppl:number;
+  _draft:number;
+  _submitted_obf:number;
+  _submitted_ppl:number;
+  _submitted:number;
+  _approved_obf:number;
+  _approved_ppl:number;
+  _rejected_obf:number;
+  _rejected_ppl:number;
+  _rejected:number;
+}
+//end region
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -56,7 +52,7 @@ export class DashboardComponent implements OnInit {
    // dataSource = ELEMENT_DATA;
   Draft:boolean=true;
   SubmittedScreen:boolean=false;
-
+  _dashboardcountModel:DashboardcountModel=new DashboardcountModel();
   listData: MatTableDataSource<any>;
   columns:Array<any>;
   displayedColumns:Array<any>;
@@ -96,6 +92,7 @@ export class DashboardComponent implements OnInit {
 
     }
     this.CallDashBoardService();
+    this.GetDatabaseCount();
   }
   ngAfterViewInit() {
     this.listData.sort = this.sort;
@@ -117,11 +114,6 @@ export class DashboardComponent implements OnInit {
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
        this.BindGridDetails();
-
-
-
-    
-     
     },
     (error:HttpErrorResponse)=>{
       debugger;
@@ -216,4 +208,28 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  GetDatabaseCount()
+  {
+    
+
+    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
+      debugger;
+      console.log("DashBoardData");
+      console.log(Result);
+      var loginresult =Result;
+      this._dashboardcountModel=JSON.parse(Result);
+      
+    },
+    (error:HttpErrorResponse)=>{
+      debugger;
+      if (error.status==401)
+      {
+        this.router.navigateByUrl('/login');
+        
+      }
+      
+    }
+    );
+  }
 }
