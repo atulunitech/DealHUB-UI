@@ -13,7 +13,7 @@ export class LoginModel
   _user_code:string;
   _password:string;
   _token:string;
-  // _SecretKey:string;
+   _SecretKey:string;
   privilege_name:string;
 }
 //endregion
@@ -125,13 +125,13 @@ export class LoginComponent implements OnInit {
     // this.loginvalid.get('Password').setValue(salt+ivsalt+encryptedpwd);
 
     //below code is working fine, but commented to show changes in obf
-    // let encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
-    // this.loginvalid.get('Password').setValue(encryptedpwd);
-    // console.log("check pwd");
-    // console.log(this.loginvalid.get('Password').value);
+     let encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
+     this.loginvalid.get('Password').setValue(encryptedpwd);
+     console.log("check pwd");
+     console.log(this.loginvalid.get('Password').value);
 
     this.loginmodel._user_code=this.loginvalid.get('userID').value;
-    // this.loginmodel._SecretKey = this.key;
+    this.loginmodel._SecretKey = this.key;
     this.loginmodel._password=this.loginvalid.get('Password').value;
     this.RememberMe = this.loginvalid.get('RememberMe').value;
 
