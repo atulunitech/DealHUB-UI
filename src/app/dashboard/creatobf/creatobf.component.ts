@@ -287,7 +287,7 @@ export class CreatobfComponent implements OnInit {
 
 getsolutionmaster()
 {
-this._obfservices.getsolutionmaster().subscribe(data =>{
+this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -719,7 +719,7 @@ downloaddocument(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-         this._obfservices.obfmodel._is_loi_po_uploaded = "yes";
+         this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
         }
         else if(types == "support")
         {
@@ -789,13 +789,19 @@ downloaddocument(event)
 
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
       debugger;
-
+        if(!wb.SheetNames.includes("OBF"))
+        {
+          this._mesgBox.showError("Standard OBF Coversheet not found");
+          this.coversheetfiles = [];
+          return false;
+        }
       const wsname : string = wb.SheetNames[6];
 
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       console.log("get values");
       console.log(ws);
     // console.log(ws.A1.h);
+    try{
     this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.h});
     this._obfservices.obfmodel._dh_project_name = ws.E4.h;
     this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.h});
@@ -819,6 +825,12 @@ downloaddocument(event)
        return obj.viewValue === ws.E8.h;
      // return obj.viewValue === "E-Commerce";
     });
+    if(!(result.length > 0))
+    {
+      this._mesgBox.showError("Vertical field is not correct, please check.");
+      this.coversheetfiles = [];
+          return false; 
+    }
      let verticalid = parseInt(result[0].value.toString());
     //let verticalid = 2;
     this._obfservices.obfmodel._vertical_id = verticalid;
@@ -865,11 +877,21 @@ downloaddocument(event)
     console.log(this._obfservices.ObfCreateForm);
     this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
 
-     console.log("MAin DATa: "+this.data);
+    //  console.log("MAin DATa: "+this.data);
 
-     let x = this.data.slice(1);
-      console.log("Sliced DATA"+x);
-
+    //  let x = this.data.slice(1);
+    //   console.log("Sliced DATA"+x);
+    }
+    catch(Error)
+    {
+      let val =  this.validateform();
+      if(!val)
+      {
+        this.coversheetfiles = [];
+          return false; 
+      }
+    }
+      
     };
 
     reader.readAsBinaryString(evt.addedFiles[0]);
@@ -1048,13 +1070,13 @@ downloaddocument(event)
       this._obfservices.ObfCreateForm.patchValue({Loiposheet: ""});
       this.loipofiles.length=0;
       this.loiopdisabled = true;
-      this._obfservices.obfmodel._is_loi_po_uploaded = "no";
+      this._obfservices.obfmodel._is_loi_po_uploaded = "N";
     }
     else{
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       this.loiopdisabled = false;
-      this._obfservices.obfmodel._is_loi_po_uploaded = "yes";
+      this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
     }
   }
 
