@@ -5,12 +5,15 @@ import {Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
 import {MessageBoxComponent} from '../../shared/MessageBox/MessageBox.Component';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import * as CryptoJS from 'crypto-js'; 
+
 //region model
 export class LoginModel
 {
   _user_code:string;
   _password:string;
   _token:string;
+  // _SecretKey:string;
   privilege_name:string;
 }
 //endregion
@@ -33,11 +36,22 @@ export class LoginComponent implements OnInit {
   ResetPass:boolean=false;
   NewPassword:any="";
   confirmpassword:any="";
+  key:string = "";
+  midval:string="";
   constructor(private formbuilder:FormBuilder, 
     private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent) { }
 
 
   ngOnInit(): void {
+
+    //Password Secret key 
+    let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+     this.key = "$!$030!m0l0l"+randomNumber.toString();
+    let plainTextBytes = this.stringtobytes(this.key);
+    this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
+    
+
+
     // sample comment
     this.loginvalid = new FormGroup({
      
@@ -66,6 +80,29 @@ export class LoginComponent implements OnInit {
     }
   }
   
+  setEncryption(keys, value){
+    var key = CryptoJS.enc.Utf8.parse(keys);
+    var iv = CryptoJS.enc.Utf8.parse(keys);
+    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+    {
+        keySize: 256 / 32,
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+
+    return encrypted.toString();
+  }
+
+
+   stringtobytes(str) {
+    var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
+    var bufView = new Uint16Array(buf);
+    for (var i=0, strLen=str.length; i < strLen; i++) {
+      bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+  }
 
   GetToken(loginmodel)
   {
@@ -80,7 +117,21 @@ export class LoginComponent implements OnInit {
   }
   onFormSubmit()
   {
+    let midstr = atob(this.midval);
+    //this.key = midstr;
+    let salt = CryptoJS.lib.WordArray.random(128 / 8);
+    let ivsalt = CryptoJS.lib.WordArray.random(128 / 8);
+    // let encryptedpwd = this.setEncryption(midstr,this.loginvalid.get('Password').value);
+    // this.loginvalid.get('Password').setValue(salt+ivsalt+encryptedpwd);
+
+    //below code is working fine, but commented to show changes in obf
+    // let encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
+    // this.loginvalid.get('Password').setValue(encryptedpwd);
+    // console.log("check pwd");
+    // console.log(this.loginvalid.get('Password').value);
+
     this.loginmodel._user_code=this.loginvalid.get('userID').value;
+    // this.loginmodel._SecretKey = this.key;
     this.loginmodel._password=this.loginvalid.get('Password').value;
     this.RememberMe = this.loginvalid.get('RememberMe').value;
 

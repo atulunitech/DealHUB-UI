@@ -170,8 +170,8 @@ export class OBFServices {
        httpOptions);  
   }
 
-  getsolutionmaster(): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+  getsolutionmaster(usercode: string): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
     return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
        httpOptions);  
   }
