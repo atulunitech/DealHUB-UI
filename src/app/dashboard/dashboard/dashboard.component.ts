@@ -98,6 +98,10 @@ export class DashboardComponent implements OnInit {
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator
 }
+downloaddetailobf(element)
+{
+  alert("download documnet");
+}
   getToolTipData(issueId: any): any {
     
     //  alert(JSON.stringify(issueId));
@@ -151,7 +155,7 @@ export class DashboardComponent implements OnInit {
   })
   this.displayedColumns = this.columns.map(c => c.columnDef);
   //this.displayedColumns.push('ActionDraft');
-  this.addColumn("Draft") 
+  this.addColumn(0) 
   this.theRemovedElement  = this.columns.shift();
      
      console.log("columns"+this.columns);
@@ -179,33 +183,41 @@ export class DashboardComponent implements OnInit {
   //   console.log(event);
   // }
   addColumn(selection) {
-    if(selection == "Draft")
+  if(this.privilege_name=="OBF Initiator")
     {
-      
-     this.displayedColumns=this.DraftColumn;
-     this.displayedColumns.forEach((value,index)=>{
-      if(value=="ActionDraft") this.displayedColumns.splice(index,1);
-      });
-     this.displayedColumns.push('ActionDraft');
-      // this.displayedColumns.push("DetailedOBF");
-    } 
-    if(selection == "Submitted" )
-    {
-     
-      this.displayedColumns=this.SubmittedScreenColumn;
-     
-    }   
-    if(selection == "Rejected" )
-    {
-     
-      this.displayedColumns=this.RejectedScreenColumn;
-     
-    }   
-    if(selection=="Pendingforapproval")
-    {
-      this.displayedColumns=this.PendingReviewercolumn;
-    
+      if(selection==0)
+      {
+        //Draft Section.
+        this.displayedColumns=this.DraftColumn;
+      }
+      else if (selection==1)
+      {
+          //Submitted section
+          this.displayedColumns=this.SubmittedScreenColumn;
+      }
+      else if(selection==2)
+      {
+        this.displayedColumns=this.RejectedScreenColumn;
+      }
     }
+    else if(this.privilege_name=="OBF Reviewer")
+    {
+      if(selection==0)
+      {
+        //Pending for approval Section.
+      this.displayedColumns=this.PendingReviewercolumn;
+      }
+      else if (selection==1)
+      {
+         //Approved section
+
+      }
+      else if(selection==2)
+      {
+        this.displayedColumns=this.RejectedScreenColumn;
+      }
+    }
+   
   }
 
   GetDatabaseCount()

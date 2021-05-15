@@ -553,6 +553,7 @@ this._obfservices.getsolutionmaster().subscribe(data =>{
     {
       return this.sanitizer.bypassSecurityTrustUrl(url);
     }
+  
   }
 downloaddocument(event)
 {
@@ -568,6 +569,10 @@ downloaddocument(event)
         window.open(url);
       }
     }
+  }
+  if(this.supportdocpath== null)
+  {
+    this._mesgBox.showError("No Supporting Documents to Download");
   }
   
 }
