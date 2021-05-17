@@ -549,16 +549,13 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
   }
 
   sanitize(url:string){
-    if(url != "")
-    {
+    
       return this.sanitizer.bypassSecurityTrustUrl(url);
-    }
-  
   }
 downloaddocument(event)
 {
   event.preventDefault();
-  if(this.supportdocpath== null)
+  if(this.supportdocpath== "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
@@ -569,12 +566,25 @@ downloaddocument(event)
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-        window.open(url);
+        window.open(url,"_self");
       }
     }
   }
- 
+
   
+}
+downloadLOIp(event)
+{
+  event.preventDefault();
+  if(this.loipopath == "")
+  {
+    this._mesgBox.showError("No Loi/po to Download");
+  }
+  else{
+    window.open(this.loipopath,"_self");
+  }
+ 
+
 }
 
   
