@@ -558,7 +558,10 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
 downloaddocument(event)
 {
   event.preventDefault();
-  
+  if(this.supportdocpath== null)
+  {
+    this._mesgBox.showError("No Supporting Documents to Download");
+  }
   if(this._obfservices.obfmodel.Attachments.length != 0)
   {
     for (let i=0;i< this._obfservices.obfmodel.Attachments.length;i++)
@@ -570,10 +573,7 @@ downloaddocument(event)
       }
     }
   }
-  if(this.supportdocpath== null)
-  {
-    this._mesgBox.showError("No Supporting Documents to Download");
-  }
+ 
   
 }
 
