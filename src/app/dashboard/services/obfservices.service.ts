@@ -139,7 +139,7 @@ export class OBFServices {
     Createddate:new FormControl(""),
     Sapio:new FormControl(null,[this.SIOnumbervalidate]),
     Customername:new FormControl("",Validators.required),
-    Sapcustomercode:new FormControl(""),
+    Sapcustomercode:new FormControl("",[this.NoSpecialCharacters]),
     Projectprimarylocation:new FormControl(""),
     Solutiontype:new FormControl(""),
     Sector:new FormControl(""),
@@ -158,9 +158,9 @@ export class OBFServices {
     Assumptionrisks:new FormControl("",Validators.required),
     Payment_Terms_description:new FormControl(""),
     Loipo:new FormControl("",Validators.required),
-    otherservices:new FormControl({value:"",disabled:true}),
-    othersolutions:new FormControl({value:"",disabled:true}),
-    otherintegratedsolutions:new FormControl({value:"",disabled:true}),
+    otherservices:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
+    othersolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
+    otherintegratedsolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
     comments:new FormControl("")
    });
 
@@ -197,6 +197,14 @@ export class OBFServices {
    SIOnumbervalidate(control: AbstractControl): {[key: string]: any} | null  {
     if (control.value && control.value.length != 8) {
       return { 'Sionumberinvalid': true };
+    }
+    return null;
+  }
+
+  NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[^a-zA-z0-9 ]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidservices': true };
     }
     return null;
   }

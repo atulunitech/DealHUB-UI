@@ -17,6 +17,7 @@ import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
+import { element } from 'protractor';
 
 interface Serviceslist {
   value: string;
@@ -593,11 +594,38 @@ downloadLOIp(event)
   isloipo:boolean=true;
   isSupport:boolean=true;
 
+   bytesToSize(bytes):number {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (bytes === 0) return 0;
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    if (i === 0) return bytes;
+    return parseFloat((bytes / (1024 ** i)).toFixed(1));
+  }
 
 	onSelect(event,types) {
+    try{
+    // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+    var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
+   
+    event.addedFiles.forEach(element => {
+     // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+      if( Math.floor(this.bytesToSize(element.size)) == 0)
+      {
+        throw new Error("The file size of "+element.name+" is invalid" );
+      }
+
+      if(format.test(element.name))
+      {
+        throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+       }
+    });
     this.progress = 0;
     if(types == "coversheet")
        {
+        if(event.addedFiles.length > 1)
+        {
+          throw new Error("Kindly upload only one valid coversheet");
+        }
         
         if(this.coversheetfiles.length >= 1)
         {
@@ -616,7 +644,10 @@ downloadLOIp(event)
        }
        else if(types == "loipo")
        {
-         
+        if(event.addedFiles.length > 1)
+        {
+          throw new Error("Kindly upload only one valid Loi/Po Sheet");
+        }
          if(this.loipofiles.length >= 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
@@ -638,6 +669,11 @@ downloadLOIp(event)
        console.log("check progrss value");
        console.log(this.progress);
 		// this.files.push(...event.addedFiles);
+  }
+  catch(e)
+  {
+    this._mesgBox.showError(e.message);
+  }
 
 	}
   SaveAttachmentParameter:SaveAttachmentParameter;
@@ -768,7 +804,20 @@ downloadLOIp(event)
     // this.validateform();
   }
 
-	onRemove(files:File[],event) {
+	onRemove(files:File[],event,types) {
+    if(types == "coversheet")
+    {
+      this.iscoversheet = !this.iscoversheet;
+    }
+    else if(types == "loipo")
+    {
+      this.isloipo = !this.isloipo;
+      
+    }
+    else if(types == "support")
+    {
+      this.isSupport = !this.isSupport;
+    }
 		console.log(event);
 		files.splice(files.indexOf(event), 1);
     if(this.coversheetfiles.length == 0)
@@ -785,6 +834,16 @@ downloadLOIp(event)
     }
 
 	}
+
+   renameKey(obj, old_key, new_key) {   
+    // check if old key = new key  
+        if (old_key !== new_key) {                  
+           Object.defineProperty(obj, new_key, // modify old key
+                                // fetch description from object
+           Object.getOwnPropertyDescriptor(obj, old_key));
+           delete obj[old_key];                // delete old key
+           }
+    }
   updatedatafromcoversheet(evt)
   {
     console.log(evt);
@@ -799,14 +858,22 @@ downloadLOIp(event)
 
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
       debugger;
-        if(!wb.SheetNames.includes("OBF"))
+            wb.SheetNames.forEach((element,index) =>{
+              wb.SheetNames[index] = element.toLowerCase();
+            });
+        if(!wb.SheetNames.includes("obf coversheet"))
         {
           this._mesgBox.showError("Standard OBF Coversheet not found");
           this.coversheetfiles = [];
           return false;
         }
-      const wsname : string = wb.SheetNames[6];
-
+        for (var key in wb.Sheets) {
+          if (Object.prototype.hasOwnProperty.call(wb.Sheets, key)) {
+            this.renameKey(wb.Sheets,key,key.toLowerCase());
+          }
+      }
+      const wsname : string = "obf coversheet";
+      
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       console.log("get values");
       console.log(ws);
@@ -1081,6 +1148,8 @@ downloadLOIp(event)
       this.loipofiles.length=0;
       this.loiopdisabled = true;
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
+      this.loipofiles = [];
+      this.LoiPoprogress = [];
     }
     else{
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
@@ -1472,6 +1541,12 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       }
     }
     
+  }
+
+  fetchcustomercode()
+  {
+    this._obfservices.obfmodel._sap_customer_code = this._obfservices.ObfCreateForm.get("Sapcustomercode").value;
+   // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
   }
 
 }
