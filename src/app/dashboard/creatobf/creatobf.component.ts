@@ -618,6 +618,12 @@ downloadLOIp(event)
       {
         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
        }
+      // if( this.bytesToSize(element.size) > 4)
+      if( element.size > 4194304)
+      {
+        throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+      }
+
     });
     this.progress = 0;
     if(types == "coversheet")
@@ -646,12 +652,12 @@ downloadLOIp(event)
        {
         if(event.addedFiles.length > 1)
         {
-          throw new Error("Kindly upload only one valid Loi/Po Sheet");
+          throw new Error("Kindly upload only one valid LOI/PO Sheet");
         }
          if(this.loipofiles.length >= 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
-          this._mesgBox.showError("Kindly upload only one Loi / Po file");
+          this._mesgBox.showError("Kindly upload only one valid LOI/PO Sheet");
           return false;
          }
          else{
@@ -679,10 +685,12 @@ downloadLOIp(event)
   SaveAttachmentParameter:SaveAttachmentParameter;
   uploadfiles(files:File[],types)
   {
+    let val = true;
     if(types == "coversheet")
     {
       this.iscoversheet = !this.iscoversheet;
       this.Coversheetprogress = [];
+      val = this.validateform();
     }
     else if(types == "loipo")
     {
@@ -699,7 +707,7 @@ downloadLOIp(event)
     this.message= [];
     var path="";
     var consolidatedpath="";
-    const val = this.validateform();
+   // const val = this.validateform();
     if(val)
     {
     for (let i = 0; i < files.length; i++) {
@@ -816,7 +824,8 @@ downloadLOIp(event)
     }
     else if(types == "support")
     {
-      this.isSupport = !this.isSupport;
+      
+      // this.isSupport = !this.isSupport;
     }
 		console.log(event);
 		files.splice(files.indexOf(event), 1);
@@ -830,6 +839,7 @@ downloadLOIp(event)
     }
     if(this.supportfiles.length == 0)
     {
+      this.isSupport = !this.isSupport;
       this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
     }
 
@@ -1136,6 +1146,22 @@ downloadLOIp(event)
       this.supportchecked =true;
       this._obfservices.ObfCreateForm.get('Supportpath').clearValidators();
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+      this.supportfiles =[];
+      this.SupportPoprogress = [];
+      this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
+      let filteredsupportarray:SaveAttachmentParameter[] = [];
+       this._obfservices.obfmodel.Attachments.forEach((element,index,array) => {
+         if(element._description != "support")
+         {
+          // this._obfservices.obfmodel.Attachments.splice(index, 1);
+          filteredsupportarray.push(element);
+         // console.log(element._fname);
+        }
+       });
+       this._obfservices.obfmodel.Attachments = filteredsupportarray;
+      //this._obfservices.obfmodel.Attachments.splice(this._obfservices.obfmodel.Attachments.findIndex(e => e._description === "support"),1);
+      console.log("check attachment after");
+      console.log(this._obfservices.obfmodel.Attachments);
      }
    }
 
@@ -1233,7 +1259,7 @@ downloadLOIp(event)
     else if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
     {
      // alert("Opportunityid is required");
-      this._mesgBox.showError("Opportunityid is required");
+      this._mesgBox.showError("Opportunity Id is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('State').errors)
@@ -1310,7 +1336,7 @@ downloadLOIp(event)
     else if(this._obfservices.ObfCreateForm.get('Loipo').errors)
     {
      // alert("Loi / po  field is required");
-      this._mesgBox.showError("Loi / po  field is required");
+      this._mesgBox.showError("LOI/PO  field is required");
       return false;
     }
     return true;
