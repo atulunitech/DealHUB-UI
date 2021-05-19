@@ -248,4 +248,8 @@ downloaddetailobf(element)
     }
     );
   }
+  getOBFSummaryPage(Row)
+  {
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
+  }
 }

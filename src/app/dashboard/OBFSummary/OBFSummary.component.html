@@ -1,0 +1,36 @@
+<form [formGroup]="_obfservices.ObfCreateForm">
+<div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
+    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+        <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> Back</div>
+    <div class="com_title conm_title_obf">OBF Summary</div>
+</div>
+<div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+      <div class="back_rout" routerLink="/DealHUB/dashboard">Close</div>
+    </div>
+  </div>
+</div>
+<div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
+    <div class="cust-accor">
+        <mat-accordion>
+            <mat-expansion-panel >
+                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+                    <mat-panel-title>
+                        OBF Summary
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+            
+                  Details
+            </mat-expansion-panel>
+            <mat-expansion-panel >
+                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+                    <mat-panel-title>
+                        Detailed Timeline History
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              Details
+            </mat-expansion-panel>
+        </mat-accordion>
+        </div>
+</div>
+</form>

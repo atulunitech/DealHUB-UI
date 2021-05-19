@@ -96,6 +96,7 @@ export class LoginComponent implements OnInit {
     return encrypted.toString();
   }
 
+ 
 
    stringtobytes(str) {
     var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
@@ -233,7 +234,20 @@ export class LoginComponent implements OnInit {
   public checkResetError = (controlName: string, errorName: string) => {
     return this.ResetPasswordForm.controls[controlName].hasError(errorName);
   }
-  
+
+  // <mat-error *ngIf="checkError('Password', 'Invalid')">Invalid Characters</mat-error>
+                   
+  // error:boolean=false;
+  //  // Only AlphaNumeric with Some Characters [-_ ]
+  //  keyPress(event) {
+
+  //   var inp = String.fromCharCode(event.keyCode);
+  //   // Allow numbers, alpahbets, space, underscore
+  //   if (/[& (-_  ) # !]/.test(inp)) {
+  //     return this.checkError("Password","Invalid");
+     
+  //   } 
+  // }
   lostPass()
   {
     this.log_in = false;
