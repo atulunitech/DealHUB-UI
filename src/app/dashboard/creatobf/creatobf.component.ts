@@ -661,6 +661,10 @@ downloadLOIp(event)
           return false;
          }
          else{
+           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           {
+            throw new Error("Kindly select LOI or PO file type");
+           }
         this.loipofiles.push(...event.addedFiles);
         this.isloipo = !this.isloipo;
         }
@@ -889,18 +893,28 @@ downloadLOIp(event)
       console.log(ws);
     // console.log(ws.A1.h);
     try{
-    this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.h});
-    this._obfservices.obfmodel._dh_project_name = ws.E4.h;
-    this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.h});
-    this._obfservices.obfmodel._customer_name = ws.E5.h;
+      if(ws.E4.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
+    this._obfservices.obfmodel._dh_project_name = ws.E4.w;
+    if(ws.E5.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
+    this._obfservices.obfmodel._customer_name = ws.E5.w;
     // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: ws.E6.h});
     // this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: ws.E7.h});
     // this._obfservices.ObfCreateForm.patchValue({Projecttype: ws.E5.h});
-    this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.h});
-    this._obfservices.obfmodel._opportunity_id = ws.E6.h;
-    this._obfservices.ObfCreateForm.patchValue({State: ws.E7.h});
-    this._obfservices.obfmodel._dh_location = ws.E7.h;
-    this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.h});
+    if(ws.E6.h == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
+    this._obfservices.obfmodel._opportunity_id = ws.E6.w;
+    if(ws.E7.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({State: ws.E7.w});
+    this._obfservices.obfmodel._dh_location = ws.E7.w;
+    if(ws.E8.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
 
     let value: any = ws.H3.v;
     const parsedDate: Date = new Date(value);
@@ -909,7 +923,7 @@ downloadLOIp(event)
     value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
     this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
     var result = this.verticallist.filter(obj => {
-       return obj.viewValue === ws.E8.h;
+       return obj.viewValue === ws.E8.w;
      // return obj.viewValue === "E-Commerce";
     });
     if(!(result.length > 0))
@@ -936,30 +950,50 @@ downloadLOIp(event)
     //this._obfservices.ObfCreateForm.patchValue({Verticalhead: "abc"});
     // this._obfservices.ObfCreateForm.patchValue({Sector: ws.E11.h});
     // this._obfservices.ObfCreateForm.patchValue({Subsector: ws.E12.h});
-    this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.h});
-    this._obfservices.obfmodel._dh_desc = ws.D12.h;
+    if(ws.D12.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
+    this._obfservices.obfmodel._dh_desc = ws.D12.w;
+    if(ws.D13.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
     this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+    if(ws.F13.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
     this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+    if(ws.H13.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
     this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+    if(ws.D14.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
     this._obfservices.obfmodel._total_project_life = ws.D14.w;
-    this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14.w});
-    this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14.w.toString().replace('%',""));
-    this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14.w});
-    this._obfservices.obfmodel._ebt = parseFloat(ws.H14.w.toString().replace('%',""));
+    this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
+    this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
+    this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
+    this._obfservices.obfmodel._ebt = parseFloat(ws.H14 == undefined?0:ws.H14.w.toString().replace('%',""));
+    if(ws.D15.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
     this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
-    this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15.w});
-    this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15.w.toString().replace('%',""));
+    this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
+    this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15 == undefined?0:ws.F15.w.toString().replace('%',""));
+    if(ws.H15.w == "#N/A")
+    throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
     this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
-    this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.h})
-    this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.h});
-    this._obfservices.obfmodel._assumptions_and_risks = ws.D17.h;
-    this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.h});
+    if(ws.D16.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
+    if(ws.D17.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
+    this._obfservices.obfmodel._assumptions_and_risks = ws.D17.w;
+    if(ws.D18.w == "#N/A")
+    throw new Error();
+    this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
     console.log("check form values");
     console.log(this._obfservices.ObfCreateForm);
     this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
@@ -975,6 +1009,7 @@ downloadLOIp(event)
       if(!val)
       {
         this.coversheetfiles = [];
+        this.iscoversheet = !this.iscoversheet;
           return false; 
       }
     }
@@ -1176,6 +1211,7 @@ downloadLOIp(event)
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
       this.loipofiles = [];
       this.LoiPoprogress = [];
+      this._obfservices.ObfCreateForm.get("Loipodropdown").setValue("");
     }
     else{
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
@@ -1325,6 +1361,12 @@ downloadLOIp(event)
     {
      // alert("Payment terms field is required");
      this._mesgBox.showError("Payment terms field is required");
+      return false;
+    }
+    else if(this._obfservices.ObfCreateForm.get('Payment_Terms_description').errors)
+    {
+     // alert("Payment terms field is required");
+     this._mesgBox.showError("Payment terms description field is required");
       return false;
     }
     else if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)

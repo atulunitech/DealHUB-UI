@@ -17,6 +17,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BnNgIdleService } from 'bn-ng-idle';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
@@ -41,7 +42,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   //  BrowserAnimationsModule,
     
     ],
-    providers: [AuthGuard,{
+    providers: [BnNgIdleService,AuthGuard,{
       provide : HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
       multi : true

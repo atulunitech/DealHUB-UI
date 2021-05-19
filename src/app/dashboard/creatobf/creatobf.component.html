@@ -17,7 +17,7 @@
       <div class="cust-accor">
           <mat-accordion>
             <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
-                <mat-expansion-panel  [expanded]="step === 0" (opened)="setStep(0)" >
+                <mat-expansion-panel [disabled]="true" [expanded]="step === 0" (opened)="setStep(0)" >
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                       1/3 Upload Document 
