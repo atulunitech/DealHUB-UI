@@ -42,13 +42,13 @@
          {{(this.privilege_name) == 'OBF Initiator' ? ('Draft') : ('Pending for approval')}}
         </div>
         <div class="fil_had_no">
-          {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft) : (0)}}
+          {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
-            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_obf) : (0)}} 
+            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
           </div><div class="lst_ppl" >
-            PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_ppl) : (0)}} 
+            PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
            </div>
         </div>
       </div>
@@ -59,16 +59,16 @@
         </div>
        
         <div class="fil_had_no">
-       {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted) : (0)}}
+       {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}}
         </div>
       
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" >
-            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_obf) : (0)}} 
+            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}} 
           </div>
         
           <div class="lst_ppl">
-             PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_ppl) : (0)}} 
+             PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}} 
           </div>
          
         </div>
