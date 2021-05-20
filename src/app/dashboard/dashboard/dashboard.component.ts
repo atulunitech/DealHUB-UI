@@ -159,7 +159,7 @@ downloaddetailobf(element)
   })
   this.displayedColumns = this.columns.map(c => c.columnDef);
   //this.displayedColumns.push('ActionDraft');
-  this.addColumn(0) 
+   
   this.theRemovedElement  = this.columns.shift();
      
      console.log("columns"+this.columns);
@@ -171,7 +171,7 @@ downloaddetailobf(element)
   this.listData = new MatTableDataSource(this.dashboardData);
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
-  
+  this.addColumn(0)
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -186,17 +186,26 @@ downloaddetailobf(element)
   // change(event) {
   //   console.log(event);
   // }
+  filterValue:string;
   addColumn(selection) {
   if(this.privilege_name=="OBF Initiator")
     {
       if(selection==0)
       {
         //Draft Section.
+        
+        this.listData = new MatTableDataSource(this.dashboardData);
+        this.listData.filter="Pending";
+        if (this.listData.paginator) {
+          this.listData.paginator.firstPage();
+        }
         this.displayedColumns=this.DraftColumn;
       }
       else if (selection==1)
       {
           //Submitted section
+          this.listData.filter="";
+          this.listData.filter="Second Project";
           this.displayedColumns=this.SubmittedScreenColumn;
       }
       else if(selection==2)
