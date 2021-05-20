@@ -109,6 +109,9 @@ class obf{
   _sap_customer_code:string;
   sapio:SAPIO[] = [];
   _dh_comment:string ;
+  _solution_category_id:number;
+  _loi_po_details:string;
+  _payment_term_desc:string;
 }
 
 @Injectable({

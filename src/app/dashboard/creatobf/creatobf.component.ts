@@ -566,8 +566,15 @@ downloaddocument(event)
     {
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
-        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-        window.open(url,"_self");
+         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         window.open(url);
+        // const link = document.createElement('a');
+        //  link.setAttribute('target', '_self');
+        //  link.setAttribute('href', this._obfservices.obfmodel.Attachments[i]._fpath);
+        // link.setAttribute('download',this._obfservices.obfmodel.Attachments[i]._fpath );
+        // document.body.appendChild(link);
+        // link.click();
+        // link.remove();
       }
     }
   }
@@ -601,6 +608,8 @@ downloadLOIp(event)
     if (i === 0) return bytes;
     return parseFloat((bytes / (1024 ** i)).toFixed(1));
   }
+
+  supportfilecount:number=0;
 
 	onSelect(event,types) {
     try{
@@ -672,7 +681,15 @@ downloadLOIp(event)
        }
        else
        {
-         this.isSupport = !this.isSupport;
+         this.supportfilecount +=1;
+         if(this.supportfilecount > 1)
+         {
+
+         }
+         else
+         {
+          this.isSupport = !this.isSupport;
+         }
         this.supportfiles.push(...event.addedFiles);
         // this.files = this.supportfiles;
        }
@@ -987,6 +1004,7 @@ downloadLOIp(event)
     if(ws.D16.w == "#N/A")
     throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
+    this._obfservices.obfmodel._payment_term_desc = ws.D16.w;
     if(ws.D17.w == "#N/A")
     throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
@@ -994,6 +1012,7 @@ downloadLOIp(event)
     if(ws.D18.w == "#N/A")
     throw new Error();
     this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
+    this._obfservices.obfmodel._loi_po_details = ws.D18.w;
     console.log("check form values");
     console.log(this._obfservices.ObfCreateForm);
     this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
@@ -1388,6 +1407,7 @@ downloadLOIp(event)
   {
     if(evt.isUserInput){
     this.Solutionservicesarray = [];
+    this._obfservices.obfmodel._solution_category_id = evt.source.value
     //alert("hello world");
     console.log(evt);
     var result = this.Solutiongroup.filter(obj => {
