@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { obfsummarymodel } from '../dashboard/dashboard.component';
 
 
 export interface SAPIO {
@@ -207,5 +208,11 @@ export class OBFServices {
       return { 'invalidservices': true };
     }
     return null;
+  }
+
+  getobfsummarydata(obfsum:obfsummarymodel): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
+       httpOptions);  
   }
 }
