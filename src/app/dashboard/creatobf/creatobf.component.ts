@@ -566,8 +566,9 @@ downloaddocument(event)
     {
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
+        
         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-        window.open(url,"_self");
+        window.open(url);
       }
     }
   }
@@ -1551,8 +1552,6 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
 
   }
 
-  //Ankita code
- 
   GridBinding()
     {
       const columns = this.OBFData

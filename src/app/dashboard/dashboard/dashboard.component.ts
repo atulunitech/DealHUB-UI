@@ -263,10 +263,11 @@ downloaddetailobf(element)
   getOBFSummaryPage(Row)
   {
     console.log("check obf summary data");
-    this.obfsummary._opp_id = Row.Opp_Id;
-    this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
-    this._obfservices.getobfsummarydata(this.obfsummary).subscribe(res =>{
-
+    // this.obfsummary.dh_id = Row.dh_id;
+    // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+    this._obfservices.getobfsummarydata(Row.dh_id).subscribe(res =>{
+      console.log(res);
+      this._obfservices.initializeobf(JSON.parse(res));
     },
     (error)=>{
       alert(error.message);
@@ -279,5 +280,5 @@ downloaddetailobf(element)
 
 export class obfsummarymodel{
   _user_id:number;
-  _opp_id:string;
+  dh_id:number;
 }

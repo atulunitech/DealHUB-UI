@@ -210,9 +210,16 @@ export class OBFServices {
     return null;
   }
 
-  getobfsummarydata(obfsum:obfsummarymodel): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
-    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
+  getobfsummarydata(dh_id:number): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('dh_id', dh_id.toString()) };  
+    return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetOBFSummaryDetails",
        httpOptions);  
+       
+  }
+  initializeobf(data:any)
+  {
+    console.log(data);
+    this.obfmodel._dh_project_name=data.uploadDetails[0].dh_project_name;
+    
   }
 }
