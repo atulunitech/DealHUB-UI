@@ -275,6 +275,10 @@
   }
 }
 
+::ng-deep .mat-simple-snackbar-action {
+  color: white;
+}
+
 ::ng-deep.mat-snack-bar-container
 {
     &.custom_sneak_bar{
@@ -282,11 +286,11 @@
     color: white;
     font-weight: bold;
              }
-     &.error_sneak_bar{
-     background: rgb(218, 35, 35);
-     color: white;
-     font-weight: bold;
-       }
+           &.custom_error_sneak_bar{
+              background: #ce5359;
+              color: white;
+              font-weight: bold;
+                       }          
 }
 //end
 

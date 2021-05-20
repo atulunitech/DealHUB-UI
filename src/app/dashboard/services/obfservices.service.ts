@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { obfsummarymodel } from '../dashboard/dashboard.component';
 
 
 export interface SAPIO {
@@ -139,7 +140,7 @@ export class OBFServices {
     Createddate:new FormControl(""),
     Sapio:new FormControl(null,[this.SIOnumbervalidate]),
     Customername:new FormControl("",Validators.required),
-    Sapcustomercode:new FormControl(""),
+    Sapcustomercode:new FormControl("",[this.NoSpecialCharacters]),
     Projectprimarylocation:new FormControl(""),
     Solutiontype:new FormControl(""),
     Sector:new FormControl(""),
@@ -156,11 +157,11 @@ export class OBFServices {
     Projectdate:new FormControl(""),
     Projectbrief:new FormControl("",Validators.required),
     Assumptionrisks:new FormControl("",Validators.required),
-    Payment_Terms_description:new FormControl(""),
+    Payment_Terms_description:new FormControl("",Validators.required),
     Loipo:new FormControl("",Validators.required),
-    otherservices:new FormControl({value:"",disabled:true}),
-    othersolutions:new FormControl({value:"",disabled:true}),
-    otherintegratedsolutions:new FormControl({value:"",disabled:true}),
+    otherservices:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
+    othersolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
+    otherintegratedsolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
     comments:new FormControl("")
    });
 
@@ -200,5 +201,18 @@ export class OBFServices {
     }
     return null;
   }
-  
+
+  NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[^a-zA-z0-9 ]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidservices': true };
+    }
+    return null;
+  }
+
+  getobfsummarydata(obfsum:obfsummarymodel): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
+       httpOptions);  
+  }
 }

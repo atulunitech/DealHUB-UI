@@ -9,6 +9,7 @@ import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
+import { OBFServices } from '../services/obfservices.service';
 
 //region Model
 export class DashBoardModel
@@ -80,7 +81,7 @@ export class DashboardComponent implements OnInit {
   //   cancelLabel: 'Mégse',
   //   applyLabel: 'Ok',
   // };
-  constructor(private _dashboardservice:DashboardService,private router: Router) { }
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices) { }
  
 
   
@@ -257,8 +258,26 @@ downloaddetailobf(element)
     }
     );
   }
+
+  obfsummary:obfsummarymodel= new obfsummarymodel();
   getOBFSummaryPage(Row)
   {
+    console.log("check obf summary data");
+    this.obfsummary._opp_id = Row.Opp_Id;
+    this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+    this._obfservices.getobfsummarydata(this.obfsummary).subscribe(res =>{
+
+    },
+    (error)=>{
+      alert(error.message);
+    }
+    );
+    console.log(Row);
     this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
   }
+}
+
+export class obfsummarymodel{
+  _user_id:number;
+  _opp_id:string;
 }
