@@ -13,10 +13,11 @@ import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CreatobfComponent } from './creatobf/creatobf.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { OBFSummaryComponent } from './OBFSummary/OBFSummary.component';
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreatobfComponent],
+  declarations: [DashboardComponent, CreatobfComponent, OBFSummaryComponent],
   imports: [
     CommonModule,
     FormsModule,

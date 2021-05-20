@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit {
   confirmpassword:any="";
   key:string = "";
   midval:string="";
+  disablebutton:boolean=false;
+
   constructor(private formbuilder:FormBuilder, 
     private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent) { }
 
@@ -94,6 +96,7 @@ export class LoginComponent implements OnInit {
     return encrypted.toString();
   }
 
+ 
 
    stringtobytes(str) {
     var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
@@ -117,68 +120,86 @@ export class LoginComponent implements OnInit {
   }
   onFormSubmit()
   {
-    let midstr = atob(this.midval);
-    //this.key = midstr;
-    let salt = CryptoJS.lib.WordArray.random(128 / 8);
-    let ivsalt = CryptoJS.lib.WordArray.random(128 / 8);
-    // let encryptedpwd = this.setEncryption(midstr,this.loginvalid.get('Password').value);
-    // this.loginvalid.get('Password').setValue(salt+ivsalt+encryptedpwd);
+    if(this.loginvalid.get('Password').value != "" && this.loginvalid.get('userID').value != "")
+    {
+      this.disablebutton=true;
+      let midstr = atob(this.midval);
+      //this.key = midstr;
+      let salt = CryptoJS.lib.WordArray.random(128 / 8);
+      let ivsalt = CryptoJS.lib.WordArray.random(128 / 8);
+      // let encryptedpwd = this.setEncryption(midstr,this.loginvalid.get('Password').value);
+      // this.loginvalid.get('Password').setValue(salt+ivsalt+encryptedpwd);
+  
+      //below code is working fine, but commented to show changes in obf
+       let encryptedpwd="";
 
-    //below code is working fine, but commented to show changes in obf
-     let encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
-     this.loginvalid.get('Password').setValue(encryptedpwd);
-     console.log("check pwd");
-     console.log(this.loginvalid.get('Password').value);
+       encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
 
-    this.loginmodel._user_code=this.loginvalid.get('userID').value;
-    this.loginmodel._SecretKey = this.key;
-    this.loginmodel._password=this.loginvalid.get('Password').value;
-    this.RememberMe = this.loginvalid.get('RememberMe').value;
-
-    this._loginservice.getLoginDetails(this.loginmodel).subscribe(Result=>{
-      console.log(Result);
-      var loginresult =Result;
-
+       this.loginvalid.get('Password').setValue(encryptedpwd);
+       console.log("check pwd");
+       console.log(this.loginvalid.get('Password').value);
+  
+      this.loginmodel._user_code=this.loginvalid.get('userID').value;
+      this.loginmodel._SecretKey = this.key;
+      this.loginmodel._password=this.loginvalid.get('Password').value;
+      this.RememberMe = this.loginvalid.get('RememberMe').value;
+  
+      this._loginservice.getLoginDetails(this.loginmodel).subscribe(Result=>{
+        console.log(Result);
+        var loginresult =Result;
+      this.disablebutton=false;
       if(loginresult.hasOwnProperty("user")){
-      if(this.RememberMe)
-      {
-        localStorage.setItem("UserName",Result.user.UserName);
-        localStorage.setItem("Token",Result.user.Api_Key);
-        localStorage.setItem("rememberCurrentUser","true");
-
-       }
+        if(this.RememberMe)
+        {
+          localStorage.setItem("UserName",Result.user.UserName);
+          localStorage.setItem("Token",Result.user.Api_Key);
+          localStorage.setItem("rememberCurrentUser","true");
+  
+         }
+        else
+        {
+          localStorage.setItem("UserName",Result.user.UserName);
+          localStorage.setItem("Token",Result.user.Api_Key);
+          localStorage.setItem("rememberCurrentUser","false");
+        }
+        sessionStorage.setItem("privilege_name",Result.user.privilege_name);
+        localStorage.setItem("userToken",Result.user.Api_Key);
+        
+        console.log(Result.user.UserName);
+        
+        
+        //alert("Login Sucess");
+        this.router.navigate(['/DealHUB/dashboard']);
+       
+        
+        this._mesgBox.showSucess("Login Sucess.");
+      }
       else
       {
-        localStorage.setItem("UserName",Result.user.UserName);
-        localStorage.setItem("Token",Result.user.Api_Key);
-        localStorage.setItem("rememberCurrentUser","false");
+        this._mesgBox.showError("Login Failed.");
       }
-      sessionStorage.setItem("privilege_name",Result.user.privilege_name);
-      localStorage.setItem("userToken",Result.user.Api_Key);
-      
-      console.log(Result.user.UserName);
-      
-      
-      //alert("Login Sucess");
-      this.router.navigate(['/DealHUB/dashboard']);
-     
-      
-      this._mesgBox.showSucess("Login Sucess.");
+       
+      },
+      (error:HttpErrorResponse)=>{
+        this.disablebutton=false;
+        if(error.status !=0)
+        {
+          if(error.error.Record.MESSAGE == "Invalid Password Entered")
+          {
+            this._mesgBox.showError("Please Enter Correct UserCode Or Password");
+          }
+        }
+       else
+        { 
+           this._mesgBox.showError(error.message);}
+        }
+      );
     }
     else
     {
-      this._mesgBox.showError("Login Failed.");
- 
-     
+      this._mesgBox.showError("Please Enter Correct UserCode Or Password");
     }
-     
-    },
-    (error:HttpErrorResponse)=>{
-     this._mesgBox.showError(error.message);
-     
-      
-    }
-    );
+   
   }
   
   LostPass(event)
@@ -188,12 +209,19 @@ export class LoginComponent implements OnInit {
   }
   GetEmail()
   {
-    this.loginmodel._user_code=this.loginvalid.get('userID').value;
-    this.loginmodel._password=this.loginvalid.get('Password').value;
-    this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
-      alert("Email Send.");
-     
-    });
+    if(this.ResetPasswordForm.get('ResetPasswordUserid').value != "" )
+    {
+      this.loginmodel._user_code=this.ResetPasswordForm.get('ResetPasswordUserid').value;
+      this.loginmodel._password=this.loginvalid.get('Password').value;
+      this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
+        alert("Email Send.");
+       
+      });
+    }
+    else{
+      this._mesgBox.showError("Please Enter UserCode.");
+    }
+   
   }
   // getErrorMessage() {
   //   if (this.email.hasError('required')) {
@@ -209,7 +237,20 @@ export class LoginComponent implements OnInit {
   public checkResetError = (controlName: string, errorName: string) => {
     return this.ResetPasswordForm.controls[controlName].hasError(errorName);
   }
-  
+
+  // <mat-error *ngIf="checkError('Password', 'Invalid')">Invalid Characters</mat-error>
+                   
+  // error:boolean=false;
+  //  // Only AlphaNumeric with Some Characters [-_ ]
+  //  keyPress(event) {
+
+  //   var inp = String.fromCharCode(event.keyCode);
+  //   // Allow numbers, alpahbets, space, underscore
+  //   if (/[& (-_  ) # !]/.test(inp)) {
+  //     return this.checkError("Password","Invalid");
+     
+  //   } 
+  // }
   lostPass()
   {
     this.log_in = false;

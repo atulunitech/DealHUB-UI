@@ -28,6 +28,10 @@ export class DashboardcountModel
   _rejected_obf:number;
   _rejected_ppl:number;
   _rejected:number;
+  _pendingobf:number;
+  _pendingppl:number;
+  _TotalPending:number;
+  _approved:number;
 }
 //end region
 @Component({
@@ -243,5 +247,9 @@ downloaddetailobf(element)
       
     }
     );
+  }
+  getOBFSummaryPage(Row)
+  {
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
   }
 }
