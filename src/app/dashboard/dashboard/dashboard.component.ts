@@ -160,7 +160,7 @@ downloaddetailobf(element)
   })
   this.displayedColumns = this.columns.map(c => c.columnDef);
   //this.displayedColumns.push('ActionDraft');
-  this.addColumn(0) 
+   
   this.theRemovedElement  = this.columns.shift();
      
      console.log("columns"+this.columns);
@@ -172,7 +172,7 @@ downloaddetailobf(element)
   this.listData = new MatTableDataSource(this.dashboardData);
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
-  
+  this.addColumn(0)
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -187,17 +187,26 @@ downloaddetailobf(element)
   // change(event) {
   //   console.log(event);
   // }
+  filterValue:string;
   addColumn(selection) {
   if(this.privilege_name=="OBF Initiator")
     {
       if(selection==0)
       {
         //Draft Section.
+        
+        this.listData = new MatTableDataSource(this.dashboardData);
+        this.listData.filter= "Pending";
+        if (this.listData.paginator) {
+          this.listData.paginator.firstPage();
+        }
         this.displayedColumns=this.DraftColumn;
       }
       else if (selection==1)
       {
           //Submitted section
+          this.listData.filter="";
+          this.listData.filter="Second Project";
           this.displayedColumns=this.SubmittedScreenColumn;
       }
       else if(selection==2)
@@ -254,10 +263,11 @@ downloaddetailobf(element)
   getOBFSummaryPage(Row)
   {
     console.log("check obf summary data");
-    this.obfsummary._opp_id = Row.Opp_Id;
-    this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
-    this._obfservices.getobfsummarydata(this.obfsummary).subscribe(res =>{
-
+    // this.obfsummary.dh_id = Row.dh_id;
+    // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+    this._obfservices.getobfsummarydata(Row.dh_id).subscribe(res =>{
+      console.log(res);
+      this._obfservices.initializeobf(JSON.parse(res));
     },
     (error)=>{
       alert(error.message);
@@ -270,5 +280,5 @@ downloaddetailobf(element)
 
 export class obfsummarymodel{
   _user_id:number;
-  _opp_id:string;
+  dh_id:number;
 }

@@ -566,15 +566,9 @@ downloaddocument(event)
     {
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
-         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-         window.open(url);
-        // const link = document.createElement('a');
-        //  link.setAttribute('target', '_self');
-        //  link.setAttribute('href', this._obfservices.obfmodel.Attachments[i]._fpath);
-        // link.setAttribute('download',this._obfservices.obfmodel.Attachments[i]._fpath );
-        // document.body.appendChild(link);
-        // link.click();
-        // link.remove();
+        
+        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+        window.open(url);
       }
     }
   }
@@ -1571,8 +1565,6 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
 
   }
 
-  //Ankita code
- 
   GridBinding()
     {
       const columns = this.OBFData
