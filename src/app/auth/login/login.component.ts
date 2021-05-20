@@ -182,14 +182,17 @@ export class LoginComponent implements OnInit {
       },
       (error:HttpErrorResponse)=>{
         this.disablebutton=false;
-       if(error.error.Record.MESSAGE == "Invalid Password Entered")
+        if(error.status !=0)
         {
-          this._mesgBox.showError("Please Enter Correct UserCode Or Password");
+          if(error.error.Record.MESSAGE == "Invalid Password Entered")
+          {
+            this._mesgBox.showError("Please Enter Correct UserCode Or Password");
+          }
         }
-        else
-         { 
-           this._mesgBox.showError(error.error.Record.MESSAGE);}
-       }
+       else
+        { 
+           this._mesgBox.showError(error.message);}
+        }
       );
     }
     else
