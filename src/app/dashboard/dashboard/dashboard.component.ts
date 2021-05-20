@@ -195,7 +195,7 @@ downloaddetailobf(element)
         //Draft Section.
         
         this.listData = new MatTableDataSource(this.dashboardData);
-        this.listData.filter="Pending";
+        this.listData.filter= "Pending";
         if (this.listData.paginator) {
           this.listData.paginator.firstPage();
         }
