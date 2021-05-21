@@ -342,7 +342,7 @@
             </mat-expansion-panel>
         </mat-accordion>
         </div>
-        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp">
+        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator'">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt">On Hold</button>

@@ -37,6 +37,7 @@ import { Router } from '@angular/router';
     comments = new FormControl('', Validators.required);
     step=0;
     service:string;
+    privilege_name:string;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
 
@@ -52,6 +53,11 @@ import { Router } from '@angular/router';
    
     console.log(this._obfservices.obfsummarymodel);
     this.getserviceslist();
+    if(sessionStorage.getItem("privilege_name")!= null)
+    {
+      this.privilege_name=sessionStorage.getItem("privilege_name");
+
+    }
   }
   ngAfterViewInit(){
     this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
