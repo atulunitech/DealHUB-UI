@@ -16,10 +16,13 @@ export class AppComponent {
  
   // initiate it in your component OnInit
   ngOnInit(): void {
+   
     this.bnIdle.startWatching(600).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
-        console.log('session expired');
-        this.router.navigateByUrl('/login');
+        if(localStorage.getItem("rememberCurrentUser") != "true")
+        {
+          this.router.navigateByUrl('/login');
+        }
       }
     });
   }

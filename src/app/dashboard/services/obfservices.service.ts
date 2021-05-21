@@ -67,6 +67,54 @@ class obfsolutionandservices
   _dh_comment:string;
 }
 
+class obfsummary{
+  
+  solutionDetails:solutionDetails[];
+  uploadDetails:uploadDetails[];
+  AttachmentDetails:AttachmentDetails[];
+}
+
+class uploadDetails{
+  Loi_po_Details:string;
+  OBFFilepath:string;
+  VerticalHeadName:string;
+  Vertical_name:string;
+  assumptions_and_risks:string;
+  capex:number;
+  customer_name:string;
+  dh_code:string;
+  dh_desc:string;
+  dh_id:number;
+  dh_location:string;
+  dh_project_name:string;
+  ebt:number;
+  irr_borrowed_fund:number;
+  irr_surplus_cash:number;
+  is_loi_po_uploaded:string;
+  opportunity_id:string;
+  payment_terms:number;
+  sap_customer_code:string;
+  sector_name:string;
+  subsector_name:string;
+  total_cost:number;
+  total_margin:number;
+  total_project_life:string;
+  total_revenue:number;
+}
+
+class solutionDetails
+{
+  solution_name:string;
+  solutioncategory_name:string;
+  tablename:string;
+}
+
+class AttachmentDetails
+{
+  description:string;
+  filename:string;
+  filepath:string;
+}
 
 class obf{
   _dh_id:number;
@@ -109,6 +157,9 @@ class obf{
   _sap_customer_code:string;
   sapio:SAPIO[] = [];
   _dh_comment:string ;
+  _solution_category_id:number;
+  _loi_po_details:string;
+  _payment_term_desc:string;
 }
 
 @Injectable({
@@ -120,6 +171,7 @@ export class OBFServices {
 
   constructor(private http:HttpClient) { }
   obfmodel:obf = new obf();
+  obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
   obfsolutionandservices:obfsolutionandservices = new obfsolutionandservices();
   SaveAttachmentParameter:SaveAttachmentParameter = new SaveAttachmentParameter();
@@ -219,7 +271,11 @@ export class OBFServices {
   initializeobf(data:any)
   {
     console.log(data);
-    this.obfmodel._dh_project_name=data.uploadDetails[0].dh_project_name;
-    
-  }
+    this.obfsummarymodel.uploadDetails = data.uploadDetails;
+    this.obfsummarymodel.solutionDetails = data.solutionDetails;
+    this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
+
+    console.log("check data after transformation");
+    console.log(this.obfsummarymodel);
+      }
 }
