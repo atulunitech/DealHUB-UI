@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit,AfterViewInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -17,20 +17,70 @@ import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
     styleUrls: ['./OBFSummary.component.scss']
   })
 
-  export class OBFSummaryComponent implements OnInit {
-
-
+  export class OBFSummaryComponent implements OnInit,AfterViewInit {
+   
+    comments = new FormControl('', Validators.required);
     constructor(private sanitizer:DomSanitizer,
-        public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router) 
-      { }
+        public _obfservices:OBFServices,private dialog:MatDialog,
+
+        private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router) 
+      { 
+
+        this._obfservices.Obfsummarysubject.subscribe(data=>{
+          console.log(data +" :data");
+        });
+      }
       
   ngOnInit(): void {
+    // this._obfservices.Obfsummarysubject.subscribe(data=>{
+    //   console.log(data +" :data");
+    // })
     
+
+    console.log(this._obfservices.obfsummarymodel);
   }
+  ngAfterViewInit(){
+    this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
+      console.log(data +" :data on nginit");
+    });
+  }
+  // {
+  //   "isapproved": 0,
+  //   "rejectcomment": "string",
+  //   "rejectionto": 0,
+  //   "_dh_id": 0,
+  //   "_dh_header_id": 0,
+  //   "_fname": "string",
+  //   "_fpath": "string",
+  //   "_created_by": "string"
+  // }
+  ApproveDeatils()
+  {
+    this._obfservices._approveRejectModel.isapproved=1;
+    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectionto=0;
+    this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+    this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+    this._obfservices._approveRejectModel._fname="";
+    this._obfservices._approveRejectModel._fpath="";
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
+    
+      if(data.status =="sucess")
+      {
+        this._mesgBox.showSucess(data.message);
+      }
+      else{
+        this._mesgBox.showError(data.message);
+      }
+    });
+  }
+
   }

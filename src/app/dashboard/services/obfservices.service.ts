@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { obfsummarymodel } from '../dashboard/dashboard.component';
-
+import {Router} from "@angular/router";
 
 export interface SAPIO {
   _Cust_SAP_IO_Number: number;
@@ -85,6 +85,7 @@ class uploadDetails{
   dh_code:string;
   dh_desc:string;
   dh_id:number;
+  dh_header_id:number;
   dh_location:string;
   dh_project_name:string;
   ebt:number;
@@ -100,6 +101,7 @@ class uploadDetails{
   total_margin:number;
   total_project_life:string;
   total_revenue:number;
+  created_on:Date;
 }
 
 class solutionDetails
@@ -161,6 +163,17 @@ class obf{
   _loi_po_details:string;
   _payment_term_desc:string;
 }
+ class approveRejectModel
+{
+    isapproved: number;
+    rejectcomment :string;
+    rejectionto:number;
+    _dh_id:number;
+    _dh_header_id:number;
+    _fname:string;
+    _fpath:string;
+    _created_by:string;
+  }
 
 @Injectable({
   providedIn: 'root'
@@ -169,8 +182,11 @@ class obf{
 
 export class OBFServices {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private router: Router) { }
+  public Obfsummarysubject = new Subject<obfsummary>();
+
   obfmodel:obf = new obf();
+  _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
   obfsolutionandservices:obfsolutionandservices = new obfsolutionandservices();
@@ -274,8 +290,22 @@ export class OBFServices {
     this.obfsummarymodel.uploadDetails = data.uploadDetails;
     this.obfsummarymodel.solutionDetails = data.solutionDetails;
     this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
+    this.Obfsummarysubject.next(this.obfsummarymodel);
 
     console.log("check data after transformation");
     console.log(this.obfsummarymodel);
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
+    
+   }
+      getobfsummarydataonRefresh(): Observable<any>
+      {
+        return this.Obfsummarysubject.asObservable();
+      }
+      ApproveRejectObf(data:approveRejectModel): Observable<any> 
+      {
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/ApproveRejectObf",data,
+           httpOptions); 
       }
 }
+

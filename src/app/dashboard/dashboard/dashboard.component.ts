@@ -589,7 +589,7 @@ downloaddetailobf(element)
     }
     );
     console.log(Row);
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
+   
   }
 }
 
