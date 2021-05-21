@@ -43,7 +43,7 @@ interface SectotGroup {
   subsecorlist:subsecorlist[]
 }
 
-interface sectors{
+export interface sectors{
   value: number;
   viewValue: string;
   vertical_id:number;
@@ -57,7 +57,7 @@ interface verticallist{
   tablename:string;
 }
 
-interface subsectors{
+export interface subsectors{
   Sector_Id: number;
   Sector_Name: string;
   tablename:string;
@@ -114,7 +114,7 @@ class objectlist
   
 }
 
-class Serviceslist{
+ class Serviceslist{
   value:string;
   viewValue:string;
   constructor(val:string,viewval:string)
@@ -124,7 +124,7 @@ class Serviceslist{
    }
 }
 
-class SaveServiceParameter{
+ export class SaveServiceParameter{
   Solutioncategory:string;
   value:string;
   Serviceslist:Serviceslist[] = [];
@@ -139,13 +139,13 @@ class SaveServiceParameter{
   }
 }
 
-interface Solutionservices {
+export interface Solutionservices {
   Solutioncategory: string;
   value:string;
   Serviceslist: Serviceslist[];
 }
 
-interface Solutiongroup {
+export interface Solutiongroup {
   Solutioncategory: string;
   Solutionservices: Solutionservices[],
   value:string;
@@ -1410,6 +1410,7 @@ downloadLOIp(event)
     this.servicecate=solutioncategory;
     this.Solutionservicesarray = result[0].Solutionservices;
     this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
+    // this.servicesControl.setValue(["1","2"]);
   }
 
   }
@@ -1475,6 +1476,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   FinalSubmit()
   {
     console.log(this._obfservices.obfmodel);
+    console.log(this._obfservices.ObfCreateForm.value) ;
     this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
     this._obfservices.obfmodel._active = "A";
