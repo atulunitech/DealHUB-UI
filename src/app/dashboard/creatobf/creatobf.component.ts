@@ -1130,12 +1130,29 @@ downloadLOIp(event)
       })
     }
   
-    for(let i=0 ;i<this._obfservices.obfmodel.Services[0].Serviceslist.length ; i++)
+    var finalservicecat="";
+    for(let i=0 ;i<this._obfservices.obfmodel.Services.length ; i++)
     {
-     this.service = this.service+','+ this._obfservices.obfmodel.Services[0].Serviceslist[i].viewValue;
+      var Tempservice="";
+      var tempservicecat="";
+      Tempservice += this._obfservices.obfmodel.Services[i].Solutioncategory;
+      
+      for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
+      {
+        if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
+        {
+          
+          tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
+        }
+      }
     
+     tempservicecat=tempservicecat.substring(1);
+     finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+     
     }
-    this.service= this.service.substring(1)
+    // this.service = this.service.substring(1);
+    this.service=finalservicecat;
+    
     var temp= this.sectorlist.filter(x=>x.value==this._obfservices.obfmodel._Sector_Id);
     this.visiblesector = temp[0].viewValue
 

@@ -25,8 +25,12 @@ import { Router } from '@angular/router';
   })
 
   export class OBFSummaryComponent implements OnInit,AfterViewInit {
-   
+    readMore = false;
+    BrifreadMore=false;
+    paymentRead=false;
     comments = new FormControl('', Validators.required);
+    step=0;
+    service:string;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
 
@@ -39,28 +43,41 @@ import { Router } from '@angular/router';
       }
       
   ngOnInit(): void {
-    // this._obfservices.Obfsummarysubject.subscribe(data=>{
-    //   console.log(data +" :data");
-    // })
-    
-
+   
     console.log(this._obfservices.obfsummarymodel);
+    this.getserviceslist();
   }
   ngAfterViewInit(){
     this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
       console.log(data +" :data on nginit");
     });
   }
-  // {
-  //   "isapproved": 0,
-  //   "rejectcomment": "string",
-  //   "rejectionto": 0,
-  //   "_dh_id": 0,
-  //   "_dh_header_id": 0,
-  //   "_fname": "string",
-  //   "_fpath": "string",
-  //   "_created_by": "string"
-  // }
+  getserviceslist()
+  {
+ 
+    var Tempservice="";
+    for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+    {
+      Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+      
+    //   for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
+    //   {
+    //     if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
+    //     {
+          
+    //       tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
+    //     }
+    //   }
+    
+    //  tempservicecat=tempservicecat.substring(1);
+    //  finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+     
+    }
+    this.service=Tempservice;
+     this.service = this.service.substring(1);
+   
+  }
+  
   ApproveDeatils()
   {
     this._obfservices._approveRejectModel.isapproved=1;
@@ -82,5 +99,10 @@ import { Router } from '@angular/router';
       }
     });
   }
+  
+  // setStep(index: number) {
+  //   this.step = index;
+  // }
+
 
   }
