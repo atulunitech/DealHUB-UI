@@ -13,7 +13,7 @@
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
     <div class="cust-accor">
         <mat-accordion>
-            <mat-expansion-panel >
+            <mat-expansion-panel  [expanded]="step === 0" >
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                         OBF Summary
@@ -88,6 +88,15 @@
                 {{_obfservices.obfsummarymodel.uploadDetails[0].subsector_name}} 
               </div>
            </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Version_name
+            </div>
+            <div class="prev_dis">
+              {{_obfservices.obfsummarymodel.uploadDetails[0]. Version_name}} 
+            </div>
+         </div>
+          
            <div class="mat_previe_box">
             <div class="prev_tit">
               Vertical 
@@ -197,7 +206,8 @@
                             Solution Category
                           </div>
                           <div class="prev_dis">
-                         solution
+                            {{_obfservices.obfsummarymodel.uploadDetails[0].solutioncategory_name}}
+                       
                           </div>
                        </div> 
                        <div class="mat_previe_box">
@@ -206,7 +216,7 @@
                         </div>
                         <div class="prev_dis">
                           <div>
-                         storage warehouse
+                        {{service}}
                       
                            </div>
                         </div>
@@ -216,7 +226,9 @@
                         Project Brief 
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfsummarymodel.uploadDetails[0].dh_desc}}
+                       {{(BrifreadMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].dh_desc) : (_obfservices.obfsummarymodel.uploadDetails[0].dh_desc) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
                    </div> 
                        </div>
@@ -226,7 +238,10 @@
                             Assumption & Risk
                           </div>
                           <div class="prev_dis">
-                            {{_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks}}
+                            
+                            {{(readMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks) : (_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks) | slice:0:50 }}  
+                            <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
+                            <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
                        </div>
                       
@@ -235,8 +250,8 @@
                         Payment Terms Description
                       </div>
                       <div class="prev_dis">
-                        30 Days
-                       </div>
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc}}
+                         </div>
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
@@ -252,7 +267,9 @@
                       LOI/Po
                     </div>
                     <div class="prev_dis">
-                      Rate Card Attached
+                    
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].Loi_po_Details}} 
+                      
                     </div>
                  </div>
 
@@ -281,7 +298,7 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel >
+            <mat-expansion-panel  [expanded]="step === 1" >
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History

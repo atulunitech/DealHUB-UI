@@ -102,6 +102,9 @@ class uploadDetails{
   total_project_life:string;
   total_revenue:number;
   created_on:Date;
+  Version_name:string;
+  solutioncategory_name:string;
+  payment_term_desc:string;
 }
 
 class solutionDetails
@@ -290,10 +293,15 @@ export class OBFServices {
     this.obfsummarymodel.uploadDetails = data.uploadDetails;
     this.obfsummarymodel.solutionDetails = data.solutionDetails;
     this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
+
     this.Obfsummarysubject.next(this.obfsummarymodel);
+
+    
 
     console.log("check data after transformation");
     console.log(this.obfsummarymodel);
+
+
     this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
     
    }
