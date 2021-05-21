@@ -26,7 +26,11 @@ import { Router } from '@angular/router';
 
   export class OBFSummaryComponent implements OnInit,AfterViewInit {
    
-    comments = new FormControl('', Validators.required);
+    // comments = new FormControl('', Validators.required);
+    obfsummaryform = new FormGroup({
+      comments : new FormControl("",[Validators.required])
+    });
+    noComment:boolean=false;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
 
@@ -81,6 +85,39 @@ import { Router } from '@angular/router';
         this._mesgBox.showError(data.message);
       }
     });
+  }
+
+  public checkError = (controlName: string, errorName: string) => {
+    return this.obfsummaryform.controls[controlName].hasError(errorName);
+  }
+
+  RejectDeatils()
+  {  if(this.obfsummaryform.get("comments").value == "")
+  {
+     //return this.obfsummaryform.controls["comments"].hasError("required");
+     this.obfsummaryform.controls["comments"].markAsTouched();
+     this.noComment = true;
+    return false;
+  }
+    this._obfservices._approveRejectModel.isapproved=0;
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
+    this._obfservices._approveRejectModel.rejectionto=0;
+    this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+    this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+    this._obfservices._approveRejectModel._fname="";
+    this._obfservices._approveRejectModel._fpath="";
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
+       let res = JSON.parse(data);
+      if(res[0].status =="success")
+      {
+        this._mesgBox.showSucess(res[0].message);
+      }
+      else{
+        this._mesgBox.showError(res[0].message);
+      }
+    });
+
   }
 
   }
