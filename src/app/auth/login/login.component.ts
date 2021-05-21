@@ -162,6 +162,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("Token",Result.user.Api_Key);
           localStorage.setItem("rememberCurrentUser","false");
         }
+        localStorage.setItem("UserID",Result.user.user_id);
         sessionStorage.setItem("privilege_name",Result.user.privilege_name);
         localStorage.setItem("userToken",Result.user.Api_Key);
         
