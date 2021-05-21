@@ -111,8 +111,29 @@ import { Router } from '@angular/router';
   // setStep(index: number) {
   //   this.step = index;
   // }
+  downloadCoversheet(event)
+  {
+    event.preventDefault();
+    if(this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath== "")
+    {
+      this._mesgBox.showError("No Supporting Documents to Download");
+    }
+    else
+    {
+      window.open('http://13.235.216.142/dealhubapiqa/' + this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath);
+    }
+          
+  }
+  downloaddocument(event)
+  {
+    
+      
+  }
+  downloadLOIp(event)
+  {
+    event.preventDefault();
 
-
+  }
   public checkError = (controlName: string, errorName: string) => {
     return this.obfsummaryform.controls[controlName].hasError(errorName);
   }
