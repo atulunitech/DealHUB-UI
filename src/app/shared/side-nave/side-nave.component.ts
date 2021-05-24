@@ -24,6 +24,8 @@ export class SideNaveComponent implements OnInit {
   options = { multi: false };
  
   ngOnInit(): void {
+    // alert("Hello from Side Navigation");
+    
     this.config = this.mergeConfig(this.options);
     //this.GetMenus();
     this.menus = [
