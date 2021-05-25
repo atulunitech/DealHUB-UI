@@ -197,9 +197,9 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
            
         </table>
-        <mat-paginator [length]="10"
-        [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 100]">
+        <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
+        [pageSize]="6"
+        >
       </mat-paginator>
       </div>
       <ng-template #mytemplate>

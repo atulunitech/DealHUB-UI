@@ -213,6 +213,42 @@
 }
 .fl_table_con
 {
+    ::ng-deep .mat-paginator-range-actions{
+       
+        .mat-icon-button
+        {
+            border-radius: 0%;
+            width: 30px;
+            height: 30px;
+            line-height: inherit;
+            background-color: transparent !important;
+            color: black !important;
+            margin: 0 !important;
+            border: 1px solid #dedede;
+            .mat-paginator-icon
+            {
+                width: 14px;
+            }
+        }
+        .mat-flat-button
+        {
+            min-width: auto;
+            border-radius: 0px;
+            line-height: 28px;
+            padding: 0 10px;
+            box-shadow: none;
+            border: 1px solid #dedede;
+            margin: 0px !important;
+            font-size: 12px;
+            &.mat-flat-button[disabled]
+            {
+                background-color: #2258bf !important;
+                color: white;
+                border: 1px solid #2258bf;
+            }
+
+        }
+    }
     .ms_table
     {
         min-width: 100%;
@@ -271,8 +307,13 @@
     }
     input{
         border-left: solid 1px #eeeeee;
+        border-top:transparent;
+        border-color: transparent;
+        border-left-color: #eeeeee;
         @include padding(0,0px,0,10px);
         @include margin(0,0px,0,10px);
+        @include heightwidth(100%,initial);
+
     }
 }
 .dwon_ic_con
@@ -280,6 +321,17 @@
     cursor: pointer;
     img
     {
-        width: 20px;
+       @include heightwidth(15px,initial);
     }
 }
+
+::ng-deep .mat-paginator-page-size{
+    display: none !important;
+}
+
+::ng-deep .mat-paginator-range-label{
+    display: none !important;
+}
+
+
+
