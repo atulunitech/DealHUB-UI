@@ -94,6 +94,7 @@ export class DashboardComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
   
@@ -591,6 +592,21 @@ downloaddetailobf(element)
     console.log(Row);
    
   }
+  on_Highlight(check){
+    //    console.log(check);
+        if(check==1){
+          this.highlight = 'tab1';
+        }else if(check==2){
+          this.highlight = 'tab2';
+        }else if(check==3){
+          this.highlight = 'tab3';
+        }else if(check==4){
+          this.highlight = 'tab4';
+        }else{
+          this.highlight = 'tab5';
+        }    
+      
+    }
 }
 
 export class obfsummarymodel{
