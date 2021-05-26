@@ -18,6 +18,13 @@ class SaveAttachmentParameter{
   _description:string;
 }
 
+export class editobfarguement
+{
+  dh_id:number;
+  dh_header_id:number;
+  user_code:string;
+}
+
 class Serviceslist{
   value:string;
   viewValue:string;
@@ -321,6 +328,14 @@ export class OBFServices {
        httpOptions);  
        
   }
+  
+  geteditobfdata(editobf:editobfarguement): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf,
+       httpOptions);  
+       
+  }
+
   initializeobf(data:any)
   {
     console.log(data);

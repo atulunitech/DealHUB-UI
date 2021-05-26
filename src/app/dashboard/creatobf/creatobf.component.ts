@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
-import { OBFServices, SAPIO } from '../services/obfservices.service';
+import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -16,7 +16,7 @@ import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Compon
 import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
 
@@ -199,7 +199,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
   { }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -239,9 +239,28 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
       status => this.SAPIOchiplist.errorState = status === 'INVALID'
     );
+    this.route.queryParams.subscribe(params => {
+      if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
+      {
+        this.geteditobfdata(params['dh_id'],params['dh_header_id']);
+      }
+  });
   }
 
-  
+  geteditobfdata(dh_id,dh_header_id)
+  {
+   let editobf:editobfarguement = new editobfarguement();
+   editobf.dh_id = dh_id;
+   editobf.dh_header_id = dh_header_id;
+   editobf.user_code = localStorage.getItem("UserName");
+   this._obfservices.geteditobfdata(editobf).subscribe(res =>{
+      console.log(res);
+   },
+   error =>
+   {
+
+   });
+  }
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -1222,6 +1241,7 @@ downloadLOIp(event)
    supportchecked:boolean=true;
    Supportcheckboxchange(e:MatCheckboxChange)
    {
+     
      if(e.checked)
      {
       this.supportchecked =false;
@@ -1229,6 +1249,7 @@ downloadLOIp(event)
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
      }
      else{
+      this.isSupport = !this.isSupport;
       this.supportchecked =true;
       this._obfservices.ObfCreateForm.get('Supportpath').clearValidators();
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();

@@ -178,7 +178,7 @@
              </ng-container>
              <ng-container  matColumnDef="ActionSubmitted">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" (click)="editobf(row)">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
