@@ -50,6 +50,8 @@ export class DashboardcountModel
   _pendingppl:number;
   _TotalPending:number;
   _approved:number;
+  _totalapprovedppl:number;
+  _totalapprovedobf:number;
 }
 //end region
 @Component({
@@ -71,6 +73,9 @@ export class DashboardComponent implements OnInit {
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
    PendingReviewercolumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
    RejectedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
+   ApprovedOBf: string[] = ['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
+   ApprovedPPL: string[] = ['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
+
    
    
    // dataSource = ELEMENT_DATA;
@@ -517,22 +522,38 @@ downloaddetailobf(element)
         //Draft Section.
         
         this.listData = new MatTableDataSource(this.dashboardData);
-        this.listData.filter= "Pending";
-        if (this.listData.paginator) {
-          this.listData.paginator.firstPage();
-        }
+        this.listData.filter= "draft";
+       
         this.displayedColumns=this.DraftColumn;
       }
       else if (selection==1)
       {
           //Submitted section
           this.listData.filter="";
-          this.listData.filter="Second Project";
+          this.listData.filter="submitted";
           this.displayedColumns=this.SubmittedScreenColumn;
       }
       else if(selection==2)
       {
+        this.listData.filter="";
+        this.listData.filter="rejected";
+        
         this.displayedColumns=this.RejectedScreenColumn;
+      }
+      else if(selection==3)
+      {
+        this.listData.filter="";
+        this.listData.filter="approved";
+        
+        this.displayedColumns=this.ApprovedOBf;
+        
+      }
+      else if(selection==4)
+      {
+        this.listData.filter="";
+        this.listData.filter="rejected";
+        
+        this.displayedColumns=this.ApprovedPPL;
       }
     }
     else if(this.privilege_name=="OBF Reviewer")
@@ -551,6 +572,21 @@ downloaddetailobf(element)
       {
         this.displayedColumns=this.RejectedScreenColumn;
       }
+      else if(selection==3)
+      {
+        this.listData.filter="";
+        this.listData.filter="rejected";
+        
+        this.displayedColumns=this.ApprovedOBf;
+        
+      }
+      else if(selection==4)
+      {
+        this.listData.filter="";
+        this.listData.filter="rejected";
+        
+        this.displayedColumns=this.ApprovedPPL;
+      }
     }
    
   }
@@ -562,7 +598,7 @@ downloaddetailobf(element)
     this._dashboardmodel._user_code=localStorage.getItem("UserName");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
       debugger;
-      console.log("DashBoardData");
+      
       console.log(Result);
       var loginresult =Result;
       this._dashboardcountModel=JSON.parse(Result);
@@ -580,26 +616,15 @@ downloaddetailobf(element)
     );
   }
 
-  obfsummary:obfsummarymodel= new obfsummarymodel();
+ 
   getOBFSummaryPage(Row)
   {
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
-    this._obfservices.getobfsummarydata(Row.dh_id).subscribe(res =>{
-      console.log(res);
-      this._obfservices.initializeobf(JSON.parse(res));
-    },
-    (error)=>{
-      alert(error.message);
-    }
-    );
-    console.log(Row);
-   
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
+   //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
+
 }
 
-export class obfsummarymodel{
-  _user_id:number;
-  dh_id:number;
-}

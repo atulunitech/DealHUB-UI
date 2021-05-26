@@ -92,11 +92,11 @@
       </div>
       <div class="con_fil_box app_obf">
         <div class="box_shead"><img src="assets/images/approved_obf.png"></div>
-        <div class="fil_hed_tit">
+        <div class="fil_hed_tit"  (click)="addColumn(3)">
           approved obf
         </div>
         <div class="fil_had_no">
-         {{this._dashboardcountModel[0]._approved_obf}}
+         {{this._dashboardcountModel[0]._totalapprovedobf}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -109,11 +109,11 @@
       </div>
       <div class="con_fil_box app_ppl">
         <div class="box_shead"><img src="assets/images/approved_ppl.png"></div>
-        <div class="fil_hed_tit">
+        <div class="fil_hed_tit"  (click)="addColumn(4)">
           approved ppl
         </div>
         <div class="fil_had_no">
-          {{this._dashboardcountModel[0]._approved_ppl}}
+          {{this._dashboardcountModel[0]._totalapprovedppl}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -184,7 +184,14 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Re-initiate</button></mat-cell>
              </ng-container>
-           
+             <ng-container  matColumnDef="ActionApprovedOBF">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+             </ng-container>
+             <ng-container  matColumnDef="ActionApprovedPPL">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
            
