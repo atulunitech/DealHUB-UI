@@ -18,6 +18,8 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { element } from 'protractor';
+import * as JSZip from 'jszip';
+
 
 interface Serviceslist {
   value: string;
@@ -555,6 +557,10 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
   }
 downloaddocument(event)
 {
+//   var zip = new JSZip();
+// var count = 0;
+// var zipFilename = "Supportfiles.zip";
+//   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
   if(this.supportdocpath== "")
   {
@@ -567,8 +573,22 @@ downloaddocument(event)
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
         
-        var url=this._obfservices.obfmodel.Attachments[i]._fpath;
-        window.open(url);
+         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         window.open(url);
+        //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
+        // loading a file and add it in a zip file
+        // JSZipUtils.getBinaryContent(this._obfservices.obfmodel.Attachments[i]._fpath, function (err, data) {
+        //    if(err) {
+        //       throw err; // or handle the error
+        //    }
+        //    zip.file(filename, data, {binary:true});
+        //    count++;
+        //    if (count == filesarr.length) {
+        //     zip.generateAsync({type:'blob'}).then(function(content) {
+        //       saveAs(content, zipFilename);
+        //    });
+        //    }
+        // });
       }
     }
   }
@@ -820,6 +840,7 @@ downloadLOIp(event)
         
         const msg = 'Could not upload the file: ' + files[i].name;
         this.message.push(msg);
+        this._mesgBox.showError(msg);
       }
     );
     }
