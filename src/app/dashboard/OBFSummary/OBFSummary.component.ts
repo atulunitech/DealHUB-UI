@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
-import { Component, ElementRef, OnInit,AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -16,15 +16,26 @@ import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Compon
 import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
+
+
+ class SaveAttachmentParameter{
+  _dh_id:number;
+  _dh_header_id:number;
+  _fname:string;
+  _fpath:string;
+  _created_by:string;
+  _description:string;
+}
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
     styleUrls: ['./OBFSummary.component.scss']
   })
 
-  export class OBFSummaryComponent implements OnInit,AfterViewInit {
+  export class OBFSummaryComponent implements OnInit {
    
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
@@ -38,56 +49,84 @@ import { Router } from '@angular/router';
     step=0;
     service:string;
     privilege_name:string;
+    subscription: Subscription;
+    dh_id:number;
+    supportfilecount:number=0;
+    dh_header_id:number;
+  SupportPoprogress:any[] = [];
+  SaveAttachmentParameter:SaveAttachmentParameter;
+  Attachments:SaveAttachmentParameter[] = [];
+  loipopath:string="";
+  supportdocpath:string="";
+  message: string[] = [];
+  listData: MatTableDataSource<any>;
+  columns:Array<any>;
+ // displayedColumns:Array<any>;
+  dashboardData:any[]=[];
+  displayedColumns: string[] = ['username','currentstatus','comment'];
+   
+    @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
-
-        private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router) 
+        public _dashboardservice:DashboardService,
+        private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
       { 
 
-        this._obfservices.Obfsummarysubject.subscribe(data=>{
-          console.log(data +" :data");
-        });
+        // this.subscription =  this._obfservices.Obfsummarysubject.subscribe(data=>{
+        //   console.log(data +" :data");
+        // });
       }
       
   ngOnInit(): void {
-   
-    console.log(this._obfservices.obfsummarymodel);
-    this.getserviceslist();
     if(sessionStorage.getItem("privilege_name")!= null)
     {
       this.privilege_name=sessionStorage.getItem("privilege_name");
 
     }
+    console.log(this._obfservices.obfsummarymodel);
+     //this.dh_id= this.route.snapshot.queryParams["dh_id"];
+     this.route.params.subscribe
+     (params => {
+      this.dh_id=params["dh_id"];
+      this.dh_header_id=params["dh_header_id"];
+      this.getdetailsfordh_id(this.dh_id);
+     }
+     );
+     this.GetDetailTimelineHistory();
+    this.getserviceslist();
+   
   }
-  ngAfterViewInit(){
-    this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
-      console.log(data +" :data on nginit");
-    });
-  }
+  // ngAfterViewInit(){
+  //   this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
+  //     console.log(data +" :data on nginit");
+  //   });
+  // }
+ 
   getserviceslist()
   {
- 
-    var Tempservice="";
-    for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+    if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
     {
-      Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+      var Tempservice="";
+      for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+      {
+        Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+        
+      //   for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
+      //   {
+      //     if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
+      //     {
+            
+      //       tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
+      //     }
+      //   }
       
-    //   for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
-    //   {
-    //     if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
-    //     {
-          
-    //       tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
-    //     }
-    //   }
-    
-    //  tempservicecat=tempservicecat.substring(1);
-    //  finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
-     
+      //  tempservicecat=tempservicecat.substring(1);
+      //  finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+       
+      }
+      this.service=Tempservice;
+       this.service = this.service.substring(1);
     }
-    this.service=Tempservice;
-     this.service = this.service.substring(1);
-   
   }
   
   ApproveDeatils()
@@ -140,6 +179,28 @@ import { Router } from '@angular/router';
     event.preventDefault();
 
   }
+  getdetailsfordh_id(dh_id)
+  {
+    this._obfservices.getobfsummarydata(dh_id).subscribe(res =>{
+      console.log(res);
+      this._obfservices.initializeobf(JSON.parse(res));
+    },
+    (error)=>{
+      alert(error.message);
+    }
+    );
+   
+  }
+  OpenDocDownload(event)
+  {
+    
+    const dialogRef = this.dialog.open(this.callAPIDialog, {
+      width: '500px',
+      height:'600px',
+      disableClose: true,
+     // data: { campaignId: this.params.id }
+  })
+  }
   public checkError = (controlName: string, errorName: string) => {
     return this.obfsummaryform.controls[controlName].hasError(errorName);
   }
@@ -174,5 +235,280 @@ import { Router } from '@angular/router';
     });
 
   }
+  progress: number = 0;
+  loipofiles: File[] = [];
+  supportfiles: File[] = [];        
+  isloipo:boolean=true;
+  isSupport:boolean=true;
+  LoiPoprogress: any[] = [];
+  
+  bytesToSize(bytes):number {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (bytes === 0) return 0;
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    if (i === 0) return bytes;
+    return parseFloat((bytes / (1024 ** i)).toFixed(1));
+  }
 
+	onSelect(event,types) {
+    try{
+    // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+    var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
+   
+    event.addedFiles.forEach(element => {
+     // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+      if( Math.floor(this.bytesToSize(element.size)) == 0)
+      {
+        throw new Error("The file size of "+element.name+" is invalid" );
+      }
+
+      if(format.test(element.name))
+      {
+        throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+       }
+      // if( this.bytesToSize(element.size) > 4)
+      if( element.size > 4194304)
+      {
+        throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+      }
+
+    });
+    this.progress = 0;
+    
+       if(types == "loipo")
+       {
+        if(event.addedFiles.length > 1)
+        {
+          throw new Error("Kindly upload only one valid LOI/PO Sheet");
+        }
+         if(this.loipofiles.length >= 1 )
+         {
+         // alert("Kindly upload only one Loi / Po file");
+          this._mesgBox.showError("Kindly upload only one valid LOI/PO Sheet");
+          return false;
+         }
+         else{
+           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           {
+            throw new Error("Kindly select LOI or PO file type");
+           }
+        this.loipofiles.push(...event.addedFiles);
+        this.isloipo = !this.isloipo;
+        }
+        // this.files = this.loipofiles;
+       }
+       else
+       {
+         this.supportfilecount +=1;
+         if(this.supportfilecount > 1)
+         {
+
+         }
+         else
+         {
+          this.isSupport = !this.isSupport;
+         }
+        this.supportfiles.push(...event.addedFiles);
+        // this.files = this.supportfiles;
+       }
+       console.log("check progrss value");
+       console.log(this.progress);
+		// this.files.push(...event.addedFiles);
+  }
+  catch(e)
+  {
+    this._mesgBox.showError(e.message);
+  }
+
+	}
+
+  onRemove(files:File[],event,types) {
+     if(types == "loipo")
+    {
+      this.isloipo = !this.isloipo;
+      
+    }
+    else if(types == "support")
+    {
+      
+      // this.isSupport = !this.isSupport;
+    }
+		console.log(event);
+		files.splice(files.indexOf(event), 1);
+   
+    if(this.loipofiles.length == 0)
+    {
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet: ""});
+    }
+    if(this.supportfiles.length == 0)
+    {
+      this.isSupport = !this.isSupport;
+      this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
+    }
+
+	}
+
+
+  SaveAttachment()
+  {
+    this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
+      {
+          console.log(result);
+          var REsult=JSON.parse(result);
+          if(REsult[0].status ="Success")
+          {
+            this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+           
+            this.Attachments=[];
+            this.dialog.closeAll();
+
+          }
+        
+    });
+  }
+  uploadfiles(files:File[],types)
+  {
+    let val = true;
+     if(types == "loipo")
+    {
+      this.isloipo = !this.isloipo;
+      this.LoiPoprogress = [];
+      
+    }
+    else if(types == "support")
+    {
+      this.isSupport = !this.isSupport;
+      this.SupportPoprogress = [];
+    }
+    var path="";
+    var consolidatedpath="";
+    for (let i = 0; i < files.length; i++) {
+     if(types == "loipo")
+    {
+      this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
+    }
+      
+      path="";
+    this._dashboardservice.uploadImage(files[i]).subscribe(
+      event => {
+       
+        if(event.type === HttpEventType.UploadProgress)
+        {
+          console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
+          this.progress = Math.round(event.loaded/event.total * 100);
+          
+    if(types == "loipo")
+    {
+      this.LoiPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+    }
+        }
+        else if(event.type === HttpEventType.Response)
+        {
+        console.log(event.body);
+        path = JSON.stringify(event.body);
+        path=path.split('"').join('');
+        path = path.substring(0,path.length -1);
+        consolidatedpath += path +",";
+        consolidatedpath = consolidatedpath.substring(0,consolidatedpath.length -1);
+         this.SaveAttachmentParameter = new SaveAttachmentParameter();
+        if(path != ""){
+         if(types == "loipo")
+        {
+         this.loipopath = path;
+        this.SaveAttachmentParameter._dh_id=this.dh_id;
+        this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
+         this.SaveAttachmentParameter._fname= files[i].name; 
+         this.SaveAttachmentParameter._fpath = path;
+         this.SaveAttachmentParameter._description = "loipo";
+         this.Attachments.push(this.SaveAttachmentParameter);
+        }
+        else if(types == "support")
+        {
+          this.supportdocpath = path;
+          this.SaveAttachmentParameter._dh_id=this.dh_id;
+          this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
+          this.SaveAttachmentParameter._fname= files[i].name; 
+           this.SaveAttachmentParameter._fpath = path;
+           this.SaveAttachmentParameter._description = "support";
+           this.Attachments.push(this.SaveAttachmentParameter);
+        }
+      }
+      this.SaveAttachment();
+      }
+
+     
+      },
+      (err:any)=>{
+     if(types == "loipo")
+    {
+      this.LoiPoprogress[i].value = 0;
+    }
+    else if(types == "support")
+    {
+      this.SupportPoprogress[i].value = 0;
+    }
+        
+        const msg = 'Could not upload the file: ' + files[i].name;
+        this.message.push(msg);
+      }
+    );
+    }
+  }
+
+  GetDetailTimelineHistory()
+  {
+    
+    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
+      debugger;
+      console.log("DashBoardData");
+      console.log(Result);
+      var loginresult =Result;
+      this.dashboardData=JSON.parse(Result);
+      this.BindGridDetails();
+    },
+    (error:HttpErrorResponse)=>{
+      debugger;
+      if (error.status==401)
+      {
+        this.router.navigateByUrl('/login');
+        
+      }
+      
+    }
+    );
+  
+  }
+  BindGridDetails()// code given by kirti kumar shifted to new function
+  {
+    
+  //   const columns = this.dashboardData
+  //   .reduce((columns, row) => {
+  //     return [...columns, ...Object.keys(row)]
+  //   }, [])
+  //   .reduce((columns, column) => {
+  //     return columns.includes(column)
+  //       ? columns
+  //       : [...columns, column]
+  //   }, [])
+  // // Describe the columns for <mat-table>.
+  // this.columns = columns.map(column => {
+  //   return { 
+  //     columnDef: column,
+  //     header: column.replace("_"," "),
+  //     cell: (element: any) => `${element[column] ? element[column] : ``}`     
+  //   }
+  // })
+  //this.displayedColumns = this.columns.map(c => c.columnDef);
+  this.listData = new MatTableDataSource(this.dashboardData);
+  ///this.displayedColumns = this.timelineColumn;
+ 
+  }
   }

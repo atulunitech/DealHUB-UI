@@ -310,13 +310,17 @@
                             <span>
                               <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
-                          <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
+                          <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
+                            <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
                             <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -324,6 +328,8 @@
                               <img  src="assets/images/dwn-load-file.png">
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
+                            <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
                             <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
                           </div>
                             <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
@@ -338,7 +344,22 @@
                         Detailed Timeline History
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-              Details
+                  <table mat-table [dataSource]="listData" class="ms_table" matSort>
+                    <ng-container  matColumnDef="username">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>username</mat-header-cell>
+                    <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
+                     </ng-container>
+                     <ng-container  matColumnDef="currentstatus">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>currentstatus</mat-header-cell>
+                    <mat-cell *matCellDef="let row" >{{row.currentstatus}}</mat-cell>
+                     </ng-container>
+                     <ng-container  matColumnDef="comment">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>comment</mat-header-cell>
+                    <mat-cell *matCellDef="let row" >{{row.comment}}</mat-cell>
+                     </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </table>
             </mat-expansion-panel>
         </mat-accordion>
         </div>
@@ -355,4 +376,75 @@
             </div>
           </div>
               </div>
+</div>
+
+<div>
+  <ng-template #callAPIDialog>
+    <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
+      <button mat-button mat-dialog-close>Cancel</button>
+      <div fxFlex="auto " class="mat_upload_in_wr">
+        <div class="mat_upload_tit">
+          Attach OBF SHEET 
+        </div>
+        <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx">
+          <ngx-dropzone-label class="matUp_lable">
+            <div><img src="assets/images/Group Upload.png"></div>
+            <div class="drap_titl">
+              Drag & Drop
+              <div class="in_titl">Or select file from your system</div>
+            </div>
+            
+          </ngx-dropzone-label>
+         
+            
+        </ngx-dropzone>
+        <div class="bt_uplad_con">
+          <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
+          <button [disabled]="!(loipofiles.length >0) || isloipo" (click)="uploadfiles(loipofiles,'loipo')"  class="creat_bt" mat-flat-button>Upload</button>
+        </div>
+        <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
+        <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0">
+          Uploaded Attach Obf Sheet 
+         </div>
+        <div *ngIf="LoiPoprogress.length == 0">
+          
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')">
+          
+          <ngx-dropzone-label class="drop_lab_cs">
+            <div class="doc_icon">
+              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+            </div>
+            <div class="doc_cont" *ngIf="LoiPoprogress.length == 0">
+              {{ f.name }}
+            </div> 
+            
+          </ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </div>
+      <div *ngIf="LoiPoprogress.length > 0">
+        
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" >
+          
+          <ngx-dropzone-label class="drop_lab_cs">
+            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+            <div class="doc_icon" >
+              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+            </div>
+            <div class="doc_cont" style="position: relative;" >
+              {{ f.fileName }}
+            
+
+            </div> 
+            
+          </ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </div>
+     </div>
+      <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+        <ul *ngFor="let msg of message; let i = index">
+          <li>{{ msg }}</li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
 </div>

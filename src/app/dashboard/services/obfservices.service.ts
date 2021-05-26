@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { obfsummarymodel } from '../dashboard/dashboard.component';
 import {Router} from "@angular/router";
 
 export interface SAPIO {
@@ -186,8 +185,7 @@ class obf{
 export class OBFServices {
 
   constructor(private http:HttpClient,private router: Router) { }
-  public Obfsummarysubject = new Subject<obfsummary>();
-
+ 
   obfmodel:obf = new obf();
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
@@ -294,26 +292,39 @@ export class OBFServices {
     this.obfsummarymodel.solutionDetails = data.solutionDetails;
     this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
 
-    this.Obfsummarysubject.next(this.obfsummarymodel);
-
-    
+    //this.Obfsummarysubject.next(this.obfsummarymodel);
+   
 
     console.log("check data after transformation");
     console.log(this.obfsummarymodel);
 
 
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
+   // this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
     
-   }
-      getobfsummarydataonRefresh(): Observable<any>
-      {
-        return this.Obfsummarysubject.asObservable();
-      }
+     }
+      // getobfsummarydataonRefresh(): Observable<any>
+      // {
+      //   return this.Obfsummarysubject.asObservable();
+      // }
       ApproveRejectObf(data:approveRejectModel): Observable<any> 
       {
         const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
         return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/ApproveRejectObf",data,
            httpOptions); 
+      }
+      SaveAttachment(data:SaveAttachmentParameter[]):Observable<any>
+      {
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data,
+           httpOptions); 
+      }
+      GetDetailTimelineHistory(dh_id:number,dh_header_id:number):Observable<any>
+      {
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+        params: new HttpParams().set('dh_id', dh_id.toString())
+        .set('dh_header_id',dh_header_id.toString()) };  
+        return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
+           httpOptions);  
       }
 }
 
