@@ -36,7 +36,7 @@
   </div>
   <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" >
     <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in">
-      <div class="con_fil_box p_f_apr">
+      <div class="con_fil_box p_f_apr" (click)="on_Highlight(1)"   [ngClass]="{'active': highlight==='tab1'}">
         <div class="box_shead"><img src="assets/images/p_f_a.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(0)">
          {{(this.privilege_name) == 'OBF Initiator' ? ('Draft') : ('Pending for approval')}}
@@ -52,7 +52,7 @@
            </div>
         </div>
       </div>
-      <div class="con_fil_box approved" >
+      <div  class="con_fil_box approved"  (click)="on_Highlight(2)"   [ngClass]="{'active': highlight==='tab2'}" >
         <div class="box_shead"><img src="assets/images/approved.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(1)">
           {{(this.privilege_name) == 'OBF Initiator' ? ('Submitted') : ('Approved')}}
@@ -73,7 +73,7 @@
          
         </div>
       </div>
-      <div class="con_fil_box rejected">
+      <div  class="con_fil_box rejected"  (click)="on_Highlight(3)"   [ngClass]="{'active': highlight==='tab3'}">
         <div class="box_shead"><img src="assets/images/rejected.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(2)" >
           Rejected
@@ -90,7 +90,7 @@
           </div>
         </div>
       </div>
-      <div class="con_fil_box app_obf">
+      <div class="con_fil_box app_obf" (click)="on_Highlight(4)"   [ngClass]="{'active': highlight==='tab4'}">
         <div class="box_shead"><img src="assets/images/approved_obf.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(3)">
           approved obf
@@ -107,7 +107,7 @@
           </div>
         </div> -->
       </div>
-      <div class="con_fil_box app_ppl">
+      <div class="con_fil_box app_ppl" (click)="on_Highlight(5)"   [ngClass]="{'active': highlight==='tab5'}">
         <div class="box_shead"><img src="assets/images/approved_ppl.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(4)">
           approved ppl
@@ -136,7 +136,8 @@
           <ng-container matColumnDef="ApprovalStatus">
             <mat-header-cell *matHeaderCellDef mat-sort-header>ApprovalStatus</mat-header-cell>
             <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-              <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon>
+              <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
+              <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
           </mat-cell>
         </ng-container>
          
@@ -154,19 +155,26 @@
           <ng-container matColumnDef="FinalAgg">
             <mat-header-cell *matHeaderCellDef mat-sort-header>FinalAgg</mat-header-cell>
             <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-              <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon>
+              <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
+              <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
           </mat-cell>
         </ng-container>
             <ng-container matColumnDef="DetailedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>DetailedOBF</mat-header-cell>
               <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-                <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon>
+                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
+                <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
             </mat-cell>
           </ng-container>
             <ng-container  matColumnDef="ActionDraft">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
-                <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+                <mat-cell *matCellDef="let row" >
+                  <!-- <button mat-raised-button color="primary">Edit</button> -->
+                  <button  mat-flat-button class="creat_bt edit_bt ">Edit</button>
+                  <!-- <button  mat-flat-button class="creat_bt reject_bt bt_sp">reject</button> -->
+                  <!-- <button  mat-flat-button class="creat_bt approv_bt bt_sp">approve</button> -->
+                </mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionPendingforapproval">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
@@ -196,9 +204,9 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
            
         </table>
-        <mat-paginator [length]="10"
-        [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 100]">
+        <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
+        [pageSize]="6"
+        >
       </mat-paginator>
       </div>
       <ng-template #mytemplate>

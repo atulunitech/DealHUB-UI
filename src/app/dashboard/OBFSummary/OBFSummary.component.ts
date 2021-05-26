@@ -52,18 +52,21 @@ import { Subscription } from 'rxjs';
     subscription: Subscription;
     dh_id:number;
     supportfilecount:number=0;
+    FinalAggfilecount:number=0;
     dh_header_id:number;
   SupportPoprogress:any[] = [];
+  finalProgress:any[]=[];
   SaveAttachmentParameter:SaveAttachmentParameter;
   Attachments:SaveAttachmentParameter[] = [];
   loipopath:string="";
   supportdocpath:string="";
+  Finaldocpath:string="";
   message: string[] = [];
   listData: MatTableDataSource<any>;
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','currentstatus','comment'];
+  displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
    
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
@@ -191,15 +194,36 @@ import { Subscription } from 'rxjs';
     );
    
   }
-  OpenDocDownload(event)
+  Type:string="";
+  OpenDocDownload(event,Type)
   {
-    
+    this.Type=Type;
+    this.uploadDocfiles=[];
+    this.uploaddocprocess=[];
+    if(this.Type == "loipo")
+  {
+    this.uploadDocfiles=this.loipofiles;
+    this.LoiPoprogress= this.uploaddocprocess;
+  }
+  else if(this.Type == "Supporting")
+  {
+    this.uploadDocfiles=this.supportfiles;
+    this.SupportPoprogress= this.uploaddocprocess;
+  }
+  else if(this.Type == "FinalAgg")
+  {
+    this.uploadDocfiles=this.FinalAggfiles;
+    this.finalProgress= this.uploaddocprocess;
+  }
     const dialogRef = this.dialog.open(this.callAPIDialog, {
       width: '500px',
       height:'600px',
       disableClose: true,
      // data: { campaignId: this.params.id }
   })
+ 
+
+
   }
   public checkError = (controlName: string, errorName: string) => {
     return this.obfsummaryform.controls[controlName].hasError(errorName);
@@ -236,12 +260,14 @@ import { Subscription } from 'rxjs';
 
   }
   progress: number = 0;
+  uploadDocfiles:File[]=[];
   loipofiles: File[] = [];
-  supportfiles: File[] = [];        
-  isloipo:boolean=true;
-  isSupport:boolean=true;
-  LoiPoprogress: any[] = [];
+  supportfiles: File[] = [];    
+  FinalAggfiles:File[]=[];    
   
+ 
+  LoiPoprogress: any[] = [];
+  uploaddocprocess:any[]=[];
   bytesToSize(bytes):number {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     if (bytes === 0) return 0;
@@ -250,32 +276,32 @@ import { Subscription } from 'rxjs';
     return parseFloat((bytes / (1024 ** i)).toFixed(1));
   }
 
-	onSelect(event,types) {
+	onSelect(event) {
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
-     // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
-      if( Math.floor(this.bytesToSize(element.size)) == 0)
-      {
-        throw new Error("The file size of "+element.name+" is invalid" );
-      }
-
-      if(format.test(element.name))
-      {
-        throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+      // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+       if( Math.floor(this.bytesToSize(element.size)) == 0)
+       {
+         throw new Error("The file size of "+element.name+" is invalid" );
        }
-      // if( this.bytesToSize(element.size) > 4)
-      if( element.size > 4194304)
-      {
-        throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
-      }
-
-    });
+ 
+       if(format.test(element.name))
+       {
+         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+        }
+       // if( this.bytesToSize(element.size) > 4)
+       if( element.size > 4194304)
+       {
+         throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+       }
+ 
+     });
     this.progress = 0;
     
-       if(types == "loipo")
+       if(this.Type == "loipo")
        {
         if(event.addedFiles.length > 1)
         {
@@ -293,22 +319,34 @@ import { Subscription } from 'rxjs';
             throw new Error("Kindly select LOI or PO file type");
            }
         this.loipofiles.push(...event.addedFiles);
-        this.isloipo = !this.isloipo;
+       
+        this.uploadDocfiles=this.loipofiles;
         }
         // this.files = this.loipofiles;
        }
-       else
+       else if(this.Type=='Supporting')
        {
-         this.supportfilecount +=1;
-         if(this.supportfilecount > 1)
+        this.supportfilecount +=1;
+        if(this.supportfilecount > 1)
+        {
+
+        }
+       this.supportfiles.push(...event.addedFiles);
+        this.uploadDocfiles=this.supportfiles;
+        // this.files = this.supportfiles;
+       }
+       else if(this.Type=='FinalAgg')
+       {
+         this.FinalAggfilecount +=1;
+         if(this.FinalAggfilecount > 1)
          {
 
          }
-         else
-         {
-          this.isSupport = !this.isSupport;
-         }
-        this.supportfiles.push(...event.addedFiles);
+        
+        this.FinalAggfiles.push(...event.addedFiles);
+      
+
+        this.uploadDocfiles=this.FinalAggfiles;
         // this.files = this.supportfiles;
        }
        console.log("check progrss value");
@@ -322,13 +360,13 @@ import { Subscription } from 'rxjs';
 
 	}
 
-  onRemove(files:File[],event,types) {
-     if(types == "loipo")
+  onRemove(files:File[],event) {
+     if(this.Type == "loipo")
     {
-      this.isloipo = !this.isloipo;
-      
+      //this.isloipo = !this.isloipo;
+     
     }
-    else if(types == "support")
+    else if(this.Type == "support")
     {
       
       // this.isSupport = !this.isSupport;
@@ -337,12 +375,15 @@ import { Subscription } from 'rxjs';
 		files.splice(files.indexOf(event), 1);
    
     if(this.loipofiles.length == 0)
-    {
-      this._obfservices.ObfCreateForm.patchValue({Loiposheet: ""});
-    }
+      {
+        
+       this.loipofiles=files;
+       this.uploadDocfiles=this.loipofiles;
+      }
     if(this.supportfiles.length == 0)
     {
-      this.isSupport = !this.isSupport;
+      //this.isloipo = !this.isloipo;
+      this.supportfiles=files;
       this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
     }
 
@@ -351,6 +392,7 @@ import { Subscription } from 'rxjs';
 
   SaveAttachment()
   {
+    //this.isloipo = !this.isloipo;
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
           console.log(result);
@@ -366,30 +408,46 @@ import { Subscription } from 'rxjs';
         
     });
   }
-  uploadfiles(files:File[],types)
+  uploadfiles(files:File[])
   {
     let val = true;
-     if(types == "loipo")
+     if(this.Type == "loipo")
     {
-      this.isloipo = !this.isloipo;
+     // this.isloipo = !this.isloipo;
       this.LoiPoprogress = [];
+      this.uploaddocprocess=[];
       
     }
-    else if(types == "support")
+    else if(this.Type == "Supporting")
     {
-      this.isSupport = !this.isSupport;
+     // this.isloipo = !this.isloipo;
       this.SupportPoprogress = [];
+      this.uploaddocprocess=[];
+    }
+    else if(this.Type == "FinalAgg")
+    {
+     // this.isloipo = !this.isloipo;
+      this.finalProgress = [];
+      this.uploaddocprocess=[];
     }
     var path="";
     var consolidatedpath="";
     for (let i = 0; i < files.length; i++) {
-     if(types == "loipo")
+     if(this.Type == "loipo")
     {
       this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      
     }
-    else if(types == "support")
+    else if(this.Type == "Supporting")
     {
       this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+    }
+    else if(this.Type == "FinalAgg")
+    {
+      this.finalProgress[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
     }
       
       path="";
@@ -401,13 +459,21 @@ import { Subscription } from 'rxjs';
           console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
           this.progress = Math.round(event.loaded/event.total * 100);
           
-    if(types == "loipo")
+    if(this.Type  == "loipo")
     {
       this.LoiPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+      this.uploaddocprocess[i].value = Math.round(event.loaded/event.total * 100);
+     
     }
-    else if(types == "support")
+    else if(this.Type  == "Supporting")
     {
       this.SupportPoprogress[i].value = Math.round(event.loaded/event.total * 100);
+      this.uploaddocprocess[i].value = Math.round(event.loaded/event.total * 100);
+    }
+    else if(this.Type  == "FinalAgg")
+    {
+      this.finalProgress[i].value = Math.round(event.loaded/event.total * 100);
+      this.uploaddocprocess[i].value = Math.round(event.loaded/event.total * 100);
     }
         }
         else if(event.type === HttpEventType.Response)
@@ -420,7 +486,7 @@ import { Subscription } from 'rxjs';
         consolidatedpath = consolidatedpath.substring(0,consolidatedpath.length -1);
          this.SaveAttachmentParameter = new SaveAttachmentParameter();
         if(path != ""){
-         if(types == "loipo")
+         if(this.Type  == "loipo")
         {
          this.loipopath = path;
         this.SaveAttachmentParameter._dh_id=this.dh_id;
@@ -430,14 +496,24 @@ import { Subscription } from 'rxjs';
          this.SaveAttachmentParameter._description = "loipo";
          this.Attachments.push(this.SaveAttachmentParameter);
         }
-        else if(types == "support")
+        else if(this.Type  == "Supporting")
         {
           this.supportdocpath = path;
           this.SaveAttachmentParameter._dh_id=this.dh_id;
           this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
-           this.SaveAttachmentParameter._description = "support";
+           this.SaveAttachmentParameter._description = "Supporting";
+           this.Attachments.push(this.SaveAttachmentParameter);
+        }
+        else if(this.Type  == "FinalAgg")
+        {
+          this.Finaldocpath = path;
+          this.SaveAttachmentParameter._dh_id=this.dh_id;
+          this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
+          this.SaveAttachmentParameter._fname= files[i].name; 
+           this.SaveAttachmentParameter._fpath = path;
+           this.SaveAttachmentParameter._description = "FinalAgg";
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
@@ -447,15 +523,22 @@ import { Subscription } from 'rxjs';
      
       },
       (err:any)=>{
-     if(types == "loipo")
+     if(this.Type  == "loipo")
     {
       this.LoiPoprogress[i].value = 0;
+      this.uploaddocprocess[i].value = 0;
     }
-    else if(types == "support")
+    else if(this.Type  == "Supporting")
     {
       this.SupportPoprogress[i].value = 0;
+      this.uploaddocprocess[i].value = 0;
     }
-        
+  
+    else if(this.Type  == "FinalAgg")
+    {
+      this.finalProgress[i].value = 0;
+      this.uploaddocprocess[i].value = 0;
+    }
         const msg = 'Could not upload the file: ' + files[i].name;
         this.message.push(msg);
       }
@@ -472,7 +555,8 @@ import { Subscription } from 'rxjs';
       console.log(Result);
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
-      this.BindGridDetails();
+      this.listData = new MatTableDataSource(this.dashboardData);
+     
     },
     (error:HttpErrorResponse)=>{
       debugger;
@@ -486,29 +570,5 @@ import { Subscription } from 'rxjs';
     );
   
   }
-  BindGridDetails()// code given by kirti kumar shifted to new function
-  {
-    
-  //   const columns = this.dashboardData
-  //   .reduce((columns, row) => {
-  //     return [...columns, ...Object.keys(row)]
-  //   }, [])
-  //   .reduce((columns, column) => {
-  //     return columns.includes(column)
-  //       ? columns
-  //       : [...columns, column]
-  //   }, [])
-  // // Describe the columns for <mat-table>.
-  // this.columns = columns.map(column => {
-  //   return { 
-  //     columnDef: column,
-  //     header: column.replace("_"," "),
-  //     cell: (element: any) => `${element[column] ? element[column] : ``}`     
-  //   }
-  // })
-  //this.displayedColumns = this.columns.map(c => c.columnDef);
-  this.listData = new MatTableDataSource(this.dashboardData);
-  ///this.displayedColumns = this.timelineColumn;
  
-  }
   }

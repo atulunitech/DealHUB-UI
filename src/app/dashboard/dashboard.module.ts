@@ -14,10 +14,13 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { CreatobfComponent } from './creatobf/creatobf.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { OBFSummaryComponent } from './OBFSummary/OBFSummary.component';
+import { StylePaginatorDirective } from './dashboard/style-paginator.directive';
 
 
 @NgModule({
-  declarations: [DashboardComponent, CreatobfComponent, OBFSummaryComponent],
+  declarations: [DashboardComponent, CreatobfComponent,
+    StylePaginatorDirective,
+     OBFSummaryComponent],
   imports: [
     CommonModule,
     FormsModule,

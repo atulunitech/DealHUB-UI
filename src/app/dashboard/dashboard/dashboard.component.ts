@@ -99,6 +99,7 @@ export class DashboardComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
   
@@ -619,6 +620,21 @@ downloaddetailobf(element)
     this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
-
+  on_Highlight(check){
+    //    console.log(check);
+        if(check==1){
+          this.highlight = 'tab1';
+        }else if(check==2){
+          this.highlight = 'tab2';
+        }else if(check==3){
+          this.highlight = 'tab3';
+        }else if(check==4){
+          this.highlight = 'tab4';
+        }else{
+          this.highlight = 'tab5';
+        }    
+      
+    }
 }
+
 
