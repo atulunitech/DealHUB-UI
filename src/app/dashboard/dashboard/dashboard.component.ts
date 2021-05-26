@@ -149,6 +149,12 @@ export class DashboardComponent implements OnInit {
  });
   }
 
+  editobf(row)
+  {
+    alert("dsjhdjkshdjks");
+    console.log(row);
+  }
+
   getsolutionmaster()
 {
 this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(data =>{
