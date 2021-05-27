@@ -233,6 +233,7 @@ export class OBFServices {
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
+  editObfObject:editObf = new editObf();
   obfsolutionandservices:obfsolutionandservices = new obfsolutionandservices();
   SaveAttachmentParameter:SaveAttachmentParameter = new SaveAttachmentParameter();
   ObfCreateForm = new FormGroup({
@@ -376,6 +377,127 @@ export class OBFServices {
         .set('dh_header_id',dh_header_id.toString()) };  
         return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
            httpOptions);  
+      }
+        coversheetarray:any[] = [];
+        loipoarray:any[] = [];
+        supportarray:any[] = [];
+       getarrayforlipo(input) {
+        var output = [];
+        for (var i=0; i < input.length ; ++i)
+        {
+            if(input[i]._description == "PO" || input[i]._description == "LOI" || input[i]._description == "Agreement")
+            {
+              output.push(input[i]);
+            }
+        }
+        return output;
+    }
+
+    getarrayforsupport(input) {
+      var output = [];
+      for (var i=0; i < input.length ; ++i)
+      {
+          if(input[i]._description == "support")
+          {
+            output.push(input[i]);
+          }
+      }
+      return output;
+  }
+
+  servicesarray:any[] = [];
+      initializeobfmodelandform()
+      {
+        this.obfmodel._dh_id = this.editObfObject._dh_id;
+        this.obfmodel._dh_header_id = this.editObfObject._dh_header_id;
+        this.obfmodel._fname = this.editObfObject._fname;
+        this.obfmodel._fpath = this.editObfObject._fpath;
+        this.obfmodel._created_by = this.editObfObject._created_by;
+        this.obfmodel._dh_project_name = this.editObfObject._dh_project_name;
+        this.obfmodel._opportunity_id = this.editObfObject._opportunity_id;
+        this.obfmodel._dh_location = this.editObfObject._dh_location;
+        this.obfmodel._vertical_id = this.editObfObject._vertical_id;
+        this.obfmodel._verticalhead_id = this.editObfObject._verticalhead_id;
+        this.obfmodel._dh_desc = this.editObfObject._dh_desc;
+        this.obfmodel._total_revenue = this.editObfObject._total_revenue;
+        this.obfmodel._total_cost = this.editObfObject._total_cost;
+        this.obfmodel._total_margin = this.editObfObject._total_margin;
+        this.obfmodel._total_project_life = this.editObfObject._total_project_life;
+        this.obfmodel._irr_surplus_cash = this.editObfObject._irr_surplus_cash;
+        this.obfmodel._ebt = this.editObfObject._ebt;
+        this.obfmodel._capex = this.editObfObject._capex;
+        this.obfmodel._irr_borrowed_fund = this.editObfObject._irr_borrowed_fund;
+        this.obfmodel._is_loi_po_uploaded = this.editObfObject._is_loi_po_uploaded;
+        this.obfmodel._assumptions_and_risks = this.editObfObject._assumptions_and_risks;
+        this.obfmodel._payment_terms = this.editObfObject._payment_terms;
+        this.obfmodel._Sector_Id = this.editObfObject._Sector_Id;
+        this.obfmodel._SubSector_Id = this.editObfObject._SubSector_Id;
+        this.obfmodel.Attachments = this.editObfObject.Attachments;
+        this.obfmodel.Services = this.editObfObject.Services;
+        this.obfmodel._customer_name = this.editObfObject._customer_name;
+        this.obfmodel._sap_customer_code = this.editObfObject._sap_customer_code;
+        this.obfmodel.sapio = this.editObfObject.sapio;
+        this.obfmodel._dh_comment = this.editObfObject._dh_comment;
+        this.obfmodel._solution_category_id = this.editObfObject._solution_category_id;
+        this.obfmodel._loi_po_details = this.editObfObject._loi_po_details;
+        this.obfmodel._payment_term_desc = this.editObfObject._payment_term_desc;
+          
+        this.coversheetarray.push({_fname:this.editObfObject._fname,_fpath:this.editObfObject._fpath});
+        let loiuploaded = null;
+        if(this.editObfObject._is_loi_po_uploaded == "Y")
+        {
+          loiuploaded = null;
+        }
+        else
+        {
+          loiuploaded = this.editObfObject._is_loi_po_uploaded;
+        }
+         
+        for(var i =0;i< this.editObfObject.Services.length;i++)
+        {
+            for(var j =0;j< this.editObfObject.Services[i].Serviceslist.length;j++)
+            {
+              this.servicesarray.push(this.editObfObject.Services[i].Serviceslist[j].value)
+            }
+        }
+
+        this.loipoarray = this.getarrayforlipo(this.editObfObject.Attachments);
+        this.supportarray = this.getarrayforsupport(this.editObfObject.Attachments); 
+        this.ObfCreateForm.patchValue({
+          coversheet :this.obfmodel._fpath,
+          Loiposheet:this.loipoarray[0]._fpath,
+          Supportpath:this.supportarray,
+          Loipodropdown:this.loipoarray[0]._description,
+          Selfdeclare:loiuploaded,
+          Projectname:this.editObfObject._dh_project_name,
+          Solutioncategory:this.editObfObject._solution_category_id.toString(),
+          Opportunityid: this.editObfObject._opportunity_id,
+          State: this.editObfObject._dh_location,
+          Vertical:this.editObfObject._vertical_id,
+          Verticalhead:this.editObfObject._verticalhead_id,
+          Sapio:null,
+          Customername:this.editObfObject._customer_name,
+          Sapcustomercode:this.editObfObject._sap_customer_code,
+          Sector:this.editObfObject._Sector_Id,
+          Subsector:this.editObfObject._SubSector_Id,
+          Totalrevenue:this.editObfObject._total_revenue,
+          Totalcost:this.editObfObject._total_cost,
+          Totalmargin:this.editObfObject._total_margin,
+          Totalprojectlife:this.editObfObject._total_project_life,
+          EBT:this.editObfObject._ebt,
+          Capex:this.editObfObject._capex,
+          IRRsurpluscash:this.editObfObject._irr_surplus_cash,
+          IRRborrowedfund:this.editObfObject._irr_borrowed_fund,
+          Paymentterms:this.editObfObject._payment_terms,
+          Projectbrief:this.editObfObject._dh_desc,
+          Assumptionrisks:this.editObfObject._assumptions_and_risks,
+          Payment_Terms_description:this.editObfObject._payment_term_desc,
+          Loipo:this.editObfObject._loi_po_details,
+          comments:this.editObfObject._dh_comment
+        
+
+
+        });
       }
 }
 
