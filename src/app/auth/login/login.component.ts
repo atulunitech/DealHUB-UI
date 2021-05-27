@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
 import { loginservices } from './LoginServices';
 import {Router} from "@angular/router"
 import { HttpErrorResponse } from '@angular/common/http';
 import {MessageBoxComponent} from '../../shared/MessageBox/MessageBox.Component';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import * as CryptoJS from 'crypto-js'; 
+import { Token } from '@angular/compiler/src/ml_parser/lexer';
 
 //region model
 export class LoginModel
@@ -48,6 +49,7 @@ export class LoginComponent implements OnInit {
 
     //Password Secret key 
     let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    localStorage.setItem("Token","");
      this.key = "$!$030!m0l0l"+randomNumber.toString();
     let plainTextBytes = this.stringtobytes(this.key);
     this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
@@ -57,10 +59,12 @@ export class LoginComponent implements OnInit {
     // sample comment
     this.loginvalid = new FormGroup({
      
-      userID : new FormControl('', [Validators.required]),
-      Password : new FormControl('', [Validators.required]),
+      userID : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
+    
+
     this.ResetPasswordForm=new FormGroup({
 
       ResetPasswordUserid:new FormControl('',[Validators.required])
@@ -80,6 +84,14 @@ export class LoginComponent implements OnInit {
     
      }
     }
+  }
+
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidservices': true };
+    }
+    return null;
   }
   
   setEncryption(keys, value){
@@ -120,6 +132,7 @@ export class LoginComponent implements OnInit {
   }
   onFormSubmit()
   {
+    if(this.loginvalid.valid){
     if(this.loginvalid.get('Password').value != "" && this.loginvalid.get('userID').value != "")
     {
       this.disablebutton=true;
@@ -183,6 +196,10 @@ export class LoginComponent implements OnInit {
       },
       (error:HttpErrorResponse)=>{
         this.disablebutton=false;
+        if(error.status == 401)
+        {
+          this._mesgBox.showError("Please Enter Correct Login ID Or Password");
+        }
         if(error.status !=0)
         {
           if(error.error.Record.MESSAGE == "Invalid Password Entered")
@@ -192,14 +209,20 @@ export class LoginComponent implements OnInit {
         }
        else
         { 
-           this._mesgBox.showError(error.message);}
+           this._mesgBox.showError(error.message);
+          }
+           this.loginvalid.get("userID").setValue("");
+           this.loginvalid.get("Password").setValue("");
+         return false;
         }
+        
       );
     }
     else
     {
       this._mesgBox.showError("Please Enter Correct UserCode Or Password");
     }
+  }
    
   }
   

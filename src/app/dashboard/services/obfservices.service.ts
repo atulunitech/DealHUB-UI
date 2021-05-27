@@ -18,6 +18,13 @@ class SaveAttachmentParameter{
   _description:string;
 }
 
+export class editobfarguement
+{
+  dh_id:number;
+  dh_header_id:number;
+  user_code:string;
+}
+
 class Serviceslist{
   value:string;
   viewValue:string;
@@ -165,6 +172,42 @@ class obf{
   _loi_po_details:string;
   _payment_term_desc:string;
 }
+
+class editObf{
+  _dh_id:number;
+  _dh_header_id:number;
+  _fname:string;
+  _fpath:string;
+  _created_by:string;
+  _dh_project_name:string;
+  _opportunity_id:string;
+  _dh_location:string;
+  _vertical_id:number;
+  _verticalhead_id:number;
+  _dh_desc:string;
+  _total_revenue:number;
+  _total_cost:number;
+  _total_margin:number;
+  _total_project_life:string;
+  _irr_surplus_cash:number;
+  _ebt:number;
+  _capex:number;
+  _irr_borrowed_fund:number;
+  _is_loi_po_uploaded:string;
+  _assumptions_and_risks:string;
+  _payment_terms:number;
+  _Sector_Id:number;
+  _SubSector_Id:number;
+  Attachments:SaveAttachmentParameter[] = [];
+  Services:SaveServiceParameter[] =[];
+  _customer_name:string;
+  _sap_customer_code:string;
+  sapio:SAPIO[] = [];
+  _dh_comment:string ;
+  _solution_category_id:number;
+  _loi_po_details:string;
+  _payment_term_desc:string;
+}
  class approveRejectModel
 {
     isapproved: number;
@@ -285,6 +328,14 @@ export class OBFServices {
        httpOptions);  
        
   }
+  
+  geteditobfdata(editobf:editobfarguement): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf,
+       httpOptions);  
+       
+  }
+
   initializeobf(data:any)
   {
     console.log(data);

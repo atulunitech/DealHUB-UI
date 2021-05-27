@@ -16,7 +16,11 @@ export class AppComponent {
  
   // initiate it in your component OnInit
   ngOnInit(): void {
-   
+   // alert("Hello from app component");
+  //  if(localStorage.getItem("Token") == "")
+  //  {
+  //   this.router.navigateByUrl('/login'); 
+  //  }
     this.bnIdle.startWatching(600).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
         if(localStorage.getItem("rememberCurrentUser") != "true")

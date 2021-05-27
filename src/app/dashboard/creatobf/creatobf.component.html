@@ -2,7 +2,8 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
       <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> Back</div>
+          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png">Back</div>
+          <!-- <div class="back_rout" routerLink="/DealHUB/dashboard">Go Back</div> -->
       <div class="com_title conm_title_obf">Create OBF</div>
   </div>
   
@@ -104,7 +105,7 @@
                             <div class="mat_upload_tit">
                               LOI/PO/Agreement or Self Declaration 
                             </div>
-                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx" [disabled]="loiopdisabled">
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -188,7 +189,7 @@
                                 <mat-checkbox  class="example-margin" (change)="Supportcheckboxchange($event)" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
                               </div>
-                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx" [disabled]="supportchecked">
+                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -775,7 +776,7 @@
                                 <!-- <button mat-flat-button class="creat_bt mat_fot_bt">SAVE AS DRAFT</button> -->
                               </div>
                               <div class="mat_fot_drf" >
-                                <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
+                                <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')">GO BACK</button>
                                 <button mat-flat-button class="creat_bt" (click)="FinalSubmit()">
                                   SUBMIT
                                 </button>
