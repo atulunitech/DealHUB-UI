@@ -413,7 +413,7 @@
          </div>
         <div *ngIf="uploaddocprocess.length == 0">
           
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f,'loipo')">
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
           
           <ngx-dropzone-label class="drop_lab_cs">
             <div class="doc_icon">
