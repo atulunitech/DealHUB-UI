@@ -434,7 +434,7 @@ openModal(templateRef) {
 
 downloaddetailobf(element)
 {
-  alert("download documnet");
+  // alert("download documnet");
 }
   getToolTipData(issueId: any): any {
     

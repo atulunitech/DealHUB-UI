@@ -282,8 +282,17 @@
                       Comments 
                      </div>
                      <div class="mat_comment_box">
+                     <div style="height: 200px;overflow-y: scroll;">
+                    <div *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
+                      <div>{{details.Fullname}}({{details.Role_name}})</div>
+                      <div>{{details.Status}}<br/>{{details.dh_comment}}</div>
+                      <div>Version:{{details.Version_name}} <br/>{{details.commented_on | date}}</div>
                       
+                    </div>  </div>
+                       
                       <mat-form-field class="example-full-width" >
+                        
+
                         <mat-label>Leave a comment</mat-label>
                         <textarea matInput formControlName="comments"></textarea>
                         <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
@@ -391,7 +400,7 @@
         <div class="mat_upload_tit">
          Uploading Document
         </div>
-        <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx">
+        <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
           <ngx-dropzone-label class="matUp_lable">
             <div><img src="assets/images/Group Upload.png"></div>
             <div class="drap_titl">
