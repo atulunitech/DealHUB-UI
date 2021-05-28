@@ -79,7 +79,7 @@ export class SideNaveComponent implements OnInit {
  
   Logout()
   {
-    localStorage.setItem("UserName","");
+    localStorage.setItem("UserCode","");
     localStorage.setItem("Token","");
     this.router.navigate(['/']);  
   }
@@ -112,7 +112,7 @@ export class SideNaveComponent implements OnInit {
   constructor(private menuservice:SidenavService,private router: Router) { }
   GetMenus()
   {
-    this._menumodel._user_code=localStorage.getItem("UserName");
+    this._menumodel._user_code=localStorage.getItem("UserCode");
     this._menumodel.token=localStorage.getItem("Token");
     this.menuservice.GetMenus(this._menumodel).subscribe(Result=>{
     debugger;

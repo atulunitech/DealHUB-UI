@@ -16,6 +16,8 @@ export class LoginModel
   _token:string;
    _SecretKey:string;
   privilege_name:string;
+  role_name:string;
+  UserName:string;
 }
 //endregion
 
@@ -167,18 +169,21 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("UserName",Result.user.UserName);
           localStorage.setItem("Token",Result.user.Api_Key);
           localStorage.setItem("rememberCurrentUser","true");
-  
+        
          }
         else
         {
           localStorage.setItem("UserName",Result.user.UserName);
           localStorage.setItem("Token",Result.user.Api_Key);
           localStorage.setItem("rememberCurrentUser","false");
+
         }
-        localStorage.setItem("UserID",Result.user.user_id);
+        localStorage.setItem("UserCode",Result.user.UserCode);
         sessionStorage.setItem("privilege_name",Result.user.privilege_name);
         localStorage.setItem("userToken",Result.user.Api_Key);
-        
+        localStorage.setItem("role_name",Result.user.role_name);
+        localStorage.setItem("UserName",Result.user.UserName);
+        localStorage.setItem("User_Id",Result.user.UserId);
         console.log(Result.user.UserName);
         
         

@@ -228,6 +228,9 @@ class editObf{
     _fname:string;
     _fpath:string;
     _created_by:string;
+    exceptionalcase_cfo:number;
+    exceptioncase_ceo:number;
+    is_on_hold:number;
   }
 
 @Injectable({

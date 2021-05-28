@@ -135,7 +135,7 @@ export class DashboardComponent implements OnInit {
 
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserName')).subscribe(data =>{
+    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
       let res = JSON.parse(data);
        console.log(Object.keys(res) );
        console.log(res.sectors);
@@ -165,7 +165,7 @@ export class DashboardComponent implements OnInit {
 
   getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(data =>{
+this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -444,7 +444,7 @@ downloaddetailobf(element)
 }
   CallDashBoardService()
   {
-    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
       debugger;
       console.log("DashBoardData");
@@ -564,21 +564,27 @@ downloaddetailobf(element)
       if(selection==0)
       {
         //Pending for approval Section.
+        this.listData.filter="";
+        this.listData.filter="submitted"; 
       this.displayedColumns=this.PendingReviewercolumn;
       }
       else if (selection==1)
       {
          //Approved section
-
+         this.listData.filter="";
+         this.listData.filter="approved"; 
+         this.displayedColumns=this.PendingReviewercolumn;
       }
       else if(selection==2)
       {
+        this.listData.filter="";
+        this.listData.filter="rejected";
         this.displayedColumns=this.RejectedScreenColumn;
       }
       else if(selection==3)
       {
         this.listData.filter="";
-        this.listData.filter="rejected";
+        this.listData.filter="approved";
         
         this.displayedColumns=this.ApprovedOBf;
         
@@ -598,7 +604,7 @@ downloaddetailobf(element)
   {
     
 
-    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
       debugger;
       

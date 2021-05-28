@@ -18,6 +18,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -28,6 +29,16 @@ import { Subscription } from 'rxjs';
   _fpath:string;
   _created_by:string;
   _description:string;
+}
+class CommentDetails
+{
+  Fullname:string;
+  Role_name:string;
+  dh_comment:string;
+  commented_on:string;
+  Version_name:string;
+  Status:string;
+
 }
 @Component({
     selector: 'app-obfSummary',
@@ -58,16 +69,26 @@ import { Subscription } from 'rxjs';
   finalProgress:any[]=[];
   SaveAttachmentParameter:SaveAttachmentParameter;
   Attachments:SaveAttachmentParameter[] = [];
+ // CommentDetails:CommentDetails[]=[];
   loipopath:string="";
   supportdocpath:string="";
   Finaldocpath:string="";
+  role_name:string="";
   message: string[] = [];
   listData: MatTableDataSource<any>;
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
   displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
-   
+  progress: number = 0;
+  uploadDocfiles:File[]=[];
+  loipofiles: File[] = [];
+  supportfiles: File[] = [];    
+  FinalAggfiles:File[]=[];   
+  LoiPoprogress: any[] = [];
+  uploaddocprocess:any[]=[];
+  Type:string="";
+  User_name:string="";
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -75,9 +96,6 @@ import { Subscription } from 'rxjs';
         private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
       { 
 
-        // this.subscription =  this._obfservices.Obfsummarysubject.subscribe(data=>{
-        //   console.log(data +" :data");
-        // });
       }
       
   ngOnInit(): void {
@@ -86,6 +104,8 @@ import { Subscription } from 'rxjs';
       this.privilege_name=sessionStorage.getItem("privilege_name");
 
     }
+    this.role_name=localStorage.getItem("role_name");
+    this.User_name= localStorage.getItem("UserName"); 
     console.log(this._obfservices.obfsummarymodel);
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
@@ -96,35 +116,31 @@ import { Subscription } from 'rxjs';
      }
      );
      this.GetDetailTimelineHistory();
-    this.getserviceslist();
+    
    
   }
-  // ngAfterViewInit(){
-  //   this._obfservices.getobfsummarydataonRefresh().subscribe(data=>{
-  //     console.log(data +" :data on nginit");
-  //   });
-  // }
- 
   getserviceslist()
   {
+    var finalservicecat="";
     if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
     {
+      var tempservicecat="";
       var Tempservice="";
       for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
       {
-        Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+        Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
         
-      //   for(let t=0;t < this._obfservices.obfmodel.Services[i].Serviceslist.length;t++)
-      //   {
-      //     if(Tempservice == this._obfservices.obfmodel.Services[i].Solutioncategory)
-      //     {
+        for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
+        {
+          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
+          {
             
-      //       tempservicecat += ','+ this._obfservices.obfmodel.Services[i].Serviceslist[t].viewValue;
-      //     }
-      //   }
+            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+          }
+        }
       
-      //  tempservicecat=tempservicecat.substring(1);
-      //  finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
+       tempservicecat=tempservicecat.substring(1);
+       finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
        
       }
       this.service=Tempservice;
@@ -135,13 +151,16 @@ import { Subscription } from 'rxjs';
   ApproveDeatils()
   {
     this._obfservices._approveRejectModel.isapproved=1;
-    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
     this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
     this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
+    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
+    this._obfservices._approveRejectModel.is_on_hold=0;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     
       if(data.status =="sucess")
@@ -156,31 +175,80 @@ import { Subscription } from 'rxjs';
     });
   }
   
-  // setStep(index: number) {
-  //   this.step = index;
-  // }
   downloadCoversheet(event)
   {
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath== "")
     {
-      this._mesgBox.showError("No Supporting Documents to Download");
+      this._mesgBox.showError("No OBF Sheet Documents to Download");
     }
     else
     {
-      window.open('http://13.235.216.142/dealhubapiqa/' + this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath);
+      var url=environment.apiUrl + this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath;
+      window.open(url);
     }
           
   }
-  downloaddocument(event)
+  downloadsuppodocument(event)
   {
-    
+    event.preventDefault();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+        {
+           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+           window.open(url);
+        }
+      }
+    }
+  }
+    else
+    {
+      this._mesgBox.showError("No Supporting Documents to Download");
+    }
       
+  }
+  SaveComment()
+  {
+    if(this.obfsummaryform.get("comments").value!= "")
+    {
+      let SaveComment:CommentDetails = new CommentDetails();
+      var comment=this.obfsummaryform.get("comments").value;
+      SaveComment.Fullname=this.User_name;
+      SaveComment.Role_name= this.role_name;
+      SaveComment.Status="";
+      SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+      SaveComment.commented_on=  localStorage.getItem("UserId");
+      SaveComment.dh_comment=comment;
+      // this.CommentDetails.push(SaveComment);
+      this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
+    }
   }
   downloadLOIp(event)
   {
     event.preventDefault();
-
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+        {
+           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+           window.open(url);
+        }
+      }
+    }
+  }
+    else
+    {
+      this._mesgBox.showError("No LOI or PO Documents to Download");
+    }
   }
   getdetailsfordh_id(dh_id)
   {
@@ -194,7 +262,7 @@ import { Subscription } from 'rxjs';
     );
    
   }
-  Type:string="";
+  
   OpenDocDownload(event,Type)
   {
     this.Type=Type;
@@ -245,6 +313,9 @@ import { Subscription } from 'rxjs';
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
     this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
+    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
+    this._obfservices._approveRejectModel.is_on_hold=0;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
       if(res[0].status =="success")
@@ -259,15 +330,33 @@ import { Subscription } from 'rxjs';
     });
 
   }
-  progress: number = 0;
-  uploadDocfiles:File[]=[];
-  loipofiles: File[] = [];
-  supportfiles: File[] = [];    
-  FinalAggfiles:File[]=[];    
+  onHoldDetails()
+  {
+    this._obfservices._approveRejectModel.isapproved=0;
+    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectionto=0;
+    this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+    this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+    this._obfservices._approveRejectModel._fname="";
+    this._obfservices._approveRejectModel._fpath="";
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
+    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
+    this._obfservices._approveRejectModel.is_on_hold=1;
+    this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
+       let res = JSON.parse(data);
+      if(res[0].status =="success")
+      {
+        this._mesgBox.showSucess(res[0].message);
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      else{
+        this._mesgBox.showError(res[0].message);
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    });
+  }
   
- 
-  LoiPoprogress: any[] = [];
-  uploaddocprocess:any[]=[];
   bytesToSize(bytes):number {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     if (bytes === 0) return 0;
@@ -275,7 +364,6 @@ import { Subscription } from 'rxjs';
     if (i === 0) return bytes;
     return parseFloat((bytes / (1024 ** i)).toFixed(1));
   }
-
 	onSelect(event) {
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
@@ -359,7 +447,6 @@ import { Subscription } from 'rxjs';
   }
 
 	}
-
   onRemove(files:File[],event) {
      if(this.Type == "loipo")
     {
@@ -388,8 +475,6 @@ import { Subscription } from 'rxjs';
     }
 
 	}
-
-
   SaveAttachment()
   {
     //this.isloipo = !this.isloipo;
@@ -556,7 +641,7 @@ import { Subscription } from 'rxjs';
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
       this.listData = new MatTableDataSource(this.dashboardData);
-     
+      
     },
     (error:HttpErrorResponse)=>{
       debugger;
@@ -568,7 +653,7 @@ import { Subscription } from 'rxjs';
       
     }
     );
-  
+    this.getserviceslist();
   }
  
   }
