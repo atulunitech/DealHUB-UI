@@ -363,6 +363,17 @@
                     color:$thm-title-color;
                     @include font-weight(bold);
                     @include font-size(1);
+                    .is_done
+                    {
+                        img
+                        {
+                            width: 20px;
+                        }
+                        &.is_done_not
+                        {
+                            img{opacity: 0.5;}
+                        }
+                    }
                 }
             }
             .mat-expansion-panel-header
