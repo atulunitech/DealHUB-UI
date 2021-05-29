@@ -4,7 +4,7 @@
       <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
           <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png">Back</div>
           <!-- <div class="back_rout" routerLink="/DealHUB/dashboard">Go Back</div> -->
-      <div class="com_title conm_title_obf">Create OBF</div>
+      <div class="com_title conm_title_obf">{{editorcreateobfstring}} OBF</div>
   </div>
   
   <div>
@@ -18,7 +18,7 @@
       <div class="cust-accor">
           <mat-accordion>
             <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
-                <mat-expansion-panel [disabled]="true" [expanded]="step === 0" (opened)="setStep(0)" >
+                <mat-expansion-panel [disabled]="!uploadnotdisabled" [expanded]="step === 0" (opened)="setStep(0)" >
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                       1/3 Upload Document 
@@ -55,7 +55,7 @@
                               <button [disabled]="!(coversheetfiles.length >0) || iscoversheet" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="coversheetfiles.length > 0">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0)">
                               Uploaded Attach Obf Sheet 
                              </div>
                             <div *ngIf="Coversheetprogress.length == 0">
@@ -77,7 +77,7 @@
                           </div>
                           <div *ngIf="Coversheetprogress.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" >
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -86,6 +86,24 @@
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
+                                
+
+                                </div> 
+                                
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                          </div>
+                          <div *ngIf="editObfcoverbol && _obfservices.coversheetarray.length > 0">
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div class="doc_icon" >
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont" style="position: relative;" >
+                                  {{ f._fname }}
                                 
 
                                 </div> 
@@ -148,7 +166,7 @@
                               <!-- <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
                               <label for="selfdec">This OBF is without LOI / PO </label><br>   -->
                             </div>
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0 || (editObfcoverbol && _obfservices.loipoarray.length > 0)">
                               Uploaded Loi/Po Agreement 
                              </div>
                              <div *ngIf="LoiPoprogress.length == 0">
@@ -167,7 +185,7 @@
                             </ngx-dropzone-preview>
                             </div>
                             <div *ngIf="LoiPoprogress.length > 0">
-                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" >
+                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -181,6 +199,24 @@
                                   </div>  
                                 </ngx-dropzone-label>
                               </ngx-dropzone-preview>
+                              </div>
+                              <div *ngIf="editObfLoiPobol && _obfservices.loipoarray.length > 0">
+                            
+                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
+                                  
+                                  <ngx-dropzone-label class="drop_lab_cs">
+                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                    <div class="doc_icon" >
+                                      <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                    </div>
+                                    <div class="doc_cont" style="position: relative;" >
+                                      {{ f._fname }}
+                                    
+    
+                                    </div> 
+                                    
+                                  </ngx-dropzone-label>
+                                </ngx-dropzone-preview>
                               </div>
                             </div>
                           </div>
@@ -201,14 +237,13 @@
                                 
                               </ngx-dropzone-label>
                              
-                              
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
                               <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <button [disabled]="!(supportfiles.length >0) || isSupport" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
                               
                             </div>
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="supportfiles.length > 0">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="supportfiles.length > 0 || (editObfcoverbol && _obfservices.supportarray.length > 0)">
                               Uploaded Supporting Documents 
                              </div>
                           <div *ngIf="SupportPoprogress.length == 0">
@@ -227,7 +262,7 @@
                             </ngx-dropzone-preview>
                           </div>  
                           <div *ngIf="SupportPoprogress.length > 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" >
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,SupportPoprogress)" >
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -241,7 +276,25 @@
                                 </div> 
                               </ngx-dropzone-label>
                             </ngx-dropzone-preview>
-                          </div>    
+                          </div>   
+                          <div *ngIf="editObfSupportbol && _obfservices.supportarray.length > 0">
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div class="doc_icon" >
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont" style="position: relative;" >
+                                  {{ f._fname }}
+                                
+
+                                </div> 
+                                
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                          </div> 
                               </div>
                          </div>
                          
@@ -253,7 +306,7 @@
                         </div> 
                         <div class="mat_fot_drf" >
                           
-                          <button mat-flat-button class="creat_bt cu_width" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
+                          <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid  && !uploadnotdisabled" (click)="nextStep('details')">
                             NEXT
                           </button>
                         </div>
@@ -264,7 +317,7 @@
                  
                 </mat-expansion-panel>
                 <!--  -->
-                <mat-expansion-panel [disabled]="true" [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel  [expanded]="step === 1" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                       2/3 Enter Details 
@@ -317,7 +370,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
-                                <input matInput formControlName="otherservices" id="abc" #otherservices  (change)="otherssave('services')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                                   Services:Other is <strong>required</strong>
                                 </mat-error>
@@ -332,7 +385,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Solutions</mat-label>
-                                <input matInput formControlName="othersolutions"  (change)="otherssave('solution')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
                                   Solution:Other is <strong>required</strong>
                                 </mat-error>
@@ -346,7 +399,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Integrated Solutions</mat-label>
-                                  <input matInput formControlName="otherintegratedsolutions"  (change)="otherssave('integratedsolution')" [errorStateMatcher]="matcher" required/>
+                                  <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
                                     Integrated Solution:Other is <strong>required</strong>
                                   </mat-error>
@@ -776,7 +829,7 @@
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
+                              <span><a [href]="sanitize(this._obfservices.ObfCreateForm.get('coversheet').value)" target="_blank" >OBF Sheet</a></span>
                             </div>
                             <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                             </div>

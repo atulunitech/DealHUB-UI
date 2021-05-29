@@ -19,6 +19,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
+import { environment } from 'src/environments/environment';
 
 
 interface Serviceslist {
@@ -220,9 +221,12 @@ export class CreatobfComponent implements OnInit {
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  editorcreateobfstring:string ="Create";
   Coversheetprogress: any[] = [];
   LoiPoprogress: any[] = [];
   SupportPoprogress: any[] = [];
+  isEditObf:boolean = false;
+  uploadnotdisabled:boolean = false;
   
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -233,6 +237,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.reset();
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
+    this.loiopdisabled = false;
+    this.uploadnotdisabled = false;
     this.getcreateobfmasters();
     this.getsolutionmaster();
     this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
@@ -246,6 +252,9 @@ export class CreatobfComponent implements OnInit {
       }
   });
   }
+   editObfcoverbol:boolean = false;
+   editObfLoiPobol:boolean = false;
+   editObfSupportbol:boolean = false;
 
   geteditobfdata(dh_id,dh_header_id)
   {
@@ -254,12 +263,91 @@ export class CreatobfComponent implements OnInit {
    editobf.dh_header_id = dh_header_id;
    editobf.user_code = localStorage.getItem("UserCode");
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
-      console.log(res);
+     let result =  JSON.parse(res);
+     this.isEditObf = true;
+     console.log("check object after edit");
+     this.editorcreateobfstring= "Edit";
+     console.log(result);
+     if(result != null)
+     {
+      this.editObfcoverbol = true;
+      this.editObfLoiPobol = true;
+      this.editObfSupportbol = true;
+     }
+      this._obfservices.editObfObject = JSON.parse(res);
+      this._obfservices.initializeobfmodelandform();
+      this.editobfinitialization();
+     // this.getotherservicesandsolutions();
+      
    },
    error =>
    {
 
    });
+  }
+
+  
+ 
+  editobfinitialization()
+  {
+    
+      if(this._obfservices.supportarray.length >0)
+      {
+        this.supportchecked = false;
+         this.checked_d = true;
+      }
+      if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
+      {
+        this.editObfLoiPobol = false;
+      }
+      if(this._obfservices.ObfCreateForm.get("Supportpath").value == null)
+      {
+        this.editObfSupportbol = false;
+      }
+      this.servicesControl.setValue(this._obfservices.servicesarray);
+      this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
+      var resultnew = this.subsectorlist.filter(obj => {
+        return obj.Sector_Id === this._obfservices.editObfObject._Sector_Id;
+      });
+      this.subsectorlisdisplay = resultnew;
+      let verticalname = this.getverticalname(this.verticallist);
+      if(verticalname != undefined)
+      {
+         this._obfservices.ObfCreateForm.patchValue({Vertical:verticalname});
+      }
+      if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
+      {
+        this.loiopdisabled = true;
+        this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
+      this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+      }
+      this.uploadnotdisabled = true;
+      if(this._obfservices.obfmodel.Services != null)
+      {
+        this.serviceslist = this._obfservices.obfmodel.Services;
+      }
+      var resverticalhead = this.Verticalheadlist.filter(obj => {
+        // return obj.viewValue === ws.E8.h;
+        return obj.value === this._obfservices.editObfObject._vertical_id;
+      });
+      //let verticalheadid = res[0].vertical_head_id;
+       this._obfservices.ObfCreateForm.patchValue({Verticalhead:resverticalhead[0].vertical_head_name}) ;
+
+       console.log("check form after onload of editobf");
+       console.log(this._obfservices.ObfCreateForm);
+       console.log("check object after onload of editobf");
+       console.log(this._obfservices.obfmodel);
+  }
+
+  getverticalname(verticallist:verticallist[])
+  { var response = "";
+    verticallist.forEach((obj) =>{
+         if(obj.value == this._obfservices.editObfObject._vertical_id)
+         {
+          response =  obj.viewValue;
+         }
+    });
+    return response;
   }
 
   add(event: MatChipInputEvent): void {
@@ -314,6 +402,11 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
   console.log("get solution masters");
   console.log(res);
   this.Solutiongroup= res;
+  // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: 2});
+  if(this.isEditObf)
+  {
+  this.editobfinitialization();
+  }
 },
 (error:HttpErrorResponse)=>{
   this._mesgBox.showError(error.message);
@@ -337,6 +430,11 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
+       if(this.isEditObf)
+       {
+         this.editobfinitialization();
+       }
+     
  },
  (error:HttpErrorResponse)=>{
    this._mesgBox.showError(error.message);
@@ -360,10 +458,14 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
       this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
-
+      console.log("check edit obf after next button");
+      console.log(this._obfservices.ObfCreateForm);
+      console.log("check uploadnotdisabled after next button");
+      console.log(this.uploadnotdisabled);
     }
     else if(section == "preview"){
-    
+    console.log("check object after preview next click");
+    console.log(this._obfservices.obfmodel);
       if(this.service !=null)
       {
         
@@ -571,6 +673,10 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
   }
 
   sanitize(url:string){
+    if(this.isEditObf)
+    {
+      url = environment.apiUrl+url
+    }
     
       return this.sanitizer.bypassSecurityTrustUrl(url);
   }
@@ -581,7 +687,7 @@ downloaddocument(event)
 // var zipFilename = "Supportfiles.zip";
 //   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
-  if(this.supportdocpath== "")
+  if(this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
@@ -592,7 +698,11 @@ downloaddocument(event)
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
         
-         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         let url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         if(this.isEditObf)
+         {
+            url = environment.apiUrl+url
+         }
          window.open(url);
         //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
         // loading a file and add it in a zip file
@@ -617,11 +727,16 @@ downloaddocument(event)
 downloadLOIp(event)
 {
   event.preventDefault();
-  if(this.loipopath == "")
+  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
     this._mesgBox.showError("No Loi/po to Download");
   }
   else{
+    let url = this._obfservices.ObfCreateForm.get("Loiposheet").value;
+    if(this.isEditObf)
+         {
+            url = environment.apiUrl+url
+         }
     window.open(this.loipopath,"_self");
   }
  
@@ -645,6 +760,7 @@ downloadLOIp(event)
   supportfilecount:number=0;
 
 	onSelect(event,types) {
+    
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
@@ -670,6 +786,8 @@ downloadLOIp(event)
     this.progress = 0;
     if(types == "coversheet")
        {
+        this.editObfcoverbol = false;
+        this._obfservices.ObfCreateForm.patchValue({coversheet: null});
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid coversheet");
@@ -682,6 +800,7 @@ downloadLOIp(event)
           return false;
         }
         else{
+          this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
           this.coversheetfiles.push(...event.addedFiles);
           this.iscoversheet = !this.iscoversheet;
         }
@@ -692,6 +811,8 @@ downloadLOIp(event)
        }
        else if(types == "loipo")
        {
+        this.editObfLoiPobol = false;
+        this._obfservices.ObfCreateForm.patchValue({Loiposheet: null});
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid LOI/PO Sheet");
@@ -703,25 +824,29 @@ downloadLOIp(event)
           return false;
          }
          else{
-           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null || this._obfservices.ObfCreateForm.get("Loipodropdown").value == "")
            {
             throw new Error("Kindly select LOI or PO file type");
            }
         this.loipofiles.push(...event.addedFiles);
-        this.isloipo = !this.isloipo;
+        //this.isloipo = !this.isloipo;
+        this.isloipo = false;
         }
         // this.files = this.loipofiles;
        }
        else
        {
+        this.editObfSupportbol = false;
+        this._obfservices.ObfCreateForm.patchValue({Supportpath: null});
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)
          {
-
+          this.isSupport = false;
          }
          else
          {
-          this.isSupport = !this.isSupport;
+         // this.isSupport = !this.isSupport;
+         this.isSupport = false;
          }
         this.supportfiles.push(...event.addedFiles);
         // this.files = this.supportfiles;
@@ -775,7 +900,7 @@ downloadLOIp(event)
     }
     else if(types == "support")
     {
-      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
+      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name,_description:"support" };
     }
       
       path="";
@@ -839,6 +964,7 @@ downloadLOIp(event)
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
 
         }
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       }
       }
      
@@ -864,6 +990,9 @@ downloadLOIp(event)
     );
     }
   }
+  
+  console.log("check for disable");
+  console.log(this._obfservices.ObfCreateForm);
     // this.validateform();
   }
 
@@ -900,6 +1029,116 @@ downloadLOIp(event)
 
 	}
 
+  onRemoveAttachments(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fpath == attachment._fpath);
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj._fpath == attachment._fpath);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveAttachmentsPreview(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => (obj._fname == attachment.fileName && obj._description == "support"));
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj.fileName == attachment.fileName);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+
+    if(array.length == 0)
+    {
+      this.supportfiles = [];
+      this.isSupport = !this.isSupport;
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveLoiPoPreview(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => (obj._fname == attachment.fileName && obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value));
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj.fileName == attachment.fileName);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+
+    if(array.length == 0)
+    {
+      this.loipofiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.isloipo = !this.isloipo;
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveLoiAttachments()
+  {
+    
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.uploadnotdisabled = false;
+    }
+
+    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    if(indexnew > -1)
+    {
+      this._obfservices.loipoarray.splice(index,1);
+    }
+
+    if(this._obfservices.loipoarray.length == 0)
+    {
+      this.loipofiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.isloipo = !this.isloipo;
+    }
+    // console.log(attachment);
+  }
+
+  removeeditcoversheet()
+  {
+    this._obfservices.coversheetarray =[];
+    this.coversheetfiles =[];
+    this._obfservices.obfmodel._fname = "";
+    this._obfservices.obfmodel._fpath = "";
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this.uploadnotdisabled = false;
+  }
+
+  removeprogresscoversheet()
+  {
+    this.coversheetfiles =[];
+    this.Coversheetprogress = [];
+    this._obfservices.obfmodel._fname = "";
+    this._obfservices.obfmodel._fpath = "";
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this.uploadnotdisabled = false;
+  }
+
    renameKey(obj, old_key, new_key) {   
     // check if old key = new key  
         if (old_key !== new_key) {                  
@@ -930,6 +1169,7 @@ downloadLOIp(event)
         {
           this._mesgBox.showError("Standard OBF Coversheet not found");
           this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
           return false;
         }
         for (var key in wb.Sheets) {
@@ -944,109 +1184,194 @@ downloadLOIp(event)
       console.log(ws);
     // console.log(ws.A1.h);
     try{
-      if(ws.E4.w == "#N/A")
-    throw new Error();
+      let count:number = 0;
+      if(ws.E4 == undefined || ws.E4.w == "#N/A" )
+      {
+      count +=1;
+    }
+    else{
     this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
     this._obfservices.obfmodel._dh_project_name = ws.E4.w;
-    if(ws.E5.w == "#N/A")
-    throw new Error();
+   }
+    if(ws.E5 == undefined || ws.E5.w == "#N/A" )
+    {
+    // throw new Error();
+    count +=1;
+  }
+  else{
     this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
     this._obfservices.obfmodel._customer_name = ws.E5.w;
+  }
     // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: ws.E6.h});
     // this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: ws.E7.h});
     // this._obfservices.ObfCreateForm.patchValue({Projecttype: ws.E5.h});
-    if(ws.E6.h == "#N/A")
-    throw new Error();
+    if(ws.E6 == undefined || ws.E6.h == "#N/A")
+    {
+    count +=1;
+  }
+  else
+  {
     this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
     this._obfservices.obfmodel._opportunity_id = ws.E6.w;
-    if(ws.E7.w == "#N/A")
-    throw new Error();
+  }
+    if( ws.E7 == undefined || ws.E7.w == "#N/A")
+    {
+    count +=1;
+  }
+  else{
     this._obfservices.ObfCreateForm.patchValue({State: ws.E7.w});
     this._obfservices.obfmodel._dh_location = ws.E7.w;
-    if(ws.E8.w == "#N/A")
-    throw new Error();
+  }
+    if(ws.E8 == undefined || ws.E8.w == "#N/A")
+    {
+      count +=1;
+    }
+    else{
     this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
+    var result = this.verticallist.filter(obj => {
+      return obj.viewValue === (ws.E8 == undefined?"":ws.E8.w);
+    // return obj.viewValue === "E-Commerce";
+   });
+   if(!(result.length > 0))
+   {
+     this._mesgBox.showError("Vertical field is not correct, please check.");
+     this.coversheetfiles = [];
+         return false; 
+   }
+    let verticalid = parseInt(result[0].value.toString());
+   //let verticalid = 2;
+   this._obfservices.obfmodel._vertical_id = verticalid;
 
+   var ressec = this.sectorlist.filter(obj =>{
+     return obj.vertical_id === verticalid;
+   });
+   this.sectorlist = <sectors[]>ressec;
+   var res = this.Verticalheadlist.filter(obj => {
+    // return obj.viewValue === ws.E8.h;
+    return obj.value === verticalid;
+  });
+  //let verticalheadid = res[0].vertical_head_id;
+   this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
+  }
     let value: any = ws.H3.v;
     const parsedDate: Date = new Date(value);
      //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
     // value = df(parsedDate, "dd/mm/yyyy");
     value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
     this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
-    var result = this.verticallist.filter(obj => {
-       return obj.viewValue === ws.E8.w;
-     // return obj.viewValue === "E-Commerce";
-    });
-    if(!(result.length > 0))
+   
+    if(ws.E9 == undefined || ws.E9.w == "#N/A")
     {
-      this._mesgBox.showError("Vertical field is not correct, please check.");
-      this.coversheetfiles = [];
-          return false; 
+      count +=1;
     }
-     let verticalid = parseInt(result[0].value.toString());
-    //let verticalid = 2;
-    this._obfservices.obfmodel._vertical_id = verticalid;
-
-    var ressec = this.sectorlist.filter(obj =>{
-      return obj.vertical_id === verticalid;
-    });
-    this.sectorlist = <sectors[]>ressec;
+    else{
      this._obfservices.ObfCreateForm.patchValue({Verticalhead: ws.E9.w});
-     var res = this.Verticalheadlist.filter(obj => {
-      // return obj.viewValue === ws.E8.h;
-      return obj.value === verticalid;
-    });
-    //let verticalheadid = res[0].vertical_head_id;
-     this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
+    }
+    
     //this._obfservices.ObfCreateForm.patchValue({Verticalhead: "abc"});
     // this._obfservices.ObfCreateForm.patchValue({Sector: ws.E11.h});
     // this._obfservices.ObfCreateForm.patchValue({Subsector: ws.E12.h});
-    if(ws.D12.w == "#N/A")
-    throw new Error();
+    if(ws.D12 == undefined || ws.D12.w == "#N/A" )
+    {
+      count +=1;
+    }
+    else{
     this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
     this._obfservices.obfmodel._dh_desc = ws.D12.w;
-    if(ws.D13.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
+  }
+    if(ws.D13 == undefined || ws.D13.w == "#N/A" )
+    {
+      count +=1;
+    }
+    else
+    {
+      this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
     this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
-    if(ws.F13.w == "#N/A")
-    throw new Error();
+    }
+    
+    if(ws.F13 == undefined || ws.F13.w == "#N/A")
+    {
+      count +=1;
+    }
+    else{
     this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
     this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
-    if(ws.H13.w == "#N/A")
-    throw new Error();
+  }
+    if(ws.H13 == undefined || ws.H13.w == "#N/A" )
+    {
+      count +=1
+    }
+    else{
     this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
     this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
-    if(ws.D14.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
+  }
+    if(ws.D14 == undefined || ws.D14.w == "#N/A")
+    {
+       count +=1; 
+    }
+    else
+    {
+      this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
     this._obfservices.obfmodel._total_project_life = ws.D14.w;
+    }
+    
+    
     this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
     this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
     this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
     this._obfservices.obfmodel._ebt = parseFloat(ws.H14 == undefined?0:ws.H14.w.toString().replace('%',""));
-    if(ws.D15.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
+    if(ws.D15 == undefined || ws.D15.w == "#N/A")
+    {
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
     this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+    }
+    
     this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
     this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15 == undefined?0:ws.F15.w.toString().replace('%',""));
-    if(ws.H15.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
-    this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
-    if(ws.D16.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
+    if(ws.H15 == undefined || ws.H15.w == "#N/A" )
+    {
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
+      this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+    }
+
+    if(ws.D16 == undefined || ws.D16.w == "#N/A")
+    {
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
     this._obfservices.obfmodel._payment_term_desc = ws.D16.w;
-    if(ws.D17.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
+    }
+    
+    if(ws.D17 == undefined || ws.D17.w == "#N/A" )
+    {
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
     this._obfservices.obfmodel._assumptions_and_risks = ws.D17.w;
-    if(ws.D18.w == "#N/A")
-    throw new Error();
-    this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
-    this._obfservices.obfmodel._loi_po_details = ws.D18.w;
+    }
+    
+    if(ws.D18 == undefined || ws.D18.w == "#N/A")
+    {
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
+      this._obfservices.obfmodel._loi_po_details = ws.D18.w;
+    }
+   
+    if(count > 0)
+    {
+      throw new Error();
+    }
+    
     console.log("check form values");
     console.log(this._obfservices.ObfCreateForm);
     this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
@@ -1090,6 +1415,7 @@ downloadLOIp(event)
 
   Saveasdraft(type:string){
     console.log("view model");
+    console.log(this._obfservices.obfmodel);
     this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
     this._obfservices.obfmodel._active = "A";
@@ -1247,6 +1573,7 @@ downloadLOIp(event)
       this.supportchecked =false;
       this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
      }
      else{
       this.isSupport = !this.isSupport;
@@ -1266,6 +1593,7 @@ downloadLOIp(event)
         }
        });
        this._obfservices.obfmodel.Attachments = filteredsupportarray;
+       this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       //this._obfservices.obfmodel.Attachments.splice(this._obfservices.obfmodel.Attachments.findIndex(e => e._description === "support"),1);
       console.log("check attachment after");
       console.log(this._obfservices.obfmodel.Attachments);
@@ -1283,7 +1611,12 @@ downloadLOIp(event)
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
       this.loipofiles = [];
       this.LoiPoprogress = [];
+      if(this.isEditObf)
+      {
+        this.onRemoveLoiAttachments();
+      }
       this._obfservices.ObfCreateForm.get("Loipodropdown").setValue("");
+     
     }
     else{
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
@@ -1291,6 +1624,7 @@ downloadLOIp(event)
       this.loiopdisabled = false;
       this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
     }
+    this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
 
   // GridBinding()
@@ -1342,17 +1676,22 @@ downloadLOIp(event)
 
   validateform()
   {
+    let count:number = 0;
+    let message = "";
     if(this._obfservices.ObfCreateForm.get('Projectname').errors)
     {
       //alert("Project name is required");
-      this._mesgBox.showError("Project name is required");
-      return false;
+      // this._mesgBox.showError("Project name is required");
+      message += "Project name"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Customername').errors)
+    if(this._obfservices.ObfCreateForm.get('Customername').errors)
     {
      // alert("Customer name is required");
-      this._mesgBox.showError("Customer name is required");
-      return false;
+      // this._mesgBox.showError("Customer name is required");
+      // return false;
+      message += "Customer name"+",";
+      count +=1;
     }
     // else if(this._obfservices.ObfCreateForm.get('Solutioncategory').errors)
     // {
@@ -1364,93 +1703,128 @@ downloadLOIp(event)
     //   alert("Other Services and Solutions field is required");
     //   return false;
     // }
-    else if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
+    if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
     {
      // alert("Opportunityid is required");
-      this._mesgBox.showError("Opportunity Id is required");
-      return false;
+      // this._mesgBox.showError("Opportunity Id is required");
+      // return false;
+      message += "Opportunity Id"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('State').errors)
+    if(this._obfservices.ObfCreateForm.get('State').errors)
     {
       //alert("Project primay location is required");
-      this._mesgBox.showError("Project primay location is required");
-      return false;
+      // this._mesgBox.showError("Project primay location is required");
+      // return false;
+      message += "Project primay location"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Vertical').errors)
+    if(this._obfservices.ObfCreateForm.get('Vertical').errors)
     {
      // alert("Vertical field is required");
-     this._mesgBox.showError("Vertical field is required");
-      return false;
+    //  this._mesgBox.showError("Vertical field is required");
+    //   return false;
+    message += "Vertical field"+",";
+      count +=1;
     }
     // else if(this._obfservices.ObfCreateForm.get('Sector').errors)
     // {
     //   alert("Sector field is required");
     //   return false;
     // }
-    else if(this._obfservices.ObfCreateForm.get('Verticalhead').errors)
+    if(this._obfservices.ObfCreateForm.get('Verticalhead').errors)
     {
      // alert("Vertical head field is required");
-      this._mesgBox.showError("Vertical head field is required");
-      return false;
+      // this._mesgBox.showError("Vertical head field is required");
+      // return false;
+      message += "Vertical head field"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
+    if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
     {
      // alert("Project brief is required");
-     this._mesgBox.showError("Project brief is required");
-      return false;
+    //  this._mesgBox.showError("Project brief is required");
+    //   return false;
+      message += "Project brief"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
+    if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
     {
       //alert("Total revenue field is required");
-      this._mesgBox.showError("Total revenue field is required");
-      return false;
+      // this._mesgBox.showError("Total revenue field is required");
+      // return false;
+      message += "Total revenue"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
+    if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
     {
      // alert("Total cost field is required");
-       this._mesgBox.showError("Total cost field is required");
-      return false;
+      //  this._mesgBox.showError("Total cost field is required");
+      // return false;
+      message += "Total cost field"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
+    if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
     {
       // alert("Total margin field is required");
-      this._mesgBox.showError("Total margin field is required");
-      return false;
+      // this._mesgBox.showError("Total margin field is required");
+      // return false;
+      message += "Total margin"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
+    if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
     {
      // alert("Total project life field is required");
-     this._mesgBox.showError("Total project life field is required");
-      return false;
+    //  this._mesgBox.showError("Total project life field is required");
+    //   return false;
+    message += "Total project life"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Capex').errors)
+    if(this._obfservices.ObfCreateForm.get('Capex').errors)
     {
       //alert("Capex field is required");
-      this._mesgBox.showError("Capex field is required");
-      return false;
+      // this._mesgBox.showError("Capex field is required");
+      // return false;
+      message += "Capex"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Paymentterms').errors)
+    if(this._obfservices.ObfCreateForm.get('Paymentterms').errors)
     {
      // alert("Payment terms field is required");
-     this._mesgBox.showError("Payment terms field is required");
-      return false;
+    //  this._mesgBox.showError("Payment terms field is required");
+    //   return false;
+    message += "Payment terms"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Payment_Terms_description').errors)
+    if(this._obfservices.ObfCreateForm.get('Payment_Terms_description').errors)
     {
      // alert("Payment terms field is required");
-     this._mesgBox.showError("Payment terms description field is required");
-      return false;
+    //  this._mesgBox.showError("Payment terms description field is required");
+    //   return false;
+    message += "Payment terms description"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
+    if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
     {
      // alert("Assumption and risks  field is required");
-     this._mesgBox.showError("Assumption and risks  field is required");
-      return false;
+    //  this._mesgBox.showError("Assumption and risks  field is required");
+    //   return false;
+    message += "Assumption and risks"+",";
+      count +=1;
     }
-    else if(this._obfservices.ObfCreateForm.get('Loipo').errors)
+    if(this._obfservices.ObfCreateForm.get('Loipo').errors)
     {
      // alert("Loi / po  field is required");
-      this._mesgBox.showError("LOI/PO  field is required");
+      // this._mesgBox.showError("LOI/PO  field is required");
+      // return false;
+      message += "LOI/PO"+",";
+      count +=1;
+    }
+
+    if( count > 0)
+    {
+      message = message.substring(0,message.length -1);
+      this._mesgBox.showError(message + " are required");
       return false;
     }
     return true;
@@ -1499,7 +1873,8 @@ downloadLOIp(event)
     this._obfservices.obfmodel._SubSector_Id = evt.value;
   }
 
-  otherssave(type:string){
+  otherssave(event,type:string){
+    //alert(event.target.value);
     let solid = "";
     let otherid ="";
     let value = "";
@@ -1524,8 +1899,27 @@ downloadLOIp(event)
         // return obj.viewValue === ws.E8.h;
         return obj.value === solid;
       });
+      if(this.isEditObf)
+    {
+      let index = this._obfservices.obfmodel.Services.findIndex(val => val.value == solid);
+      if(index > -1)
+      {
+        let newindex = this._obfservices.obfmodel.Services[index].Serviceslist.findIndex(valnew => valnew.value == "0");
+        if(newindex > -1)
+        {
+          this._obfservices.obfmodel.Services[index].Serviceslist[newindex].viewValue = event.target.value;
+        }
+        else{
+          let elements:Serviceslist = new Serviceslist("0",value);
+          res[0].Serviceslist.push(elements);    
+        }
+        
+      }
+    }
+    else{
       let elements:Serviceslist = new Serviceslist("0",value);
       res[0].Serviceslist.push(elements);
+    }
     
   }
   SavetoModel(){
