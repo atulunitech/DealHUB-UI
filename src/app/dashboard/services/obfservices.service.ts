@@ -408,6 +408,9 @@ export class OBFServices {
   servicesarray:any[] = [];
       initializeobfmodelandform()
       {
+        this.coversheetarray = [];
+        this.loipoarray= [];
+        this.supportarray = [];
         this.obfmodel._dh_id = this.editObfObject._dh_id;
         this.obfmodel._dh_header_id = this.editObfObject._dh_header_id;
         this.obfmodel._fname = this.editObfObject._fname;
@@ -465,9 +468,9 @@ export class OBFServices {
         this.supportarray = this.getarrayforsupport(this.editObfObject.Attachments); 
         this.ObfCreateForm.patchValue({
           coversheet :this.obfmodel._fpath,
-          Loiposheet:this.loipoarray[0]._fpath,
-          Supportpath:this.supportarray,
-          Loipodropdown:this.loipoarray[0]._description,
+          Loiposheet:this.loipoarray[0] != undefined ?this.loipoarray[0]._fpath:"",
+          Supportpath:this.supportarray != undefined?this.supportarray:"",
+          Loipodropdown:this.loipoarray[0] !=undefined?this.loipoarray[0]._description:null,
           Selfdeclare:loiuploaded,
           Projectname:this.editObfObject._dh_project_name,
           Solutioncategory:this.editObfObject._solution_category_id.toString(),
@@ -498,6 +501,53 @@ export class OBFServices {
 
 
         });
+        this.getotherservicesandsolutions();
+      }
+
+      emptyexcelformvaluesforreuploadcoversheet()
+      {
+        this.ObfCreateForm.patchValue({Projectname: ""});
+        this.ObfCreateForm.patchValue({Customername: ""});
+        this.ObfCreateForm.patchValue({Opportunityid: ""});
+        this.ObfCreateForm.patchValue({State: ""});
+        this.ObfCreateForm.patchValue({Vertical: ""});
+        this.ObfCreateForm.patchValue({Verticalhead: ""});
+        this.ObfCreateForm.patchValue({Projectbrief: ""});
+        this.ObfCreateForm.patchValue({Totalrevenue: ""});
+        this.ObfCreateForm.patchValue({Totalcost: ""});
+        this.ObfCreateForm.patchValue({Totalmargin: ""});
+        this.ObfCreateForm.patchValue({Totalprojectlife: ""});
+        this.ObfCreateForm.patchValue({IRRsurpluscash: ""});
+        this.ObfCreateForm.patchValue({EBT: ""});
+        this.ObfCreateForm.patchValue({Capex: ""});
+        this.ObfCreateForm.patchValue({IRRborrowedfund: ""});
+        this.ObfCreateForm.patchValue({Paymentterms: ""});
+        this.ObfCreateForm.patchValue({Payment_Terms_description: ""});
+        this.ObfCreateForm.patchValue({Assumptionrisks: ""});
+        this.ObfCreateForm.patchValue({Loipo: ""});
+      }
+
+      getotherservicesandsolutions(){
+        this.obfmodel.Services.forEach(obj =>{
+             obj.Serviceslist.forEach(val =>{
+                 if(obj.value == "1" && val.value=="0")
+                 {
+                   this.ObfCreateForm.patchValue({otherservices:val.viewValue});
+                   this.ObfCreateForm.controls['otherservices'].enable();
+                 }
+                 if(obj.value == "2" && val.value=="0")
+                 {
+                   this.ObfCreateForm.patchValue({othersolutions:val.viewValue});
+                   this.ObfCreateForm.controls['othersolutions'].enable();
+                 }
+                 if(obj.value == "3" && val.value=="0")
+                 {
+                   this.ObfCreateForm.patchValue({otherintegratedsolutions:val.viewValue});
+                   this.ObfCreateForm.controls['otherintegratedsolutions'].enable();
+                 }
+             });
+        });
+    
       }
 }
 

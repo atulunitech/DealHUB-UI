@@ -19,6 +19,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
+import { environment } from 'src/environments/environment';
 
 
 interface Serviceslist {
@@ -220,9 +221,12 @@ export class CreatobfComponent implements OnInit {
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  editorcreateobfstring:string ="Create";
   Coversheetprogress: any[] = [];
   LoiPoprogress: any[] = [];
   SupportPoprogress: any[] = [];
+  isEditObf:boolean = false;
+  uploadnotdisabled:boolean = false;
   
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -233,6 +237,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.reset();
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
+    this.loiopdisabled = false;
+    this.uploadnotdisabled = false;
     this.getcreateobfmasters();
     this.getsolutionmaster();
     this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
@@ -258,7 +264,9 @@ export class CreatobfComponent implements OnInit {
    editobf.user_code = localStorage.getItem("UserName");
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
      let result =  JSON.parse(res);
+     this.isEditObf = true;
      console.log("check object after edit");
+     this.editorcreateobfstring= "Edit";
      console.log(result);
      if(result != null)
      {
@@ -268,10 +276,33 @@ export class CreatobfComponent implements OnInit {
      }
       this._obfservices.editObfObject = JSON.parse(res);
       this._obfservices.initializeobfmodelandform();
+      this.editobfinitialization();
+     // this.getotherservicesandsolutions();
+      
+   },
+   error =>
+   {
+
+   });
+  }
+
+  
+ 
+  editobfinitialization()
+  {
+    
       if(this._obfservices.supportarray.length >0)
       {
         this.supportchecked = false;
          this.checked_d = true;
+      }
+      if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
+      {
+        this.editObfLoiPobol = false;
+      }
+      if(this._obfservices.ObfCreateForm.get("Supportpath").value == null)
+      {
+        this.editObfSupportbol = false;
       }
       this.servicesControl.setValue(this._obfservices.servicesarray);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
@@ -280,16 +311,34 @@ export class CreatobfComponent implements OnInit {
       });
       this.subsectorlisdisplay = resultnew;
       let verticalname = this.getverticalname(this.verticallist);
-      //this._obfservices.ObfCreateForm.patchValue({Vertical:verticalname});
-       console.log("check after onload of editobf");
+      if(verticalname != undefined)
+      {
+         this._obfservices.ObfCreateForm.patchValue({Vertical:verticalname});
+      }
+      if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
+      {
+        this.loiopdisabled = true;
+        this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
+      this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+      }
+      this.uploadnotdisabled = true;
+      if(this._obfservices.obfmodel.Services != null)
+      {
+        this.serviceslist = this._obfservices.obfmodel.Services;
+      }
+      var resverticalhead = this.Verticalheadlist.filter(obj => {
+        // return obj.viewValue === ws.E8.h;
+        return obj.value === this._obfservices.editObfObject._vertical_id;
+      });
+      //let verticalheadid = res[0].vertical_head_id;
+       this._obfservices.ObfCreateForm.patchValue({Verticalhead:resverticalhead[0].vertical_head_name}) ;
+
+       console.log("check form after onload of editobf");
        console.log(this._obfservices.ObfCreateForm);
-
-   },
-   error =>
-   {
-
-   });
+       console.log("check object after onload of editobf");
+       console.log(this._obfservices.obfmodel);
   }
+
   getverticalname(verticallist:verticallist[])
   { var response = "";
     verticallist.forEach((obj) =>{
@@ -353,7 +402,11 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
   console.log("get solution masters");
   console.log(res);
   this.Solutiongroup= res;
-  this._obfservices.ObfCreateForm.patchValue({Solutioncategory: 2});
+  // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: 2});
+  if(this.isEditObf)
+  {
+  this.editobfinitialization();
+  }
 },
 (error:HttpErrorResponse)=>{
   this._mesgBox.showError(error.message);
@@ -377,6 +430,11 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
+       if(this.isEditObf)
+       {
+         this.editobfinitialization();
+       }
+     
  },
  (error:HttpErrorResponse)=>{
    this._mesgBox.showError(error.message);
@@ -402,9 +460,12 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
       this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
       console.log("check edit obf after next button");
       console.log(this._obfservices.ObfCreateForm);
+      console.log("check uploadnotdisabled after next button");
+      console.log(this.uploadnotdisabled);
     }
     else if(section == "preview"){
-    
+    console.log("check object after preview next click");
+    console.log(this._obfservices.obfmodel);
       if(this.service !=null)
       {
         
@@ -612,6 +673,10 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
   }
 
   sanitize(url:string){
+    if(this.isEditObf)
+    {
+      url = environment.apiUrl+url
+    }
     
       return this.sanitizer.bypassSecurityTrustUrl(url);
   }
@@ -622,7 +687,7 @@ downloaddocument(event)
 // var zipFilename = "Supportfiles.zip";
 //   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
-  if(this.supportdocpath== "")
+  if(this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
@@ -633,7 +698,11 @@ downloaddocument(event)
       if(this._obfservices.obfmodel.Attachments[i]._description=="support")
       {
         
-         var url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         let url=this._obfservices.obfmodel.Attachments[i]._fpath;
+         if(this.isEditObf)
+         {
+            url = environment.apiUrl+url
+         }
          window.open(url);
         //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
         // loading a file and add it in a zip file
@@ -658,11 +727,16 @@ downloaddocument(event)
 downloadLOIp(event)
 {
   event.preventDefault();
-  if(this.loipopath == "")
+  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
     this._mesgBox.showError("No Loi/po to Download");
   }
   else{
+    let url = this._obfservices.ObfCreateForm.get("Loiposheet").value;
+    if(this.isEditObf)
+         {
+            url = environment.apiUrl+url
+         }
     window.open(this.loipopath,"_self");
   }
  
@@ -726,6 +800,7 @@ downloadLOIp(event)
           return false;
         }
         else{
+          this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
           this.coversheetfiles.push(...event.addedFiles);
           this.iscoversheet = !this.iscoversheet;
         }
@@ -749,12 +824,13 @@ downloadLOIp(event)
           return false;
          }
          else{
-           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null || this._obfservices.ObfCreateForm.get("Loipodropdown").value == "")
            {
             throw new Error("Kindly select LOI or PO file type");
            }
         this.loipofiles.push(...event.addedFiles);
-        this.isloipo = !this.isloipo;
+        //this.isloipo = !this.isloipo;
+        this.isloipo = false;
         }
         // this.files = this.loipofiles;
        }
@@ -765,11 +841,12 @@ downloadLOIp(event)
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)
          {
-
+          this.isSupport = false;
          }
          else
          {
-          this.isSupport = !this.isSupport;
+         // this.isSupport = !this.isSupport;
+         this.isSupport = false;
          }
         this.supportfiles.push(...event.addedFiles);
         // this.files = this.supportfiles;
@@ -823,7 +900,7 @@ downloadLOIp(event)
     }
     else if(types == "support")
     {
-      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
+      this.SupportPoprogress[i] = { value: 0, fileName: files[i].name,_description:"support" };
     }
       
       path="";
@@ -887,6 +964,7 @@ downloadLOIp(event)
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
 
         }
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       }
       }
      
@@ -912,6 +990,7 @@ downloadLOIp(event)
     );
     }
   }
+  
   console.log("check for disable");
   console.log(this._obfservices.ObfCreateForm);
     // this.validateform();
@@ -949,6 +1028,116 @@ downloadLOIp(event)
     }
 
 	}
+
+  onRemoveAttachments(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fpath == attachment._fpath);
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj._fpath == attachment._fpath);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveAttachmentsPreview(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => (obj._fname == attachment.fileName && obj._description == "support"));
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj.fileName == attachment.fileName);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+
+    if(array.length == 0)
+    {
+      this.supportfiles = [];
+      this.isSupport = !this.isSupport;
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveLoiPoPreview(attachment,array)
+  {
+
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => (obj._fname == attachment.fileName && obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value));
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+    }
+
+    let indexnew = array.findIndex(obj => obj.fileName == attachment.fileName);
+    if(indexnew > -1)
+    {
+      array.splice(index,1);
+    }
+
+    if(array.length == 0)
+    {
+      this.loipofiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.isloipo = !this.isloipo;
+    }
+    // console.log(attachment);
+  }
+
+  onRemoveLoiAttachments()
+  {
+    
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.uploadnotdisabled = false;
+    }
+
+    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    if(indexnew > -1)
+    {
+      this._obfservices.loipoarray.splice(index,1);
+    }
+
+    if(this._obfservices.loipoarray.length == 0)
+    {
+      this.loipofiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.isloipo = !this.isloipo;
+    }
+    // console.log(attachment);
+  }
+
+  removeeditcoversheet()
+  {
+    this._obfservices.coversheetarray =[];
+    this.coversheetfiles =[];
+    this._obfservices.obfmodel._fname = "";
+    this._obfservices.obfmodel._fpath = "";
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this.uploadnotdisabled = false;
+  }
+
+  removeprogresscoversheet()
+  {
+    this.coversheetfiles =[];
+    this.Coversheetprogress = [];
+    this._obfservices.obfmodel._fname = "";
+    this._obfservices.obfmodel._fpath = "";
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this.uploadnotdisabled = false;
+  }
 
    renameKey(obj, old_key, new_key) {   
     // check if old key = new key  
@@ -1226,6 +1415,7 @@ downloadLOIp(event)
 
   Saveasdraft(type:string){
     console.log("view model");
+    console.log(this._obfservices.obfmodel);
     this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
     this._obfservices.obfmodel._active = "A";
@@ -1383,6 +1573,7 @@ downloadLOIp(event)
       this.supportchecked =false;
       this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
      }
      else{
       this.isSupport = !this.isSupport;
@@ -1402,6 +1593,7 @@ downloadLOIp(event)
         }
        });
        this._obfservices.obfmodel.Attachments = filteredsupportarray;
+       this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       //this._obfservices.obfmodel.Attachments.splice(this._obfservices.obfmodel.Attachments.findIndex(e => e._description === "support"),1);
       console.log("check attachment after");
       console.log(this._obfservices.obfmodel.Attachments);
@@ -1419,7 +1611,12 @@ downloadLOIp(event)
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
       this.loipofiles = [];
       this.LoiPoprogress = [];
+      if(this.isEditObf)
+      {
+        this.onRemoveLoiAttachments();
+      }
       this._obfservices.ObfCreateForm.get("Loipodropdown").setValue("");
+     
     }
     else{
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
@@ -1427,6 +1624,7 @@ downloadLOIp(event)
       this.loiopdisabled = false;
       this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
     }
+    this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
 
   // GridBinding()
@@ -1675,7 +1873,8 @@ downloadLOIp(event)
     this._obfservices.obfmodel._SubSector_Id = evt.value;
   }
 
-  otherssave(type:string){
+  otherssave(event,type:string){
+    //alert(event.target.value);
     let solid = "";
     let otherid ="";
     let value = "";
@@ -1700,8 +1899,27 @@ downloadLOIp(event)
         // return obj.viewValue === ws.E8.h;
         return obj.value === solid;
       });
+      if(this.isEditObf)
+    {
+      let index = this._obfservices.obfmodel.Services.findIndex(val => val.value == solid);
+      if(index > -1)
+      {
+        let newindex = this._obfservices.obfmodel.Services[index].Serviceslist.findIndex(valnew => valnew.value == "0");
+        if(newindex > -1)
+        {
+          this._obfservices.obfmodel.Services[index].Serviceslist[newindex].viewValue = event.target.value;
+        }
+        else{
+          let elements:Serviceslist = new Serviceslist("0",value);
+          res[0].Serviceslist.push(elements);    
+        }
+        
+      }
+    }
+    else{
       let elements:Serviceslist = new Serviceslist("0",value);
       res[0].Serviceslist.push(elements);
+    }
     
   }
   SavetoModel(){
