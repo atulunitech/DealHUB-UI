@@ -201,7 +201,9 @@ export class CreatobfComponent implements OnInit {
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
     public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
-  { }
+  { 
+    this._obfservices.createform();
+  }
   files: File[] = [];
   coversheetfiles: File[] = [];
   loipofiles: File[] = [];
@@ -234,7 +236,7 @@ export class CreatobfComponent implements OnInit {
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
-    this._obfservices.ObfCreateForm.reset();
+    this._obfservices.createform();
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     this.loiopdisabled = false;
@@ -295,6 +297,8 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -737,7 +741,10 @@ downloadLOIp(event)
          {
             url = environment.apiUrl+url
          }
-    window.open(this.loipopath,"_self");
+         
+    // window.open(this.loipopath,"_self");
+    //window.open(this.loipopath);
+    window.open(url);
   }
  
 
@@ -958,11 +965,12 @@ downloadLOIp(event)
         {
           this.supportdocpath = path;
           this._obfservices.ObfCreateForm.patchValue({Supportpath: path});
+          //this.SupportPoprogress[i].fileName = path;
           this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-
+        
         }
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       }
@@ -989,6 +997,7 @@ downloadLOIp(event)
       }
     );
     }
+    
   }
   
   console.log("check for disable");
@@ -1044,6 +1053,13 @@ downloadLOIp(event)
       array.splice(index,1);
     }
     // console.log(attachment);
+    if(array.length == 0)
+    {
+      this.supportfiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
+      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+      this.isSupport = !this.isSupport;
+    }
   }
 
   onRemoveAttachmentsPreview(attachment,array)
@@ -1064,6 +1080,8 @@ downloadLOIp(event)
     if(array.length == 0)
     {
       this.supportfiles = [];
+      this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
+      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
     }
     // console.log(attachment);
@@ -1088,6 +1106,7 @@ downloadLOIp(event)
     {
       this.loipofiles = [];
       this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isloipo = !this.isloipo;
     }
     // console.log(attachment);
@@ -1582,6 +1601,7 @@ downloadLOIp(event)
       this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
       this.supportfiles =[];
       this.SupportPoprogress = [];
+      this._obfservices.supportarray = [];
       this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
       let filteredsupportarray:SaveAttachmentParameter[] = [];
        this._obfservices.obfmodel.Attachments.forEach((element,index,array) => {
@@ -1936,7 +1956,14 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 1;
-    this._obfservices.obfmodel._mode = "insert";
+    if(this.isEditObf)
+    {
+      this._obfservices.obfmodel._mode = "edit";
+    }
+    else
+    {
+      this._obfservices.obfmodel._mode = "insert"; 
+    }
     this._obfservices.obfmodel._service_category = "";
     if(this._obfservices.obfmodel._dh_id === 0)
       {
