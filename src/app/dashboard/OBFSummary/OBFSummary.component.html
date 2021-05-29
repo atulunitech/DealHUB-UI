@@ -272,7 +272,20 @@
                       
                     </div>
                  </div>
-
+                 <div class="mat_previe_box" >
+                  <div class="prev_tit">
+                  Workflow Indicator
+                  </div>
+                  <div class="prev_dis" *ngIf="this.role_name == 'VSH'">
+                    <mat-slide-toggle color="primary">Margin Exception Requested</mat-slide-toggle>
+                  </div>
+                  <div class="prev_dis"  *ngIf="this.role_name == 'PH'">
+                    <mat-slide-toggle color="primary">Exception case-CFO approval</mat-slide-toggle>
+                  </div>
+                  <div class="prev_dis"  *ngIf="this.role_name == 'PH'">
+                    <mat-slide-toggle color="primary">Exception case-CEO approval</mat-slide-toggle>
+                  </div>
+               </div>
 
                       </div>
                       

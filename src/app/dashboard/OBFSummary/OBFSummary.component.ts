@@ -19,7 +19,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
 
 
  class SaveAttachmentParameter{
@@ -82,6 +82,7 @@ class CommentDetails
   displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
   progress: number = 0;
   uploadDocfiles:File[]=[];
+
   loipofiles: File[] = [];
   supportfiles: File[] = [];    
   FinalAggfiles:File[]=[];   
@@ -268,10 +269,22 @@ class CommentDetails
     this.Type=Type;
     this.uploadDocfiles=[];
     this.uploaddocprocess=[];
+
     if(this.Type == "loipo")
   {
     this.uploadDocfiles=this.loipofiles;
     this.LoiPoprogress= this.uploaddocprocess;
+    // if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
+    // {
+    //   for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+    //   {
+    //       if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+    //       {
+    //         this.loipofiles.push(...this._obfservices.obfsummarymodel.AttachmentDetails[i].filename);
+    //         this.uploadDocfiles=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+    //       }
+    //   }
+    // }
   }
   else if(this.Type == "Supporting")
   {

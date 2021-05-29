@@ -355,7 +355,7 @@ export class OBFServices {
     this.obfsummarymodel.uploadDetails = data.uploadDetails;
     this.obfsummarymodel.solutionDetails = data.solutionDetails;
     this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
-this.obfsummarymodel.CommentDetails=data.CommentDetails;
+    this.obfsummarymodel.CommentDetails=data.CommentDetails;
     //this.Obfsummarysubject.next(this.obfsummarymodel);
    
 
