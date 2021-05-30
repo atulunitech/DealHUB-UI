@@ -528,6 +528,7 @@ downloaddetailobf(element)
         this.listData.filter= "draft";
        
         this.displayedColumns=this.DraftColumn;
+        this.on_Highlight(1);
       }
       else if (selection==1)
       {
@@ -535,6 +536,7 @@ downloaddetailobf(element)
           this.listData.filter="";
           this.listData.filter="submitted";
           this.displayedColumns=this.SubmittedScreenColumn;
+          this.on_Highlight(2);
       }
       else if(selection==2)
       {
@@ -542,6 +544,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.RejectedScreenColumn;
+        this.on_Highlight(3);
       }
       else if(selection==3)
       {
@@ -549,7 +552,7 @@ downloaddetailobf(element)
         this.listData.filter="approved";
         
         this.displayedColumns=this.ApprovedOBf;
-        
+        this.on_Highlight(4);
       }
       else if(selection==4)
       {
@@ -557,6 +560,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.ApprovedPPL;
+        this.on_Highlight(5);
       }
     }
     else if(this.privilege_name=="OBF Reviewer")
@@ -567,6 +571,7 @@ downloaddetailobf(element)
         this.listData.filter="";
         this.listData.filter="submitted"; 
       this.displayedColumns=this.PendingReviewercolumn;
+      this.on_Highlight(1);
       }
       else if (selection==1)
       {
@@ -574,12 +579,14 @@ downloaddetailobf(element)
          this.listData.filter="";
          this.listData.filter="approved"; 
          this.displayedColumns=this.PendingReviewercolumn;
+         this.on_Highlight(2);
       }
       else if(selection==2)
       {
         this.listData.filter="";
         this.listData.filter="rejected";
         this.displayedColumns=this.RejectedScreenColumn;
+        this.on_Highlight(3);
       }
       else if(selection==3)
       {
@@ -587,6 +594,7 @@ downloaddetailobf(element)
         this.listData.filter="approved";
         
         this.displayedColumns=this.ApprovedOBf;
+        this.on_Highlight(4);
         
       }
       else if(selection==4)
@@ -595,6 +603,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.ApprovedPPL;
+        this.on_Highlight(5);
       }
     }
    

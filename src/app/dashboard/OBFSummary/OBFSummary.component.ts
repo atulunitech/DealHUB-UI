@@ -40,6 +40,13 @@ class CommentDetails
   Status:string;
 
 }
+class filesdetail
+{
+
+  filename:string;
+  filepath:string;
+  
+}
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
@@ -50,7 +57,10 @@ class CommentDetails
    
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
-      comments : new FormControl("",[Validators.required])
+      comments : new FormControl("",[Validators.required]),
+      MarginException:new FormControl("",[Validators.required]),
+      ExceptionCFO:new  FormControl("",[Validators.required]),
+      ExceptionCEO:new FormControl("",[Validators.required])
     });
     noComment:boolean=false;
     readMore = false;
@@ -88,8 +98,13 @@ class CommentDetails
   FinalAggfiles:File[]=[];   
   LoiPoprogress: any[] = [];
   uploaddocprocess:any[]=[];
+  filelist:filesdetail[]=[];
   Type:string="";
   User_name:string="";
+  CEOMess:boolean=false;
+  MarginException:boolean=false;
+  CFOMess:boolean=false;
+
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -116,8 +131,63 @@ class CommentDetails
       this.getdetailsfordh_id(this.dh_id);
      }
      );
+   
      this.GetDetailTimelineHistory();
     
+   
+  }
+  CEOmessage:string="";
+  cfomessgae:string="";
+  getdetailsfordh_id(dh_id)
+  {
+    this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
+      console.log(data);
+    //  this._obfservices.initializeobf(JSON.parse(data));
+      var jsondata=JSON.parse(data);
+      this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
+      this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
+      this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
+
+      if(this.role_name=='CFO')
+      {
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+       {
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+         this.CEOMess=true;
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+       }
+       else if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1) {
+        this.CEOMess=true;
+        this.cfomessgae="Approval required as per Pricing Team.";
+       }
+
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="Y")
+       {
+        this.MarginException=true;
+        this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+       }
+      }
+      if(this.role_name=='CEO')
+      {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+        {
+         this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+          this.CFOMess=true;
+          this.CEOmessage="Approval required as per Pricing Team.";
+       
+        }
+        else{
+          this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+        }
+        
+      }
+      this.getserviceslist();
+    },
+    (error)=>{
+      alert(error.message);
+    }
+    );
    
   }
   getserviceslist()
@@ -129,7 +199,7 @@ class CommentDetails
       var Tempservice="";
       for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
       {
-        Tempservice += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
+        Tempservice += this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
         
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
@@ -144,36 +214,34 @@ class CommentDetails
        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
        
       }
-      this.service=Tempservice;
+      this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
   }
   
-  ApproveDeatils()
+  GetDetailTimelineHistory()
   {
-    this._obfservices._approveRejectModel.isapproved=1;
-    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
-    this._obfservices._approveRejectModel.rejectionto=0;
-    this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
-    this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
-    this._obfservices._approveRejectModel._fname="";
-    this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
-    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
-    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
-    this._obfservices._approveRejectModel.is_on_hold=0;
-    this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     
-      if(data.status =="sucess")
+    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
+      debugger;
+      console.log("DashBoardData");
+      console.log(Result);
+      var loginresult =Result;
+      this.dashboardData=JSON.parse(Result);
+      this.listData = new MatTableDataSource(this.dashboardData);
+      
+    },
+    (error:HttpErrorResponse)=>{
+      debugger;
+      if (error.status==401)
       {
-        this._mesgBox.showSucess(data.message);
-        this.router.navigate(['/DealHUB/dashboard']);
+        this.router.navigateByUrl('/login');
+        
       }
-      else{
-        this._mesgBox.showError(data.message);
-        this.router.navigate(['/DealHUB/dashboard']);
-      }
-    });
+      
+    }
+    );
+   
   }
   
   downloadCoversheet(event)
@@ -213,22 +281,7 @@ class CommentDetails
     }
       
   }
-  SaveComment()
-  {
-    if(this.obfsummaryform.get("comments").value!= "")
-    {
-      let SaveComment:CommentDetails = new CommentDetails();
-      var comment=this.obfsummaryform.get("comments").value;
-      SaveComment.Fullname=this.User_name;
-      SaveComment.Role_name= this.role_name;
-      SaveComment.Status="";
-      SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      SaveComment.commented_on=  localStorage.getItem("UserId");
-      SaveComment.dh_comment=comment;
-      // this.CommentDetails.push(SaveComment);
-      this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
-    }
-  }
+ 
   downloadLOIp(event)
   {
     event.preventDefault();
@@ -251,19 +304,24 @@ class CommentDetails
       this._mesgBox.showError("No LOI or PO Documents to Download");
     }
   }
-  getdetailsfordh_id(dh_id)
-  {
-    this._obfservices.getobfsummarydata(dh_id).subscribe(res =>{
-      console.log(res);
-      this._obfservices.initializeobf(JSON.parse(res));
-    },
-    (error)=>{
-      alert(error.message);
-    }
-    );
-   
-  }
+ 
   
+  SaveComment()
+  {
+    if(this.obfsummaryform.get("comments").value!= "")
+    {
+      let SaveComment:CommentDetails = new CommentDetails();
+      var comment=this.obfsummaryform.get("comments").value;
+      SaveComment.Fullname=this.User_name;
+      SaveComment.Role_name= this.role_name;
+      SaveComment.Status="";
+      SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+      SaveComment.commented_on=  localStorage.getItem("UserId");
+      SaveComment.dh_comment=comment;
+      // this.CommentDetails.push(SaveComment);
+      this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
+    }
+  }
   OpenDocDownload(event,Type)
   {
     this.Type=Type;
@@ -274,27 +332,57 @@ class CommentDetails
   {
     this.uploadDocfiles=this.loipofiles;
     this.LoiPoprogress= this.uploaddocprocess;
-    // if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
-    // {
-    //   for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
-    //   {
-    //       if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
-    //       {
-    //         this.loipofiles.push(...this._obfservices.obfsummarymodel.AttachmentDetails[i].filename);
-    //         this.uploadDocfiles=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
-    //       }
-    //   }
-    // }
+    this.filelist=[];
+   
+    let savefile:filesdetail = new filesdetail();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+          {
+            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            this.filelist.push(savefile);
+          }
+      }
+    }
   }
   else if(this.Type == "Supporting")
   {
     this.uploadDocfiles=this.supportfiles;
     this.SupportPoprogress= this.uploaddocprocess;
+    let savefile:filesdetail = new filesdetail();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+          {
+            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            this.filelist.push(savefile);
+          }
+      }
+    }
   }
   else if(this.Type == "FinalAgg")
   {
     this.uploadDocfiles=this.FinalAggfiles;
     this.finalProgress= this.uploaddocprocess;
+    let savefile:filesdetail = new filesdetail();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+          {
+            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            this.filelist.push(savefile);
+          }
+      }
+    }
   }
     const dialogRef = this.dialog.open(this.callAPIDialog, {
       width: '500px',
@@ -310,6 +398,33 @@ class CommentDetails
     return this.obfsummaryform.controls[controlName].hasError(errorName);
   }
 
+  //Action Functions For Approve ,Rejected and OnHold function
+  ApproveDeatils()
+  {
+    this._obfservices._approveRejectModel.isapproved=1;
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
+    this._obfservices._approveRejectModel.rejectionto=0;
+    this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+    this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+    this._obfservices._approveRejectModel._fname="";
+    this._obfservices._approveRejectModel._fpath="";
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
+    this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
+    this._obfservices._approveRejectModel.is_on_hold=0;
+    this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
+    
+      if(data.status =="sucess")
+      {
+        this._mesgBox.showSucess(data.message);
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      else{
+        this._mesgBox.showError(data.message);
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    });
+  }
   RejectDeatils()
   {  if(this.obfsummaryform.get("comments").value == "")
   {
@@ -326,8 +441,8 @@ class CommentDetails
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
     this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
-    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
-    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
+    this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
+    this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
@@ -353,8 +468,8 @@ class CommentDetails
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
     this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
-    this._obfservices._approveRejectModel.exceptionalcase_cfo=0;
-    this._obfservices._approveRejectModel.exceptioncase_ceo=0;
+    this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
+    this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
@@ -644,29 +759,5 @@ class CommentDetails
     }
   }
 
-  GetDetailTimelineHistory()
-  {
-    
-    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
-      debugger;
-      console.log("DashBoardData");
-      console.log(Result);
-      var loginresult =Result;
-      this.dashboardData=JSON.parse(Result);
-      this.listData = new MatTableDataSource(this.dashboardData);
-      
-    },
-    (error:HttpErrorResponse)=>{
-      debugger;
-      if (error.status==401)
-      {
-        this.router.navigateByUrl('/login');
-        
-      }
-      
-    }
-    );
-    this.getserviceslist();
-  }
  
   }

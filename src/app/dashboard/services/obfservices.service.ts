@@ -112,6 +112,8 @@ class uploadDetails{
   Version_name:string;
   solutioncategory_name:string;
   payment_term_desc:string;
+  exceptionalcase_cfo:number;
+  exceptioncase_ceo:number;
 }
 
 class solutionDetails
