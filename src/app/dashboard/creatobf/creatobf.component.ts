@@ -1112,6 +1112,8 @@ downloadLOIp(event)
     // console.log(attachment);
   }
 
+  
+
   onRemoveLoiAttachments()
   {
     
