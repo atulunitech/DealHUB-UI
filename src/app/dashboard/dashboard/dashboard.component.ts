@@ -16,6 +16,7 @@ import { MyErrorStateMatcher, SaveServiceParameter, sectors, Solutiongroup, Solu
 import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
+import { environment } from 'src/environments/environment.prod';
 
 //region Model
 export class DashBoardModel
@@ -435,6 +436,15 @@ openModal(templateRef) {
 downloaddetailobf(element)
 {
   // alert("download documnet");
+  if(element.OBFFilepath== "")
+  {
+    this._mesgBox.showError("No OBF Sheet Documents to Download");
+  }
+  else
+  {
+    var url=environment.apiUrl + element.mainobf;
+    window.open(url);
+  }
 }
   getToolTipData(issueId: any): any {
     

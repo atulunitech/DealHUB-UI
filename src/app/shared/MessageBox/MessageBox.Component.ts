@@ -17,7 +17,7 @@ export class MessageBoxComponent implements OnInit {
   showSucess(content) {
     this.showsuccess=true;
     this._snackBar.openFromComponent(MessageBoxComponent, {
-      duration:1000,
+      duration:1000000,
       verticalPosition: 'top',
       horizontalPosition:'right',
      

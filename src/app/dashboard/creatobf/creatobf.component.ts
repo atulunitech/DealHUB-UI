@@ -687,7 +687,7 @@ downloaddocument(event)
 // var zipFilename = "Supportfiles.zip";
 //   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
-  if(this._obfservices.ObfCreateForm.get("Supportpath").value == "")
+  if(this._obfservices.ObfCreateForm.get("Supportpath").value == null)
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
