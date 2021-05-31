@@ -337,27 +337,31 @@ class filesdetail
     this.filelist=[];
    
     let savefile:filesdetail = new filesdetail();
-    if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
       {
-          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
-          {
-            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
-            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
-            
-            this.filelist.push(savefile);
-          }
-         else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
-          {
-            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
-            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
-            this.filelist.push(savefile);
-          }
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+        {
+            if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+            {
+              savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+              savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+              savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+              
+              this.filelist.push(savefile);
+            }
+           else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+            {
+              savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+              savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+              savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+              this.filelist.push(savefile);
+            }
+        }
       }
     }
+  
   }
   else if(this.Type == "Supporting")
   {
@@ -365,6 +369,8 @@ class filesdetail
     this.SupportPoprogress= this.uploaddocprocess;
     let savefile:filesdetail = new filesdetail();
     this.filelist=[];
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
     if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -379,12 +385,15 @@ class filesdetail
       }
     }
   }
+  }
   else if(this.Type == "FinalAgg")
   {
     this.uploadDocfiles=this.FinalAggfiles;
     this.finalProgress= this.uploaddocprocess;
     let savefile:filesdetail = new filesdetail();
     this.filelist=[];
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
     if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -398,6 +407,7 @@ class filesdetail
           }
       }
     }
+  }
   }
     const dialogRef = this.dialog.open(this.callAPIDialog, {
       width: '500px',
