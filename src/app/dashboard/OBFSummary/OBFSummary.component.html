@@ -273,7 +273,7 @@
                     </div>
                  </div>
                  <div class="mat_previe_box" >
-                  <div class="prev_tit">
+                  <div class="prev_tit" *ngIf="this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
                   <div class="prev_dis" *ngIf="this.role_name == 'VSH'">

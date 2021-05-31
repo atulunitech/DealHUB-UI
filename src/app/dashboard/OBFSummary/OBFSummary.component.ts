@@ -192,6 +192,7 @@ class filesdetail
   }
   getserviceslist()
   {
+    this.service="";
     var finalservicecat="";
     if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
     {
@@ -340,6 +341,14 @@ class filesdetail
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
       {
           if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+          {
+            savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+            savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+
+            
+            this.filelist.push(savefile);
+          }
+         else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
           {
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
