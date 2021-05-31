@@ -21,7 +21,8 @@
                 <mat-expansion-panel [disabled]="!uploadnotdisabled" [expanded]="step === 0" (opened)="setStep(0)" >
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      1/3 Upload Document 
+                      1/3 Upload Document <span class="is_done" [class.is_done_not]="!uploadnotdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
+                        margin-left: 20px;"></span>
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
@@ -307,7 +308,7 @@
                         </div> 
                         <div class="mat_fot_drf" >
                           
-                          <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
+                          <button mat-flat-button class="creat_bt" [disabled]="!uploadnotdisabled" (click)="nextStep('details')">
                             NEXT
                           </button>
                         </div>
@@ -321,7 +322,8 @@
                 <mat-expansion-panel  [expanded]="step === 1" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      2/3 Enter Details 
+                      2/3 Enter Details <span class="is_done" [class.is_done_not]="_obfservices.ObfCreateForm.invalid"><img src="assets/images/active_tick.png" style="display: inline-block;
+                        margin-left: 55px;"></span>
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
@@ -339,6 +341,7 @@
 
                         {{Solution.Solutioncategory}}
                       </mat-option>
+                      
                     </mat-select>
                     <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
                       Solution Category is <strong>required</strong>
@@ -566,7 +569,8 @@
                 <mat-expansion-panel [disabled]="true"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
-                    3/3 Preview OBF
+                    3/3 Preview OBF <span class="is_done is_done_not" ><img src="assets/images/active_tick.png" style="display: inline-block;
+                      margin-left: 55px;"></span>
                   </mat-panel-title>
   
                   </mat-expansion-panel-header>
@@ -834,7 +838,7 @@
                             </div>
                             <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto"  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>

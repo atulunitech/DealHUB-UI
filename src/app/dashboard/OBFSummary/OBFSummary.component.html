@@ -479,28 +479,15 @@
           </ngx-dropzone-label>
         </ngx-dropzone-preview>
       </div>
-      <div *ngIf="filelist.length == 0">
-          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div class="doc_icon">
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" *ngIf="filelist.length == 0">
-              {{ f.fileName }}
-            </div> 
-            
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </div>
       <div *ngIf="filelist.length > 0">
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" >
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
           <ngx-dropzone-label class="drop_lab_cs">
             <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
             <div class="doc_icon" >
               <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
             </div>
             <div class="doc_cont" style="position: relative;" >
-              {{ f.fileName }}
+              {{ f.filename }}
              </div> 
           </ngx-dropzone-label>
         </ngx-dropzone-preview>
