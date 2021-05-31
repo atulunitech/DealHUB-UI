@@ -15,22 +15,22 @@ export class MessageBoxComponent implements OnInit {
   }
   
   showSucess(content) {
-    this.showsuccess=true;
-    this._snackBar.openFromComponent(MessageBoxComponent, {
-      duration:1000000,
+    
+    this._snackBar.open(content,'X', {
+      duration: 1000,
       verticalPosition: 'top',
       horizontalPosition:'right',
-     
+      panelClass:"custom_sneak_bar"
     });
-    
   }
-
-    // this._snackBar.open(content,'X', {
-    //   duration: 1000,
-    //   verticalPosition: 'top',
-    //   horizontalPosition:'right',
-    //   panelClass:"custom_sneak_bar"
-    // });
+  // this.showsuccess=true;
+  // this._snackBar.openFromComponent(MessageBoxComponent, {
+  //   duration:1000,
+  //   verticalPosition: 'top',
+  //   horizontalPosition:'right',
+   
+  // });
+    
   
   showUpdate(content) {
     this._snackBar.open(content,'X', {
