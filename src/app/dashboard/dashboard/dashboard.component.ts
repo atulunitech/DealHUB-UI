@@ -16,6 +16,7 @@ import { MyErrorStateMatcher, SaveServiceParameter, sectors, Solutiongroup, Solu
 import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
+import { environment } from 'src/environments/environment.prod';
 
 //region Model
 export class DashBoardModel
@@ -99,6 +100,7 @@ export class DashboardComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
   
@@ -134,7 +136,7 @@ export class DashboardComponent implements OnInit {
 
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserName')).subscribe(data =>{
+    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
       let res = JSON.parse(data);
        console.log(Object.keys(res) );
        console.log(res.sectors);
@@ -164,7 +166,7 @@ export class DashboardComponent implements OnInit {
 
   getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(data =>{
+this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -433,7 +435,16 @@ openModal(templateRef) {
 
 downloaddetailobf(element)
 {
-  alert("download documnet");
+  // alert("download documnet");
+  if(element.OBFFilepath== "")
+  {
+    this._mesgBox.showError("No OBF Sheet Documents to Download");
+  }
+  else
+  {
+    var url=environment.apiUrl + element.mainobf;
+    window.open(url);
+  }
 }
   getToolTipData(issueId: any): any {
     
@@ -443,7 +454,7 @@ downloaddetailobf(element)
 }
   CallDashBoardService()
   {
-    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
       debugger;
       console.log("DashBoardData");
@@ -527,6 +538,7 @@ downloaddetailobf(element)
         this.listData.filter= "draft";
        
         this.displayedColumns=this.DraftColumn;
+        this.on_Highlight(1);
       }
       else if (selection==1)
       {
@@ -534,6 +546,7 @@ downloaddetailobf(element)
           this.listData.filter="";
           this.listData.filter="submitted";
           this.displayedColumns=this.SubmittedScreenColumn;
+          this.on_Highlight(2);
       }
       else if(selection==2)
       {
@@ -541,6 +554,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.RejectedScreenColumn;
+        this.on_Highlight(3);
       }
       else if(selection==3)
       {
@@ -548,7 +562,7 @@ downloaddetailobf(element)
         this.listData.filter="approved";
         
         this.displayedColumns=this.ApprovedOBf;
-        
+        this.on_Highlight(4);
       }
       else if(selection==4)
       {
@@ -556,6 +570,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.ApprovedPPL;
+        this.on_Highlight(5);
       }
     }
     else if(this.privilege_name=="OBF Reviewer")
@@ -563,23 +578,33 @@ downloaddetailobf(element)
       if(selection==0)
       {
         //Pending for approval Section.
+        this.listData.filter="";
+        this.listData.filter="submitted"; 
       this.displayedColumns=this.PendingReviewercolumn;
+      this.on_Highlight(1);
       }
       else if (selection==1)
       {
          //Approved section
-
+         this.listData.filter="";
+         this.listData.filter="approved"; 
+         this.displayedColumns=this.PendingReviewercolumn;
+         this.on_Highlight(2);
       }
       else if(selection==2)
       {
+        this.listData.filter="";
+        this.listData.filter="rejected";
         this.displayedColumns=this.RejectedScreenColumn;
+        this.on_Highlight(3);
       }
       else if(selection==3)
       {
         this.listData.filter="";
-        this.listData.filter="rejected";
+        this.listData.filter="approved";
         
         this.displayedColumns=this.ApprovedOBf;
+        this.on_Highlight(4);
         
       }
       else if(selection==4)
@@ -588,6 +613,7 @@ downloaddetailobf(element)
         this.listData.filter="rejected";
         
         this.displayedColumns=this.ApprovedPPL;
+        this.on_Highlight(5);
       }
     }
    
@@ -597,7 +623,7 @@ downloaddetailobf(element)
   {
     
 
-    this._dashboardmodel._user_code=localStorage.getItem("UserName");
+    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
       debugger;
       
@@ -627,6 +653,21 @@ downloaddetailobf(element)
     this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
-
+  on_Highlight(check){
+    //    console.log(check);
+        if(check==1){
+          this.highlight = 'tab1';
+        }else if(check==2){
+          this.highlight = 'tab2';
+        }else if(check==3){
+          this.highlight = 'tab3';
+        }else if(check==4){
+          this.highlight = 'tab4';
+        }else{
+          this.highlight = 'tab5';
+        }    
+      
+    }
 }
+
 

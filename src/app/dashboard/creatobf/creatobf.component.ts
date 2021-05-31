@@ -263,7 +263,7 @@ export class CreatobfComponent implements OnInit {
    let editobf:editobfarguement = new editobfarguement();
    editobf.dh_id = dh_id;
    editobf.dh_header_id = dh_header_id;
-   editobf.user_code = localStorage.getItem("UserName");
+   editobf.user_code = localStorage.getItem("UserCode");
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
      let result =  JSON.parse(res);
      this.isEditObf = true;
@@ -401,7 +401,7 @@ export class CreatobfComponent implements OnInit {
 
 getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(data =>{
+this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -421,7 +421,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserName')).subscribe(
 
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserName')).subscribe(data =>{
+    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
       let res = JSON.parse(data);
        console.log(Object.keys(res) );
        console.log(res.sectors);
@@ -691,7 +691,7 @@ downloaddocument(event)
 // var zipFilename = "Supportfiles.zip";
 //   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
-  if(this._obfservices.ObfCreateForm.get("Supportpath").value == "")
+  if(this._obfservices.ObfCreateForm.get("Supportpath").value == null)
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
@@ -948,7 +948,7 @@ downloadLOIp(event)
          this._obfservices.ObfCreateForm.patchValue({coversheet: path});
          this._obfservices.obfmodel._fname =  files[i].name;
          this._obfservices.obfmodel._fpath =  path;
-         this._obfservices.obfmodel._created_by =  localStorage.getItem('UserName');
+         this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
   
         }
         else if(types == "loipo")

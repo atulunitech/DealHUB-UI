@@ -272,7 +272,38 @@
                       
                     </div>
                  </div>
-
+                 <div class="mat_previe_box" >
+                  <div class="prev_tit">
+                  Workflow Indicator
+                  </div>
+                  <div class="prev_dis" *ngIf="this.role_name == 'VSH'">
+                    <mat-slide-toggle color="primary" formControlName="MarginException">Margin Exception Requested</mat-slide-toggle>
+                  </div>
+                  <div>
+                    </div>
+                  <div class="prev_dis"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
+                    <mat-slide-toggle color="primary" formControlName="ExceptionCFO">Exception case-CFO approval</mat-slide-toggle>
+                  </div>
+                  <div class="prev_tit"  *ngIf="CEOMess">
+                    <label>
+                      {{this.cfomessgae}}
+                    </label>
+                    </div>
+                    <div class="prev_dis"  *ngIf="MarginException">
+                      <label>
+                        Margin Exception Requested by VSH.
+                      </label>
+                      </div>
+                  <div class="prev_dis"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
+                    <mat-slide-toggle color="primary" formControlName="ExceptionCEO">Exception case-CEO approval</mat-slide-toggle>
+                  </div>
+                  <div class="prev_tit"  *ngIf="CFOMess">
+                    <label>
+                      {{this.CEOmessage}}
+                    </label>
+                    </div>
+                   
+               </div>
 
                       </div>
                       
@@ -282,14 +313,24 @@
                       Comments 
                      </div>
                      <div class="mat_comment_box">
+                     <div style="height: 200px;overflow-y: scroll;">
+                    <div *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
+                      <div>{{details.Fullname}}({{details.Role_name}})</div>
+                      <div>{{details.Status}}<br/>{{details.dh_comment}}</div>
+                      <div>Version:{{details.Version_name}} <br/>{{details.commented_on | date}}</div>
                       
+                    </div>  </div>
+                       
                       <mat-form-field class="example-full-width" >
-                        <mat-label>Leave a comment</mat-label>
-                        <textarea matInput formControlName="comments"></textarea>
+                         <mat-label>Leave a comment</mat-label>
+                        <!-- <textarea matInput formControlName="comments"></textarea> -->
+                        <input type="text" matInput formControlName="comments">
+                        
                         <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
                           Comment is <strong>required</strong>
                         </mat-error>
                       </mat-form-field>
+                      <button mat-raised-button (click)="SaveComment()" color="primary">Edit</button>
                       
                      </div>
                   </div>
@@ -308,11 +349,11 @@
                           <div class="dwn_con_wr">
                             <img src="assets/images/dwn-load-file.png">
                             <span>
-                              <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
+                              <a  (click)="downloadsuppodocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
                           <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
-                          <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                          <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/dwn_fil_icon.png" ></div>
+                          
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
@@ -320,8 +361,8 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/dwn_fil_icon.png" ></div>
+                          
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
@@ -329,8 +370,8 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" ><img (click)="OpenDocDownload($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/dwn_fil_icon.png" ></div>
+                          
                           </div>
                             <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                             
@@ -346,17 +387,22 @@
                   </mat-expansion-panel-header>
                   <table mat-table [dataSource]="listData" class="ms_table" matSort>
                     <ng-container  matColumnDef="username">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>username</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
                     <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
                      </ng-container>
+                     <ng-container  matColumnDef="TimeLine">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>TimeLine</mat-header-cell>
+                    <mat-cell *matCellDef="let row" >{{row.TimeLine}}</mat-cell>
+                     </ng-container>
                      <ng-container  matColumnDef="currentstatus">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>currentstatus</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
                     <mat-cell *matCellDef="let row" >{{row.currentstatus}}</mat-cell>
                      </ng-container>
                      <ng-container  matColumnDef="comment">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>comment</mat-header-cell>
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
                     <mat-cell *matCellDef="let row" >{{row.comment}}</mat-cell>
                      </ng-container>
+                  
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </table>
@@ -366,7 +412,7 @@
         <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator'">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
-              <button mat-flat-button class="creat_bt mat_fot_bt">On Hold</button>
+              <button mat-flat-button class="creat_bt mat_fot_bt" (click)="onHoldDetails()">On Hold</button>
             </div>
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt" (click)="RejectDeatils()"> Rejected</button>
@@ -384,13 +430,13 @@
       <button mat-button mat-dialog-close>Cancel</button>
       <div fxFlex="auto " class="mat_upload_in_wr">
         <div class="mat_upload_tit">
-          Attach OBF SHEET 
+         Uploading Document
         </div>
-        <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx">
+        <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
           <ngx-dropzone-label class="matUp_lable">
             <div><img src="assets/images/Group Upload.png"></div>
             <div class="drap_titl">
-              Drag & Drop
+            Chosse or Drag & Drop
               <div class="in_titl">Or select file from your system</div>
             </div>
             
@@ -400,42 +446,62 @@
         </ngx-dropzone>
         <div class="bt_uplad_con">
           <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
-          <button [disabled]="!(loipofiles.length >0) || isloipo" (click)="uploadfiles(loipofiles,'loipo')"  class="creat_bt" mat-flat-button>Upload</button>
+          <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
         </div>
         <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-        <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0">
-          Uploaded Attach Obf Sheet 
+        <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
+          Uploading: 
          </div>
-        <div *ngIf="LoiPoprogress.length == 0">
+        <div *ngIf="uploaddocprocess.length == 0">
           
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')">
-          
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
           <ngx-dropzone-label class="drop_lab_cs">
             <div class="doc_icon">
               <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
             </div>
-            <div class="doc_cont" *ngIf="LoiPoprogress.length == 0">
+            <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
               {{ f.name }}
             </div> 
             
           </ngx-dropzone-label>
         </ngx-dropzone-preview>
       </div>
-      <div *ngIf="LoiPoprogress.length > 0">
-        
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" >
-          
+      <div *ngIf="uploaddocprocess.length > 0">
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
           <ngx-dropzone-label class="drop_lab_cs">
             <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
             <div class="doc_icon" >
               <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
             </div>
             <div class="doc_cont" style="position: relative;" >
+              {{ f.name }}
+             </div> 
+          </ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </div>
+      <div *ngIf="filelist.length == 0">
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
+          <ngx-dropzone-label class="drop_lab_cs">
+            <div class="doc_icon">
+              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+            </div>
+            <div class="doc_cont" *ngIf="filelist.length == 0">
               {{ f.fileName }}
-            
-
             </div> 
             
+          </ngx-dropzone-label>
+        </ngx-dropzone-preview>
+      </div>
+      <div *ngIf="filelist.length > 0">
+        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" >
+          <ngx-dropzone-label class="drop_lab_cs">
+            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
+            <div class="doc_icon" >
+              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+            </div>
+            <div class="doc_cont" style="position: relative;" >
+              {{ f.fileName }}
+             </div> 
           </ngx-dropzone-label>
         </ngx-dropzone-preview>
       </div>

@@ -78,6 +78,7 @@ class obfsummary{
   solutionDetails:solutionDetails[];
   uploadDetails:uploadDetails[];
   AttachmentDetails:AttachmentDetails[];
+  CommentDetails:CommentDetails[];
 }
 
 class uploadDetails{
@@ -111,6 +112,8 @@ class uploadDetails{
   Version_name:string;
   solutioncategory_name:string;
   payment_term_desc:string;
+  exceptionalcase_cfo:number;
+  exceptioncase_ceo:number;
 }
 
 class solutionDetails
@@ -126,7 +129,16 @@ class AttachmentDetails
   filename:string;
   filepath:string;
 }
+class CommentDetails
+{
+  Fullname:string;
+  Role_name:string;
+  dh_comment:string;
+  commented_on:string;
+  Version_name:string;
+  Status:string;
 
+}
 class obf{
   _dh_id:number;
   _dh_header_id:number;
@@ -218,6 +230,9 @@ class editObf{
     _fname:string;
     _fpath:string;
     _created_by:string;
+    exceptionalcase_cfo:number;
+    exceptioncase_ceo:number;
+    is_on_hold:number;
   }
 
 @Injectable({
@@ -347,7 +362,7 @@ export class OBFServices {
     this.obfsummarymodel.uploadDetails = data.uploadDetails;
     this.obfsummarymodel.solutionDetails = data.solutionDetails;
     this.obfsummarymodel.AttachmentDetails = data.AttachmentDetails;
-
+    this.obfsummarymodel.CommentDetails=data.CommentDetails;
     //this.Obfsummarysubject.next(this.obfsummarymodel);
    
 
