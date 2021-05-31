@@ -33,6 +33,7 @@
     "moment": "^2.29.1",
     "ngx-daterangepicker-material": "^4.0.1",
     "ngx-dropzone": "^3.0.0",
+    "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-spinner": "^11.0.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.14.1",
