@@ -746,6 +746,10 @@ downloaddocument(event)
          {
             url = environment.apiUrl+url
          }
+         else
+         {
+          url = environment.apiUrl+url
+         }
          window.open(url);
         //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
         // loading a file and add it in a zip file
@@ -778,7 +782,10 @@ downloadLOIp(event)
     let url = this._obfservices.ObfCreateForm.get("Loiposheet").value;
     if(this.isEditObf)
          {
-            url = environment.apiUrl+url
+            url = environment.apiUrl+url;
+         }
+         else{
+          url = environment.apiUrl+url;
          }
          
     // window.open(this.loipopath,"_self");
