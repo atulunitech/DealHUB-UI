@@ -45,6 +45,7 @@ class filesdetail
 
   filename:string;
   filepath:string;
+  description:string;
   
 }
 @Component({
@@ -344,7 +345,7 @@ class filesdetail
           {
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-
+            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             
             this.filelist.push(savefile);
           }
@@ -352,6 +353,7 @@ class filesdetail
           {
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             this.filelist.push(savefile);
           }
       }
@@ -362,6 +364,7 @@ class filesdetail
     this.uploadDocfiles=this.supportfiles;
     this.SupportPoprogress= this.uploaddocprocess;
     let savefile:filesdetail = new filesdetail();
+    this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -370,6 +373,7 @@ class filesdetail
           {
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             this.filelist.push(savefile);
           }
       }
@@ -380,6 +384,7 @@ class filesdetail
     this.uploadDocfiles=this.FinalAggfiles;
     this.finalProgress= this.uploaddocprocess;
     let savefile:filesdetail = new filesdetail();
+    this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -388,6 +393,7 @@ class filesdetail
           {
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+            savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             this.filelist.push(savefile);
           }
       }
@@ -588,6 +594,7 @@ class filesdetail
      if(this.Type == "loipo")
     {
       //this.isloipo = !this.isloipo;
+
      
     }
     else if(this.Type == "support")
@@ -767,6 +774,36 @@ class filesdetail
     );
     }
   }
+  removeFile(file:filesdetail[],event)
+  {
+ 
+  console.log(event);
+  file.splice(file.indexOf(event), 1);
+  if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+        {
+          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
+        }
+        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        {
 
+          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
+        }
+        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+        {
+
+          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
+        }
+        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+        {
+
+          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
+        }
+      }
+    }
+  }
  
   }
