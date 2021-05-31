@@ -433,7 +433,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -465,7 +465,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -492,7 +492,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("user_id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
