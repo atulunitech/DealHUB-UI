@@ -717,7 +717,10 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
     {
       url = environment.apiUrl+url
     }
-    
+    else
+    {
+      url = environment.apiUrl+url;
+    }
       return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 downloaddocument(event)
