@@ -197,6 +197,8 @@ export class CreatobfComponent implements OnInit {
   Subsecotarray:subsecorlist[] =[];
   serviceslist:SaveServiceParameter[] = [];
 
+  detailstickdisabled:boolean = true;
+
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
@@ -241,6 +243,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.obfmodel._dh_header_id =0;
     this.loiopdisabled = false;
     this.uploadnotdisabled = false;
+    this.detailstickdisabled = true;
     this.getcreateobfmasters();
     this.getsolutionmaster();
     this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
@@ -267,6 +270,7 @@ export class CreatobfComponent implements OnInit {
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
      let result =  JSON.parse(res);
      this.isEditObf = true;
+     this.detailstickdisabled = false;
      console.log("check object after edit");
      this.editorcreateobfstring= "Edit";
      console.log(result);
@@ -446,7 +450,38 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
  });
   }
 
+  removeandaddvalidation(type:string){
+  //  alert("hello world");
+    if(type == "upload")
+    {
+      this._obfservices.ObfCreateForm.get('Solutioncategory').clearValidators();
+      this._obfservices.ObfCreateForm.get('Solutioncategory').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').clearValidators();
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
+
+      this._obfservices.ObfCreateForm.get('Sector').clearValidators();
+      this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
+      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+     // this.detailstickdisabled = true;
+    }
+
+    if(type == "details")
+    {
+      this._obfservices.ObfCreateForm.get('Solutioncategory').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Solutioncategory').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Otherservicesandcategories').updateValueAndValidity();
+
+      this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
+      this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
+      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+    }
+  }
+
   setStep(index: number) {
+   // alert(index);
     this.step = index;
   }
 
@@ -632,6 +667,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
       console.log(this.serviceslist);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: this.serviceslist});
       this._obfservices.obfmodel.Services = this.serviceslist;
+      this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
       
     }
   }
@@ -1865,6 +1901,7 @@ downloadLOIp(event)
     this.servicecate=solutioncategory;
     this.Solutionservicesarray = result[0].Solutionservices;
     this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
+    this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
     // this.servicesControl.setValue(["1","2"]);
   }
 
@@ -1886,13 +1923,14 @@ downloadLOIp(event)
     this.subsectorlisdisplay = result;
     // this._obfservices.obfmodel._Sector_Id= parseInt(this._obfservices.ObfCreateForm.get('Sector').value);
     this._obfservices.obfmodel._Sector_Id = evt.value;
-
+    this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
 
   }
 
   onsubsectorchange(evt)
   {
     this._obfservices.obfmodel._SubSector_Id = evt.value;
+    this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
   }
 
   otherssave(event,type:string){
@@ -1942,7 +1980,7 @@ downloadLOIp(event)
       let elements:Serviceslist = new Serviceslist("0",value);
       res[0].Serviceslist.push(elements);
     }
-    
+    this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
   }
   SavetoModel(){
 this._obfservices.obfmodel._dh_comment = this._obfservices.ObfCreateForm.get("comments").value;
