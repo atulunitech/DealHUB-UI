@@ -1,10 +1,10 @@
-import { ViewChild } from '@angular/core';
+import { TemplateRef, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule ,MatTableDataSource} from '@angular/material/table'
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
@@ -53,6 +53,14 @@ export class DashboardcountModel
   _approved:number;
   _totalapprovedppl:number;
   _totalapprovedobf:number;
+}
+class SaveAttachmentParameter{
+  _dh_id:number;
+  _dh_header_id:number;
+  _fname:string;
+  _fpath:string;
+  _created_by:string;
+  _description:string;
 }
 //end region
 @Component({
@@ -103,7 +111,9 @@ export class DashboardComponent implements OnInit {
   highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
-  
+  @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+  uploadDocfiles:File[]=[];
+  uploaddocprocess:any[]=[];
   // selected: {startDate: Moment, endDate: Moment};
   // alwaysShowCalendars: boolean;
   // locale: LocaleConfig = {
@@ -432,7 +442,21 @@ openModal(templateRef) {
       // this.animal = result;
   });
 }
+dh_id:number=0;
+dh_header_id:number=0;
+UploadFinalAggrement(element)
+{
+  this.dh_id=element.dh_id;
+  this.dh_header_id=element.dh_header_id;
 
+  const dialogRef = this.dialog.open(this.callAPIDialog, {
+    width: '500px',
+    height:'600px',
+    disableClose: true,
+   // data: { campaignId: this.params.id }
+})
+
+}
 downloaddetailobf(element)
 {
   // alert("download documnet");
@@ -668,6 +692,117 @@ downloaddetailobf(element)
         }    
       
     }
+    bytesToSize(bytes):number {
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+      if (bytes === 0) return 0;
+      const i = Math.floor(Math.log(bytes) / Math.log(1024));
+      if (i === 0) return bytes;
+      return parseFloat((bytes / (1024 ** i)).toFixed(1));
+    }
+    onSelect(event) {
+      try{
+        var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
+        event.addedFiles.forEach(element => {
+          // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+           if( Math.floor(this.bytesToSize(element.size)) == 0)
+           {
+             throw new Error("The file size of "+element.name+" is invalid" );
+           }
+     
+           if(format.test(element.name))
+           {
+             throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+            }
+           // if( this.bytesToSize(element.size) > 4)
+           if( element.size > 4194304)
+           {
+             throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+           }
+     
+         });
+         this.uploadDocfiles.push(...event.addedFiles);
+      }
+      catch(e)
+      {
+        this._mesgBox.showError(e.message);
+      }
+    
+    }
+
+  
+    progress: number = 0;
+    path:string="";
+    consolidatedpath:string="";
+    SaveAttachmentParameter:SaveAttachmentParameter;
+    Attachments:SaveAttachmentParameter[] = [];
+    SaveAttachment()
+    {
+      //this.isloipo = !this.isloipo;
+      this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
+        {
+            console.log(result);
+            var REsult=JSON.parse(result);
+            if(REsult[0].status ="Success")
+            {
+              this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+              this.uploadDocfiles=[];
+              this.Attachments=[];
+
+              this.dialog.closeAll();
+  
+            }
+          
+      });
+    }
+    uploadfiles(files:File[])
+    {
+    
+      for (let i = 0; i < files.length; i++) {
+       
+        this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+        this.path="";
+        this._dashboardservice.uploadImage(files[i]).subscribe(
+          event => {
+            if(event.type === HttpEventType.UploadProgress)
+            {
+              console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
+              this.progress = Math.round(event.loaded/event.total * 100);
+              this.uploaddocprocess[i].value = Math.round(event.loaded/event.total * 100);
+            }
+            else if(event.type === HttpEventType.Response)
+            {
+              this.path = JSON.stringify(event.body);
+              this.path=this.path.split('"').join('');
+              this.path = this.path.substring(0,this.path.length -1);
+              this.consolidatedpath += this.path +",";
+              this.consolidatedpath = this.consolidatedpath.substring(0,this.consolidatedpath.length -1);
+              this.SaveAttachmentParameter = new SaveAttachmentParameter();
+              if(this.path!="")
+              {
+                this.SaveAttachmentParameter._dh_id=this.dh_id;
+                this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
+                 this.SaveAttachmentParameter._fname= files[i].name; 
+                 this.SaveAttachmentParameter._fpath = this.path;
+                 this.SaveAttachmentParameter._description = "FinalAgg";
+                 this.Attachments.push(this.SaveAttachmentParameter);
+              }
+            }
+            this.SaveAttachment();
+          },
+          
+          (err:any)=>{
+           
+             this.uploaddocprocess[i].value = 0;
+         
+           
+      }
+        )
+    }
 }
+  closedialog()
+  {
+   this.uploadDocfiles=[];
+   this.dialog.closeAll();
+  }
 
-
+}
