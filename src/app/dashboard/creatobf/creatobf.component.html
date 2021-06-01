@@ -837,7 +837,7 @@
                               <img  src="assets/images/dwn-load-file.png">
                               <span><a [href]="sanitize(this._obfservices.ObfCreateForm.get('coversheet').value)" target="_blank" >OBF Sheet</a></span>
                             </div>
-                            <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
+                            <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
                             <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">

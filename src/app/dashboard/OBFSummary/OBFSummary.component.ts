@@ -152,18 +152,19 @@ class filesdetail
 
       if(this.role_name=='CFO')
       {
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
        {
         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.CEOMess=true;
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
-       }
-       else if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1) {
         this.CEOMess=true;
-        this.cfomessgae="Approval required as per Pricing Team.";
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         {
+         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         }
+        else  {
+         this.cfomessgae="Approval required as per Pricing Team.";
+         }
        }
-
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="Y")
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
         this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
@@ -174,13 +175,17 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
-          this.CFOMess=true;
-          this.CEOmessage="Approval required as per Pricing Team.";
-       
+         this.CFOMess=true;
+          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+          {
+            this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+          }
+         else {
+             this.CEOmessage="Approval required as per Pricing Team.";
+            
+          }
         }
-        else{
-          this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-        }
+        
         
       }
       this.getserviceslist();
@@ -433,19 +438,19 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
-    
-      if(data.status =="sucess")
+    var jsondata=JSON.parse(data);
+      if(jsondata[0].status =="success")
       {
-        this._mesgBox.showSucess(data.message);
+        this._mesgBox.showSucess(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
-        this._mesgBox.showError(data.message);
+        this._mesgBox.showError(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
     });
@@ -465,7 +470,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -492,7 +497,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("User_Id");
+    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
