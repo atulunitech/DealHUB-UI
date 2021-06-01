@@ -38,7 +38,7 @@ class CommentDetails
   commented_on:string;
   Version_name:string;
   Status:string;
-
+  role_code:string;
 }
 class filesdetail
 {
@@ -81,7 +81,7 @@ class filesdetail
   finalProgress:any[]=[];
   SaveAttachmentParameter:SaveAttachmentParameter;
   Attachments:SaveAttachmentParameter[] = [];
- // CommentDetails:CommentDetails[]=[];
+ CommentDetails:CommentDetails[]=[];
   loipopath:string="";
   supportdocpath:string="";
   Finaldocpath:string="";
@@ -326,7 +326,8 @@ class filesdetail
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
-      // this.CommentDetails.push(SaveComment);
+      SaveComment.role_code="CFO";
+       this.CommentDetails.push(SaveComment);
       this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
     }
   }
