@@ -141,7 +141,7 @@ class CommentDetails
   commented_on:string;
   Version_name:string;
   Status:string;
-
+  role_code:string;
 }
 class VersionDetails{
   Version_name:number;
