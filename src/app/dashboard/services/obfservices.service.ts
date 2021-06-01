@@ -247,14 +247,20 @@ export class OBFServices {
 
   constructor(private http:HttpClient,private router: Router) { }
  
-  obfmodel:obf = new obf();
+  obfmodel:obf;
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
-  editObfObject:editObf = new editObf();
+  editObfObject:editObf;
   obfsolutionandservices:obfsolutionandservices = new obfsolutionandservices();
   SaveAttachmentParameter:SaveAttachmentParameter = new SaveAttachmentParameter();
   ObfCreateForm:FormGroup;
+
+  createnewobfmodelandeditobfmodel()
+  {
+    this.obfmodel = new obf();
+    this.editObfObject = new editObf();
+  }
 
    createform()
    {

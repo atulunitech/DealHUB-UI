@@ -205,6 +205,7 @@ export class CreatobfComponent implements OnInit {
     public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
   { 
     this._obfservices.createform();
+    this._obfservices.createnewobfmodelandeditobfmodel();
   }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -238,7 +239,7 @@ export class CreatobfComponent implements OnInit {
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
-    this._obfservices.createform();
+    //this._obfservices.createform();
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     this.loiopdisabled = false;
@@ -853,6 +854,7 @@ downloadCoversheet(event)
        {
         this.editObfcoverbol = false;
         this._obfservices.ObfCreateForm.patchValue({coversheet: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid coversheet");
@@ -878,6 +880,7 @@ downloadCoversheet(event)
        {
         this.editObfLoiPobol = false;
         this._obfservices.ObfCreateForm.patchValue({Loiposheet: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid LOI/PO Sheet");
@@ -903,6 +906,7 @@ downloadCoversheet(event)
        {
         this.editObfSupportbol = false;
         this._obfservices.ObfCreateForm.patchValue({Supportpath: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)
          {
