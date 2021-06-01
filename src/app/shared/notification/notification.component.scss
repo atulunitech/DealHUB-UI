@@ -1,0 +1,32 @@
+.fead_cont
+{
+    flex: 1;
+    background-color: rgba(0,0,0,0.5);
+}
+.not_cont
+{
+    background-color: #fff;
+    &.view
+    {
+        width: 330px;
+    background-color: #fff;
+    transition: all 0.65s ease;
+    
+    }
+    &.viewnot
+    {
+        width: 0;
+    }
+    .not_fi_titl
+    {
+        display: flex;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #342e59;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ccc;
+    }
+}
