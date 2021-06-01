@@ -795,7 +795,12 @@ downloadLOIp(event)
  
 
 }
-
+downloadCoversheet(event)
+{
+  event.preventDefault();
+  let url = environment.apiUrl+this.coversheetpath;
+  window.open(url);
+}
   
   message: string[] = [];
   iscoversheet:boolean=true;
