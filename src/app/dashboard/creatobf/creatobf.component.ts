@@ -270,8 +270,8 @@ export class CreatobfComponent implements OnInit {
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
      let result =  JSON.parse(res);
      this.isEditObf = true;
-     this.detailstickdisabled = false;
-     console.log("check object after edit");
+    //  this.detailstickdisabled = false;
+     console.log("check objectssssss after edit");
      this.editorcreateobfstring= "Edit";
      console.log(result);
      if(result != null)
@@ -330,6 +330,13 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       }
       this.uploadnotdisabled = true;
+      if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
+      {
+        this.detailstickdisabled = true; 
+      }
+      else{
+      this.detailstickdisabled = false;
+    }
       if(this._obfservices.obfmodel.Services != null)
       {
         this.serviceslist = this._obfservices.obfmodel.Services;
@@ -1509,6 +1516,7 @@ downloadLOIp(event)
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
         this._mesgBox.showSucess("Documents uploaded Successfully");
+        this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
        // alert("Technical error while uploading documents");
@@ -1549,6 +1557,7 @@ downloadLOIp(event)
           //  this._obfservices.obfmodel._dh_id = res[0].dh_id;
           //alert("Details updated Successfully");
           this._mesgBox.showSucess("Details updated Successfully");
+          this.router.navigate(['/DealHUB/dashboard']);
         }
         else{
           // alert("Technical error while updating details");
@@ -1682,6 +1691,15 @@ downloadLOIp(event)
       if(this.isEditObf)
       {
         this.onRemoveLoiAttachments();
+      }
+      else{
+        let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    if(index > -1)
+    {
+      this._obfservices.obfmodel.Attachments.splice(index,1);
+      this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+      this.uploadnotdisabled = false;
+    }
       }
       this._obfservices.ObfCreateForm.get("Loipodropdown").setValue("");
      
