@@ -443,14 +443,14 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
-    
-      if(data.status =="sucess")
+    var jsondata=JSON.parse(data);
+      if(jsondata[0].status =="success")
       {
-        this._mesgBox.showSucess(data.message);
+        this._mesgBox.showSucess(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
-        this._mesgBox.showError(data.message);
+        this._mesgBox.showError(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
     });
