@@ -42,7 +42,7 @@ export class MessageBoxComponent implements OnInit {
   }
   showError(content) {
     let sb =this._snackBar.open(content,'X', {
-      duration: 3000,
+      duration: 7000,
       verticalPosition: 'top',
       horizontalPosition:'right',
       panelClass:"custom_error_sneak_bar"
