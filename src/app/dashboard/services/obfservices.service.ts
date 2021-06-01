@@ -79,6 +79,7 @@ class obfsummary{
   uploadDetails:uploadDetails[];
   AttachmentDetails:AttachmentDetails[];
   CommentDetails:CommentDetails[];
+  VersionDetails:VersionDetails[];
 }
 
 class uploadDetails{
@@ -141,6 +142,11 @@ class CommentDetails
   Version_name:string;
   Status:string;
 
+}
+class VersionDetails{
+  Version_name:number;
+  dh_header_id:number;
+  dh_id:number;
 }
 class obf{
   _dh_id:number;
@@ -351,7 +357,14 @@ export class OBFServices {
        httpOptions);  
        
   }
-  
+  GetOBFSummaryDataVersionWise(dh_id:number,dh_header_id:number): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+    params: new HttpParams().set('dh_id', dh_id.toString())
+    .set('dh_header_id',dh_header_id.toString()) };  
+    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetOBFSummaryDataVersionWise",
+       httpOptions);  
+       
+  }
   geteditobfdata(editobf:editobfarguement): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf,

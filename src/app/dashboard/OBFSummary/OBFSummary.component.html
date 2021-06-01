@@ -92,8 +92,17 @@
             <div class="prev_tit">
               Version_name
             </div>
-            <div class="prev_dis">
-              {{_obfservices.obfsummarymodel.uploadDetails[0]. Version_name}} 
+            <!-- [disabled]="loiopdisabled" -->
+            <div class="prev_dis" *ngIf="this.privilege_name == 'OBF Initiator'">
+
+              <mat-select  formControlName="version" >
+                <mat-option *ngFor="let version of _obfservices.obfsummarymodel.VersionDetails" [value]="version.dh_id"  (onSelectionChange)="onversionchange($event,version.dh_id,version.dh_header_id)">
+                    {{version.Version_name}}
+                </mat-option>
+              </mat-select>
+             </div>
+            <div class="prev_dis" *ngIf="this.privilege_name != 'OBF Initiator'">
+             {{_obfservices.obfsummarymodel.uploadDetails[0]. Version_name}}
             </div>
          </div>
           

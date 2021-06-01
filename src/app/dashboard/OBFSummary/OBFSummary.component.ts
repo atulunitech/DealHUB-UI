@@ -61,7 +61,8 @@ class filesdetail
       comments : new FormControl("",[Validators.required]),
       MarginException:new FormControl("",[Validators.required]),
       ExceptionCFO:new  FormControl("",[Validators.required]),
-      ExceptionCEO:new FormControl("",[Validators.required])
+      ExceptionCEO:new FormControl("",[Validators.required]),
+      version:new FormControl("",[Validators.required])
     });
     noComment:boolean=false;
     readMore = false;
@@ -149,7 +150,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
-
+      this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -312,7 +313,7 @@ class filesdetail
     }
   }
  
-  
+  today:any=new Date();
   SaveComment()
   {
     if(this.obfsummaryform.get("comments").value!= "")
@@ -321,9 +322,9 @@ class filesdetail
       var comment=this.obfsummaryform.get("comments").value;
       SaveComment.Fullname=this.User_name;
       SaveComment.Role_name= this.role_name;
-      SaveComment.Status="";
+      SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      SaveComment.commented_on=  localStorage.getItem("UserId");
+      SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       // this.CommentDetails.push(SaveComment);
       this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
@@ -820,5 +821,26 @@ class filesdetail
       }
     }
   }
- 
+  onversionchange(evt,dh_id,dh_header_id)
+  {
+    if(evt.isUserInput){
+    alert(dh_id);
+    this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
+      
+      var jsondata=JSON.parse(data);
+      this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
+      this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
+      this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
+      //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+     
+     
+      this.getserviceslist();
+    },
+    (error)=>{
+      alert(error.message);
+    }
+    );
+    }
+  }
   }
