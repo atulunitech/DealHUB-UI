@@ -737,7 +737,7 @@ downloaddocument(event)
 // var zipFilename = "Supportfiles.zip";
 //   var filesarr = this._obfservices.obfmodel.Attachments.filter(x => x._description == "support");
   event.preventDefault();
-  if(this._obfservices.ObfCreateForm.get("Supportpath").value == null)
+  if(this._obfservices.ObfCreateForm.get("Supportpath").value == null || this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
   }
@@ -781,7 +781,7 @@ downloaddocument(event)
 downloadLOIp(event)
 {
   event.preventDefault();
-  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
+  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null || this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
     this._mesgBox.showError("No Loi/po to Download");
   }
