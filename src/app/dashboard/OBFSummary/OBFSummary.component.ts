@@ -152,18 +152,19 @@ class filesdetail
 
       if(this.role_name=='CFO')
       {
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
        {
         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.CEOMess=true;
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
-       }
-       else if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1) {
         this.CEOMess=true;
-        this.cfomessgae="Approval required as per Pricing Team.";
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         {
+         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         }
+        else  {
+         this.cfomessgae="Approval required as per Pricing Team.";
+         }
        }
-
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="Y")
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
         this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
@@ -174,13 +175,17 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
-          this.CFOMess=true;
-          this.CEOmessage="Approval required as per Pricing Team.";
-       
+         this.CFOMess=true;
+          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+          {
+            this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+          }
+         else {
+             this.CEOmessage="Approval required as per Pricing Team.";
+            
+          }
         }
-        else{
-          this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-        }
+        
         
       }
       this.getserviceslist();

@@ -114,6 +114,9 @@ class uploadDetails{
   payment_term_desc:string;
   exceptionalcase_cfo:number;
   exceptioncase_ceo:number;
+  marginal_exception_requested:number;
+  exceptionalcase_cfo_updatedby:string;
+  exceptionalcase_ceo_updatedby:string;
 }
 
 class solutionDetails
