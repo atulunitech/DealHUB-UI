@@ -768,13 +768,20 @@ downloaddocument(event)
       }
     }
   }
+  else{
+    this._mesgBox.showError("No Supporting Documents to Download");
+  }
 
   
 }
 downloadLOIp(event)
 {
   event.preventDefault();
-  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
+  if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
+  {
+    this._mesgBox.showError("No Loi/po to Download");
+  }
+  else if (this._obfservices.obfmodel.Attachments.length == 0)
   {
     this._mesgBox.showError("No Loi/po to Download");
   }
