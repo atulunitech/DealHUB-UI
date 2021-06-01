@@ -170,19 +170,19 @@
             <ng-container  matColumnDef="ActionDraft">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
-                <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" (click)="editobf(row)">Edit</button></mat-cell>
+                <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionPendingforapproval">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
                 <mat-cell *matCellDef="let row" >
-                  <button mat-raised-button (click)="openModal(mytemplate)" color="primary">Edit</button>&nbsp;
+                  <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate)" >Edit</button>&nbsp;
                   <button mat-raised-button color="primary">Reject</button>
                  </mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionSubmitted">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" (click)="editobf(row)">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
@@ -190,11 +190,11 @@
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedPPL">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
              </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
