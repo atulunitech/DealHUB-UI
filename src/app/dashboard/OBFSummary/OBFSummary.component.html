@@ -347,10 +347,18 @@
                           </perfect-scrollbar>
                           <div class="comm_input_con">
                             <div class="comm_inpu_typ">
-                              <input type="text">
-                              <button mat-flat-button class="creat_bt cus_bt_comm" >
-                                SUBMIT
-                              </button>
+                            
+
+                              <mat-form-field>
+                              
+                               <input type="text" matInput formControlName="comments">
+                               
+                               <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
+                                 Comment is <strong>required</strong>
+                               </mat-error>
+                             </mat-form-field>
+                             <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()" >Edit</button>
+                             
                             </div>
                           </div>
                         </div>
