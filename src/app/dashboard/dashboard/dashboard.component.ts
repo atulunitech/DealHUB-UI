@@ -98,6 +98,7 @@ export class DashboardComponent implements OnInit {
   dataSource:any;
   searchKey: string;
   dashboardData:any[]=[];
+  filterdata:any[]=[];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
@@ -558,40 +559,51 @@ downloaddetailobf(element)
       {
         //Draft Section.
         
-        this.listData = new MatTableDataSource(this.dashboardData);
-        this.listData.filter= "draft";
-       
+        this.listData=new MatTableDataSource(this.dashboardData); 
+         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft');
+        this.listData=new MatTableDataSource(this.filterdata);
+
+
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
       else if (selection==1)
       {
           //Submitted section
-          this.listData.filter="";
-          this.listData.filter="submitted";
+         
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='submitted');
+        this.listData=new MatTableDataSource(this.filterdata);
+
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
       else if(selection==2)
       {
-        this.listData.filter="";
-        this.listData.filter="rejected";
         
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
       else if(selection==3)
       {
-        this.listData.filter="";
-        this.listData.filter="approved";
         
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='cApproved');
+        this.listData=new MatTableDataSource(this.filterdata);
+
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
       }
       else if(selection==4)
       {
-        this.listData.filter="";
-        this.listData.filter="rejected";
+       
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.listData=new MatTableDataSource(this.filterdata);
+
         
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
@@ -601,47 +613,53 @@ downloaddetailobf(element)
     {
       if(selection==0)
       {
-        //Pending for approval Section.
-        this.listData.filter="";
-        this.listData.filter="submitted"; 
+         
+      this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Submitted');
+      this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
       else if (selection==1)
       {
          //Approved section
-         this.listData.filter="";
-         this.listData.filter="approved"; 
+         this.listData=new MatTableDataSource(this.dashboardData); 
+          this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
+         this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.PendingReviewercolumn;
          this.on_Highlight(2);
       }
       else if(selection==2)
       {
-        this.listData.filter="";
-        this.listData.filter="rejected";
+      
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        let filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Rejected');
+        this.listData=new MatTableDataSource(filterdata);
+
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
       else if(selection==3)
       {
-        this.listData.filter="";
-        this.listData.filter="approved";
-        
+        this.listData=new MatTableDataSource(this.dashboardData); 
+         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='cApproved');
+        this.listData=new MatTableDataSource(this.filterdata);
+
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
       }
       else if(selection==4)
       {
-        this.listData.filter="";
-        this.listData.filter="rejected";
-        
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }
     }
    
   }
+ 
 
   GetDatabaseCount()
   {

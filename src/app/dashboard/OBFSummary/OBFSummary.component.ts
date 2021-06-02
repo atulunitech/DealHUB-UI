@@ -189,6 +189,15 @@ class filesdetail
         
         
       }
+      if(this.role_name=='PH')
+      {
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+        this.CEOMess=true;
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         {
+         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         }
+      }
       this.getserviceslist();
     },
     (error)=>{
