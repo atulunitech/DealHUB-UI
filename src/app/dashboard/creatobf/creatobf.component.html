@@ -138,7 +138,7 @@
                              
                               
                             </ngx-dropzone>
-                            <div class="bt_uplad_con">
+                            <div class="bt_uplad_con" style="padding-top: 8px;padding-bottom: 8px;">
                               <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <div class="mt-cust-fd upl_sec_cut">
                                 
@@ -167,7 +167,7 @@
                               <!-- <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
                               <label for="selfdec">This OBF is without LOI / PO </label><br>   -->
                             </div>
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0 || (editObfcoverbol && _obfservices.loipoarray.length > 0)">
+                            <div class="mat_upload_tit" style="margin-top: 7px;position: relative;" *ngIf="loipofiles.length > 0 || (editObfcoverbol && _obfservices.loipoarray.length > 0)">
                               Uploaded Loi/Po Agreement 
                              </div>
                              <div *ngIf="LoiPoprogress.length == 0">
@@ -335,7 +335,7 @@
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Select solution category*</mat-label>
+                                <mat-label>Select solution category *</mat-label>
                     <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher" disableOptionCentering>
                       <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
@@ -352,7 +352,7 @@
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Select type of service/solution category*</mat-label>
+                                <mat-label>Select type of service/solution category *</mat-label>
                                 <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple  disableOptionCentering>
                                   <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
@@ -421,7 +421,7 @@
                           <div class="mat_fld_box_in" fxFlex="1 1 100%">
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Vertical*</mat-label>
+                                <mat-label>Vertical *</mat-label>
                                   <input matInput formControlName="Vertical" [readonly]="true"  value="{{_obfservices.ObfCreateForm.get('Vertical').value}}"/>
                                 </mat-form-field>
                             </div>
@@ -430,7 +430,7 @@
                           <div class="mat_fld_box_in" fxFlex="50">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Select Sector*</mat-label>
+                                <mat-label>Select Sector *</mat-label>
                                 <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector" disableOptionCentering>
                                   <mat-option *ngFor="let Sector of sectorlist" [value]="Sector.value"  >
                                     {{Sector.viewValue}}
@@ -448,7 +448,7 @@
                           <div class="mat_fld_box_in" fxFlex="100">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
-                                <mat-label>Select Sub Sector*</mat-label>
+                                <mat-label>Select Sub Sector *</mat-label>
                                 <mat-select (selectionChange)="onsubsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Subsector" disableOptionCentering>
                                   <mat-option *ngFor="let Subsector of subsectorlisdisplay" [value]="Subsector.value"  >
                                     {{Subsector.viewValue}}
