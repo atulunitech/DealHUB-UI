@@ -331,7 +331,8 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       }
       this.uploadnotdisabled = true;
-      if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
+      // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
+      if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
       {
         this.detailstickdisabled = true; 
       }
@@ -469,8 +470,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').clearValidators();
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
      // this.detailstickdisabled = true;
     }
 
@@ -483,8 +484,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
     }
   }
 
@@ -503,8 +504,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
       console.log("check edit obf after next button");
       console.log(this._obfservices.ObfCreateForm);
       console.log("check uploadnotdisabled after next button");
@@ -570,8 +571,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').clearValidators();
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
     }
     this.step--;
   }
