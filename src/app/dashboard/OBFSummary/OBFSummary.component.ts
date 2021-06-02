@@ -329,10 +329,23 @@ class filesdetail
   }
  
   today:any=new Date();
+  commentVisiable:boolean=false;
+  SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
     if(this.obfsummaryform.get("comments").value!= "")
     {
+      
+      var comment=this.obfsummaryform.get("comments").value;
+      // this.SaveCommentdetail[0].Fullname=this.User_name;
+      // this.SaveCommentdetail[0].Role_name= this.role_name;
+      // this.SaveCommentdetail[0].Status="Pending";
+      // this.SaveCommentdetail[0].Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+      // this.SaveCommentdetail[0].commented_on=  this.today;
+      // this.SaveCommentdetail[0].dh_comment=comment;
+      // this.SaveCommentdetail[0].role_code=this.role_name;
+
+
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
       SaveComment.Fullname=this.User_name;
@@ -342,9 +355,20 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-       this.CommentDetails.push(SaveComment);
-      this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
+
+      this.commentVisiable=true;
+     // this.obfsummaryform.controls["comments"].setValue('');
+       this.SaveCommentdetail.push(SaveComment);
+      //  this.CommentDetails.push(SaveComment);
+    //  this._obfservices.obfsummarymodel.CommentDetails.push(this.SaveCommentdetail[0]);
     }
+  }
+  deletecomment()
+  {
+    this.commentVisiable=false;
+   // this.obfsummaryform.controls["comments"].setValue('');
+    this.SaveCommentdetail=[];
+
   }
   OpenDocDownload(event,Type)
   {
