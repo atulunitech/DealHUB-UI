@@ -29,4 +29,24 @@
     padding-bottom: 14px;
     border-bottom: 1px solid #ccc;
     }
+    .not_fy_box
+    {
+        display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #eaeaea;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #e5eeff;
+    cursor: pointer;
+    align-items: flex-start;
+    .not_left_con
+    {
+        border: 1px solid #2258bf;
+    display: flex;
+    border-radius: 40px;
+    padding: 11px;
+        img{width: 20px;}
+    }
+    }
 }
