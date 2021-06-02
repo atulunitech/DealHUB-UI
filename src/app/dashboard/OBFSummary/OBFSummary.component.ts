@@ -204,7 +204,7 @@ class filesdetail
          }
       }
       this.getserviceslist();
-      
+
     },
     (error)=>{
       alert(error.message);
@@ -224,16 +224,16 @@ class filesdetail
       {
         Tempservice += this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
         
-        for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
-        {
-          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
-          {
+      //   for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
+      //   {
+      //     if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
+      //     {
             
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
-          }
-        }
+      //       tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+      //     }
+      //   }
       
-       tempservicecat=tempservicecat.substring(1);
+      //  tempservicecat=tempservicecat.substring(1);
        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
        
       }
@@ -843,7 +843,7 @@ class filesdetail
   onversionchange(evt,dh_id,dh_header_id)
   {
     if(evt.isUserInput){
-    alert(dh_id);
+    
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
