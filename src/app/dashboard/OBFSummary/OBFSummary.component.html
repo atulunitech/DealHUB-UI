@@ -318,32 +318,55 @@
                       
                  <div fxFlex="auto " class="mat_view_comment">
                   <div class="mat_previe_box">
-                    <div class="prev_dis">
-                      Comments 
-                     </div>
-                     <div class="mat_comment_box">
-                     <div style="height: 200px;overflow-y: scroll;">
-                    <div *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
-                      <div>{{details.Fullname}}({{details.Role_name}})</div>
-                      <div>{{details.Status}}<br/>{{details.dh_comment}}</div>
-                      <div>Version:{{details.Version_name}} <br/>{{details.commented_on | date}}</div>
-                      
-                    </div>  </div>
-                       
-                      <mat-form-field class="example-full-width" >
-                         <mat-label>Leave a comment</mat-label>
-                        <!-- <textarea matInput formControlName="comments"></textarea> -->
-                        <input type="text" matInput formControlName="comments">
-                        
-                        <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
-                          Comment is <strong>required</strong>
-                        </mat-error>
-                      </mat-form-field>
-                      <button mat-raised-button (click)="SaveComment()" color="primary">Edit</button>
-                      
-                     </div>
+                    <div class="com_view_box" >
+                          <div class="prev_tit_com">
+                            Comments
+                          </div>
+                          <perfect-scrollbar class="perfect_scroll_com" style="height: 160px;" >
+                            <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
+                              <div class="us_comm_nt">
+                                {{details.role_code}}
+                              </div>
+                              <div class="us_coment_dt">
+                                <div>{{details.Role_name}}({{details.Fullname}})
+                                  {{details.Status}}
+                                  {{details.dh_comment}}</div>
+                              </div>
+                            </div>
+                          
+                            <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
+                              <div class="us_comm_nt">
+                                IN
+                              </div>
+                              <div class="us_coment_dt">
+                                <div>Reviewer 1(Kiren Sirse)
+                                  Submitted
+                                  I have approved this because…</div>
+                              </div>
+                            </div>
+                          </perfect-scrollbar>
+                          <div class="comm_input_con">
+                            <div class="comm_inpu_typ">
+                            
+
+                              <mat-form-field>
+                              
+                               <input type="text" matInput formControlName="comments">
+                               
+                               <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
+                                 Comment is <strong>required</strong>
+                               </mat-error>
+                             </mat-form-field>
+                             <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()" >Edit</button>
+                             
+                            </div>
+                          </div>
+                        </div>
+                   
+                    
                   </div>
                 </div> 
+                
               
                     </div>
                     <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
@@ -409,7 +432,7 @@
                      </ng-container>
                      <ng-container  matColumnDef="comment">
                       <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
-                    <mat-cell *matCellDef="let row" >{{row.comment}}</mat-cell>
+                    <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
                      </ng-container>
                   
                   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

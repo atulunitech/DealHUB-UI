@@ -205,6 +205,7 @@ export class CreatobfComponent implements OnInit {
     public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
   { 
     this._obfservices.createform();
+    this._obfservices.createnewobfmodelandeditobfmodel();
   }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -238,7 +239,7 @@ export class CreatobfComponent implements OnInit {
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
-    this._obfservices.createform();
+    //this._obfservices.createform();
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     this.loiopdisabled = false;
@@ -330,7 +331,8 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       }
       this.uploadnotdisabled = true;
-      if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
+      // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
+      if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
       {
         this.detailstickdisabled = true; 
       }
@@ -468,8 +470,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').clearValidators();
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
      // this.detailstickdisabled = true;
     }
 
@@ -482,8 +484,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
     }
   }
 
@@ -502,8 +504,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').setValidators(Validators.required);
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
       console.log("check edit obf after next button");
       console.log(this._obfservices.ObfCreateForm);
       console.log("check uploadnotdisabled after next button");
@@ -569,8 +571,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
       this._obfservices.ObfCreateForm.get('Sector').clearValidators();
       this._obfservices.ObfCreateForm.get('Sector').updateValueAndValidity();
-      this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
-      this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
+      // this._obfservices.ObfCreateForm.get('Subsector').clearValidators();
+      // this._obfservices.ObfCreateForm.get('Subsector').updateValueAndValidity();
     }
     this.step--;
   }
@@ -856,6 +858,7 @@ downloadCoversheet(event)
        {
         this.editObfcoverbol = false;
         this._obfservices.ObfCreateForm.patchValue({coversheet: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid coversheet");
@@ -881,6 +884,7 @@ downloadCoversheet(event)
        {
         this.editObfLoiPobol = false;
         this._obfservices.ObfCreateForm.patchValue({Loiposheet: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
         {
           throw new Error("Kindly upload only one valid LOI/PO Sheet");
@@ -906,6 +910,7 @@ downloadCoversheet(event)
        {
         this.editObfSupportbol = false;
         this._obfservices.ObfCreateForm.patchValue({Supportpath: null});
+        this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)
          {
