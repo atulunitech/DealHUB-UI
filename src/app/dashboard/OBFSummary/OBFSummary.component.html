@@ -93,7 +93,7 @@
               Version_name
             </div>
             <!-- [disabled]="loiopdisabled" -->
-            <div class="prev_dis" *ngIf="this.privilege_name == 'OBF Initiator'">
+            <div class="prev_dis" >
 
               <mat-select  formControlName="version" >
                 <mat-option *ngFor="let version of _obfservices.obfsummarymodel.VersionDetails" [value]="version.dh_id"  (onSelectionChange)="onversionchange($event,version.dh_id,version.dh_header_id)">
@@ -101,8 +101,8 @@
                 </mat-option>
               </mat-select>
              </div>
-            <div class="prev_dis" *ngIf="this.privilege_name != 'OBF Initiator'">
-             {{_obfservices.obfsummarymodel.uploadDetails[0]. Version_name}}
+            <div class="prev_dis">
+            
             </div>
          </div>
           
@@ -384,7 +384,7 @@
                             <span>
                               <a  (click)="downloadsuppodocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
-                          <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr" ><img  (click)="downloadsuppodocument($event)"  src="assets/images/dwn_fil_icon.png" ></div>
                           <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
@@ -393,7 +393,7 @@
                               <img  src="assets/images/dwn-load-file.png">
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
-                            <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" ><img  (click)="downloadLOIp($event)"  src="assets/images/dwn_fil_icon.png" ></div>
                             <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
@@ -402,7 +402,7 @@
                               <img  src="assets/images/dwn-load-file.png">
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
-                            <div class="dwn_con_wr" ><img  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
                             <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
@@ -442,7 +442,7 @@
             </mat-expansion-panel>
         </mat-accordion>
         </div>
-        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator'">
+        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator' && this.shortcurrentstatus=='Submitted'">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt" (click)="onHoldDetails()">On Hold</button>
@@ -479,6 +479,23 @@
         </ngx-dropzone>
         <div class="bt_uplad_con">
           <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
+          <div *ngIf="this.Type=='loipo'">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Select Type</mat-label>
+              <mat-select [(ngModel)]="Loipodropdown">
+                <mat-option value="PO"  >
+                  PO
+                </mat-option>
+                <mat-option value="LOI">
+                  LOI
+                </mat-option>
+             
+              </mat-select>
+              
+            </mat-form-field>
+          </div>
+         
+
           <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
         </div>
         <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->

@@ -6,7 +6,7 @@ import {OBFSummaryComponent} from './OBFSummary/OBFSummary.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent},
   { path: 'Obf', component: CreatobfComponent},
-  {path: 'OBFSummary/:dh_id/:dh_header_id', component: OBFSummaryComponent}
+  {path: 'OBFSummary/:dh_id/:dh_header_id/:shortcurrentstatus', component: OBFSummaryComponent}
 ];
 
 @NgModule({

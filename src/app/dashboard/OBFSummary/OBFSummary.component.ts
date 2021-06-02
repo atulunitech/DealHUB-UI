@@ -62,8 +62,9 @@ class filesdetail
       MarginException:new FormControl("",[Validators.required]),
       ExceptionCFO:new  FormControl("",[Validators.required]),
       ExceptionCEO:new FormControl("",[Validators.required]),
-      version:new FormControl("",[Validators.required])
+      version:new FormControl("",[Validators.required]),
     });
+    
     noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
@@ -106,7 +107,8 @@ class filesdetail
   CEOMess:boolean=false;
   MarginException:boolean=false;
   CFOMess:boolean=false;
-
+  Loipodropdown:string="";
+  shortcurrentstatus:string="";
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -123,6 +125,7 @@ class filesdetail
 
     }
     this.role_name=localStorage.getItem("role_name");
+
     this.User_name= localStorage.getItem("UserName"); 
     console.log(this._obfservices.obfsummarymodel);
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
@@ -130,9 +133,11 @@ class filesdetail
      (params => {
       this.dh_id=params["dh_id"];
       this.dh_header_id=params["dh_header_id"];
+      this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
      );
+
    
      this.GetDetailTimelineHistory();
     
@@ -199,6 +204,7 @@ class filesdetail
          }
       }
       this.getserviceslist();
+      
     },
     (error)=>{
       alert(error.message);
@@ -308,7 +314,7 @@ class filesdetail
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
            window.open(url);
@@ -335,7 +341,7 @@ class filesdetail
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
-      SaveComment.role_code="CFO";
+      SaveComment.role_code=this.role_name;
        this.CommentDetails.push(SaveComment);
       this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
     }
@@ -453,6 +459,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
       if(jsondata[0].status =="success")
@@ -485,6 +492,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
       if(res[0].status =="success")
@@ -512,6 +520,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
       if(res[0].status =="success")
@@ -571,7 +580,7 @@ class filesdetail
           return false;
          }
          else{
-           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
             throw new Error("Kindly select LOI or PO file type");
            }
@@ -748,7 +757,7 @@ class filesdetail
         this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
-         this.SaveAttachmentParameter._description = "loipo";
+         this.SaveAttachmentParameter._description = this.Loipodropdown;
          this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "Supporting")
@@ -758,7 +767,7 @@ class filesdetail
           this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
-           this.SaveAttachmentParameter._description = "Supporting";
+           this.SaveAttachmentParameter._description = "support";
            this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "FinalAgg")

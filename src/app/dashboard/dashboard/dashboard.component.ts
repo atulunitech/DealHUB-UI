@@ -591,7 +591,7 @@ downloaddetailobf(element)
       {
         
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='cApproved');
+        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ApprovedOBf;
@@ -692,7 +692,7 @@ downloaddetailobf(element)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
   on_Highlight(check){
