@@ -140,7 +140,7 @@ class filesdetail
      );
 
    
-     this.GetDetailTimelineHistory();
+     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     
    
   }
@@ -249,10 +249,10 @@ class filesdetail
     }
   }
   
-  GetDetailTimelineHistory()
+  GetDetailTimelineHistory(dh_id,dh_header_id)
   {
     
-    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
+    this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
       debugger;
       console.log("DashBoardData");
       console.log(Result);
@@ -891,10 +891,13 @@ class filesdetail
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
-     
-     
+      var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+     var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       this.getserviceslist();
+
+      this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
     },
     (error)=>{
       alert(error.message);
