@@ -435,27 +435,30 @@
                         Detailed Timeline History
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <table mat-table [dataSource]="listData" class="ms_table" matSort>
-                    <ng-container  matColumnDef="username">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
-                    <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
-                     </ng-container>
-                     <ng-container  matColumnDef="TimeLine">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>TimeLine</mat-header-cell>
-                    <mat-cell *matCellDef="let row" >{{row.TimeLine}}</mat-cell>
-                     </ng-container>
-                     <ng-container  matColumnDef="currentstatus">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                    <mat-cell *matCellDef="let row" >{{row.currentstatus}}</mat-cell>
-                     </ng-container>
-                     <ng-container  matColumnDef="comment">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
-                    <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
-                     </ng-container>
+                  <div class="fl_table_con">
+                    <table mat-table [dataSource]="listData" class="ms_table" matSort>
+                      <ng-container  matColumnDef="username">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                      <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
+                       </ng-container>
+                       <ng-container  matColumnDef="TimeLine">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>TimeLine</mat-header-cell>
+                      <mat-cell *matCellDef="let row" >{{row.TimeLine}}</mat-cell>
+                       </ng-container>
+                       <ng-container  matColumnDef="currentstatus">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                      <mat-cell *matCellDef="let row" >{{row.currentstatus}}</mat-cell>
+                       </ng-container>
+                       <ng-container  matColumnDef="comment">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
+                      <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
+                       </ng-container>
+                    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                      </table>
+                  </div>
                   
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </table>
             </mat-expansion-panel>
         </mat-accordion>
         </div>
