@@ -534,13 +534,15 @@
             .us_comm_nt
             {
                 border: 3px solid #345d9d;
-    padding: 10px 12px 10px 12px;
+    padding: 6px 7px 6px 8px;
     border-radius: 50%;
     line-height: inherit;
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: #345d9d;
     margin-right: 7px;
     font-weight: 900;
+    min-width: 45px;
+    text-align: center;
             }
             .us_coment_dt
             {
