@@ -236,7 +236,7 @@ class filesdetail
           if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
           {
             
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
           }
         }
       
