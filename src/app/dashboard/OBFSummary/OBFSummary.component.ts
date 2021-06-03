@@ -897,6 +897,56 @@ class filesdetail
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+
+       
+     if(this.role_name=='CFO')
+     {
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      {
+       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.CEOMess=true;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        }
+       else  {
+        this.cfomessgae="Approval required as per Pricing Team.";
+        }
+      }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+      {
+       this.MarginException=true;
+       this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+      }
+     }
+     if(this.role_name=='CEO')
+     {
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+       {
+        this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+        this.CFOMess=true;
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+         {
+           this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+         }
+        else {
+            this.CEOmessage="Approval required as per Pricing Team.";
+           
+         }
+       }
+       
+       
+     }
+     if(this.role_name=='PH')
+     {
+       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.CEOMess=true;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        }
+     }
+     
       this.getserviceslist();
 
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
@@ -908,8 +958,4 @@ class filesdetail
     }
   }
 
-  download()
-  {
-    
-  }
   }
