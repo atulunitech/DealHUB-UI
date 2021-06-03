@@ -209,7 +209,7 @@ export class LoginComponent implements OnInit {
         {
           if(error.error.Record.MESSAGE == "Invalid Password Entered")
           {
-            this._mesgBox.showError("Please Enter Correct UserCode Or Password");
+            this._mesgBox.showError("Please Enter Correct Login ID Or Password");
           }
         }
        else
@@ -225,7 +225,7 @@ export class LoginComponent implements OnInit {
     }
     else
     {
-      this._mesgBox.showError("Please Enter Correct UserCode Or Password");
+      this._mesgBox.showError("Please Enter Correct Login ID Or Password");
     }
   }
    

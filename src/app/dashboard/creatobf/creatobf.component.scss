@@ -34,6 +34,43 @@
     }
 }
 
+.previousobf{
+    display: block;
+    float: left;
+    width: 100%;
+  background-color: #eaeaea;
+}
+
+.previousobf .mat_previe_box{
+    max-width: 300px;
+    width: auto;
+    height: initial;
+    padding-top: inherit;
+    padding-right: 24px;
+    padding-bottom: 15px !important;
+    padding-left: 15px !important;
+    float:left;
+}
+
+.previousobf .mat_previe_box .prev_tit{
+    opacity: 0.6;
+    line-height: initial;
+    color: #141414;
+    font-size: 12px !important;
+}
+
+.previousobf .mat_previe_box .prev_dis{
+    line-height: initial;
+    color: #141414;
+    /* font-size: 0.9rem; */
+    font-weight: 600;
+    font-size: 12px !important;
+}
+
+// .previousobf div{
+//     float: left;
+// }
+
 .com_title
 {
     display: inline-block;

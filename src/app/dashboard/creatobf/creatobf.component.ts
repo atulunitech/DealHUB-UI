@@ -1591,7 +1591,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Successfully saved as draft");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
