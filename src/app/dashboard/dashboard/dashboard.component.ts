@@ -170,7 +170,7 @@ export class DashboardComponent implements OnInit {
   {
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id } })
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
     console.log(row);
   }
 

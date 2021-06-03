@@ -247,14 +247,22 @@ export class OBFServices {
 
   constructor(private http:HttpClient,private router: Router) { }
  
-  obfmodel:obf = new obf();
+  obfmodel:obf;
+  servicesarray:any[] = [];
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
-  editObfObject:editObf = new editObf();
+  editObfObject:editObf;
   obfsolutionandservices:obfsolutionandservices = new obfsolutionandservices();
   SaveAttachmentParameter:SaveAttachmentParameter = new SaveAttachmentParameter();
   ObfCreateForm:FormGroup;
+
+  createnewobfmodelandeditobfmodel()
+  {
+    this.obfmodel = new obf();
+    this.editObfObject = new editObf();
+    this.servicesarray = [];
+  }
 
    createform()
    {
@@ -262,7 +270,7 @@ export class OBFServices {
       coversheet : new FormControl("",Validators.required),
       Loiposheet : new FormControl("",Validators.required),
       Supportpath : new FormControl(""),
-      Loipodropdown: new FormControl("PO"),
+      Loipodropdown: new FormControl(""),
       Selfdeclare: new FormControl(""),
       Projectname:new FormControl("",Validators.required),
       Projecttype:new FormControl(""),
@@ -427,7 +435,7 @@ export class OBFServices {
       return output;
   }
 
-  servicesarray:any[] = [];
+  
       initializeobfmodelandform()
       {
         this.coversheetarray = [];
@@ -495,7 +503,7 @@ export class OBFServices {
           Loipodropdown:this.loipoarray[0] !=undefined?this.loipoarray[0]._description:null,
           Selfdeclare:loiuploaded,
           Projectname:this.editObfObject._dh_project_name,
-          Solutioncategory:this.editObfObject._solution_category_id.toString(),
+          Solutioncategory:this.editObfObject._solution_category_id.toString() == "0"?"":this.editObfObject._solution_category_id.toString(),
           Opportunityid: this.editObfObject._opportunity_id,
           State: this.editObfObject._dh_location,
           Vertical:this.editObfObject._vertical_id,
@@ -503,8 +511,8 @@ export class OBFServices {
           Sapio:null,
           Customername:this.editObfObject._customer_name,
           Sapcustomercode:this.editObfObject._sap_customer_code,
-          Sector:this.editObfObject._Sector_Id,
-          Subsector:this.editObfObject._SubSector_Id,
+          Sector:this.editObfObject._Sector_Id == 0?"":this.editObfObject._Sector_Id,
+          Subsector:this.editObfObject._SubSector_Id == 0?"":this.editObfObject._SubSector_Id,
           Totalrevenue:this.editObfObject._total_revenue,
           Totalcost:this.editObfObject._total_cost,
           Totalmargin:this.editObfObject._total_margin,
