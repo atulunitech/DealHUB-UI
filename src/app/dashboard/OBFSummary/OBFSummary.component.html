@@ -337,13 +337,14 @@
                             </div>
                           
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
-                              <div>
-                                <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="deletecomment()" >X</button>
-                              </div>
+                              
                               <div class="us_comm_nt">
                                 {{SaveCommentdetail[0].Role_name}}
                               </div>
                               <div class="us_coment_dt">
+                                <div class="close_com">
+                                  <button  mat-flat-button class="creat_bt cus_bt_comm cus_bt_comm_box" (click)="deletecomment()" ></button>
+                                </div>
                                 <!-- <div class="Role_name">{{SaveCommentdetail[0].Role_name}}</div> -->
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>

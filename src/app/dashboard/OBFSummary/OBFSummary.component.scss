@@ -498,7 +498,36 @@
     background-image: none;
     background-color: #6647bf;
     flex: 1;
-   
+    position: relative;
+   .close_com
+   {
+       @include position(absolute,2px,2px,initial,initial);
+       .cus_bt_comm_box
+       {
+           min-width: 20px;
+           background-color: transparent;
+           padding: 0;
+           line-height: 20px;
+           &:after {
+            position: absolute;
+            left: 12px;
+            content: " ";
+            height: 12px;
+            width: 2px;
+            background-color: #ccc;
+            transform: rotate(-45deg);
+          }
+          &:before {
+            position: absolute;
+            left: 12px;
+            content: " ";
+            height: 12px;
+            width: 2px;
+            background-color: #ccc;
+            transform: rotate(45deg);
+          }
+       }
+   }
 
                 }
             }
