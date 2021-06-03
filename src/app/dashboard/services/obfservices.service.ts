@@ -195,6 +195,19 @@ class obf{
   _payment_term_desc:string;
 }
 
+// class previousobf{
+//   _dh_id:number;
+//   _dh_header_id:number; 
+//   _total_revenue:number;
+//   _total_cost:number;
+//   _total_margin:number;
+//   _total_project_life:string;
+//   _irr_surplus_cash:number;
+//   _ebt:number;
+//   _capex:number;
+//   _irr_borrowed_fund:number;
+//   _payment_terms:number;
+// }
 class editObf{
   _dh_id:number;
   _dh_header_id:number;
@@ -257,6 +270,7 @@ export class OBFServices {
   constructor(private http:HttpClient,private router: Router) { }
  
   obfmodel:obf;
+ // previousobfmodel:previousobf;
   servicesarray:any[] = [];
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
@@ -270,6 +284,7 @@ export class OBFServices {
   {
     this.obfmodel = new obf();
     this.editObfObject = new editObf();
+   // this.previousobfmodel = new previousobf();
     this.servicesarray = [];
   }
 
@@ -509,7 +524,7 @@ export class OBFServices {
               this.servicesarray.push(this.editObfObject.Services[i].Serviceslist[j].value)
             }
         }
-
+        
         this.loipoarray = this.getarrayforlipo(this.editObfObject.Attachments);
         this.supportarray = this.getarrayforsupport(this.editObfObject.Attachments); 
         this.ObfCreateForm.patchValue({
