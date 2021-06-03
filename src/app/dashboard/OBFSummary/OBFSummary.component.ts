@@ -33,7 +33,7 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 class CommentDetails
 {
   Fullname:string;
-  Role_name:string;
+  role_name:string;
   dh_comment:string;
   commented_on:string;
   Version_name:string;
@@ -46,8 +46,8 @@ class filesdetail
   filename:string;
   filepath:string;
   description:string;
+  }
   
-}
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
@@ -64,7 +64,7 @@ class filesdetail
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
     });
-    
+   
     noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
@@ -109,6 +109,7 @@ class filesdetail
   CFOMess:boolean=false;
   Loipodropdown:string="";
   shortcurrentstatus:string="";
+  ServiceMore:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -156,6 +157,8 @@ class filesdetail
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -203,6 +206,8 @@ class filesdetail
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
          }
       }
+      //this.obfsummaryform.controls["version"].setValue();
+      this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
 
     },
@@ -216,24 +221,26 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-    if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
+   
+    if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
       var Tempservice="";
-      for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+      Tempservice=this._obfservices.obfsummarymodel.servicelist[0].solutioncategory_name;
+      for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-        Tempservice += this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
-        
-      //   for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
-      //   {
-      //     if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
-      //     {
-            
-      //       tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
-      //     }
-      //   }
       
-      //  tempservicecat=tempservicecat.substring(1);
+        
+        for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
+        {
+          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
+          {
+            
+            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+          }
+        }
+      
+       tempservicecat=tempservicecat.substring(1);
        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
        
       }
@@ -349,12 +356,21 @@ class filesdetail
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
       SaveComment.Fullname=this.User_name;
-      SaveComment.Role_name= this.role_name;
+
+      SaveComment.role_name= this.role_name;
       SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
-      SaveComment.role_code=this.role_name;
+      //SaveComment.role_code=this.role_name;
+      if(this.role_name =='Salesperson')
+      {
+        SaveComment.role_code='SP';
+      }
+      else{
+        SaveComment.role_code=this.role_name;
+      }
+     
 
       this.commentVisiable=true;
      // this.obfsummaryform.controls["comments"].setValue('');

@@ -44,7 +44,8 @@
                         SAP IO Number
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfsummarymodel.uploadDetails[0].sap_customer_code}} 
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number}}
+                      
                       </div>
                    </div>
                      <div class="mat_previe_box">
@@ -52,7 +53,7 @@
                         SAP Customer Code
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number}}
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].sap_customer_code}} 
                       </div>
                    </div>
                    <div class="mat_previe_box">
@@ -95,7 +96,7 @@
             <!-- [disabled]="loiopdisabled" -->
             <div class="prev_dis" >
 
-              <mat-select  formControlName="version" >
+              <mat-select  formControlName="version">
                 <mat-option *ngFor="let version of _obfservices.obfsummarymodel.VersionDetails" [value]="version.dh_id"  (onSelectionChange)="onversionchange($event,version.dh_id,version.dh_header_id)">
                     {{version.Version_name}}
                 </mat-option>
@@ -225,8 +226,9 @@
                         </div>
                         <div class="prev_dis">
                           <div>
-                        {{service}}
-                      
+                            {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
                         </div>
                      </div> 
@@ -328,20 +330,20 @@
                                 {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
-                                <div class="Role_name">{{details.Role_name}}</div>
+                                <div class="Role_name">{{details.role_name}}</div>
                                 <div class="Fullname">{{details.Fullname}}</div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
                                   <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
                               </div>
                             </div>
-                          
+                        
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
                               <div>
                                 <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="deletecomment()" >X</button>
                               </div>
                               <div class="us_comm_nt">
-                                {{SaveCommentdetail[0].Role_name}}
+                                {{SaveCommentdetail[0].role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <!-- <div class="Role_name">{{SaveCommentdetail[0].Role_name}}</div> -->
@@ -392,7 +394,7 @@
                           <img  src="assets/images/dwn-load-file.png">
                           <span><a (click)="downloadCoversheet($event)"  target="_blank" >OBF Sheet</a></span>
                         </div>
-                        <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
+                        <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                         </div>
                         <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                           <div class="dwn_con_wr">
@@ -401,7 +403,7 @@
                               <a  (click)="downloadsuppodocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
                           <div class="dwn_con_wr" ><img  (click)="downloadsuppodocument($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                          <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 "><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -410,7 +412,7 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img  (click)="downloadLOIp($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -419,7 +421,7 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator'"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/dwn_fil_icon.png" ></div>
                           
                           </div>
                             <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
@@ -458,7 +460,7 @@
             </mat-expansion-panel>
         </mat-accordion>
         </div>
-        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator' && this.shortcurrentstatus=='Submitted'">
+        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp" *ngIf="this.privilege_name != 'OBF Initiator' && this.shortcurrentstatus=='Submitted'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt" (click)="onHoldDetails()">On Hold</button>

@@ -80,8 +80,16 @@ class obfsummary{
   AttachmentDetails:AttachmentDetails[];
   CommentDetails:CommentDetails[];
   VersionDetails:VersionDetails[];
-}
+  servicelist:solutionservicelist[];
+ 
 
+}
+class solutionservicelist
+{
+  solutioncategory_name:string;
+  solution_name:string;
+
+}
 class uploadDetails{
   Loi_po_Details:string;
   OBFFilepath:string;
@@ -102,7 +110,7 @@ class uploadDetails{
   is_loi_po_uploaded:string;
   opportunity_id:string;
   payment_terms:number;
-  sap_customer_code:string;
+  sap_customer_code:number;
   sector_name:string;
   subsector_name:string;
   total_cost:number;
@@ -119,6 +127,7 @@ class uploadDetails{
   exceptionalcase_cfo_updatedby:string;
   exceptionalcase_ceo_updatedby:string;
   Cust_SAP_IO_Number:number;
+  is_latest_version:number;
 }
 
 class solutionDetails
