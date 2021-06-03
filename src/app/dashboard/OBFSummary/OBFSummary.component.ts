@@ -301,8 +301,8 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           //window.open(url);
-           window.location.href = url;
+           window.open(url);
+          
         }
       }
     }

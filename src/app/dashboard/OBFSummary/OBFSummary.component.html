@@ -360,7 +360,7 @@
                             </div>
                           </perfect-scrollbar>
                           <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="!commentVisiable">
+                            <div class="comm_inpu_typ"  *ngIf="!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
