@@ -226,14 +226,15 @@ class filesdetail
     {
       var tempservicecat="";
       var Tempservice="";
-      Tempservice=this._obfservices.obfsummarymodel.servicelist[0].solutioncategory_name;
+     
       for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
       
-        
+        Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
+
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
-          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
+          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
           {
             
             tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
@@ -300,7 +301,8 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+           //window.open(url);
+           window.location.href = url;
         }
       }
     }
@@ -362,14 +364,14 @@ class filesdetail
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
-      //SaveComment.role_code=this.role_name;
-      if(this.role_name =='Salesperson')
-      {
-        SaveComment.role_code='SP';
-      }
-      else{
-        SaveComment.role_code=this.role_name;
-      }
+      SaveComment.role_code=this.role_name;
+      // if(this.role_name =='Salesperson')
+      // {
+      //   SaveComment.role_code='SP';
+      // }
+      // else{
+      //   SaveComment.role_code=this.role_name;
+      // }
      
 
       this.commentVisiable=true;
@@ -904,5 +906,10 @@ class filesdetail
     }
     );
     }
+  }
+
+  download()
+  {
+    
   }
   }

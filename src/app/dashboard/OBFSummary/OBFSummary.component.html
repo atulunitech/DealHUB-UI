@@ -12,8 +12,8 @@
 </div>
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
     <div class="cust-accor">
-        <mat-accordion>
-            <mat-expansion-panel  [expanded]="step === 0" >
+        <mat-accordion [multi]="true">
+            <mat-expansion-panel [expanded]="true" (opened)="true">
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                         OBF Summary
@@ -225,10 +225,14 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div>
+                          <div *ngIf="(this.service.length > 10)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
+                           </div>
+                           <div *ngIf="(this.service.length < 10)">
+                            {{(this.service)}}  
+                       
                            </div>
                         </div>
                      </div> 
@@ -431,7 +435,7 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel  [expanded]="step === 1" >
+            <mat-expansion-panel >
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History
