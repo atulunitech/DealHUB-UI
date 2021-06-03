@@ -257,6 +257,7 @@ export class OBFServices {
   constructor(private http:HttpClient,private router: Router) { }
  
   obfmodel:obf;
+  servicesarray:any[] = [];
   _approveRejectModel:approveRejectModel=new approveRejectModel();
   obfsummarymodel:obfsummary = new obfsummary();
   obfsumbitmodel:obfsubmit = new obfsubmit();
@@ -269,6 +270,7 @@ export class OBFServices {
   {
     this.obfmodel = new obf();
     this.editObfObject = new editObf();
+    this.servicesarray = [];
   }
 
    createform()
@@ -449,7 +451,7 @@ export class OBFServices {
       return output;
   }
 
-  servicesarray:any[] = [];
+  
       initializeobfmodelandform()
       {
         this.coversheetarray = [];
