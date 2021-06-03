@@ -118,6 +118,7 @@ class uploadDetails{
   marginal_exception_requested:number;
   exceptionalcase_cfo_updatedby:string;
   exceptionalcase_ceo_updatedby:string;
+  Cust_SAP_IO_Number:number;
 }
 
 class solutionDetails
