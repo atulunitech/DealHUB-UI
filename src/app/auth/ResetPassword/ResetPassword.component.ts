@@ -23,8 +23,8 @@ export class LoginModel
     public loginvalid: FormGroup;
     loginmodel:LoginModel=new LoginModel();
     Usercode:string;
-    NewPassword:string;
-    confirmpassword:string;
+    // NewPassword:string;
+    // confirmpassword:string;
     constructor(private route:ActivatedRoute, private formbuilder:FormBuilder, 
         private _loginservice:loginservices,private router: Router) { }
     
@@ -43,7 +43,8 @@ export class LoginModel
           this.Usercode=event['Usercode'];
         })
         this.loginmodel._user_code=this.Usercode;
-        this.loginmodel._password=this.NewPassword;
+        this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
+        
          
         this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
           alert("Password Changed Successfully.");

@@ -12,7 +12,7 @@
     &.creat_bof_con
     {
         background-image: linear-gradient(to bottom, #2258bf, #4c82e8);
-        @include padding(25px,50px,40px,50px);
+        @include padding(15px,50px,30px,50px);
         color: $thm-bg;
         .creat_obf_tit
         {
@@ -20,7 +20,6 @@
             {
                 cursor: pointer;
                 align-items: center;
-                text-transform: uppercase;
                 @include flexbox();
                 @include font-size(1);
                 @include margin(inherit,10px,initial,initial);
@@ -38,13 +37,13 @@
 {
     display: inline-block;
     text-transform: capitalize;
-    @include font-size(1.2);
-    @include font-weight(medium);
+    @include font-size(1.4);
+    @include font-weight(semi-bold);
     color:$thm-title-color;
     &.conm_title_obf
     {
         color: $thm-bg;
-        @include margin(inherit,inherit,inherit,10px);
+        @include margin(inherit,inherit,inherit,15px);
     }
 }
 
@@ -335,11 +334,9 @@
                         }
                         .prev_tit
                         {
-                            opacity: 9;
+                            opacity: 0.5;
                             color: $thm-bg;
                             min-height: 37px;
-                            font-weight: 300;
-                            line-height: 15px;
                         }
                         .mat_previe_box
                         {
@@ -363,17 +360,6 @@
                     color:$thm-title-color;
                     @include font-weight(bold);
                     @include font-size(1);
-                    .is_done
-                    {
-                        img
-                        {
-                            width: 20px;
-                        }
-                        &.is_done_not
-                        {
-                            img{opacity: 0.5;}
-                        }
-                    }
                 }
             }
             .mat-expansion-panel-header
@@ -425,29 +411,4 @@
         }
     
     
-}
-.cu_width
-{
-    @include heightwidth(140px,initial);
-}
-::ng-deep #mat-select-0-panel 
-{
-    margin-top: 19px;
-}
-
-::ng-deep #mat-select-1-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-2-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-3-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-4-panel
-{
-    margin-top:19px;
 }

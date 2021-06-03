@@ -6,8 +6,11 @@
             <div class="mt-cust-fd"  >
                 <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Login ID</mat-label>
-                    <input matInput  formControlName="userID" [(ngModel)]="Usercode">
+                    <input matInput  formControlName="userID">
                     <mat-error *ngIf="checkError('userID', 'required')">Login ID is required</mat-error>
+                    <mat-error *ngIf="loginvalid.controls.userID.errors?.invalidservices">
+                        Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
                   </mat-form-field>
               </div>
         </div>
@@ -15,14 +18,17 @@
             <div class="mt-cust-fd"  >
                 <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" formControlName="Password" [(ngModel)]="Password">
-                        <mat-error *ngIf="checkError('Password', 'required')">Password is required</mat-error>
-                  </mat-form-field>
+                    <input matInput type="password" formControlName="Password">
+                     <mat-error *ngIf="checkError('Password', 'required')">Password is required</mat-error>
+                     <mat-error *ngIf="loginvalid.controls.Password.errors?.invalidservices">
+                        Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
+                   </mat-form-field>
               </div>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between center" >
-            <div class="cus_check"><mat-checkbox class="example-margin" [(ngModel)]="RememberMe">Remember me</mat-checkbox></div>
-            <div><button mat-flat-button class="cus_bt" color="primary" (click)="onFormSubmit()">Login</button></div>
+            <div class="cus_check"><mat-checkbox class="example-margin" formControlName="RememberMe" >Remember me</mat-checkbox></div>
+            <div><button [disabled]="disablebutton"  mat-flat-button class="cus_bt" color="primary" (click)="onFormSubmit()">Login</button></div>
         </div>
         
 
@@ -38,13 +44,13 @@
 <div *ngIf="lost_pass" class="lost_pass_con">
     <p class="to_account pass_con">It seems you lost you password, don’t worry it will hardly 
         take 1 min to re-set it, </p>
-    <form [formGroup]="loginvalid">
+    <form [formGroup]="ResetPasswordForm">
             <div>
                 <div class="mt-cust-fd"  >
                     <mat-form-field appearance="fill" class="example-full-width">
                         <mat-label>Login ID</mat-label>
-                        <input matInput  formControlName="userID" >
-                        <mat-error *ngIf="checkError('userID', 'required')">Login ID is required</mat-error>
+                        <input matInput  formControlName="ResetPasswordUserid" >
+                        <mat-error *ngIf="checkResetError('ResetPasswordUserid', 'required')">Login ID is required</mat-error>
                       </mat-form-field>
                   </div>
             </div>
@@ -53,12 +59,7 @@
                 <div class="lost_pass re_login" (click)="relogin()">Login</div>
                 <div><button mat-flat-button class="cus_bt" color="primary" (click)="GetEmail()">Reset Password</button></div>
             </div>
-            
-    
-            
-            <div>
-               
-            </div>
+           
         </form>
     </div>
 

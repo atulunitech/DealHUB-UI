@@ -2,12 +2,15 @@
 
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
       <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> Back</div>
-      <div class="com_title conm_title_obf">Create OBF</div>
+          <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png">Back</div>
+          <!-- <div class="back_rout" routerLink="/DealHUB/dashboard">Go Back</div> -->
+      <div class="com_title conm_title_obf">{{editorcreateobfstring}} OBF</div>
   </div>
   
   <div>
-      <!-- close -->
+    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+      <div class="back_rout" routerLink="/DealHUB/dashboard">Close</div>
+    </div>
   </div>
       
    </div>
@@ -15,10 +18,11 @@
       <div class="cust-accor">
           <mat-accordion>
             <!-- (opened)="panelOpenState = true" (closed)="panelOpenState = false" -->
-                <mat-expansion-panel  [expanded]="step === 0" (opened)="setStep(0)" >
+                <mat-expansion-panel [disabled]="!uploadnotdisabled" [expanded]="step === 0" (afterExpand)="removeandaddvalidation('upload')" (opened)="setStep(0)" >
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      1/3 Upload Document 
+                      1/3 Upload Document <span class="is_done" [class.is_done_not]="!uploadnotdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
+                        margin-left: 20px;"></span>
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
@@ -43,15 +47,21 @@
                                 
                               </ngx-dropzone-label>
                              
-                                
+                                <!-- <div>
+                                  kja;lfj ;
+                                </div> -->
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
                               <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <button [disabled]="!(coversheetfiles.length >0) || iscoversheet" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0)">
+                              Uploaded Attach Obf Sheet 
+                             </div>
                             <div *ngIf="Coversheetprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f)">
+                              
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f,'coversheet')">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -67,7 +77,8 @@
                             </ngx-dropzone-preview>
                           </div>
                           <div *ngIf="Coversheetprogress.length > 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" >
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -76,6 +87,24 @@
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
+                                
+
+                                </div> 
+                                
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                          </div>
+                          <div *ngIf="editObfcoverbol && _obfservices.coversheetarray.length > 0">
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div class="doc_icon" >
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont" style="position: relative;" >
+                                  {{ f._fname }}
                                 
 
                                 </div> 
@@ -95,9 +124,9 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit">
-                              LOI/PO Agreement or Self Declaration 
+                              LOI/PO/Agreement or Self Declaration 
                             </div>
-                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx" [disabled]="loiopdisabled">
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -115,12 +144,15 @@
                                 
                                 <mat-form-field appearance="fill" class="example-full-width">
                                   <mat-label>Select Type</mat-label>
-                                  <mat-select formControlName="Loipodropdown" [disabled]="loiopdisabled">
+                                  <mat-select formControlName="Loipodropdown" [disabled]="loiopdisabled" disableOptionCentering>
                                     <mat-option value="PO"  >
                                       PO
                                     </mat-option>
                                     <mat-option value="LOI">
                                       LOI
+                                    </mat-option>
+                                    <mat-option value="Agreement">
+                                      Agreement
                                     </mat-option>
                                   </mat-select>
                                 </mat-form-field>
@@ -128,15 +160,18 @@
                               <button [disabled]="!(loipofiles.length >0) || isloipo" (click)="uploadfiles(loipofiles,'loipo')" class="creat_bt" mat-flat-button>Upload</button>
                            <!-- <input type="button" [disabled]="!(loipofiles.length >0)" class="btn btn-primary" (click)="uploadfiles(loipofiles,'loipo')" value="Upload"/>  -->
                             </div>
-                            <div style="margin-top: 5px;">
+                            <div style="margin-top: 5px;position: relative;">
                              <div class="cus_check">
                                 <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">This OBF is without LOI / PO </mat-checkbox>
                               </div> 
                               <!-- <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
                               <label for="selfdec">This OBF is without LOI / PO </label><br>   -->
                             </div>
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="loipofiles.length > 0 || (editObfcoverbol && _obfservices.loipoarray.length > 0)">
+                              Uploaded Loi/Po Agreement 
+                             </div>
                              <div *ngIf="LoiPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f)">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -151,7 +186,7 @@
                             </ngx-dropzone-preview>
                             </div>
                             <div *ngIf="LoiPoprogress.length > 0">
-                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" >
+                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -166,16 +201,34 @@
                                 </ngx-dropzone-label>
                               </ngx-dropzone-preview>
                               </div>
+                              <div *ngIf="editObfLoiPobol && _obfservices.loipoarray.length > 0">
+                            
+                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
+                                  
+                                  <ngx-dropzone-label class="drop_lab_cs">
+                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                    <div class="doc_icon" >
+                                      <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                    </div>
+                                    <div class="doc_cont" style="position: relative;" >
+                                      {{ f._fname }}
+                                    
+    
+                                    </div> 
+                                    
+                                  </ngx-dropzone-label>
+                                </ngx-dropzone-preview>
+                              </div>
                             </div>
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                             <div fxFlex="auto " class="mat_upload_in_wr">
                               <div class="mat_upload_tit">
                                 <div class="cus_check">
-                                <mat-checkbox  class="example-margin" (change)="Supportcheckboxchange($event)" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
+                                <mat-checkbox  class="example-margin" (change)="Supportcheckboxchange($event)" [checked]="checked_d" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
                               </div>
-                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx" [disabled]="supportchecked">
+                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -185,15 +238,17 @@
                                 
                               </ngx-dropzone-label>
                              
-                              
                             </ngx-dropzone>
                             <div class="bt_uplad_con">
                               <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
                               <button [disabled]="!(supportfiles.length >0) || isSupport" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
                               
                             </div>
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="supportfiles.length > 0 || (editObfcoverbol && _obfservices.supportarray.length > 0)">
+                              Uploaded Supporting Documents 
+                             </div>
                           <div *ngIf="SupportPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f)">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -208,7 +263,8 @@
                             </ngx-dropzone-preview>
                           </div>  
                           <div *ngIf="SupportPoprogress.length > 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" >
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,SupportPoprogress)" >
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -222,7 +278,25 @@
                                 </div> 
                               </ngx-dropzone-label>
                             </ngx-dropzone-preview>
-                          </div>    
+                          </div>   
+                          <div *ngIf="editObfSupportbol && _obfservices.supportarray.length > 0">
+                            
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div class="doc_icon" >
+                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont" style="position: relative;" >
+                                  {{ f._fname }}
+                                
+
+                                </div> 
+                                
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                          </div> 
                               </div>
                          </div>
                          
@@ -234,7 +308,7 @@
                         </div> 
                         <div class="mat_fot_drf" >
                           
-                          <button mat-flat-button class="creat_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('details')">
+                          <button mat-flat-button class="creat_bt" [disabled]="!uploadnotdisabled" (click)="nextStep('details')">
                             NEXT
                           </button>
                         </div>
@@ -245,10 +319,11 @@
                  
                 </mat-expansion-panel>
                 <!--  -->
-                <mat-expansion-panel [disabled]="true" [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel  [expanded]="step === 1" (afterExpand)="removeandaddvalidation('details')" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      2/3 Enter Details 
+                      2/3 Enter Details <span class="is_done" [class.is_done_not]="detailstickdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
+                        margin-left: 55px;"></span>
                     </mat-panel-title>
                     
                   </mat-expansion-panel-header>
@@ -261,10 +336,12 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category</mat-label>
-                    <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher">
-                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)" >
+                    <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher" disableOptionCentering>
+                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+
                         {{Solution.Solutioncategory}}
                       </mat-option>
+                      
                     </mat-select>
                     <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
                       Solution Category is <strong>required</strong>
@@ -276,7 +353,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select type of service/solution category</mat-label>
-                                <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple >
+                                <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple  disableOptionCentering>
                                   <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
@@ -297,9 +374,12 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
-                                <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                                   Services:Other is <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.invalidservices">
+                                  Special characters are not allowed
                                 </mat-error>
                               </mat-form-field>
                             </div>
@@ -309,9 +389,12 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Solutions</mat-label>
-                                <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
                                   Solution:Other is <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.invalidservices">
+                                  Special characters are not allowed
                                 </mat-error>
                                 </mat-form-field>
                             </div>
@@ -320,9 +403,12 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Integrated Solutions</mat-label>
-                                  <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" [errorStateMatcher]="matcher" required/>
+                                  <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
                                     Integrated Solution:Other is <strong>required</strong>
+                                  </mat-error>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.invalidservices">
+                                    Special characters are not allowed
                                   </mat-error>
                                 </mat-form-field>
                             </div>
@@ -330,13 +416,13 @@
                         </div>
                       </div>
           
-                      <div fxLayout="row" fxLayoutAlign="space-between center">
+                      <div fxLayout="row" fxLayoutAlign="start">
                         <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
                           <div class="mat_fld_box_in" fxFlex="1 1 100%">
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Vertical</mat-label>
-                                  <input matInput formControlName="Vertical" [readonly]="true" style="margin-left: 10px;" value="{{_obfservices.ObfCreateForm.get('Vertical').value}}" required/>
+                                  <input matInput formControlName="Vertical" [readonly]="true"  value="{{_obfservices.ObfCreateForm.get('Vertical').value}}"/>
                                 </mat-form-field>
                             </div>
                           </div>
@@ -345,7 +431,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select Sector</mat-label>
-                                <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector">
+                                <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector" disableOptionCentering>
                                   <mat-option *ngFor="let Sector of sectorlist" [value]="Sector.value"  >
                                     {{Sector.viewValue}}
                                   </mat-option>
@@ -358,12 +444,12 @@
                           </div>
                           
                         </div>
-                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="25">
                           <div class="mat_fld_box_in" fxFlex="100">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select Sub Sector</mat-label>
-                                <mat-select (selectionChange)="onsubsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Subsector">
+                                <mat-select (selectionChange)="onsubsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Subsector" disableOptionCentering>
                                   <mat-option *ngFor="let Subsector of subsectorlisdisplay" [value]="Subsector.value"  >
                                     {{Subsector.viewValue}}
                                   </mat-option>
@@ -379,35 +465,39 @@
                         </div>
                       </div>
                       <div fxLayout="row" fxLayoutAlign="space-between center">
-                        <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="100">
-                          <div class="mat_fld_box_in" fxFlex="23.4">
+                        <div fxLayout="row" fxLayoutAlign="start" fxFlex="100">
+                          <div class="mat_fld_box_in" fxFlex="23.2770" >
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                
                                   <mat-label>Enter SAP Customer Code</mat-label>
-                                  <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" />
-                               
+                                  <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
+                                  <input matInput formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
+                                    Special characters are not allowed
+                                  </mat-error>
                               </mat-form-field>
                             </div>
                           </div>
-                          <div class="mat_fld_box_in" fxFlex="80">
+                          <div class="mat_fld_box_in" fxFlex="56.5">
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Enter SAP IO Number</mat-label>
                     <mat-chip-list #chipList >
-                      <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" style="background-color:#419bf9;" [selectable]="selectable"
+                      <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" style="background-color:#afcaff;" [selectable]="selectable"
                                [removable]="removable" (removed)="remove(sapio)">
                         {{sapio._Cust_SAP_IO_Number}}
                         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                       </mat-chip>
                       <input placeholder="SAP IO ..." 
                       type="number"
+                      formControlName="Sapio"
                       [matChipInputFor]="chipList"
                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                       [matChipInputAddOnBlur]="addOnBlur"
                       (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
-                    <mat-error >
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
                       SAP IO Number length must be <strong>8 digits</strong>
                     </mat-error>
                               </mat-form-field>
@@ -417,26 +507,52 @@
                         </div>
                      
                       </div>
-                      <div fxFlex="auto " class="mat_view_comment">
+                      <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="row" fxLayoutAlign="start" fxFlex="100">
+                          
+                          <div class="mat_fld_box_in" fxFlex="23.2770" >
+                            <div class="mt-cust-fd" fxFlex="1 1 100%">
+                              <div class="mat_exp_title" >Comments </div>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                          <div fxLayout="row" fxLayoutAlign="start" fxFlex="100">
+                            
+                            <div class="mat_fld_box_in" fxFlex="23.2770" >
+                              
+                              <div class="mt-cust-fd-com" fxFlex="1 1 100%" style="    background: #e5eeff;">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                  <mat-label>Leave a comment</mat-label>
+                                  <textarea matInput formControlName="comments" (change)="SavetoModel()"></textarea>
+                                </mat-form-field>
+                                
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                     
+                      <!-- <div fxFlex="auto " class="mat_view_comment">
                         <div class="mat_previe_box">
                           <div class="prev_dis">
                             Comments 
                            </div>
                            <div class="mat_comment_box">
-                            <mat-form-field class="example-full-width">
-                              <mat-label>Leave a comment</mat-label>
-                              <textarea matInput formControlName="comments" (change)="SavetoModel()"></textarea>
-                            </mat-form-field>
+                            <mat-form-field floatPlaceholder="never" class="example-full-width" style="background: #e5eeff;">
+                                
+                                  <textarea matInput formControlName="comments" placeholder="Leave a comment" (change)="SavetoModel()" style="background: #e5eeff;" ></textarea>
+                                </mat-form-field>
                            </div>
                         </div>
-                      </div> 
+                      </div>  -->
                       <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
                         <div class="mat_fot_drf" >
-                          <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid" (click)="Saveasdraft('details')">SAVE AS DRAFT</button>
+                          <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid || this.isEditObf" (click)="Saveasdraft('details')">SAVE AS DRAFT</button>
                         </div>
                         <div class="mat_fot_drf" >
-                          <button mat-flat-button class="creat_bt mat_fot_bt" class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
-                          <button mat-flat-button class="creat_bt"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
+                          <button mat-flat-button class="creat_bt mat_fot_bt" class="creat_bt mat_fot_bt" (click)="prevStep('details')">GO BACK</button>
+                          <button mat-flat-button class="creat_bt cu_width"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="nextStep('preview')">
                             NEXT
                           </button>
                         </div>
@@ -453,7 +569,8 @@
                 <mat-expansion-panel [disabled]="true"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
-                    3/3 Preview OBF
+                    3/3 Preview OBF <span class="is_done" [class.is_done_not]="!uploadnotdisabled || detailstickdisabled" ><img src="assets/images/active_tick.png" style="display: inline-block;
+                      margin-left: 55px;"></span>
                   </mat-panel-title>
   
                   </mat-expansion-panel-header>
@@ -641,7 +758,7 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div><b> {{this.servicecate}}-</b> <br>
+                          <div>
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
@@ -691,41 +808,51 @@
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      LOI/Po
+                      LOI/PO
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.ObfCreateForm.get('Loipo').value}}
                     </div>
                  </div>
-                      </div>
+ </div>
+ <div fxFlex="auto " class="mat_view_cont">
+                      <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          Comments
+                        </div>
+                        <div class="prev_dis">
+                          {{this._obfservices.ObfCreateForm.get("comments").value}}
+                        </div>
+                     </div>
+                    </div>
                      
                         
                        
                         
                         </div>
                         <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
-                          <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                          <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span><a [href]="sanitize(coversheetpath)" target="_blank" >OBF Sheet</a></span>
+                              <span><a [href]="sanitize(this._obfservices.ObfCreateForm.get('coversheet').value)" target="_blank" >OBF Sheet</a></span>
                             </div>
-                            <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
+                            <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
                                   <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                               </div>
-                              <div class="dwn_con_wr"><img src="assets/images/dwn_fil_icon.png"></div>
+                              <div class="dwn_con_wr"><img (click)="downloaddocument($event)"  src="assets/images/dwn_fil_icon.png"></div>
                               </div>
                               <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
-                                  <span ><a [href]="sanitize(loipopath)" target="_blank" >LOI/PO/Agreement</a></span>
+                                  <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
-                                <div class="dwn_con_wr" ><img src="assets/images/dwn_fil_icon.png" ></div>
-                                </div>
+                                <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
+                              </div>
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
@@ -735,8 +862,8 @@
                                 <!-- <button mat-flat-button class="creat_bt mat_fot_bt">SAVE AS DRAFT</button> -->
                               </div>
                               <div class="mat_fot_drf" >
-                                <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')"> BACK</button>
-                                <button mat-flat-button class="creat_bt" (click)="FinalSubmit()">
+                                <button mat-flat-button class="creat_bt mat_fot_bt" (click)="prevStep('details')">GO BACK</button>
+                                <button mat-flat-button class="creat_bt cu_width" (click)="FinalSubmit()">
                                   SUBMIT
                                 </button>
                               </div>

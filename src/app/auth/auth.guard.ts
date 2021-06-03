@@ -10,6 +10,15 @@ export class AuthGuard implements CanActivate,CanActivateChild {
   {}
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
    
+    if(localStorage.getItem("Token") == "")
+   {
+     this.router.navigateByUrl('/login'); 
+     return false;
+    }
+    else
+    {
+      return true;
+    }
     // if(localStorage.getItem('Token') != null)
     //   {
     //     return true;
@@ -19,12 +28,21 @@ export class AuthGuard implements CanActivate,CanActivateChild {
     //     this.router.navigate(['/login']);
     //     return false;
     //   }
-     return true;
+     //return true;
       
   }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
+
+      if(localStorage.getItem("Token") == "")
+   {
+     this.router.navigateByUrl('/login'); 
+     return false;
+    }
+    else{
+      return true;
+    }
       // if(localStorage.getItem('Token') != null)
       // {
       //   return true;
@@ -34,7 +52,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
       //   this.router.navigate(['/login']);
       //   return false;
       // }
-      return true;
+     // return true;
   }
   
 }

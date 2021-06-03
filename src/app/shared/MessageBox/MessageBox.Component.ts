@@ -8,21 +8,32 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class MessageBoxComponent implements OnInit {
 
+  showsuccess:boolean=false;
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
   
   showSucess(content) {
-    this._snackBar.open(content,'', {
+    
+    this._snackBar.open(content,'X', {
       duration: 1000,
       verticalPosition: 'top',
       horizontalPosition:'right',
       panelClass:"custom_sneak_bar"
     });
   }
+  // this.showsuccess=true;
+  // this._snackBar.openFromComponent(MessageBoxComponent, {
+  //   duration:1000,
+  //   verticalPosition: 'top',
+  //   horizontalPosition:'right',
+   
+  // });
+    
+  
   showUpdate(content) {
-    this._snackBar.open(content,'', {
+    this._snackBar.open(content,'X', {
       duration: 1000,
       verticalPosition: 'top',
       horizontalPosition:'right',
@@ -30,11 +41,15 @@ export class MessageBoxComponent implements OnInit {
     });
   }
   showError(content) {
-    this._snackBar.open(content,'', {
+    let sb =this._snackBar.open(content,'X', {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition:'right',
-      panelClass:"custom_sneak_bar"
+      panelClass:"custom_error_sneak_bar"
+    });
+
+    sb.onAction().subscribe(() => {
+      sb.dismiss();
     });
   }
 

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {SidenavService} from './side-nave.services';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 export class MenuModel
 {
   _user_code:any;
@@ -20,8 +22,10 @@ export class SideNaveComponent implements OnInit {
   // signle open mode
   config = { multi: false };
   options = { multi: false };
-  
+ 
   ngOnInit(): void {
+    // alert("Hello from Side Navigation");
+    
     this.config = this.mergeConfig(this.options);
     //this.GetMenus();
     this.menus = [
@@ -38,9 +42,9 @@ export class SideNaveComponent implements OnInit {
        active: false,
      },
      { 
-       name: 'Menu 1',
+       name: 'Logout',
        iconClass: 'log_out_icon.png',
-       url:"javascript:void(0)",
+       url: "javascript:void(0)",
        active: false,
      }
      //  { 
@@ -72,8 +76,13 @@ export class SideNaveComponent implements OnInit {
    
    
   }
-  
-  
+ 
+  Logout()
+  {
+    localStorage.setItem("UserCode","");
+    localStorage.setItem("Token","");
+    this.router.navigate(['/']);  
+  }
   mergeConfig(options) {
  
     const config = {
@@ -94,11 +103,16 @@ export class SideNaveComponent implements OnInit {
 
 
     this.menus[index].active = !this.menus[index].active;
+    if(this.menus[index].name=='Logout')
+    {
+        this.Logout();
+    }
+
   }
-  constructor(private menuservice:SidenavService) { }
+  constructor(private menuservice:SidenavService,private router: Router) { }
   GetMenus()
   {
-    this._menumodel._user_code=localStorage.getItem("UserName");
+    this._menumodel._user_code=localStorage.getItem("UserCode");
     this._menumodel.token=localStorage.getItem("Token");
     this.menuservice.GetMenus(this._menumodel).subscribe(Result=>{
     debugger;

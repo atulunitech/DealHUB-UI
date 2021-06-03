@@ -24,7 +24,7 @@
 
             color: #fff;
             border: 1px solid #ccc;
-            box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+            cursor: pointer;
             @include position(relative);
             @include heightwidth(215px,100px);
             @include border-radius(15px);
@@ -61,23 +61,94 @@
             &.p_f_apr
             {
                 background-color: #71b945;
-                
+                &.active
+                {
+                    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                    position: relative;
+                    &::after{
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-top: 15px solid #71b945;
+                        position: absolute;
+                        bottom: -12px;
+                    }
+                }
             }
             &.approved
             {
                 background-color: #4a8cda;
+                &.active
+                {
+                    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                    &::after{
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-top: 15px solid #4a8cda;
+                        position: absolute;
+                        bottom: -12px;
+                    }
+                }
             }
             &.rejected
             {
                 background-color: #ec401b;
+                &.active
+                {
+                    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                    &::after{
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-top: 15px solid #ec401b;
+                        position: absolute;
+                        bottom: -12px;
+                    }
+                }
             }
             &.app_obf
             {
                 background-color: #6647bf;
+                &.active
+                {
+                    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                    &::after{
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-top: 15px solid #6647bf;
+                        position: absolute;
+                        bottom: -12px;
+                    }
+                }
             }
             &.app_ppl
             {
                 background-color: #f37944;
+                &.active
+                {
+                    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                    &::after{
+                        content: "";
+                        width: 0px;
+                        height: 0px;
+                        border-left: 15px solid transparent;
+                        border-right: 15px solid transparent;
+                        border-top: 15px solid #f37944;
+                        position: absolute;
+                        bottom: -12px;
+                        
+                    }
+                }
             }
         }
     }
@@ -123,11 +194,144 @@
 .bt_sp
 {
     @include margin(initial,initial,initial,10px);
+    
+}
+.edit_bt
+{
+    @include padding(0,25px,0,25px);
+    @include font-weight(medium);
+}
+.reject_bt
+{
+    @include padding(0,25px,0,25px);
+    background-color: $thm-rj-bt;
+}
+.approv_bt
+{
+    @include padding(0,25px,0,25px);
+    background-color: $thm-ap-bt;
 }
 .fl_table_con
 {
+    ::ng-deep .mat-paginator-range-actions{
+       
+        .mat-icon-button
+        {
+            border-radius: 0%;
+            width: 30px;
+            height: 30px;
+            line-height: inherit;
+            background-color: transparent !important;
+            color: black !important;
+            margin: 0 !important;
+            border: 1px solid #dedede;
+            .mat-paginator-icon
+            {
+                width: 14px;
+            }
+        }
+        .mat-flat-button
+        {
+            min-width: auto;
+            border-radius: 0px;
+            line-height: 28px;
+            padding: 0 10px;
+            box-shadow: none;
+            border: 1px solid #dedede;
+            margin: 0px !important;
+            font-size: 12px;
+            &.mat-flat-button[disabled]
+            {
+                background-color: #2258bf !important;
+                color: white;
+                border: 1px solid #2258bf;
+            }
+
+        }
+    }
     .ms_table
     {
         min-width: 100%;
+        background-color: transparent;
+       
+            .mat-row
+            {
+                border-left: 1px solid rgba(0,0,0,.12);
+                border-right: 1px solid rgba(0,0,0,.12);
+                &.mat-row:nth-child(odd)
+                {
+                    background-color: #fff;
+                }
+            }
+        
+        .mat-header-row
+        {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background-color: #fff;
+            border: 1px solid rgba(0,0,0,.12);
+            .mat-header-cell
+        {
+            color: #505050;
+            opacity: inherit;
+            @include font-size(0.90);
+            @include font-weight(bold);
+            
+            
+        }
+        }
+        
     }
 }
+.dash_date_wrp
+{
+    background-color: #fff;
+    border: solid 1px #eeeeee;
+    color: #342e59;
+    @include padding(0,10px,0,10px);
+    @include margin(initial,10px,initial,0px);
+    @include heightwidth(215px,42px);
+    @include flexbox();
+    @include font-weight(normal);
+    @include font-size(0.80);
+    .d_icon
+    {
+        align-items: center;
+        @include position(relative,0px,initial,initial,initial);
+        @include flexbox();
+        
+        img{
+            display: inherit;
+            @include heightwidth(20px,initial);
+        }
+    }
+    input{
+        border-left: solid 1px #eeeeee;
+        border-top:transparent;
+        border-color: transparent;
+        border-left-color: #eeeeee;
+        @include padding(0,0px,0,10px);
+        @include margin(0,0px,0,10px);
+        @include heightwidth(100%,initial);
+
+    }
+}
+.dwon_ic_con
+{
+    cursor: pointer;
+    img
+    {
+       @include heightwidth(15px,initial);
+    }
+}
+
+::ng-deep .mat-paginator-page-size{
+    display: none !important;
+}
+
+::ng-deep .mat-paginator-range-label{
+    display: none !important;
+}
+
+
+
