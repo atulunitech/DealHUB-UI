@@ -225,6 +225,7 @@ export class CreatobfComponent implements OnInit {
   servicecate:string="";
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  reinitiateobf:boolean = false;
 
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
@@ -240,6 +241,7 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this.reinitiateobf = false;
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     //this.servicesControl.setValue("");
@@ -257,6 +259,11 @@ export class CreatobfComponent implements OnInit {
       if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
       {
         this.editorcreateobfstring = params['editobf'];
+        if(params['reinitiate'] != undefined)
+        {
+          this.reinitiateobf = (params['reinitiate'] == "Y")?true:false; 
+          //alert("reninitiate is called :" +this.reinitiateobf);
+        }
         this.geteditobfdata(params['dh_id'],params['dh_header_id']);
       }
   });
@@ -346,13 +353,15 @@ export class CreatobfComponent implements OnInit {
       {
         this.serviceslist = this._obfservices.obfmodel.Services;
       }
+      if(this.Verticalheadlist != undefined)
+      {
       var resverticalhead = this.Verticalheadlist.filter(obj => {
         // return obj.viewValue === ws.E8.h;
         return obj.value === this._obfservices.editObfObject._vertical_id;
       });
       //let verticalheadid = res[0].vertical_head_id;
        this._obfservices.ObfCreateForm.patchValue({Verticalhead:resverticalhead[0].vertical_head_name}) ;
-
+      }
        console.log("check form after onload of editobf");
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
@@ -447,6 +456,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        console.log("Vertical head Master");
        console.log(res.verticalhead);
        this.sectorlist = res.verticalsectorwise;
+       console.log("Vertical wise sector");
+       console.log(res.verticalsectorwise);
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
@@ -1544,7 +1555,14 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._is_submitted = 0;
     if(this.isEditObf)
     {
+      if(this.reinitiateobf)
+      {
+        this._obfservices.obfmodel._mode = "insert";
+      }
+      else
+      {
       this._obfservices.obfmodel._mode = "edit";
+      }
     }
     else{
     this._obfservices.obfmodel._mode = "insert";
@@ -2081,7 +2099,14 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._is_submitted = 1;
     if(this.isEditObf)
     {
+      if(this.reinitiateobf)
+      {
+        this._obfservices.obfmodel._mode = "insert";
+      }
+      else
+      {
       this._obfservices.obfmodel._mode = "edit";
+    }
     }
     else
     {
