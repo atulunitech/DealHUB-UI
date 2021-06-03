@@ -1553,6 +1553,7 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 0;
+    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
@@ -2097,6 +2098,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 1;
+    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
