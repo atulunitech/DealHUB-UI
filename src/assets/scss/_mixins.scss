@@ -133,7 +133,7 @@
   @include font-size(0.80);
   @include font-weight(semi-bold);
   @include border-radius(20px);
-  @include padding(3px, 30px ,3px , 30px);
+  @include padding(0px, 30px ,0px , 30px);
   .mat-button-wrapper
   {
     display: inline-block;

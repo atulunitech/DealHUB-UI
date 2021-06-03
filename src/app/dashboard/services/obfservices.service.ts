@@ -79,6 +79,7 @@ class obfsummary{
   uploadDetails:uploadDetails[];
   AttachmentDetails:AttachmentDetails[];
   CommentDetails:CommentDetails[];
+  VersionDetails:VersionDetails[];
 }
 
 class uploadDetails{
@@ -117,6 +118,7 @@ class uploadDetails{
   marginal_exception_requested:number;
   exceptionalcase_cfo_updatedby:string;
   exceptionalcase_ceo_updatedby:string;
+  Cust_SAP_IO_Number:number;
 }
 
 class solutionDetails
@@ -140,7 +142,12 @@ class CommentDetails
   commented_on:string;
   Version_name:string;
   Status:string;
-
+  role_code:string;
+}
+class VersionDetails{
+  Version_name:number;
+  dh_header_id:number;
+  dh_id:number;
 }
 class obf{
   _dh_id:number;
@@ -235,7 +242,9 @@ class editObf{
     _created_by:string;
     exceptionalcase_cfo:number;
     exceptioncase_ceo:number;
+    _marginal_exception_requested:number;
     is_on_hold:number;
+
   }
 
 @Injectable({
@@ -359,7 +368,14 @@ export class OBFServices {
        httpOptions);  
        
   }
-  
+  GetOBFSummaryDataVersionWise(dh_id:number,dh_header_id:number): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+    params: new HttpParams().set('dh_id', dh_id.toString())
+    .set('dh_header_id',dh_header_id.toString()) };  
+    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetOBFSummaryDataVersionWise",
+       httpOptions);  
+       
+  }
   geteditobfdata(editobf:editobfarguement): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf,

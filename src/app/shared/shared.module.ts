@@ -9,6 +9,7 @@ import { BackendHeaderComponent } from './backend-header/backend-header.componen
 import { BackendFooterComponent } from './backend-footer/backend-footer.component';
 import { SideNaveComponent } from './side-nave/side-nave.component';
 import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 
@@ -17,12 +18,12 @@ import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
     HeaderComponent,
     FooterComponent,
     BackendHeaderComponent, 
-    BackendFooterComponent, SideNaveComponent, MessageBoxComponent],
+    BackendFooterComponent, SideNaveComponent, MessageBoxComponent, NotificationComponent],
   exports: [
     HeaderComponent,
     FooterComponent,
     BackendHeaderComponent,
-    BackendFooterComponent,SideNaveComponent,MessageBoxComponent
+    BackendFooterComponent,SideNaveComponent,MessageBoxComponent,NotificationComponent
   ],
   imports: [
     CommonModule,
