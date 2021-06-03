@@ -339,13 +339,14 @@
                             </div>
                         
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
-                              <div>
-                                <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="deletecomment()" >X</button>
-                              </div>
+                              
                               <div class="us_comm_nt">
                                 {{SaveCommentdetail[0].role_code}}
                               </div>
                               <div class="us_coment_dt">
+                                <div class="close_com">
+                                  <button  mat-flat-button class="creat_bt cus_bt_comm cus_bt_comm_box" (click)="deletecomment()" ></button>
+                                </div>
                                 <!-- <div class="Role_name">{{SaveCommentdetail[0].Role_name}}</div> -->
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>
@@ -403,7 +404,7 @@
                               <a  (click)="downloadsuppodocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
                           <div class="dwn_con_wr" ><img  (click)="downloadsuppodocument($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                          <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 "><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/dwn_fil_icon.png" ></div>
+                          <div class="dwn_con_wr"*ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 "><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -412,7 +413,7 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img  (click)="downloadLOIp($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -421,7 +422,7 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                             <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
