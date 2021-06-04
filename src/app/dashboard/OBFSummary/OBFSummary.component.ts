@@ -92,7 +92,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -262,7 +262,7 @@ class filesdetail
   {
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
-      debugger;
+    
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
@@ -271,7 +271,7 @@ class filesdetail
       
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
