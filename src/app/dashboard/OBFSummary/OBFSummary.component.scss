@@ -334,9 +334,11 @@
                         }
                         .prev_tit
                         {
-                            opacity: 0.5;
+                            opacity: 9;
                             color: $thm-bg;
                             min-height: 37px;
+                            font-weight: 300;
+                            line-height: 15px;
                         }
                         .mat_previe_box
                         {
