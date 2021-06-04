@@ -1343,6 +1343,16 @@ downloadCoversheet(event)
   else
   {
     this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
+    if(this.reinitiateobf)
+      {
+        if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+        {
+          this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
+          this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
+          return false;
+        }
+      }
     this._obfservices.obfmodel._opportunity_id = ws.E6.w;
   }
     if( ws.E7 == undefined || ws.E7.w == "#N/A")
@@ -1370,6 +1380,17 @@ downloadCoversheet(event)
          return false; 
    }
     let verticalid = parseInt(result[0].value.toString());
+
+    if(this.reinitiateobf)
+      {
+        if(this._obfservices.editObfObject._vertical_id != verticalid)
+        {
+          this._mesgBox.showError("Vertical different with previous OBF version");
+          this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
+          return false;
+        }
+      }
    //let verticalid = 2;
    this._obfservices.obfmodel._vertical_id = verticalid;
 
