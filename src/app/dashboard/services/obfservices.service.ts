@@ -235,6 +235,7 @@ class editObf{
   _total_project_life:string;
   _irr_surplus_cash:number;
   _ebt:number;
+  _parent_dh_main_id:number;
   _capex:number;
   _irr_borrowed_fund:number;
   _is_loi_po_uploaded:string;
@@ -492,6 +493,7 @@ export class OBFServices {
         this.obfmodel._vertical_id = this.editObfObject._vertical_id;
         this.obfmodel._verticalhead_id = this.editObfObject._verticalhead_id;
         this.obfmodel._dh_desc = this.editObfObject._dh_desc;
+        this.obfmodel._parent_dh_main_id = this.editObfObject._parent_dh_main_id;
         this.obfmodel._total_revenue = this.editObfObject._total_revenue;
         this.obfmodel._total_cost = this.editObfObject._total_cost;
         this.obfmodel._total_margin = this.editObfObject._total_margin;

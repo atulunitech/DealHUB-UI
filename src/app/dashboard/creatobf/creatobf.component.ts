@@ -226,6 +226,8 @@ export class CreatobfComponent implements OnInit {
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   reinitiateobf:boolean = false;
+  isppl:boolean = false;
+  initiateppl:boolean = false;
 
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
@@ -242,6 +244,8 @@ export class CreatobfComponent implements OnInit {
   ngOnInit(): void {
     //this._obfservices.createform();
     this.reinitiateobf = false;
+    this.isppl = false;
+    this.initiateppl = false;
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     //this.servicesControl.setValue("");
@@ -259,6 +263,16 @@ export class CreatobfComponent implements OnInit {
       if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
       {
         this.editorcreateobfstring = params['editobf'];
+        if(params['isppl'] != undefined)
+        {
+          this.isppl = (params['isppl'] == "Y")?true:false; 
+         // alert("this ppl is :"+this.isppl);
+        }
+        if(params['initiateppl'] != undefined)
+        {
+          this.initiateppl = (params['initiateppl'] == "Y")?true:false; 
+          //alert("this ppl initiation is :"+this.isppl);
+        }
         if(params['reinitiate'] != undefined)
         {
           this.reinitiateobf = (params['reinitiate'] == "Y")?true:false; 
@@ -1572,8 +1586,24 @@ downloadCoversheet(event)
   Saveasdraft(type:string){
     console.log("view model");
     console.log(this._obfservices.obfmodel);
-    this._obfservices.obfmodel._dh_phase_id =1;
-    this._obfservices.obfmodel._parent_dh_main_id = 0;
+    if(this.isppl)
+    {
+      this._obfservices.obfmodel._dh_phase_id =2;
+      if(this.initiateppl)
+      {
+        this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._dh_id;  
+        this._obfservices.obfmodel._dh_id = 0;
+        this._obfservices.obfmodel._dh_header_id = 0;   
+      }
+      else{
+    this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+  }  
+    }
+    else{
+      this._obfservices.obfmodel._dh_phase_id =1;
+      this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    
     this._obfservices.obfmodel._active = "A";
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
@@ -2117,8 +2147,26 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   {
     console.log(this._obfservices.obfmodel);
     console.log(this._obfservices.ObfCreateForm.value) ;
-    this._obfservices.obfmodel._dh_phase_id =1;
+    if(this.isppl)
+    {
+      this._obfservices.obfmodel._dh_phase_id =2;
+      if(this.initiateppl)
+      {
+        this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._dh_id;  
+        this._obfservices.obfmodel._dh_id = 0;
+        this._obfservices.obfmodel._dh_header_id = 0;   
+      }
+      else{
+    this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+  }
+     // this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+     // this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    else{
+      this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    
     this._obfservices.obfmodel._active = "A";
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;

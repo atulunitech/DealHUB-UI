@@ -34,8 +34,11 @@
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
-                            <div class="mat_upload_tit">
+                            <div class="mat_upload_tit" *ngIf="!isppl" >
                               Attach OBF SHEET 
+                            </div>
+                            <div class="mat_upload_tit" *ngIf="isppl" >
+                              Attach PPL SHEET 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
@@ -56,8 +59,11 @@
                               <button [disabled]="!(coversheetfiles.length >0) || iscoversheet" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0)">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="!isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded Attach Obf Sheet 
+                             </div>
+                             <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
+                              Uploaded PPL Sheet 
                              </div>
                             <div *ngIf="Coversheetprogress.length == 0">
                               
