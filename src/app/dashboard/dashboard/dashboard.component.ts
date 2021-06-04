@@ -561,7 +561,7 @@ downloaddetailobf(element)
   // }
   filterValue:string;
   addColumn(selection) {
-  if(this.privilege_name=="OBF Initiator")
+  if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
       {
@@ -588,26 +588,26 @@ downloaddetailobf(element)
       }
       else if(selection==2)
       {
-        
+        //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
-      else if(selection==3)
+      else if(selection==3 )
       {
-        
+        //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
         this.listData=new MatTableDataSource(this.filterdata);
-
-        this.displayedColumns=this.ApprovedOBf;
+         this.displayedColumns=this.ApprovedOBf;
+       
         this.on_Highlight(4);
       }
       else if(selection==4)
       {
-       
+       //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
         this.listData=new MatTableDataSource(this.filterdata);

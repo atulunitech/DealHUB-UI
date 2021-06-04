@@ -190,7 +190,13 @@
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
+               <mat-cell *matCellDef="let row" >
+              <button mat-flat-button class="creat_bt edit_bt">Edit</button>
+              <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Initiate PPL</button>
+            </mat-cell>
+           
+         
+          
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedPPL">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
