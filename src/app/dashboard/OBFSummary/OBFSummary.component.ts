@@ -33,12 +33,12 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 class CommentDetails
 {
   Fullname:string;
-  Role_name:string;
+  role_name:string;
   dh_comment:string;
   commented_on:string;
   Version_name:string;
   Status:string;
-
+  role_code:string;
 }
 class filesdetail
 {
@@ -46,8 +46,8 @@ class filesdetail
   filename:string;
   filepath:string;
   description:string;
+  }
   
-}
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
@@ -61,8 +61,10 @@ class filesdetail
       comments : new FormControl("",[Validators.required]),
       MarginException:new FormControl("",[Validators.required]),
       ExceptionCFO:new  FormControl("",[Validators.required]),
-      ExceptionCEO:new FormControl("",[Validators.required])
+      ExceptionCEO:new FormControl("",[Validators.required]),
+      version:new FormControl("",[Validators.required]),
     });
+   
     noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
@@ -80,7 +82,7 @@ class filesdetail
   finalProgress:any[]=[];
   SaveAttachmentParameter:SaveAttachmentParameter;
   Attachments:SaveAttachmentParameter[] = [];
- // CommentDetails:CommentDetails[]=[];
+ CommentDetails:CommentDetails[]=[];
   loipopath:string="";
   supportdocpath:string="";
   Finaldocpath:string="";
@@ -105,7 +107,9 @@ class filesdetail
   CEOMess:boolean=false;
   MarginException:boolean=false;
   CFOMess:boolean=false;
-
+  Loipodropdown:string="";
+  shortcurrentstatus:string="";
+  ServiceMore:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -122,6 +126,7 @@ class filesdetail
 
     }
     this.role_name=localStorage.getItem("role_name");
+
     this.User_name= localStorage.getItem("UserName"); 
     console.log(this._obfservices.obfsummarymodel);
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
@@ -129,11 +134,13 @@ class filesdetail
      (params => {
       this.dh_id=params["dh_id"];
       this.dh_header_id=params["dh_header_id"];
+      this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
      );
+
    
-     this.GetDetailTimelineHistory();
+     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     
    
   }
@@ -149,7 +156,9 @@ class filesdetail
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
-
+      this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -188,7 +197,19 @@ class filesdetail
         
         
       }
+      if(this.role_name=='PH')
+      {
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+        this.CEOMess=true;
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         {
+         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         }
+      }
+      //this.obfsummaryform.controls["version"].setValue();
+      this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
+
     },
     (error)=>{
       alert(error.message);
@@ -200,20 +221,23 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-    if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
+   
+    if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
       var Tempservice="";
-      for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+     
+      for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-        Tempservice += this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
-        
+      
+        Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
+
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
-          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
+          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
           {
             
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
+            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
           }
         }
       
@@ -226,10 +250,10 @@ class filesdetail
     }
   }
   
-  GetDetailTimelineHistory()
+  GetDetailTimelineHistory(dh_id,dh_header_id)
   {
     
-    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
+    this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
       debugger;
       console.log("DashBoardData");
       console.log(Result);
@@ -278,6 +302,7 @@ class filesdetail
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
            window.open(url);
+          
         }
       }
     }
@@ -298,7 +323,7 @@ class filesdetail
     {
       for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
            window.open(url);
@@ -312,22 +337,56 @@ class filesdetail
     }
   }
  
-  
+  today:any=new Date();
+  commentVisiable:boolean=false;
+  SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
     if(this.obfsummaryform.get("comments").value!= "")
     {
+      
+      var comment=this.obfsummaryform.get("comments").value;
+      // this.SaveCommentdetail[0].Fullname=this.User_name;
+      // this.SaveCommentdetail[0].Role_name= this.role_name;
+      // this.SaveCommentdetail[0].Status="Pending";
+      // this.SaveCommentdetail[0].Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+      // this.SaveCommentdetail[0].commented_on=  this.today;
+      // this.SaveCommentdetail[0].dh_comment=comment;
+      // this.SaveCommentdetail[0].role_code=this.role_name;
+
+
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
       SaveComment.Fullname=this.User_name;
-      SaveComment.Role_name= this.role_name;
-      SaveComment.Status="";
+
+      SaveComment.role_name= this.role_name;
+      SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      SaveComment.commented_on=  localStorage.getItem("UserId");
+      SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
-      // this.CommentDetails.push(SaveComment);
-      this._obfservices.obfsummarymodel.CommentDetails.push(SaveComment);
+      SaveComment.role_code=this.role_name;
+      // if(this.role_name =='Salesperson')
+      // {
+      //   SaveComment.role_code='SP';
+      // }
+      // else{
+      //   SaveComment.role_code=this.role_name;
+      // }
+     
+
+      this.commentVisiable=true;
+     // this.obfsummaryform.controls["comments"].setValue('');
+       this.SaveCommentdetail.push(SaveComment);
+      //  this.CommentDetails.push(SaveComment);
+    //  this._obfservices.obfsummarymodel.CommentDetails.push(this.SaveCommentdetail[0]);
     }
+  }
+  deletecomment()
+  {
+    this.commentVisiable=false;
+   // this.obfsummaryform.controls["comments"].setValue('');
+    this.SaveCommentdetail=[];
+
   }
   OpenDocDownload(event,Type)
   {
@@ -442,6 +501,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
       if(jsondata[0].status =="success")
@@ -474,6 +534,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
       if(res[0].status =="success")
@@ -501,6 +562,7 @@ class filesdetail
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
+    this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
       if(res[0].status =="success")
@@ -560,7 +622,7 @@ class filesdetail
           return false;
          }
          else{
-           if(this._obfservices.ObfCreateForm.get("Loipodropdown").value == null)
+           if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
             throw new Error("Kindly select LOI or PO file type");
            }
@@ -737,7 +799,7 @@ class filesdetail
         this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
-         this.SaveAttachmentParameter._description = "loipo";
+         this.SaveAttachmentParameter._description = this.Loipodropdown;
          this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "Supporting")
@@ -747,7 +809,7 @@ class filesdetail
           this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
-           this.SaveAttachmentParameter._description = "Supporting";
+           this.SaveAttachmentParameter._description = "support";
            this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "FinalAgg")
@@ -820,5 +882,80 @@ class filesdetail
       }
     }
   }
- 
+  onversionchange(evt,dh_id,dh_header_id)
+  {
+    if(evt.isUserInput){
+    
+    this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
+      
+      var jsondata=JSON.parse(data);
+      this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
+      this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
+      this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+      var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+     var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+
+       
+     if(this.role_name=='CFO')
+     {
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      {
+       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.CEOMess=true;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        }
+       else  {
+        this.cfomessgae="Approval required as per Pricing Team.";
+        }
+      }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+      {
+       this.MarginException=true;
+       this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+      }
+     }
+     if(this.role_name=='CEO')
+     {
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+       {
+        this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+        this.CFOMess=true;
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+         {
+           this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+         }
+        else {
+            this.CEOmessage="Approval required as per Pricing Team.";
+           
+         }
+       }
+       
+       
+     }
+     if(this.role_name=='PH')
+     {
+       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.CEOMess=true;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        }
+     }
+     
+      this.getserviceslist();
+
+      this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
+    },
+    (error)=>{
+      alert(error.message);
+    }
+    );
+    }
+  }
+
   }

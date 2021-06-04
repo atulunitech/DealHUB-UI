@@ -15,6 +15,12 @@ import { CreatobfComponent } from './creatobf/creatobf.component';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { OBFSummaryComponent } from './OBFSummary/OBFSummary.component';
 import { StylePaginatorDirective } from './dashboard/style-paginator.directive';
+import { PerfectScrollbarModule, PerfectScrollbarConfigInterface,
+  PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 
 @NgModule({
@@ -33,9 +39,14 @@ import { StylePaginatorDirective } from './dashboard/style-paginator.directive';
     FlexLayoutModule,
     MaterialModule,
     NgxDropzoneModule,
+    PerfectScrollbarModule,
     NgxDaterangepickerMd.forRoot()
     
   ],
-  providers:[DatePipe]
+  providers:[DatePipe,
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }]
 })
 export class DashboardModule { }

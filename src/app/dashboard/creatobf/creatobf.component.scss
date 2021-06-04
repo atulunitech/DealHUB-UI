@@ -190,6 +190,7 @@
                                 {
                                     opacity: 9;
                                     background-color: #fc625d;
+                                    @include margin(2px,2px,initial,initial); 
                                 }
                                 .drop_lab_cs
                                 {
@@ -223,8 +224,11 @@
                                 text-align: right;
                                 align-items: center;
                                 justify-content: flex-end;
+                                background: #e4e4e4;
+                                border: 2px dashed #2258bf;
+                                border-bottom: none;
                                 @include position(relative);
-                                @include margin(-65px,initial,initial,initial);
+                                @include margin(-61px,initial,initial,initial);
                                 @include padding(10px,15px,10px,10px);
                                 @include flexbox();
                                 .creat_bt
@@ -488,3 +492,5 @@
 {
     margin-top:19px;
 }
+
+

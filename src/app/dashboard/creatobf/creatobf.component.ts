@@ -776,6 +776,7 @@ downloaddocument(event)
           url = environment.apiUrl+url
          }
          window.open(url);
+       //  window.location.href = url;
         //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
         // loading a file and add it in a zip file
         // JSZipUtils.getBinaryContent(this._obfservices.obfmodel.Attachments[i]._fpath, function (err, data) {
@@ -792,6 +793,9 @@ downloaddocument(event)
         // });
       }
     }
+  }
+  else{
+    this._mesgBox.showError("No Supporting Documents to Download");
   }
 
   
