@@ -92,7 +92,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -146,6 +146,9 @@ class filesdetail
   }
   CEOmessage:string="";
   cfomessgae:string="";
+  disableCFOcontrol:boolean=false;
+  disableCEOcontrol:boolean=false;
+  disableMargincontrol:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -168,8 +171,10 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.disableCFOcontrol=true;
          }
         else  {
+          this.disableCFOcontrol=true;
          this.cfomessgae="Approval required as per Pricing Team.";
          }
        }
@@ -187,9 +192,11 @@ class filesdetail
          this.CFOMess=true;
           if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
           {
+            this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
           }
          else {
+          this.disableCEOcontrol=true;
              this.CEOmessage="Approval required as per Pricing Team.";
             
           }
@@ -199,10 +206,11 @@ class filesdetail
       }
       if(this.role_name=='PH')
       {
-        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.CEOMess=true;
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
+          this.CEOMess=true;
+          this.disableCFOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
          }
       }
@@ -254,7 +262,7 @@ class filesdetail
   {
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
-      debugger;
+    
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
@@ -263,7 +271,7 @@ class filesdetail
       
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
@@ -306,6 +314,10 @@ class filesdetail
         }
       }
     }
+    else
+    {
+      this._mesgBox.showError("No Supporting Documents to Download");
+    }
   }
     else
     {
@@ -330,13 +342,42 @@ class filesdetail
         }
       }
     }
+    else
+    {
+      this._mesgBox.showError("No LOI or PO Documents to Download");
+    }
   }
     else
     {
       this._mesgBox.showError("No LOI or PO Documents to Download");
     }
   }
- 
+  downloadFinal(event)
+  {
+    event.preventDefault();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        {
+           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+           window.open(url);
+        }
+      }
+    }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
   today:any=new Date();
   commentVisiable:boolean=false;
   SaveCommentdetail:CommentDetails[] = [];
@@ -897,7 +938,15 @@ class filesdetail
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
-
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
+      {
+        this.obfsummaryform.controls["MarginException"].setValue(true);
+        this.disableMargincontrol=true;
+      }
+      else{
+        this.obfsummaryform.controls["MarginException"].setValue(false);
+        this.disableMargincontrol=false;
+      }
        
      if(this.role_name=='CFO')
      {
@@ -908,15 +957,25 @@ class filesdetail
        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
         {
         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.disableCFOcontrol=true;
         }
        else  {
+
+         this.disableCFOcontrol=true;
         this.cfomessgae="Approval required as per Pricing Team.";
         }
       }
+      else{
+        this.disableCFOcontrol=false;
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+    }
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
       {
        this.MarginException=true;
-       this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+      // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+      }
+      else{
+        this.MarginException=false;
       }
      }
      if(this.role_name=='CEO')
@@ -927,26 +986,36 @@ class filesdetail
         this.CFOMess=true;
          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
          {
+           this.disableCEOcontrol=true;
            this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
          }
         else {
+         this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per Pricing Team.";
            
          }
+       }
+       else{
+        this.disableCEOcontrol=false;
+        this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
        }
        
        
      }
      if(this.role_name=='PH')
      {
-       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-       this.CEOMess=true;
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
         {
+         this.CEOMess=true;
+         this.disableCFOcontrol=true;
+         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
         }
+        else{
+          this.disableCFOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+        }
      }
-     
       this.getserviceslist();
 
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);

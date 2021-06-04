@@ -509,7 +509,7 @@ downloaddetailobf(element)
   {
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
-      debugger;
+    
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
@@ -517,7 +517,7 @@ downloaddetailobf(element)
        this.BindGridDetails();
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
@@ -695,7 +695,7 @@ downloaddetailobf(element)
 
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
-      debugger;
+    
       
       console.log(Result);
       var loginresult =Result;
@@ -703,7 +703,7 @@ downloaddetailobf(element)
       
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');

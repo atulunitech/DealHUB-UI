@@ -1310,7 +1310,7 @@ downloadCoversheet(event)
       const bstr: string = e.target.result;
 
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
-      debugger;
+    
             wb.SheetNames.forEach((element,index) =>{
               wb.SheetNames[index] = element.toLowerCase();
             });
@@ -1844,7 +1844,7 @@ downloadCoversheet(event)
 
   // GridBinding()
   //   {
-  //     debugger;
+  //   
   //     const columns = this.OBFData
   //     .reduce((columns, row) => {
   //       return [...columns, ...Object.keys(row)]
@@ -1869,7 +1869,7 @@ downloadCoversheet(event)
   //   }
   Prview()
   {
-    debugger;
+  
     this.OBFData = this._obfservices.ObfCreateForm.getRawValue();
     // this.GridBinding();
     //this.router.navigate(['/DealHUB/dashboard/preview']);

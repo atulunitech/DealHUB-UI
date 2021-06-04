@@ -1,25 +1,27 @@
 
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
     <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-        <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> Back</div>
-    <div class="com_title conm_title_obf">  {{(this.privilege_name) == 'OBF Initiator' ? ('OBF Summary') : ('PPL Summary')}} </div>
-    
+        <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> BACK</div>
+    <div class="com_title conm_title_obf"  *ngIf="(this.privilege_name) ==  'OBF Initiator' || (this.privilege_name) ==  'OBF Reviewer'">OBF Summary</div>
+    <div class="com_title conm_title_obf" *ngIf="(this.privilege_name) ==  'PPL Initiator'">PPL Summary</div>
 </div>
 <div>
-    <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
-      <div class="back_rout" routerLink="/DealHUB/dashboard">Close</div>
-    </div>
+  <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
+    <div class="back_rout" routerLink="/DealHUB/dashboard">CLOSE</div>
   </div>
+</div>
 </div>
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
     <div class="cust-accor">
         <mat-accordion [multi]="true">
-            <mat-expansion-panel [expanded]="true" (opened)="true">
+            <mat-expansion-panel [expanded]="true" disabled>
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                    <mat-panel-title>
-                      {{(this.privilege_name) == 'OBF Initiator' ? ('OBF Summary') : ('PPL Summary')}} 
+                    <mat-panel-title  *ngIf="(this.privilege_name) ==  'OBF Initiator' || (this.privilege_name) ==  'OBF Reviewer'">
+                      OBF Summary
                     </mat-panel-title>
-                   
+                    <mat-panel-title  *ngIf="(this.privilege_name) ==  'PPL Initiator'">
+                      PPL Summary
+                    </mat-panel-title>
                   </mat-expansion-panel-header>
                   <form [formGroup]="obfsummaryform">
                   <div class="mat_exp_wrp">
@@ -293,12 +295,12 @@
                   Workflow Indicator
                   </div>
                   <div class="prev_dis" *ngIf="this.role_name == 'VSH'">
-                    <mat-slide-toggle color="primary" formControlName="MarginException">Margin Exception Requested</mat-slide-toggle>
+                    <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
                   <div>
                     </div>
                   <div class="prev_dis"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
-                    <mat-slide-toggle color="primary" formControlName="ExceptionCFO">Exception case-CFO approval</mat-slide-toggle>
+                    <mat-slide-toggle color="primary" formControlName="ExceptionCFO" [disabled]="disableCFOcontrol">Exception case-CFO approval</mat-slide-toggle>
                   </div>
                   <div class="prev_tit"  *ngIf="CEOMess">
                     <label>
@@ -311,7 +313,7 @@
                       </label>
                       </div>
                   <div class="prev_dis"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
-                    <mat-slide-toggle color="primary" formControlName="ExceptionCEO">Exception case-CEO approval</mat-slide-toggle>
+                    <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
                   <div class="prev_tit"  *ngIf="CFOMess">
                     <label>
@@ -409,7 +411,7 @@
                               <a  (click)="downloadsuppodocument($event)"  target="_blank" >Supporting Document</a></span>
                           </div>
                           <div class="dwn_con_wr" ><img  (click)="downloadsuppodocument($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                          <div class="dwn_con_wr"*ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 "><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/upload_file_icon.png" ></div>
+                          <div class="dwn_con_wr"*ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 "><img (click)="OpenDocDownload($event,'Supporting')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
@@ -418,21 +420,21 @@
                               <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                             </div>
                             <div class="dwn_con_wr" ><img  (click)="downloadLOIp($event)"  src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr"  *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/upload_file_icon.png" ></div>
+                            <div class="dwn_con_wr"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'loipo')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span ><a (click)="downloadLOIp($event)"  target="_blank" >Final Agreement</a></span>
+                              <span ><a (click)="downloadFinal($event)"  target="_blank" >Final Agreement</a></span>
                             </div>
-                            <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
-                            <div class="dwn_con_wr" *ngIf="this.privilege_name == 'OBF Initiator' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/upload_file_icon.png" ></div>
+                            <div class="dwn_con_wr" ><img (click)="downloadFinal($event)" src="assets/images/dwn_fil_icon.png" ></div>
+                            <div class="dwn_con_wr" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1"><img (click)="OpenDocDownload($event,'FinalAgg')"  src="assets/images/upload_file_icon.png" ></div>
                           
                           </div>
                             <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                             
-                        </div>
+                    </div>
                  </div>
                 </form>
             </mat-expansion-panel>
