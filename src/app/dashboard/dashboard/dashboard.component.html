@@ -187,7 +187,7 @@
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>

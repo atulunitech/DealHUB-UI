@@ -306,6 +306,10 @@ class filesdetail
         }
       }
     }
+    else
+    {
+      this._mesgBox.showError("No Supporting Documents to Download");
+    }
   }
     else
     {
@@ -330,13 +334,42 @@ class filesdetail
         }
       }
     }
+    else
+    {
+      this._mesgBox.showError("No LOI or PO Documents to Download");
+    }
   }
     else
     {
       this._mesgBox.showError("No LOI or PO Documents to Download");
     }
   }
- 
+  downloadFinal(event)
+  {
+    event.preventDefault();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        {
+           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+           window.open(url);
+        }
+      }
+    }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
   today:any=new Date();
   commentVisiable:boolean=false;
   SaveCommentdetail:CommentDetails[] = [];
