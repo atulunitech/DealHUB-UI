@@ -110,6 +110,7 @@ class filesdetail
   Loipodropdown:string="";
   shortcurrentstatus:string="";
   ServiceMore:boolean=false;
+  SAPNumMore:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -181,7 +182,7 @@ class filesdetail
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
-        this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
        }
       }
       if(this.role_name=='CEO')
@@ -213,6 +214,22 @@ class filesdetail
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
          }
+      }
+      if(this.role_name=='VH')
+      {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
+      }
+      if(this.role_name=='SH')
+      {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+         //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
       }
       //this.obfsummaryform.controls["version"].setValue();
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
@@ -1026,5 +1043,4 @@ class filesdetail
     );
     }
   }
-
   }

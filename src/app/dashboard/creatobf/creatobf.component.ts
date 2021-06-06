@@ -233,7 +233,7 @@ export class CreatobfComponent implements OnInit {
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
-  
+  SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;

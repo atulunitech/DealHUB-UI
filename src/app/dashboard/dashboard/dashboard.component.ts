@@ -839,4 +839,26 @@ downloaddetailobf(element)
    this.dialog.closeAll();
   }
 
+  
+  OBfcilck(selection)
+  {
+    if(selection==0)
+    {
+      //Draft Section.
+      this.listData=new MatTableDataSource();
+      //this.listData=new MatTableDataSource(this.dashboardData); 
+       this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL');
+      this.listData=new MatTableDataSource(this.filterdata);
+
+
+      this.displayedColumns=this.DraftColumn;
+      this.on_Highlight(1);
+    }
+  }
+PPLclick(selection)
+{
+
+}
+
+
 }
