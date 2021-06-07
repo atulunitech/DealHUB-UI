@@ -202,7 +202,8 @@
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedPPL">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Editdsdsdsdsd</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
              </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
