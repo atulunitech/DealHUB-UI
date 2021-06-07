@@ -47,12 +47,12 @@
                         SAP IO Number
                       </div>
                       <div class="prev_dis" >
-                        <div  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number.length > 20)">
+                        <!-- <div  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number.length > 20)">
                           {{(SAPNumMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) : (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) | slice:0:50 }}  
                           <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
                           <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
-                          </div>
-                          <div  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number.length < 5)">
+                          </div> -->
+                          <div>
                             {{_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number}}
                           </div>
                       </div>
