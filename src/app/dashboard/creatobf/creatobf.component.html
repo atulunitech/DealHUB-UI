@@ -478,9 +478,12 @@
                                
                                   <mat-label>Enter SAP Customer Code</mat-label>
                                   <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                                  <input matInput formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                                  <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
                                     Special characters are not allowed
+                                  </mat-error>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
+                                    SAP Customer Code length must be <strong>8 digits</strong>
                                   </mat-error>
                               </mat-form-field>
                             </div>

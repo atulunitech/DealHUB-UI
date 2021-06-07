@@ -309,7 +309,10 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.initializeobfmodelandform();
       this.editobfinitialization();
      // this.getotherservicesandsolutions();
-      
+      if(this.initiateppl)
+      {
+        this.removeuploadfilesforinitiateppl();
+      }
    },
    error =>
    {
@@ -317,6 +320,19 @@ export class CreatobfComponent implements OnInit {
    });
   }
 
+  removeuploadfilesforinitiateppl()
+  {
+    this._obfservices.coversheetarray = [];
+    this._obfservices.loipoarray= [];
+    this._obfservices.supportarray = [];
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+    this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
+    this._obfservices.ObfCreateForm.patchValue({Loipodropdown:""});
+    this._obfservices.ObfCreateForm.patchValue({Selfdeclare:""});
+    this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+    this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+  }
   
  
   editobfinitialization()

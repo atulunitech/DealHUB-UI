@@ -317,7 +317,7 @@ export class OBFServices {
       Createddate:new FormControl(""),
       Sapio:new FormControl(null,[this.SIOnumbervalidate]),
       Customername:new FormControl("",Validators.required),
-      Sapcustomercode:new FormControl("",[this.NoSpecialCharacters]),
+      Sapcustomercode:new FormControl("",[this.NoSpecialCharacters,this.SIOnumbervalidate]),
       Projectprimarylocation:new FormControl(""),
       Solutiontype:new FormControl(""),
       Sector:new FormControl(""),
@@ -373,7 +373,7 @@ export class OBFServices {
   }
 
    SIOnumbervalidate(control: AbstractControl): {[key: string]: any} | null  {
-    if (control.value && control.value.length != 8) {
+    if (control.value && control.value.toString().length != 8) {
       return { 'Sionumberinvalid': true };
     }
     return null;

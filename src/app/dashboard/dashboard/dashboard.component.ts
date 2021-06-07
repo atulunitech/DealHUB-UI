@@ -124,7 +124,10 @@ export class DashboardComponent implements OnInit {
   //   cancelLabel: 'Mégse',
   //   applyLabel: 'Ok',
   // };
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { }
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { 
+    this._obfservices.createform();
+    this._obfservices.createnewobfmodelandeditobfmodel();
+  }
  
 
   
@@ -167,6 +170,18 @@ export class DashboardComponent implements OnInit {
  });
   }
 
+  checkdisable(row)
+  {
+    if(row.ppl_init == 1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   editobf(row)
   {
     //alert("dsjhdjkshdjks");
@@ -185,6 +200,7 @@ export class DashboardComponent implements OnInit {
 
   initiateppl(row)
   {
+    console.log(row);
     this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Initiate PPL",reinitiate:"Y",isppl:"Y",initiateppl:"Y" } });
   }
 
@@ -460,7 +476,8 @@ onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
     console.log(this._obfservices.obfmodel);
   }
 
-openModal(templateRef) {
+openModal(templateRef,row) {
+  console.log(row);
   let dialogRef = this.dialog.open(templateRef, {
        width: '680px',
        // data: { name: this.name, animal: this.animal }
@@ -629,7 +646,15 @@ downloaddetailobf(element)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
+        }
+        else
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
+        }
+        
         this.listData=new MatTableDataSource(this.filterdata);
 
         
