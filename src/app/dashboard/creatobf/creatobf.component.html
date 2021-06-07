@@ -608,7 +608,15 @@
                         SAP IO Number
                       </div>
                       <div class="prev_dis">
-                        {{this.SAPIONum}}
+                        <div  *ngIf="(this.SAPIONum.length > 35)">
+                          {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}  
+                          <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
+                          </div>
+                          <div  *ngIf="(this.SAPIONum.length < 35)">
+                            {{this.SAPIONum}}
+                          </div>
+                        
                       </div>
                    </div>
                      <div class="mat_previe_box">

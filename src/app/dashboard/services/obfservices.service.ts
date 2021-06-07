@@ -128,6 +128,7 @@ class uploadDetails{
   exceptionalcase_ceo_updatedby:string;
   Cust_SAP_IO_Number:number;
   is_latest_version:number;
+  phase_code:string;
 }
 
 class solutionDetails

@@ -45,9 +45,10 @@
           {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
-          <div class="lst_obf">
+          <div class="lst_obf" (click)=" OBfcilck(0) ">
             OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
-          </div><div class="lst_ppl" >
+          </div>
+          <div class="lst_ppl" (click)=" PPLclick(0) ">
             PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
            </div>
         </div>
