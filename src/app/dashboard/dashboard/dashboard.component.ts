@@ -576,7 +576,13 @@ downloaddetailobf(element)
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft');
+         this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='draft' )
+          {
+            return obj;
+          }
+         // obj.shortcurrentstatus=='draft'
+         } );
         this.listData=new MatTableDataSource(this.filterdata);
 
 
@@ -588,7 +594,12 @@ downloaddetailobf(element)
           //Submitted section
          
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='submitted');
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='submitted' )
+          {
+            return obj;
+          }}
+        );
         this.listData=new MatTableDataSource(this.filterdata);
 
           this.displayedColumns=this.SubmittedScreenColumn;
@@ -598,7 +609,14 @@ downloaddetailobf(element)
       {
         //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='rejected' )
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
@@ -607,7 +625,13 @@ downloaddetailobf(element)
       {
         //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
+        this.filterdata=this.dashboardData.filter(
+          obj=>{alert(obj.shortcurrentstatus);
+             if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+          {
+            return obj;
+          }
+            });
         this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ApprovedOBf;
        
@@ -617,7 +641,14 @@ downloaddetailobf(element)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='approved' )
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
 
         
@@ -630,7 +661,14 @@ downloaddetailobf(element)
       if(selection==0)
       {
          
-      this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Submitted');
+      this.filterdata=this.dashboardData.filter(obj=>
+        {
+          if(obj.shortcurrentstatus=='Submitted' )
+          {
+            return obj;
+          }
+        }
+      );
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
@@ -639,7 +677,14 @@ downloaddetailobf(element)
       {
          //Approved section
          this.listData=new MatTableDataSource(this.dashboardData); 
-          this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
+          this.filterdata=this.dashboardData.filter(obj=>
+            {
+              if( obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved' )
+              {
+                return obj;
+              }
+            }
+           );
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.PendingReviewercolumn;
          this.on_Highlight(2);
@@ -648,7 +693,14 @@ downloaddetailobf(element)
       {
       
         this.listData=new MatTableDataSource(this.dashboardData); 
-        let filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Rejected');
+        let filterdata=this.dashboardData.filter(obj=>
+          {
+            if( obj.shortcurrentstatus=='Rejected')
+            {
+              return obj;
+            }
+          }
+        );
         this.listData=new MatTableDataSource(filterdata);
 
         this.displayedColumns=this.RejectedScreenColumn;
@@ -657,7 +709,14 @@ downloaddetailobf(element)
       else if(selection==3)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='cApproved');
+         this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ApprovedOBf;
@@ -667,7 +726,15 @@ downloaddetailobf(element)
       else if(selection==4)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+      
+          this.filterdata=this.dashboardData.filter(obj=>
+            {
+              if(obj.shortcurrentstatus=='rejected')
+              {
+                return obj;
+              }
+            }
+          );
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
@@ -708,6 +775,7 @@ downloaddetailobf(element)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+
     this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
