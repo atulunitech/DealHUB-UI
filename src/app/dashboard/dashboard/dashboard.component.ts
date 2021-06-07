@@ -626,7 +626,7 @@ downloaddetailobf(element)
         //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(
-          obj=>{alert(obj.shortcurrentstatus);
+          obj=>{
              if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
           {
             return obj;
