@@ -316,7 +316,7 @@ export class CreatobfComponent implements OnInit {
    },
    error =>
    {
-
+    this._mesgBox.showError(error.message);
    });
   }
 
