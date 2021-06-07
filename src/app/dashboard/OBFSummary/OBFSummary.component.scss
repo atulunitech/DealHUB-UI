@@ -7,7 +7,11 @@
     {
         padding-top: 0px;
         @include margin(-20px,inherit,inherit,inherit);
-        
+         .wrp_bt_con
+                    {
+                       padding-top: 20px
+
+                    }
     }
     &.creat_bof_con
     {
@@ -54,8 +58,8 @@
     {
         .mat-expansion-panel-body
         {
-            background-color: #eaeaea;
-            @include padding(10px,inherit,10px,inherit);
+            background-color: #fff;
+            @include padding(0px,inherit,10px,inherit);
             .mat_exp_wrp
             {
                 @include padding(inherit,24px,0px,24px);
@@ -103,6 +107,7 @@
                             color: $thm-tex-col-dar;
                             @include font-weight(semi-bold);
                             @include font-size(0.9);
+                            
                             &[disabled][disabled]
                             {
                                 color: #ccc;
@@ -122,6 +127,7 @@
                 {
                     @include margin(inherit,-15px,inherit,-15px);
                     @include padding(0px,0px,0px,0px);
+                   
                     &.con_dwn_wrp
                     {
                         @include margin(inherit,0px,10px,0px);
@@ -325,24 +331,92 @@
                     }
                     &.prm_mat_fld_box_wrp
                     {
-                        background-color: $thm-prm-bg;
-                        @include margin(initial,-25px,15px,-25px);
-                        @include padding(10px,24px,10px,24px);
+                        background-color: #e5eeff;
+                        @include margin(initial,-25px,0px,-25px);
+                        @include padding(18px,24px,18px,24px);
+                        &.color_none_fld
+                        {
+                            background-color: #fff;
+                        }
+                        &.color_none_fld_border
+                        {
+                            background-color: #fff;
+                            border-top:1px solid #70707038;
+                            .mat_previe_box
+                            {
+                                max-width: 100%;
+                                .prev_tit
+                               {
+                                   margin-top: 5px;
+                                   .up_pdf_com
+                                   {
+                                    border-radius: 3px;
+                                    position: relative;
+                                    background-color: #1f61ed;
+                                    display: flex;
+                                    line-height: 36px;
+                                    color: #fff;
+                                    padding-left: 15px;
+                                    font-size: 0.80rem;
+                                    cursor: pointer;
+                                    flex: 1;
+                                    justify-content: space-between;
+                                    max-width: 50%;
+                                    span{
+                                        vertical-align: initial;
+                                        display: flex;
+                                        align-items: center;
+                                        padding-left: 10px;
+                                        padding-right: 10px;
+                                        background-color: #0e54db;
+                                        margin-left: 15px;
+                                        border-top-right-radius: 3px;
+                                        border-bottom-right-radius: 3px;
+                                        img{
+                                            width: 12px;
+                                        }
+                                    }
+                                    &.dw_pdf_com
+                                    {
+                                        background-color: #20bf6b;
+                                        margin-left: 10px;
+                                       
+                                        span{
+                                            background-color: #08b258;
+                                            border-top-right-radius: 3px;
+                                            border-bottom-right-radius: 3px;
+                                        }
+                                    }
+                                   }
+
+                                
+                               }
+                            }
+                        }
+                        &.cl_widn_sapc
+                        {
+                            margin-bottom: 25px;
+                            .prev_tit
+                            {
+                                min-height: 32px;
+                                
+                            }
+                        }
                         .prev_dis
                         {
-                            color: $thm-bg;
+                            color: #141414;
                         }
                         .prev_tit
                         {
                             opacity: 9;
-                            color: $thm-bg;
-                            min-height: 37px;
+                            color: #141414;
+                            
                             font-weight: 300;
                             line-height: 15px;
                         }
                         .mat_previe_box
                         {
-                            max-width: 164px;
+                            max-width: max-content;
                             @include padding(initial,12px,initial,12px);
                             flex: 1;
                         }
@@ -417,7 +491,7 @@
 /*s*/
 .com_view_box
 {
-    background-color: rgba(0, 0, 0, 0.09);
+    background-color:#fafafa;
     @include padding(10px,0px,0px,10px);
     .prev_tit_com
     {

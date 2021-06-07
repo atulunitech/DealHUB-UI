@@ -134,6 +134,15 @@
   @include font-weight(semi-bold);
   @include border-radius(20px);
   @include padding(0px, 30px ,0px , 30px);
+  &.on_hold_bt
+  {
+    background-color: #fa6915;
+  }
+  &.rej_tran
+  {
+    background-color: transparent;
+    color: #2258bf;
+  }
   .mat-button-wrapper
   {
     display: inline-block;
