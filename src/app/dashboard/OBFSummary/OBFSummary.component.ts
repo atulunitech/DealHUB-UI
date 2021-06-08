@@ -407,14 +407,7 @@ class filesdetail
     {
       
       var comment=this.obfsummaryform.get("comments").value;
-      // this.SaveCommentdetail[0].Fullname=this.User_name;
-      // this.SaveCommentdetail[0].Role_name= this.role_name;
-      // this.SaveCommentdetail[0].Status="Pending";
-      // this.SaveCommentdetail[0].Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      // this.SaveCommentdetail[0].commented_on=  this.today;
-      // this.SaveCommentdetail[0].dh_comment=comment;
-      // this.SaveCommentdetail[0].role_code=this.role_name;
-
+     
 
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
@@ -426,20 +419,12 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-      // if(this.role_name =='Salesperson')
-      // {
-      //   SaveComment.role_code='SP';
-      // }
-      // else{
-      //   SaveComment.role_code=this.role_name;
-      // }
-     
+   
 
       this.commentVisiable=true;
-     // this.obfsummaryform.controls["comments"].setValue('');
+   
        this.SaveCommentdetail.push(SaveComment);
-      //  this.CommentDetails.push(SaveComment);
-    //  this._obfservices.obfsummarymodel.CommentDetails.push(this.SaveCommentdetail[0]);
+     
     }
   }
   deletecomment()
@@ -945,7 +930,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-   
+   console.log(dh_id,dh_header_id);
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1037,6 +1022,7 @@ class filesdetail
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
         }
      }
+    
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
@@ -1064,6 +1050,7 @@ class filesdetail
   SAPIONo:string="";
   getSAPCode()
   {
+    this.SAPIONo ="";
     if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
     {
       for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)

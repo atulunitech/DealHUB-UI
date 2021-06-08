@@ -99,11 +99,6 @@
                
                </div>
             </div>
-                      
-                    
-                      
-            
-           
                       </div>
                       
                       <div fxLayout="row " fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp color_none_fld">
@@ -395,7 +390,7 @@
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
                                     <mat-label>Enter Comments </mat-label>
-                                      <input matInput formControlName="comments" style="margin-left: 0px;"/>
+                                      <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
                                       </mat-error>
