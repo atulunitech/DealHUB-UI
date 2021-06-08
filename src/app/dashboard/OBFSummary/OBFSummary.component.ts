@@ -150,6 +150,7 @@ class filesdetail
   disableCFOcontrol:boolean=false;
   disableCEOcontrol:boolean=false;
   disableMargincontrol:boolean=false;
+  ShowViewButton:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -233,6 +234,16 @@ class filesdetail
          //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
+      
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+        if(this._obfservices.obfsummarymodel.PPl_details == undefined)
+        {
+          this.ShowViewButton=true;
+         // this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+        }
+        
+       }
+
       //this.obfsummaryform.controls["version"].setValue();
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
