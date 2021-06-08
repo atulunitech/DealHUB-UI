@@ -361,6 +361,12 @@ export class OBFServices {
        httpOptions);  
   }
 
+  editsapcustcode_and_io(model:obf): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/EditCustomerCodeandIo",model ,
+       httpOptions);  
+  }
+
   savesolutionandservices(model:obfsolutionandservices): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveServiceSolutionSector",model ,
