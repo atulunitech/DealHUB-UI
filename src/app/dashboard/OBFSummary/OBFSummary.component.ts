@@ -33,7 +33,7 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 class CommentDetails
 {
   Fullname:string;
-  Role_name:string;
+  role_name:string;
   dh_comment:string;
   commented_on:string;
   Version_name:string;
@@ -46,8 +46,8 @@ class filesdetail
   filename:string;
   filepath:string;
   description:string;
+  }
   
-}
 @Component({
     selector: 'app-obfSummary',
     templateUrl: './OBFSummary.component.html',
@@ -64,7 +64,7 @@ class filesdetail
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
     });
-    
+   
     noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
@@ -92,7 +92,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','currentstatus','comment','TimeLine'];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -109,6 +109,8 @@ class filesdetail
   CFOMess:boolean=false;
   Loipodropdown:string="";
   shortcurrentstatus:string="";
+  ServiceMore:boolean=false;
+  SAPNumMore:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -138,13 +140,16 @@ class filesdetail
      }
      );
 
-   
-     this.GetDetailTimelineHistory();
+     
+     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     
    
   }
   CEOmessage:string="";
   cfomessgae:string="";
+  disableCFOcontrol:boolean=false;
+  disableCEOcontrol:boolean=false;
+  disableMargincontrol:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -156,6 +161,10 @@ class filesdetail
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
+      this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
+      
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -165,15 +174,17 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.disableCFOcontrol=true;
          }
         else  {
+          this.disableCFOcontrol=true;
          this.cfomessgae="Approval required as per Pricing Team.";
          }
        }
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
-        this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
        }
       }
       if(this.role_name=='CEO')
@@ -184,9 +195,11 @@ class filesdetail
          this.CFOMess=true;
           if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
           {
+            this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
           }
          else {
+          this.disableCEOcontrol=true;
              this.CEOmessage="Approval required as per Pricing Team.";
             
           }
@@ -196,14 +209,34 @@ class filesdetail
       }
       if(this.role_name=='PH')
       {
-        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.CEOMess=true;
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
+          this.CEOMess=true;
+          this.disableCFOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
          }
       }
+      if(this.role_name=='VH')
+      {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
+      }
+      if(this.role_name=='SH')
+      {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+         //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
+      }
+      //this.obfsummaryform.controls["version"].setValue();
+      this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
+      this.getSAPCode();
 
     },
     (error)=>{
@@ -216,24 +249,27 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-    if(this._obfservices.obfsummarymodel.solutionDetails.length != 0)
+   
+    if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
       var Tempservice="";
-      for(let i=0 ;i<this._obfservices.obfsummarymodel.solutionDetails.length ; i++)
+     
+      for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-        Tempservice += this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name;
-        
-      //   for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
-      //   {
-      //     if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[i].solutioncategory_name)
-      //     {
-            
-      //       tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[i].solution_name;
-      //     }
-      //   }
       
-      //  tempservicecat=tempservicecat.substring(1);
+        Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
+
+        for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
+        {
+          if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
+          {
+            
+            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+          }
+        }
+      
+       tempservicecat=tempservicecat.substring(1);
        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
        
       }
@@ -242,11 +278,11 @@ class filesdetail
     }
   }
   
-  GetDetailTimelineHistory()
+  GetDetailTimelineHistory(dh_id,dh_header_id)
   {
     
-    this._obfservices.GetDetailTimelineHistory(this.dh_id,this.dh_header_id).subscribe(Result=>{
-      debugger;
+    this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
+    
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
@@ -255,7 +291,7 @@ class filesdetail
       
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
@@ -294,8 +330,13 @@ class filesdetail
         {
            var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
            window.open(url);
+          
         }
       }
+    }
+    else
+    {
+      this._mesgBox.showError("No Supporting Documents to Download");
     }
   }
     else
@@ -321,13 +362,42 @@ class filesdetail
         }
       }
     }
+    else
+    {
+      this._mesgBox.showError("No LOI or PO Documents to Download");
+    }
   }
     else
     {
       this._mesgBox.showError("No LOI or PO Documents to Download");
     }
   }
- 
+  downloadFinal(event)
+  {
+    event.preventDefault();
+    if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+    {
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    {
+      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      {
+        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        {
+           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+           window.open(url);
+        }
+      }
+    }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+  }
   today:any=new Date();
   commentVisiable:boolean=false;
   SaveCommentdetail:CommentDetails[] = [];
@@ -349,12 +419,21 @@ class filesdetail
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
       SaveComment.Fullname=this.User_name;
-      SaveComment.Role_name= this.role_name;
+
+      SaveComment.role_name= this.role_name;
       SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
+      // if(this.role_name =='Salesperson')
+      // {
+      //   SaveComment.role_code='SP';
+      // }
+      // else{
+      //   SaveComment.role_code=this.role_name;
+      // }
+     
 
       this.commentVisiable=true;
      // this.obfsummaryform.controls["comments"].setValue('');
@@ -866,8 +945,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-    if(evt.isUserInput){
-    
+   
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -875,15 +953,124 @@ class filesdetail
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
+      this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
-     
-     
+      this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
+
+      var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+     var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
+      {
+        this.obfsummaryform.controls["MarginException"].setValue(true);
+        this.disableMargincontrol=true;
+      }
+      else{
+        this.obfsummaryform.controls["MarginException"].setValue(false);
+        this.disableMargincontrol=false;
+      }
+       
+     if(this.role_name=='CFO')
+     {
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      {
+       this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.CEOMess=true;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.disableCFOcontrol=true;
+        }
+       else  {
+
+         this.disableCFOcontrol=true;
+        this.cfomessgae="Approval required as per Pricing Team.";
+        }
+      }
+      else{
+        this.disableCFOcontrol=false;
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+    }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+      {
+       this.MarginException=true;
+      // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+      }
+      else{
+        this.MarginException=false;
+      }
+     }
+     if(this.role_name=='CEO')
+     {
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+       {
+        this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+        this.CFOMess=true;
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+         {
+           this.disableCEOcontrol=true;
+           this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+         }
+        else {
+         this.disableCEOcontrol=true;
+            this.CEOmessage="Approval required as per Pricing Team.";
+           
+         }
+       }
+       else{
+        this.disableCEOcontrol=false;
+        this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
+       }
+       
+       
+     }
+     if(this.role_name=='PH')
+     {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+        {
+         this.CEOMess=true;
+         this.disableCFOcontrol=true;
+         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        }
+        else{
+          this.disableCFOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+        }
+     }
       this.getserviceslist();
+      this.getSAPCode();
+      this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
     },
     (error)=>{
       alert(error.message);
     }
     );
+    
+  }
+  getOBFPPLDetails()
+  {
+     if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
+     {
+      this.getdetailsfordh_id(this._obfservices.obfsummarymodel.uploadDetails[0].parent_dh_main_id);
+     }
+     else if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+      if(this._obfservices.obfsummarymodel.PPl_details != undefined && this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id !=0)
+      {
+        this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+      }
+      
+     }
+  }
+  SAPIONo:string="";
+  getSAPCode()
+  {
+    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
+    {
+      for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)
+      {
+        this.SAPIONo += ','+  this._obfservices.obfsummarymodel.SAPdetail[i].cust_sap_io_number;
+      }
+      this.SAPIONo=this.SAPIONo.substring(1);
     }
   }
   }

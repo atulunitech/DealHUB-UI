@@ -134,6 +134,15 @@
   @include font-weight(semi-bold);
   @include border-radius(20px);
   @include padding(0px, 30px ,0px , 30px);
+  &.on_hold_bt
+  {
+    background-color: #fa6915;
+  }
+  &.rej_tran
+  {
+    background-color: transparent;
+    color: #2258bf;
+  }
   .mat-button-wrapper
   {
     display: inline-block;
@@ -293,7 +302,7 @@
     width: 0.6vw;
     border-style: solid;
     border-color: black;
-    border-width: 0px 0.0999rem 0.0999rem 0px;
+    border-width: 0px 2px 2px 0px;
     transform: rotate(45deg);
     }
     }
@@ -310,9 +319,39 @@
 ::ng-deep.mat-snack-bar-container
 {
     &.custom_sneak_bar{
-    background: #ffbe00;
-    color: white;
+    background: #12C637;
+    color: #000;
     font-weight: bold;
+    min-height: auto;
+    padding:0px;
+    ::ng-deep .mat-simple-snackbar
+    {
+      span{
+        display: inline-block;
+        @include padding(8px, 12px, 8px, 12px);
+      }
+      ::ng-deep .mat-simple-snackbar-action
+    {
+      color: black;
+      button
+      {
+        max-height: inherit;
+    min-width: 0;
+    background-color: #00D22B;
+    line-height: initial;
+    padding: inherit;
+    margin: inherit;
+    position: relative;
+    left: -18px;
+    &:hover
+    {
+      background-color: #00D22B;
+      opacity: 9 !important;
+    }
+      }
+    }
+    }
+    
              }
            &.custom_error_sneak_bar{
               background: #ff4c44;

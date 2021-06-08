@@ -39,15 +39,16 @@
       <div class="con_fil_box p_f_apr" (click)=" addColumn(0) "   [ngClass]="{'active': highlight==='tab1'}">
         <div class="box_shead"><img src="assets/images/p_f_a.png"></div>
         <div class="fil_hed_tit"  >
-         {{(this.privilege_name) == 'OBF Initiator' ? ('Draft') : ('Pending for approval')}}
+         {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? ('Draft') : ('Pending for approval')}}
         </div>
         <div class="fil_had_no">
           {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
-          <div class="lst_obf">
-            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
-          </div><div class="lst_ppl" >
+          <div class="lst_obf" (click)=" OBfcilck(0) ">
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
+          </div>
+          <div class="lst_ppl" (click)=" PPLclick(0) ">
             PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
            </div>
         </div>
@@ -55,20 +56,20 @@
       <div  class="con_fil_box approved"  (click)="addColumn(1)"  [ngClass]="{'active': highlight==='tab2'}" >
         <div class="box_shead"><img src="assets/images/approved.png"></div>
         <div class="fil_hed_tit"  >
-          {{(this.privilege_name) == 'OBF Initiator' ? ('Submitted') : ('Approved')}}
+          {{((this.privilege_name) == 'OBF Initiator'||(this.privilege_name) == 'PPL Initiator' )? ('Submitted') : ('Approved')}}
         </div>
        
         <div class="fil_had_no">
-       {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}}
+       {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}}
         </div>
       
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" >
-            OBF: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}} 
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}} 
           </div>
         
           <div class="lst_ppl">
-             PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}} 
+             PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}} 
           </div>
          
         </div>
@@ -172,6 +173,7 @@
             
                 <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
              </ng-container>
+             
              <ng-container  matColumnDef="ActionPendingforapproval">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
@@ -186,11 +188,17 @@
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
+               <mat-cell *matCellDef="let row" >
+              <button mat-flat-button class="creat_bt edit_bt">Edit</button>
+              <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Initiate PPL</button>
+            </mat-cell>
+           
+         
+          
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedPPL">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>

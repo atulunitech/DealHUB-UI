@@ -171,7 +171,15 @@ export class DashboardComponent implements OnInit {
   {
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
+    if(this.privilege_name=='OBF Initiator')
+    {
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
+    }
+    else if(this.privilege_name=='PPL Initiator')
+    {
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
+    }
+   
     console.log(row);
   }
 
@@ -489,7 +497,7 @@ downloaddetailobf(element)
   {
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
-      debugger;
+    
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
@@ -497,7 +505,7 @@ downloaddetailobf(element)
        this.BindGridDetails();
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
@@ -561,14 +569,20 @@ downloaddetailobf(element)
   // }
   filterValue:string;
   addColumn(selection) {
-  if(this.privilege_name=="OBF Initiator")
+  if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
       {
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft');
+         this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='draft' )
+          {
+            return obj;
+          }
+         // obj.shortcurrentstatus=='draft'
+         } );
         this.listData=new MatTableDataSource(this.filterdata);
 
 
@@ -580,7 +594,12 @@ downloaddetailobf(element)
           //Submitted section
          
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='submitted');
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='submitted' )
+          {
+            return obj;
+          }}
+        );
         this.listData=new MatTableDataSource(this.filterdata);
 
           this.displayedColumns=this.SubmittedScreenColumn;
@@ -588,28 +607,48 @@ downloaddetailobf(element)
       }
       else if(selection==2)
       {
-        
+        //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='rejected' )
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
-      else if(selection==3)
+      else if(selection==3 )
       {
-        
+        //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
+        this.filterdata=this.dashboardData.filter(
+          obj=>{
+             if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+          {
+            return obj;
+          }
+            });
         this.listData=new MatTableDataSource(this.filterdata);
-
-        this.displayedColumns=this.ApprovedOBf;
+         this.displayedColumns=this.ApprovedOBf;
+       
         this.on_Highlight(4);
       }
       else if(selection==4)
       {
-       
+       //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='approved' )
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
 
         
@@ -622,7 +661,14 @@ downloaddetailobf(element)
       if(selection==0)
       {
          
-      this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Submitted');
+      this.filterdata=this.dashboardData.filter(obj=>
+        {
+          if(obj.shortcurrentstatus=='Submitted' )
+          {
+            return obj;
+          }
+        }
+      );
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
@@ -631,7 +677,14 @@ downloaddetailobf(element)
       {
          //Approved section
          this.listData=new MatTableDataSource(this.dashboardData); 
-          this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved');
+          this.filterdata=this.dashboardData.filter(obj=>
+            {
+              if( obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved' )
+              {
+                return obj;
+              }
+            }
+           );
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.PendingReviewercolumn;
          this.on_Highlight(2);
@@ -640,7 +693,14 @@ downloaddetailobf(element)
       {
       
         this.listData=new MatTableDataSource(this.dashboardData); 
-        let filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='Rejected');
+        let filterdata=this.dashboardData.filter(obj=>
+          {
+            if( obj.shortcurrentstatus=='Rejected')
+            {
+              return obj;
+            }
+          }
+        );
         this.listData=new MatTableDataSource(filterdata);
 
         this.displayedColumns=this.RejectedScreenColumn;
@@ -649,7 +709,14 @@ downloaddetailobf(element)
       else if(selection==3)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='cApproved');
+         this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+            {
+              return obj;
+            }
+          }
+         );
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ApprovedOBf;
@@ -659,7 +726,15 @@ downloaddetailobf(element)
       else if(selection==4)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='rejected');
+      
+          this.filterdata=this.dashboardData.filter(obj=>
+            {
+              if(obj.shortcurrentstatus=='rejected')
+              {
+                return obj;
+              }
+            }
+          );
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
@@ -675,7 +750,7 @@ downloaddetailobf(element)
 
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
-      debugger;
+    
       
       console.log(Result);
       var loginresult =Result;
@@ -683,7 +758,7 @@ downloaddetailobf(element)
       
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
         this.router.navigateByUrl('/login');
@@ -700,6 +775,7 @@ downloaddetailobf(element)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+
     this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
@@ -830,5 +906,27 @@ downloaddetailobf(element)
    this.uploadDocfiles=[];
    this.dialog.closeAll();
   }
+
+  
+  OBfcilck(selection)
+  {
+    if(selection==0)
+    {
+      //Draft Section.
+      this.listData=new MatTableDataSource();
+      //this.listData=new MatTableDataSource(this.dashboardData); 
+       this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL');
+      this.listData=new MatTableDataSource(this.filterdata);
+
+
+      this.displayedColumns=this.DraftColumn;
+      this.on_Highlight(1);
+    }
+  }
+PPLclick(selection)
+{
+
+}
+
 
 }

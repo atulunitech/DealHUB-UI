@@ -599,7 +599,15 @@
                         SAP IO Number
                       </div>
                       <div class="prev_dis">
-                        {{this.SAPIONum}}
+                        <div class="sap_io_wr"  *ngIf="(this.SAPIONum.length > 35)">
+                          {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}  
+                          <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
+                          </div>
+                          <div class="sap_io_wr" *ngIf="(this.SAPIONum.length < 35)">
+                            {{this.SAPIONum}}
+                          </div>
+                        
                       </div>
                    </div>
                      <div class="mat_previe_box">
@@ -607,6 +615,7 @@
                         SAP Customer Code
                       </div>
                       <div class="prev_dis">
+                        
                         {{this._obfservices.obfmodel._sap_customer_code}}
                       </div>
                    </div>
@@ -667,7 +676,8 @@
               {{_obfservices.obfmodel._customer_name}}
             </div>
           </div>
-           
+        
+      
                       </div>
                       <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                         <div class="mat_previe_box">
@@ -876,6 +886,7 @@
                                 <div fxLayout="row wrap" *ngIf="reinitiateobf"  fxLayoutAlign=" start" class="mat_fld_box_wrp">
                                 
                                 <label>Previous OBF</label>
+                                <div class="previousobf">
                                   <div class="mat_previe_box">
                                     <div class="prev_tit">
                                       Total Revenue ₹ Cr 
@@ -948,6 +959,7 @@
                                       {{_obfservices.editObfObject._payment_terms}} Days
                                     </div>
                                   </div>
+                                </div>
                                 </div>
                   </div>
 

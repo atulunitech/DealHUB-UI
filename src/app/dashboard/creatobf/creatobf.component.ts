@@ -233,7 +233,7 @@ export class CreatobfComponent implements OnInit {
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
-  
+  SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
@@ -776,6 +776,7 @@ downloaddocument(event)
           url = environment.apiUrl+url
          }
          window.open(url);
+       //  window.location.href = url;
         //var filename = this._obfservices.obfmodel.Attachments[i]._fname;
         // loading a file and add it in a zip file
         // JSZipUtils.getBinaryContent(this._obfservices.obfmodel.Attachments[i]._fpath, function (err, data) {
@@ -1299,7 +1300,7 @@ downloadCoversheet(event)
       const bstr: string = e.target.result;
 
       const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
-      debugger;
+    
             wb.SheetNames.forEach((element,index) =>{
               wb.SheetNames[index] = element.toLowerCase();
             });
@@ -1560,6 +1561,7 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 0;
+    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
@@ -1593,7 +1595,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Successfully saved as draft");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -1795,7 +1797,7 @@ downloadCoversheet(event)
 
   // GridBinding()
   //   {
-  //     debugger;
+  //   
   //     const columns = this.OBFData
   //     .reduce((columns, row) => {
   //       return [...columns, ...Object.keys(row)]
@@ -1820,7 +1822,7 @@ downloadCoversheet(event)
   //   }
   Prview()
   {
-    debugger;
+  
     this.OBFData = this._obfservices.ObfCreateForm.getRawValue();
     // this.GridBinding();
     //this.router.navigate(['/DealHUB/dashboard/preview']);
@@ -2104,6 +2106,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 1;
+    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
     if(this.isEditObf)
     {
       if(this.reinitiateobf)

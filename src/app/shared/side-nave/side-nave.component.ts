@@ -115,7 +115,7 @@ export class SideNaveComponent implements OnInit {
     this._menumodel._user_code=localStorage.getItem("UserCode");
     this._menumodel.token=localStorage.getItem("Token");
     this.menuservice.GetMenus(this._menumodel).subscribe(Result=>{
-    debugger;
+  
      console.log("Menus");
      console.log(Result);
      var loginresult =Result;
@@ -128,7 +128,7 @@ export class SideNaveComponent implements OnInit {
     //  }
     },
     (error:HttpErrorResponse)=>{
-      debugger;
+    
       if (error.status==401)
       {
       //  this.router.navigateByUrl('/login');

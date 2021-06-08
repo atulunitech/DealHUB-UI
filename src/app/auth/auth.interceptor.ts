@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
   
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        debugger;
+      
         if (req.headers.get('No-Auth') == "True")
         {
             return next.handle(req.clone());
