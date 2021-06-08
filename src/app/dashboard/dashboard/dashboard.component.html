@@ -185,7 +185,7 @@
              </ng-container>
              <ng-container  matColumnDef="ActionSubmitted">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
@@ -218,7 +218,10 @@
       <ng-template #mytemplate>
         <form [formGroup]="_obfservices.ObfCreateForm">
         <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
-          <button mat-button mat-dialog-close>Cancel</button>
+          <div class="headerdiv">
+          <span class="Edit">Edit</span>
+          <button mat-button mat-dialog-close class="Icon-ionic-md-close">X</button>
+        </div>
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
               <div class="mat_fld_box_in" fxFlex="50">
@@ -358,14 +361,17 @@
               <div class="mat_fld_box_in" fxFlex="23.4">
                 <div class="mt-cust-fd" fxFlex="1 1 100%">
                   <mat-form-field appearance="fill" class="example-full-width">
-                   
-                      <mat-label>Enter SAP Customer Code</mat-label>
-                      <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                      <input matInput formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
-                        Special characters are not allowed
-                      </mat-error>
-                  </mat-form-field>
+                               
+                    <mat-label>Enter SAP Customer Code</mat-label>
+                    <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
+                    <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
+                      Special characters are not allowed
+                    </mat-error>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
+                      SAP Customer Code length must be <strong>8 digits</strong>
+                    </mat-error>
+                </mat-form-field>
                 </div>
               </div>
               <div class="mat_fld_box_in" fxFlex="80">
@@ -396,7 +402,7 @@
             </div>
          
           </div>
-          <button mat-button mat-dialog-close (click)="editSubmit()">Submit</button>
+          <button mat-button mat-dialog-close  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="editSubmit()">Submit</button>
         </div>
       </form>
    </ng-template>
