@@ -86,6 +86,7 @@ class obfsummary{
   VersionDetails:VersionDetails[];
   servicelist:solutionservicelist[];
   PPl_details:PPl_details[];
+  SAPdetail:SAPdetail[];
 
 }
 class solutionservicelist
@@ -274,7 +275,11 @@ class editObf{
     is_on_hold:number;
 
   }
-
+class SAPdetail
+{
+  cust_sap_io_number:string;
+  tablename:string;
+}
 @Injectable({
   providedIn: 'root'
 })

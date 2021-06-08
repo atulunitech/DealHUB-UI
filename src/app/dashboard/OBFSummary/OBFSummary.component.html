@@ -46,14 +46,9 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" >
-                       <!-- <div  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number.length > 20)">
-                         {{(SAPNumMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) : (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) | slice:0:50 }}  
-                         <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                         <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
-                         </div> -->
+                     <div class="prev_dis" style=" width: 271px;word-break: break-word;">
                          <div>
-                           {{_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number}}
+                           {{this.SAPIONo}}
                          </div>
                      </div>
                   </div>
@@ -438,7 +433,7 @@
                           <div (click)="downloadCoversheet($event)" class="up_pdf_com">
                              Download
                              <span>
-                               <img src="../../../assets/images/dwon-file-icon.png">
+                               <img src="assets/images/dwon-file-icon.png">
                              </span>
                           </div>
                           <!-- <div class="up_pdf_com dw_pdf_com">
@@ -459,13 +454,13 @@
                         <div (click)="downloadsuppodocument($event)" class="up_pdf_com">
                            Download
                            <span>
-                             <img src="../../../assets/images/dwon-file-icon.png">
+                             <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
                         <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload($event,'Supporting')" >
                           Upload
                           <span>
-                            <img src="../../../assets/images/up-file-icon.png">
+                            <img src="assets/images/up-file-icon.png">
                           </span>
                        </div>
                       </div>
@@ -479,13 +474,13 @@
                       <div class="up_pdf_com" (click)="OpenDocDownload($event,'Supporting')">
                          Download
                          <span>
-                           <img src="../../../assets/images/dwon-file-icon.png">
+                           <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
                       <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'loipo')"  >
                         Upload
                         <span>
-                          <img src="../../../assets/images/up-file-icon.png">
+                          <img src="assets/images/up-file-icon.png">
                         </span>
                      </div>
                     </div>
@@ -499,13 +494,13 @@
                     <div class="up_pdf_com" (click)="downloadFinal($event)">
                        Download
                        <span>
-                         <img src="../../../assets/images/dwon-file-icon.png">
+                         <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
                     <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'FinalAgg')" >
                       Upload
                       <span>
-                        <img src="../../../assets/images/up-file-icon.png">
+                        <img src="assets/images/up-file-icon.png">
                       </span>
                    </div>
                   </div>
