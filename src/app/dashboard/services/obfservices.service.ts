@@ -72,7 +72,11 @@ class obfsolutionandservices
   sapio:SAPIO[] = [];
   _dh_comment:string;
 }
-
+class PPl_details
+{
+  PPL_dh_id:number;
+  tablename:string;
+}
 class obfsummary{
   
   solutionDetails:solutionDetails[];
@@ -81,7 +85,7 @@ class obfsummary{
   CommentDetails:CommentDetails[];
   VersionDetails:VersionDetails[];
   servicelist:solutionservicelist[];
- 
+  PPl_details:PPl_details[];
 
 }
 class solutionservicelist
@@ -129,6 +133,7 @@ class uploadDetails{
   Cust_SAP_IO_Number:number;
   is_latest_version:number;
   phase_code:string;
+  parent_dh_main_id:number;
 }
 
 class solutionDetails

@@ -140,7 +140,7 @@ class filesdetail
      }
      );
 
-   
+     
      this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     
    
@@ -162,7 +162,8 @@ class filesdetail
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
-      
+      this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
+
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -1045,6 +1046,16 @@ class filesdetail
   }
   getOBFPPLDetails()
   {
-    
+     if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
+     {
+      this.getdetailsfordh_id(this._obfservices.obfsummarymodel.uploadDetails[0].parent_dh_main_id);
+     }
+     else if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+      if(this._obfservices.obfsummarymodel.PPl_details != undefined && this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id !=0)
+      {
+        this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+      }
+      
+     }
   }
   }
