@@ -140,7 +140,7 @@ class filesdetail
      }
      );
 
-   
+     
      this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     
    
@@ -162,6 +162,8 @@ class filesdetail
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
+      this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
       
       if(this.role_name=='CFO')
       {
@@ -234,6 +236,7 @@ class filesdetail
       //this.obfsummaryform.controls["version"].setValue();
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
+      this.getSAPCode();
 
     },
     (error)=>{
@@ -942,8 +945,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-    if(evt.isUserInput){
-    
+   
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -953,6 +955,8 @@ class filesdetail
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
+      this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
+
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
@@ -1034,13 +1038,39 @@ class filesdetail
         }
      }
       this.getserviceslist();
-
+      this.getSAPCode();
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
     },
     (error)=>{
       alert(error.message);
     }
     );
+    
+  }
+  getOBFPPLDetails()
+  {
+     if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
+     {
+      this.getdetailsfordh_id(this._obfservices.obfsummarymodel.uploadDetails[0].parent_dh_main_id);
+     }
+     else if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+      if(this._obfservices.obfsummarymodel.PPl_details != undefined && this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id !=0)
+      {
+        this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+      }
+      
+     }
+  }
+  SAPIONo:string="";
+  getSAPCode()
+  {
+    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
+    {
+      for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)
+      {
+        this.SAPIONo += ','+  this._obfservices.obfsummarymodel.SAPdetail[i].cust_sap_io_number;
+      }
+      this.SAPIONo=this.SAPIONo.substring(1);
     }
   }
   }

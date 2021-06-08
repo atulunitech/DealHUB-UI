@@ -373,6 +373,7 @@
                         .prev_dis
                         {
                             color: $thm-bg;
+                           
                         }
                         .prev_tit
                         {
@@ -493,4 +494,8 @@
     margin-top:19px;
 }
 
-
+.sap_io_wr
+{
+    max-width: 217px;
+    word-break: break-word;
+}

@@ -72,7 +72,11 @@ class obfsolutionandservices
   sapio:SAPIO[] = [];
   _dh_comment:string;
 }
-
+class PPl_details
+{
+  PPL_dh_id:number;
+  tablename:string;
+}
 class obfsummary{
   
   solutionDetails:solutionDetails[];
@@ -81,7 +85,8 @@ class obfsummary{
   CommentDetails:CommentDetails[];
   VersionDetails:VersionDetails[];
   servicelist:solutionservicelist[];
- 
+  PPl_details:PPl_details[];
+  SAPdetail:SAPdetail[];
 
 }
 class solutionservicelist
@@ -129,6 +134,7 @@ class uploadDetails{
   Cust_SAP_IO_Number:number;
   is_latest_version:number;
   phase_code:string;
+  parent_dh_main_id:number;
 }
 
 class solutionDetails
@@ -270,7 +276,11 @@ class editObf{
     is_on_hold:number;
 
   }
-
+class SAPdetail
+{
+  cust_sap_io_number:string;
+  tablename:string;
+}
 @Injectable({
   providedIn: 'root'
 })
