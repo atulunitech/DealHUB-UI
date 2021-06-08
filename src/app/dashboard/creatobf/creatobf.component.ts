@@ -226,6 +226,8 @@ export class CreatobfComponent implements OnInit {
   SAPIONum:string="";
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   reinitiateobf:boolean = false;
+  isppl:boolean = false;
+  initiateppl:boolean = false;
 
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
@@ -242,6 +244,8 @@ export class CreatobfComponent implements OnInit {
   ngOnInit(): void {
     //this._obfservices.createform();
     this.reinitiateobf = false;
+    this.isppl = false;
+    this.initiateppl = false;
     this._obfservices.obfmodel._dh_id =0;
     this._obfservices.obfmodel._dh_header_id =0;
     //this.servicesControl.setValue("");
@@ -259,6 +263,16 @@ export class CreatobfComponent implements OnInit {
       if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
       {
         this.editorcreateobfstring = params['editobf'];
+        if(params['isppl'] != undefined)
+        {
+          this.isppl = (params['isppl'] == "Y")?true:false; 
+         // alert("this ppl is :"+this.isppl);
+        }
+        if(params['initiateppl'] != undefined)
+        {
+          this.initiateppl = (params['initiateppl'] == "Y")?true:false; 
+          //alert("this ppl initiation is :"+this.isppl);
+        }
         if(params['reinitiate'] != undefined)
         {
           this.reinitiateobf = (params['reinitiate'] == "Y")?true:false; 
@@ -295,14 +309,30 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.initializeobfmodelandform();
       this.editobfinitialization();
      // this.getotherservicesandsolutions();
-      
+      if(this.initiateppl)
+      {
+        this.removeuploadfilesforinitiateppl();
+      }
    },
    error =>
    {
-
+    this._mesgBox.showError(error.message);
    });
   }
 
+  removeuploadfilesforinitiateppl()
+  {
+    this._obfservices.coversheetarray = [];
+    this._obfservices.loipoarray= [];
+    this._obfservices.supportarray = [];
+    this._obfservices.ObfCreateForm.patchValue({coversheet:""});
+    this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+    this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
+    this._obfservices.ObfCreateForm.patchValue({Loipodropdown:""});
+    this._obfservices.ObfCreateForm.patchValue({Selfdeclare:""});
+    this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+    this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+  }
   
  
   editobfinitialization()
@@ -1351,6 +1381,16 @@ downloadCoversheet(event)
   else
   {
     this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
+    if(this.reinitiateobf)
+      {
+        if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+        {
+          this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
+          this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
+          return false;
+        }
+      }
     this._obfservices.obfmodel._opportunity_id = ws.E6.w;
   }
     if( ws.E7 == undefined || ws.E7.w == "#N/A")
@@ -1378,6 +1418,17 @@ downloadCoversheet(event)
          return false; 
    }
     let verticalid = parseInt(result[0].value.toString());
+
+    if(this.reinitiateobf)
+      {
+        if(this._obfservices.editObfObject._vertical_id != verticalid)
+        {
+          this._mesgBox.showError("Vertical different with previous OBF version");
+          this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
+          return false;
+        }
+      }
    //let verticalid = 2;
    this._obfservices.obfmodel._vertical_id = verticalid;
 
@@ -1555,8 +1606,24 @@ downloadCoversheet(event)
   Saveasdraft(type:string){
     console.log("view model");
     console.log(this._obfservices.obfmodel);
-    this._obfservices.obfmodel._dh_phase_id =1;
-    this._obfservices.obfmodel._parent_dh_main_id = 0;
+    if(this.isppl)
+    {
+      this._obfservices.obfmodel._dh_phase_id =2;
+      if(this.initiateppl)
+      {
+        this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._dh_id;  
+        this._obfservices.obfmodel._dh_id = 0;
+        this._obfservices.obfmodel._dh_header_id = 0;   
+      }
+      else{
+    this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+  }  
+    }
+    else{
+      this._obfservices.obfmodel._dh_phase_id =1;
+      this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    
     this._obfservices.obfmodel._active = "A";
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
@@ -2100,8 +2167,26 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   {
     console.log(this._obfservices.obfmodel);
     console.log(this._obfservices.ObfCreateForm.value) ;
-    this._obfservices.obfmodel._dh_phase_id =1;
+    if(this.isppl)
+    {
+      this._obfservices.obfmodel._dh_phase_id =2;
+      if(this.initiateppl)
+      {
+        this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._dh_id;  
+        this._obfservices.obfmodel._dh_id = 0;
+        this._obfservices.obfmodel._dh_header_id = 0;   
+      }
+      else{
+    this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+  }
+     // this._obfservices.obfmodel._parent_dh_main_id = this._obfservices.editObfObject._parent_dh_main_id; 
+     // this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    else{
+      this._obfservices.obfmodel._dh_phase_id =1;
     this._obfservices.obfmodel._parent_dh_main_id = 0;
+    }
+    
     this._obfservices.obfmodel._active = "A";
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;

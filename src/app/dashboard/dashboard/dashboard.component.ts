@@ -9,7 +9,7 @@ import {Router} from "@angular/router"
 import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
-import { OBFServices, SAPIO } from '../services/obfservices.service';
+import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MyErrorStateMatcher, SaveServiceParameter, sectors, Solutiongroup, Solutionservices, subsectors } from '../creatobf/creatobf.component';
@@ -72,6 +72,7 @@ export class DashboardComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
+  dscdsbld:boolean = false;
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   open() {
@@ -124,12 +125,16 @@ export class DashboardComponent implements OnInit {
   //   cancelLabel: 'Mégse',
   //   applyLabel: 'Ok',
   // };
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { }
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { 
+    this._obfservices.createform();
+    this._obfservices.createnewobfmodelandeditobfmodel();
+  }
  
 
   
 
   ngOnInit() {
+    this.dscdsbld = false;
     // Get list of columns by gathering unique keys of objects found in DATA.
     this.Dashboardvalid = new FormGroup({
      
@@ -167,27 +172,52 @@ export class DashboardComponent implements OnInit {
  });
   }
 
+  checkdisable(row)
+  {
+    if(row.ppl_init == 1)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
   editobf(row)
   {
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
     if(this.privilege_name=='OBF Initiator')
     {
-      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } });
     }
     else if(this.privilege_name=='PPL Initiator')
     {
-      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } })
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit PPL",isppl:"Y" } });
     }
    
     console.log(row);
+  }
+
+  initiateppl(row)
+  {
+    console.log(row);
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Initiate PPL",reinitiate:"Y",isppl:"Y",initiateppl:"Y" } });
   }
 
   reinitiateobf(row)
   {
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate OBF",reinitiate:"Y" } })
+    if(this.privilege_name == "OBF Initiator")
+    {
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate OBF",reinitiate:"Y" } });
+    }
+    else if(this.privilege_name == "PPL Initiator")
+    {
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate PPL",reinitiate:"Y",isppl:"Y" } });
+    }
     console.log(row);
   }
 
@@ -206,6 +236,17 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 );
 }
 
+datesUpdated(event)
+{
+  let datefilter:any = [];
+  console.log(event);
+  console.log(new Date(event.startDate._d));
+console.log(new Date(event.endDate._d));
+datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+this.listData=new MatTableDataSource(datefilter);
+
+}
+
   ngAfterViewInit() {
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator
@@ -216,24 +257,25 @@ servicecate:string="";
 serviceslist:SaveServiceParameter[] = [];
 sectorlist:sectors[] = [];
 onchange(evt,solutioncategory)
-{
-  if(evt.isUserInput){
-  this.Solutionservicesarray = [];
-  this._obfservices.obfmodel._solution_category_id = evt.source.value
-  //alert("hello world");
-  console.log(evt);
-  var result = this.Solutiongroup.filter(obj => {
-    return obj.Solutioncategory === solutioncategory;
-  });
-  this.servicecate=solutioncategory;
-  this.Solutionservicesarray = result[0].Solutionservices;
-  this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
-  // this.servicesControl.setValue(["1","2"]);
-}
+  {
+    if(evt.isUserInput){
+    this.Solutionservicesarray = [];
+    this._obfservices.obfmodel._solution_category_id = evt.source.value
+    //alert("hello world");
+    console.log(evt);
+    var result = this.Solutiongroup.filter(obj => {
+      return obj.Solutioncategory === solutioncategory;
+    });
+    this.servicecate=solutioncategory;
+    this.Solutionservicesarray = result[0].Solutionservices;
+    this._obfservices.ObfCreateForm.patchValue({Solutioncategory: evt.source.value});
+   // this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
+    // this.servicesControl.setValue(["1","2"]);
+  }
 
-}
+  }
 
-onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
+  onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
   {
     if(evt.isUserInput) {
       this.disablenableothetinput(evt.source.value,solutioncategory,evt.source.selected);
@@ -329,6 +371,7 @@ onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
       console.log(this.serviceslist);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: this.serviceslist});
       this._obfservices.obfmodel.Services = this.serviceslist;
+    //  this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
       
     }
   }
@@ -390,13 +433,14 @@ onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
     this.subsectorlisdisplay = result;
     // this._obfservices.obfmodel._Sector_Id= parseInt(this._obfservices.ObfCreateForm.get('Sector').value);
     this._obfservices.obfmodel._Sector_Id = evt.value;
-
+    //this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
 
   }
 
   onsubsectorchange(evt)
   {
     this._obfservices.obfmodel._SubSector_Id = evt.value;
+   // this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
   }
 
   fetchcustomercode()
@@ -448,9 +492,35 @@ onotherservicesoptionchange(evt,viewValue,solutioncategory,solvalue)
     console.log(this._obfservices.obfmodel);
   }
 
-openModal(templateRef) {
+openModal(templateRef,row) {
+  console.log(row);
+  let editobf:editobfarguement = new editobfarguement();
+   editobf.dh_id = row.dh_id;
+   editobf.dh_header_id = row.dh_header_id;
+   editobf.user_code = localStorage.getItem("UserCode");
+   this._obfservices.geteditobfdata(editobf).subscribe(res =>{
+    let result =  JSON.parse(res);
+    this._obfservices.editObfObject = JSON.parse(res);
+    this._obfservices.initializeobfmodelandform();
+    
+    this.servicesControl.setValue(this._obfservices.servicesarray);
+      this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
+      var resultnew = this.subsectorlist.filter(obj => {
+        return obj.Sector_Id === this._obfservices.editObfObject._Sector_Id;
+      });
+      this.subsectorlisdisplay = resultnew;
+      if(this._obfservices.obfmodel.Services != null)
+      {
+        this.serviceslist = this._obfservices.obfmodel.Services;
+      }
+      this.dscdsbld = true;
+   },
+   error =>
+   {
+    this._mesgBox.showError(error.message);
+   });
   let dialogRef = this.dialog.open(templateRef, {
-       width: '680px',
+       width: '880px',
        // data: { name: this.name, animal: this.animal }
   });
 
@@ -474,6 +544,58 @@ UploadFinalAggrement(element)
 })
 
 }
+
+otherssave(event,type:string){
+  //alert(event.target.value);
+  let solid = "";
+  let otherid ="";
+  let value = "";
+  if(type == "services"){
+    solid = "1";
+    otherid ="10";
+   value =  this._obfservices.ObfCreateForm.get('otherservices').value;
+  }
+  else if(type == "solution")
+  {
+    solid = "2";
+    otherid ="21";
+    value =  this._obfservices.ObfCreateForm.get('othersolutions').value;
+  }
+  else if(type == "integratedsolution")
+  {
+    solid = "3";
+    otherid ="29";
+    value =  this._obfservices.ObfCreateForm.get('otherintegratedsolutions').value;
+  }
+    let res = this.serviceslist.filter(obj => {
+      // return obj.viewValue === ws.E8.h;
+      return obj.value === solid;
+    });
+   // if(this.isEditObf)
+   if(true)
+  {
+    let index = this._obfservices.obfmodel.Services.findIndex(val => val.value == solid);
+    if(index > -1)
+    {
+      let newindex = this._obfservices.obfmodel.Services[index].Serviceslist.findIndex(valnew => valnew.value == "0");
+      if(newindex > -1)
+      {
+        this._obfservices.obfmodel.Services[index].Serviceslist[newindex].viewValue = event.target.value;
+      }
+      else{
+        let elements:Serviceslist = new Serviceslist("0",value);
+        res[0].Serviceslist.push(elements);    
+      }
+      
+    }
+  }
+  else{
+    let elements:Serviceslist = new Serviceslist("0",value);
+    res[0].Serviceslist.push(elements);
+  }
+ // this.detailstickdisabled = this._obfservices.ObfCreateForm.invalid;
+}
+
 downloaddetailobf(element)
 {
   // alert("download documnet");
@@ -569,6 +691,7 @@ downloaddetailobf(element)
   // }
   filterValue:string;
   addColumn(selection) {
+    this.picker.clear();
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -626,8 +749,8 @@ downloaddetailobf(element)
         //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(
-          obj=>{
-             if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+          obj=>{ //alert(obj.shortcurrentstatus);
+             if(obj.phase_code=='OBF' && (obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved'))
           {
             return obj;
           }
@@ -641,14 +764,15 @@ downloaddetailobf(element)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>
-          {
-            if(obj.shortcurrentstatus=='approved' )
-            {
-              return obj;
-            }
-          }
-         );
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
+        }
+        else
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
+        }
+        
         this.listData=new MatTableDataSource(this.filterdata);
 
         
@@ -928,5 +1052,208 @@ PPLclick(selection)
 
 }
 
+editSubmit()
+{
+  return false;
+  this._obfservices.obfmodel._active = "A";
+  this._obfservices.obfmodel._status ="A";
+  this._obfservices.obfmodel._is_saved =1;
+  this._obfservices.obfmodel._is_submitted = 0;
+  this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+  this._obfservices.obfmodel._mode = "edit";
+  this._obfservices.obfmodel._service_category = "";
+  this._obfservices.obfmodel.save_with_solution_sector = "Y";
+        this._obfservices.obfsumbitmodel._dh_id = this._obfservices.obfmodel._dh_id;
+      this._obfservices.obfsumbitmodel._dh_header_id = this._obfservices.obfmodel._dh_header_id;
+      this._obfservices.obfsumbitmodel._fname = this._obfservices.obfmodel._fname;
+      this._obfservices.obfsumbitmodel._fpath = this._obfservices.obfmodel._fpath;
+      this._obfservices.obfsumbitmodel._created_by = this._obfservices.obfmodel._created_by;
+      this._obfservices.obfsumbitmodel._active = this._obfservices.obfmodel._active;
+      this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
+
+      this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
+
+      let val =  this.validateform();
+      if(val)
+    {
+      this._obfservices.createobf(this._obfservices.obfmodel).subscribe(data =>{
+        console.log("data arrived after insert");
+        let res = JSON.parse(data);
+        console.log(res);
+        if(res[0].Result == "success"){
+        this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
+        this._obfservices.obfmodel._dh_id = res[0].dh_id;
+        // alert("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      else{
+        //alert("Technical error while uploading documents");
+        this._mesgBox.showError("Technical error while uploading documents");
+      }
+      },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+        //alert(error.message);
+      })
+    }
+
+  
+}
+validateform()
+{
+  let count:number = 0;
+  let message = "";
+  if(this._obfservices.ObfCreateForm.get('Projectname').errors)
+  {
+    //alert("Project name is required");
+    // this._mesgBox.showError("Project name is required");
+    message += "Project name"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Customername').errors)
+  {
+   // alert("Customer name is required");
+    // this._mesgBox.showError("Customer name is required");
+    // return false;
+    message += "Customer name"+",";
+    count +=1;
+  }
+  // else if(this._obfservices.ObfCreateForm.get('Solutioncategory').errors)
+  // {
+  //   alert("Solution category is required");
+  //   return false;
+  // }
+  // else if(this._obfservices.ObfCreateForm.get('Otherservicesandcategories').errors)
+  // {
+  //   alert("Other Services and Solutions field is required");
+  //   return false;
+  // }
+  if(this._obfservices.ObfCreateForm.get('Opportunityid').errors)
+  {
+   // alert("Opportunityid is required");
+    // this._mesgBox.showError("Opportunity Id is required");
+    // return false;
+    message += "Opportunity Id"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('State').errors)
+  {
+    //alert("Project primay location is required");
+    // this._mesgBox.showError("Project primay location is required");
+    // return false;
+    message += "Project primay location"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Vertical').errors)
+  {
+   // alert("Vertical field is required");
+  //  this._mesgBox.showError("Vertical field is required");
+  //   return false;
+  message += "Vertical field"+",";
+    count +=1;
+  }
+  // else if(this._obfservices.ObfCreateForm.get('Sector').errors)
+  // {
+  //   alert("Sector field is required");
+  //   return false;
+  // }
+  if(this._obfservices.ObfCreateForm.get('Verticalhead').errors)
+  {
+   // alert("Vertical head field is required");
+    // this._mesgBox.showError("Vertical head field is required");
+    // return false;
+    message += "Vertical head field"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
+  {
+   // alert("Project brief is required");
+  //  this._mesgBox.showError("Project brief is required");
+  //   return false;
+    message += "Project brief"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
+  {
+    //alert("Total revenue field is required");
+    // this._mesgBox.showError("Total revenue field is required");
+    // return false;
+    message += "Total revenue"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
+  {
+   // alert("Total cost field is required");
+    //  this._mesgBox.showError("Total cost field is required");
+    // return false;
+    message += "Total cost field"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
+  {
+    // alert("Total margin field is required");
+    // this._mesgBox.showError("Total margin field is required");
+    // return false;
+    message += "Total margin"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
+  {
+   // alert("Total project life field is required");
+  //  this._mesgBox.showError("Total project life field is required");
+  //   return false;
+  message += "Total project life"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Capex').errors)
+  {
+    //alert("Capex field is required");
+    // this._mesgBox.showError("Capex field is required");
+    // return false;
+    message += "Capex"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Paymentterms').errors)
+  {
+   // alert("Payment terms field is required");
+  //  this._mesgBox.showError("Payment terms field is required");
+  //   return false;
+  message += "Payment terms"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Payment_Terms_description').errors)
+  {
+   // alert("Payment terms field is required");
+  //  this._mesgBox.showError("Payment terms description field is required");
+  //   return false;
+  message += "Payment terms description"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
+  {
+   // alert("Assumption and risks  field is required");
+  //  this._mesgBox.showError("Assumption and risks  field is required");
+  //   return false;
+  message += "Assumption and risks"+",";
+    count +=1;
+  }
+  if(this._obfservices.ObfCreateForm.get('Loipo').errors)
+  {
+   // alert("Loi / po  field is required");
+    // this._mesgBox.showError("LOI/PO  field is required");
+    // return false;
+    message += "LOI/PO"+",";
+    count +=1;
+  }
+
+  if( count > 0)
+  {
+    message = message.substring(0,message.length -1);
+    this._mesgBox.showError(message + " are required");
+    return false;
+  }
+  return true;
+}
 
 }
