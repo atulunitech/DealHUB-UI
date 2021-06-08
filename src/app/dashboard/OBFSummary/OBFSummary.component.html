@@ -324,35 +324,40 @@
                     </div>
                  </div>
                  <div class="mat_previe_box" >
-                  <div class="prev_tit" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                  <div class="prev_dis" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
-                  <div class="prev_dis" *ngIf="this.role_name == 'VSH'">
+                  <div class="mat_cu_indic">
+ <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
-                  <div>
-                    </div>
-                  <div class="prev_dis"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
+                  
+                  <div class="prev_dis mt-cust-fd-com"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCFO" [disabled]="disableCFOcontrol">Exception case-CFO approval</mat-slide-toggle>
                   </div>
-                  <div class="prev_tit"  *ngIf="CEOMess">
+                  <div class="prev_tit cf0message"  *ngIf="CEOMess">
                     <label>
                       {{this.cfomessgae}}
                     </label>
                     </div>
-                    <div class="prev_dis"  *ngIf="MarginException">
+                    <!-- <div class="prev_dis"  *ngIf="MarginException">
                       <label>
                         Margin Exception Requested by VSH.
                       </label>
+                      </div> -->
+                      <div class="mar_exc" *ngIf="MarginException">
+                        Margin Exception Requested by VSH.
                       </div>
-                  <div class="prev_dis"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
+                  <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
-                  <div class="prev_tit"  *ngIf="CFOMess">
+                  <div class="prev_tit cf0message"  *ngIf="CFOMess">
                     <label>
                       {{this.CEOmessage}}
                     </label>
                     </div>
+                  </div>
+                 
                    
                </div>
 
