@@ -385,7 +385,7 @@
                             </div>
                           </perfect-scrollbar>
                           <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)">
+                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
@@ -557,6 +557,10 @@
                        <ng-container  matColumnDef="comment">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
                       <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
+                       </ng-container>
+                       <ng-container  matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                      <mat-cell  *matCellDef="let row" (click)="getdownloadfile(row)" ><img *ngIf="row.actions != ''" src="assets/images/download_icon.png"></mat-cell>
                        </ng-container>
                     
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -135,6 +135,8 @@ class uploadDetails{
   is_latest_version:number;
   phase_code:string;
   parent_dh_main_id:number;
+  ppl_init:number;
+  ppl_status:string;
 }
 
 class solutionDetails

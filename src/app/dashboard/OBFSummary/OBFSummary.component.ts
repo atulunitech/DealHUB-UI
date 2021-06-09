@@ -92,7 +92,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment','actions'];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -236,7 +236,7 @@ class filesdetail
       }
       
       if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
-        if(this._obfservices.obfsummarymodel.PPl_details == undefined)
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].ppl_init == 0)
         {
           this.ShowViewButton=true;
          // this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
@@ -297,7 +297,7 @@ class filesdetail
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
-      this.dashboardData=JSON.parse(Result);
+      this.dashboardData= JSON.parse(Result);
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
@@ -333,17 +333,25 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-    if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+      if(index>-1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
-          
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+            
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No Supporting Documents to Download");
+      }
+      
     }
     else
     {
@@ -362,16 +370,24 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No LOI or PO Documents to Download");
+      }
+     
     }
     else
     {
@@ -388,21 +404,32 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
+          
         }
       }
+      else{
+        this._mesgBox.showError("No Final Aggrement Documents to Download");
+      }
+
     }
+
     else
     {
       this._mesgBox.showError("No Final Aggrement Documents to Download");
     }
+   
   }
     else
     {
@@ -1069,6 +1096,19 @@ class filesdetail
         this.SAPIONo += ','+  this._obfservices.obfsummarymodel.SAPdetail[i].cust_sap_io_number;
       }
       this.SAPIONo=this.SAPIONo.substring(1);
+    }
+  }
+  getdownloadfile(event)
+  {
+    
+    if(event.actions== "")
+    {
+      this._mesgBox.showError("No Documents to Download");
+    }
+    else
+    {
+      var url=environment.apiUrl + event.actions;
+      window.open(url);
     }
   }
   }
