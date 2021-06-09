@@ -613,9 +613,7 @@
                           <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
                           <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
                           </div>
-                          <div class="sap_io_wr" *ngIf="(this.SAPIONum.length < 35)">
-                            {{this.SAPIONum}}
-                          </div>
+                          
                         
                       </div>
                    </div>
@@ -779,10 +777,14 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div>
+                        
+                           <div *ngIf="(this.service.length > 35)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
-                        <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
+                              <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
+                              <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
+                           </div>
+                           <div *ngIf="(this.service.length < 35)">
+                            {{(this.service)}}  
                            </div>
                         </div>
                      </div> 
@@ -802,7 +804,7 @@
                           <div class="prev_tit">
                             Assumption & Risk
                           </div>
-                          <div class="prev_dis">
+                          <div class="prev_dis" >
                             {{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>

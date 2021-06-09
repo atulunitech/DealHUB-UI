@@ -93,6 +93,35 @@
                             }
                         
                     }
+                    .mat_cu_indic
+                    {
+                        opacity: 0.83;
+                        border-radius: 4px;
+                        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                        background-color: #fafafa;
+                        padding: 10px 10px 10px 10px;
+                        .mar_exc
+                        {
+                            color: #1d77dc;
+                            font-weight: 600;
+                            font-size: 0.85rem;
+                        }
+                        .exc_ceo_app
+                        {
+                            position: relative;
+                            
+                    }
+                    .cf0message
+                            {margin-left: 37px;
+                                padding-right: 15px;
+                                background-color: #efefef;
+                                padding-left: 15px;
+                                padding-top: 10px;
+                                padding-bottom: 10px;
+                                font-size: 0.90rem;
+                                
+                            }
+                        }
                 }
                 .mat_exp_fot
                 {
@@ -220,8 +249,8 @@
                                {
                                    @include font-size(0.85);
                                    margin-top: -4px;
-    position: relative;
-    top: 4px;
+                                position: relative;
+                                 top: 4px;
                                }
                             text-transform: uppercase;
                             @include font-size(0.85);

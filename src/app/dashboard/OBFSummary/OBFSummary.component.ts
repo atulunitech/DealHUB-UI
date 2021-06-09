@@ -174,7 +174,7 @@ class filesdetail
         this.CEOMess=true;
         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
-         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
          this.disableCFOcontrol=true;
          }
         else  {
@@ -215,8 +215,13 @@ class filesdetail
           this.CEOMess=true;
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
          }
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
       }
       if(this.role_name=='VH')
       {
@@ -377,7 +382,7 @@ class filesdetail
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO" ||  this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement" )
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
@@ -457,10 +462,7 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-   
-
       this.commentVisiable=true;
-   
        this.SaveCommentdetail.push(SaveComment);
      
     }
@@ -500,6 +502,13 @@ class filesdetail
               this.filelist.push(savefile);
             }
            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
+            {
+              savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+              savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+              savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+              this.filelist.push(savefile);
+            }
+            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
             {
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
@@ -963,6 +972,12 @@ class filesdetail
 
           this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
         }
+        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
+        {
+
+          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
+        }
+        
       }
     }
   }
@@ -1000,7 +1015,7 @@ class filesdetail
        this.CEOMess=true;
        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
         {
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
         this.disableCFOcontrol=true;
         }
        else  {
@@ -1053,11 +1068,16 @@ class filesdetail
          this.CEOMess=true;
          this.disableCFOcontrol=true;
          this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
         }
         else{
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+        }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
      }
     

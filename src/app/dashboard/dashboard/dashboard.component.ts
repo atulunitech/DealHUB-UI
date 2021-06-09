@@ -629,6 +629,10 @@ downloaddetailobf(element)
     window.open(url);
   }
 }
+downloaddetailFinalAgg(element)
+{
+
+}
   getToolTipData(issueId: any): any {
     
     //  alert(JSON.stringify(issueId));
@@ -1275,5 +1279,8 @@ validateform()
   }
   return true;
 }
-
+getattachment(row)
+{
+  
+}
 }
