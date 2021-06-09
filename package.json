@@ -35,6 +35,7 @@
     "ngx-dropzone": "^3.0.0",
     "ngx-perfect-scrollbar": "^10.1.1",
     "ngx-spinner": "^11.0.1",
+    "perfect-scrollbar": "^1.5.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.14.1",
     "xlsx": "^0.16.9",
