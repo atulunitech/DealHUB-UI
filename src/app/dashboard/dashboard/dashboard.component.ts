@@ -800,7 +800,7 @@ downloaddetailobf(element)
         this.on_Highlight(5);
       }
     }
-    else if(this.privilege_name=="OBF Reviewer")
+    else if(this.privilege_name=="OBF Reviewer" || this.privilege_name=="PPL Reviewer")
     {
       if(selection==0)
       {
