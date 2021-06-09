@@ -92,7 +92,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment','actions'];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -150,6 +150,7 @@ class filesdetail
   disableCFOcontrol:boolean=false;
   disableCEOcontrol:boolean=false;
   disableMargincontrol:boolean=false;
+  ShowViewButton:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -233,6 +234,16 @@ class filesdetail
          //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
+      
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].ppl_init == 0)
+        {
+          this.ShowViewButton=true;
+         // this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+        }
+        
+       }
+
       //this.obfsummaryform.controls["version"].setValue();
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
@@ -286,7 +297,7 @@ class filesdetail
       console.log("DashBoardData");
       console.log(Result);
       var loginresult =Result;
-      this.dashboardData=JSON.parse(Result);
+      this.dashboardData= JSON.parse(Result);
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
@@ -322,17 +333,25 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-    if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+      if(index>-1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
-          
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+            
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No Supporting Documents to Download");
+      }
+      
     }
     else
     {
@@ -351,16 +370,24 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No LOI or PO Documents to Download");
+      }
+     
     }
     else
     {
@@ -377,21 +404,32 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
+          
         }
       }
+      else{
+        this._mesgBox.showError("No Final Aggrement Documents to Download");
+      }
+
     }
+
     else
     {
       this._mesgBox.showError("No Final Aggrement Documents to Download");
     }
+   
   }
     else
     {
@@ -407,14 +445,7 @@ class filesdetail
     {
       
       var comment=this.obfsummaryform.get("comments").value;
-      // this.SaveCommentdetail[0].Fullname=this.User_name;
-      // this.SaveCommentdetail[0].Role_name= this.role_name;
-      // this.SaveCommentdetail[0].Status="Pending";
-      // this.SaveCommentdetail[0].Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      // this.SaveCommentdetail[0].commented_on=  this.today;
-      // this.SaveCommentdetail[0].dh_comment=comment;
-      // this.SaveCommentdetail[0].role_code=this.role_name;
-
+     
 
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
@@ -426,20 +457,12 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-      // if(this.role_name =='Salesperson')
-      // {
-      //   SaveComment.role_code='SP';
-      // }
-      // else{
-      //   SaveComment.role_code=this.role_name;
-      // }
-     
+   
 
       this.commentVisiable=true;
-     // this.obfsummaryform.controls["comments"].setValue('');
+   
        this.SaveCommentdetail.push(SaveComment);
-      //  this.CommentDetails.push(SaveComment);
-    //  this._obfservices.obfsummarymodel.CommentDetails.push(this.SaveCommentdetail[0]);
+     
     }
   }
   deletecomment()
@@ -945,7 +968,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-   
+   console.log(dh_id,dh_header_id);
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1037,6 +1060,7 @@ class filesdetail
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
         }
      }
+    
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
@@ -1064,6 +1088,7 @@ class filesdetail
   SAPIONo:string="";
   getSAPCode()
   {
+    this.SAPIONo ="";
     if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
     {
       for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)
@@ -1071,6 +1096,19 @@ class filesdetail
         this.SAPIONo += ','+  this._obfservices.obfsummarymodel.SAPdetail[i].cust_sap_io_number;
       }
       this.SAPIONo=this.SAPIONo.substring(1);
+    }
+  }
+  getdownloadfile(event)
+  {
+    
+    if(event.actions== "")
+    {
+      this._mesgBox.showError("No Documents to Download");
+    }
+    else
+    {
+      var url=environment.apiUrl + event.actions;
+      window.open(url);
     }
   }
   }

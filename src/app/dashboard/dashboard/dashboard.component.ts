@@ -463,7 +463,14 @@ onchange(evt,solutioncategory)
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
+    
+    let index  = this._obfservices.obfmodel.sapio.findIndex(obj =>obj._Cust_SAP_IO_Number == parseInt(value.trim()));
+    if(index > -1)
+    {
+      this._mesgBox.showError("SAP IO number already exists");
+        return;
+    }
+    
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
@@ -494,6 +501,8 @@ onchange(evt,solutioncategory)
 
 openModal(templateRef,row) {
   console.log(row);
+  this._obfservices.createform();
+  this._obfservices.createnewobfmodelandeditobfmodel();
   let editobf:editobfarguement = new editobfarguement();
    editobf.dh_id = row.dh_id;
    editobf.dh_header_id = row.dh_header_id;
@@ -514,6 +523,17 @@ openModal(templateRef,row) {
         this.serviceslist = this._obfservices.obfmodel.Services;
       }
       this.dscdsbld = true;
+      if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
+      {
+       // this.loiopdisabled = true;
+        this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
+      this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+      }
+      this._obfservices.ObfCreateForm.controls['otherservices'].disable();
+      this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
+      this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      console.log("checkmodel after model click");
+      console.log(this._obfservices.ObfCreateForm);
    },
    error =>
    {
@@ -780,7 +800,7 @@ downloaddetailobf(element)
         this.on_Highlight(5);
       }
     }
-    else if(this.privilege_name=="OBF Reviewer")
+    else if(this.privilege_name=="OBF Reviewer" || this.privilege_name=="PPL Reviewer")
     {
       if(selection==0)
       {
@@ -1054,7 +1074,7 @@ PPLclick(selection)
 
 editSubmit()
 {
-  return false;
+  //return false;
   this._obfservices.obfmodel._active = "A";
   this._obfservices.obfmodel._status ="A";
   this._obfservices.obfmodel._is_saved =1;
@@ -1076,11 +1096,11 @@ editSubmit()
       let val =  this.validateform();
       if(val)
     {
-      this._obfservices.createobf(this._obfservices.obfmodel).subscribe(data =>{
+      this._obfservices.editsapcustcode_and_io(this._obfservices.obfmodel).subscribe(data =>{
         console.log("data arrived after insert");
         let res = JSON.parse(data);
         console.log(res);
-        if(res[0].Result == "success"){
+        if(res[0].Result.toString().toLowerCase() == "success"){
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");

@@ -4,6 +4,38 @@
 .filter_cont {
     @include padding(15px,50px,15px,50px);
 }
+
+.Edit {
+    width: 45px;
+    height: 28px;
+    margin: 0 45px 33px 0;
+    font-family: HelveticaNeue !important;
+    font-size: 24px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #101010;
+  }
+
+  .headerdiv{
+    display: block;
+    float: left;
+    width: 100%;
+  }
+
+  .Icon-ionic-md-close {
+    width: 21px;
+    height: 21px;
+   // margin: 12.6px 20.1px 0 31.5px;
+    background-color:white;
+   font-weight:bold;
+   float:right;
+  }
+  
+
 .com_title
 {
     display: inline-block;
