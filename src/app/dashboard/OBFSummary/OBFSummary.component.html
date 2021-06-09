@@ -317,7 +317,12 @@
                   Workflow Indicator
                   </div>
                   <div class="mat_cu_indic">
-                  <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
+                  <div class="prev_dis mt-cust-fd-com" style="margin-left: 35px;
+                  padding-top: 7px;
+                  border-top: 1px solid #ccc;
+                  margin-top: 10px;
+                  border-top: solid 1px #707070;
+                  font-weight: 500;" *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
                   
