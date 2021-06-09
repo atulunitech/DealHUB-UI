@@ -594,97 +594,108 @@
 
 <div>
   <ng-template #callAPIDialog>
-    <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
-      <button mat-button mat-dialog-close>Cancel</button>
-      <div fxFlex="auto " class="mat_upload_in_wr">
-        <div class="mat_upload_tit">
-         Uploading Document
-        </div>
-        <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
-          <ngx-dropzone-label class="matUp_lable">
-            <div><img src="assets/images/Group Upload.png"></div>
-            <div class="drap_titl">
-            Chosse or Drag & Drop
-              <div class="in_titl">Or select file from your system</div>
-            </div>
-            
-          </ngx-dropzone-label>
-         
-            
-        </ngx-dropzone>
-        <div class="bt_uplad_con">
-          <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
-          <div *ngIf="this.Type=='loipo'">
-            <mat-form-field appearance="fill" class="example-full-width">
-              <mat-label>Select Type</mat-label>
-              <mat-select [(ngModel)]="Loipodropdown">
-                <mat-option value="PO"  >
-                  PO
-                </mat-option>
-                <mat-option value="LOI">
-                  LOI
-                </mat-option>
-                <mat-option value="Agreement">
-                  Agreement
-                </mat-option>
-              </mat-select>
-              
-            </mat-form-field>
+    <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
+<mat-dialog-content class="mat-typography">
+  <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <div fxFlex="auto " class="mat_upload_in_wr">
+      
+      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
+        <ngx-dropzone-label class="matUp_lable">
+          <div><img src="assets/images/Group Upload.png"></div>
+          <div class="drap_titl">
+          Chosse or Drag & Drop
+            <div class="in_titl">Or select file from your system</div>
           </div>
-         
-
-          <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
-        </div>
-        <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-        <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
-          Uploading: 
-         </div>
-        <div *ngIf="uploaddocprocess.length == 0">
           
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div class="doc_icon">
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
-              {{ f.name }}
-            </div> 
+        </ngx-dropzone-label>
+       
+          
+      </ngx-dropzone>
+      <div class="bt_uplad_con">
+        <!-- <div class="cr_corner"><img src="assets/images/fold_icon.png"></div> -->
+        <div class="mt-cust-fd upl_sec_cut" *ngIf="this.Type=='loipo'">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Select Type</mat-label>
+            <mat-select [(ngModel)]="Loipodropdown">
+              <mat-option value="PO"  >
+                PO
+              </mat-option>
+              <mat-option value="LOI">
+                LOI
+              </mat-option>
+              <mat-option value="Agreement">
+                Agreement
+              </mat-option>
+            </mat-select>
             
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
+          </mat-form-field>
+        </div>
+       
+
+        <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
       </div>
-      <div *ngIf="uploaddocprocess.length > 0">
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
-            <div class="doc_icon" >
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" style="position: relative;" >
-              {{ f.name }}
-             </div> 
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </div>
-      <div *ngIf="filelist.length > 0">
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
-            <div class="doc_icon" >
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" style="position: relative;" >
-              {{ f.filename }}
-             </div> 
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </div>
-     </div>
-      <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-        <ul *ngFor="let msg of message; let i = index">
-          <li>{{ msg }}</li>
-        </ul>
-      </div>
+      <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
+      <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
+        Uploading: 
+       </div>
+      <div *ngIf="uploaddocprocess.length == 0">
+        
+      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
+        <ngx-dropzone-label class="drop_lab_cs">
+          <div class="doc_icon">
+            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+          </div>
+          <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
+            {{ f.name }}
+          </div> 
+          
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
     </div>
+    <div *ngIf="uploaddocprocess.length > 0">
+      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
+        <ngx-dropzone-label class="drop_lab_cs">
+          <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+          <div class="doc_icon" >
+            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+          </div>
+          <div class="doc_cont" style="position: relative;" >
+            {{ f.name }}
+           </div> 
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </div>
+    <div *ngIf="filelist.length > 0">
+      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
+        <ngx-dropzone-label class="drop_lab_cs">
+          <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
+          <div class="doc_icon" >
+            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+          </div>
+          <div class="doc_cont" style="position: relative;" >
+            {{ f.filename }}
+           </div> 
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </div>
+   </div>
+    <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+      <ul *ngFor="let msg of message; let i = index">
+        <li>{{ msg }}</li>
+      </ul>
+    </div>
+  </div>
+</mat-dialog-content>
+<!-- <mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions> -->
+
+
+<!-- Copyright 2021 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
+    
   </ng-template>
 </div>
