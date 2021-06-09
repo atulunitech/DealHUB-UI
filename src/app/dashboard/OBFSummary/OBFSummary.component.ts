@@ -217,6 +217,11 @@ class filesdetail
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
          this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
          }
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
       }
       if(this.role_name=='VH')
       {
@@ -457,10 +462,7 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-   
-
       this.commentVisiable=true;
-   
        this.SaveCommentdetail.push(SaveComment);
      
     }
@@ -1058,6 +1060,11 @@ class filesdetail
         else{
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
+        }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
      }
     

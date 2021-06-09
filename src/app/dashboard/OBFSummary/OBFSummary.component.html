@@ -46,7 +46,7 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" style=" width: 271px;word-break: break-word;">
+                     <div class="prev_dis" style=" width: 200px;word-break: break-word;">
                          <div>
                            {{this.SAPIONo}}
                          </div>
@@ -264,7 +264,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 10)">
+                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 20)">
                         {{(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc)}}  
                        </div>
                    </div> 
@@ -317,7 +317,7 @@
                   Workflow Indicator
                   </div>
                   <div class="mat_cu_indic">
- <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
+                  <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
                   
@@ -334,9 +334,7 @@
                         Margin Exception Requested by VSH.
                       </label>
                       </div> -->
-                      <div class="mar_exc" *ngIf="MarginException">
-                        Margin Exception Requested by VSH.
-                      </div>
+                     
                   <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
@@ -344,6 +342,9 @@
                     <label>
                       {{this.CEOmessage}}
                     </label>
+                    </div>
+                    <div class="mar_exc" *ngIf="MarginException">
+                      Margin Exception Requested by VSH.
                     </div>
                   </div>
                  
