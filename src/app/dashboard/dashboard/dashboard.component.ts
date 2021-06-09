@@ -629,9 +629,11 @@ downloaddetailobf(element)
     window.open(url);
   }
 }
-downloaddetailFinalAgg(element)
+downloaddetailFinalAgg(row)
 {
-
+  var dh_id=row.dh_id;
+  var dh_header_id=row.dh_header_id;
+ // this.getattachment(dh_id,dh_header_id);
 }
   getToolTipData(issueId: any): any {
     
@@ -1279,8 +1281,11 @@ validateform()
   }
   return true;
 }
-getattachment(row)
+getattachment(dh_id,dh_header_id)
 {
-  
+ 
+  this._dashboardservice.GetAttachmentDocument(dh_id,dh_header_id).subscribe(data=>{
+    console.log(data);
+  })
 }
 }

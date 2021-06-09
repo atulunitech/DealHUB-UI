@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core'
-import {HttpClient}from '@angular/common/http'
-import {HttpHeaders} from '@angular/common/http'
+import {HttpHeaders,HttpParams,HttpClient} from '@angular/common/http'
 import {Observable, observable} from 'rxjs'
 import { environment } from 'src/environments/environment';
 
@@ -39,5 +38,14 @@ export class DashboardService {
   return this.http.post<any>(environment.apiUrl + '/Api/DashBoard/GetDashBoardDataCount',  
     DashBoardData, httpOptions);  
 
+ }
+ GetAttachmentDocument(dh_id:string,dh_header_id:string): Observable<any> 
+ {
+
+  const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+  params: new HttpParams().set('dh_id', dh_id.toString())
+  .set('dh_header_id',dh_header_id.toString()) };  
+  return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetAttachmentDocument",
+     httpOptions);  
  }
 }
