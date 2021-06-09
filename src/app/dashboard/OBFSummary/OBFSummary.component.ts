@@ -20,7 +20,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
-
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -56,7 +57,9 @@ class filesdetail
   })
 
   export class OBFSummaryComponent implements OnInit {
-   
+    public types: string = 'component';
+    @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+    @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
       comments : new FormControl("",[Validators.required]),
@@ -447,7 +450,8 @@ class filesdetail
   SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
-    if(this.obfsummaryform.get("comments").value!= "")
+    
+    if(this.obfsummaryform.get("comments").value!= "" || this.types === 'directive' && this.directiveRef)
     {
       
       var comment=this.obfsummaryform.get("comments").value;
@@ -470,8 +474,17 @@ class filesdetail
       SaveComment.Initials= initials. toUpperCase();
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
+       this.directiveRef.scrollToBottom(1000);
      
     }
+      else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+      this.componentRef.directiveRef.scrollToBottom();
+    }
+    //  if (this.types === 'directive' && this.directiveRef) {
+    //   this.directiveRef.scrollToBottom();
+    // } else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+    //   this.componentRef.directiveRef.scrollToBottom();
+    // }
   }
   deletecomment()
   {
