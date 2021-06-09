@@ -161,6 +161,7 @@ class CommentDetails
   Version_name:string;
   Status:string;
   role_code:string;
+  Initials:string;
 }
 class VersionDetails{
   Version_name:number;

@@ -39,6 +39,7 @@ class CommentDetails
   Version_name:string;
   Status:string;
   role_code:string;
+  Initials:string;
 }
 class filesdetail
 {
@@ -462,6 +463,11 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
+      const fullName = this.User_name. split(' ');
+      const initials = fullName. shift(). charAt(0) + fullName. pop(). charAt(0);
+
+
+      SaveComment.Initials= initials. toUpperCase();
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
      
