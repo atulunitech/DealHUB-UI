@@ -375,8 +375,8 @@
                                 {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
-                                <div class="Role_name">{{details.role_name}}</div>
-                                <div class="Fullname">{{details.Fullname}}</div>
+                                <div class="Role_name" style="display: none;">{{details.role_name}}</div>
+                                <div class="Fullname">{{details.Fullname}}<span>({{details.role_code}})</span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
                                   <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
@@ -560,14 +560,14 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel >
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+            <mat-expansion-panel style="margin-top: 20px;">
+                <mat-expansion-panel-header collapsedHeight="50px" style="background-color: rgb(229, 238, 255);" expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div class="fl_table_con">
-                    <table mat-table [dataSource]="listData" class="ms_table" matSort>
+                    <table mat-table [dataSource]="listData" class="ms_table" style="margin-top: 10px;" matSort>
                       <ng-container  matColumnDef="username">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
                       <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
