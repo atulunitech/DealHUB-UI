@@ -14,6 +14,7 @@
     <div class="d_icon"><img src="assets/images/date_icon.JPG"></div>
     <input type="text" matInput autocomplete="off"
     ngxDaterangepickerMd
+    (datesUpdated)="datesUpdated($event)"
     [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
     [(ngModel)]="selected" placeholder="Start Date -- End Date"
     name="daterange"/>
@@ -42,14 +43,14 @@
          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? ('Draft') : ('Pending for approval')}}
         </div>
         <div class="fil_had_no">
-          {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
+          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" (click)=" OBfcilck(0) ">
             OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
           </div>
           <div class="lst_ppl" (click)=" PPLclick(0) ">
-            PPL: {{(this.privilege_name) == 'OBF Initiator' ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
+            PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
            </div>
         </div>
       </div>
@@ -157,7 +158,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header>FinalAgg</mat-header-cell>
             <mat-cell *matCellDef="let row" >
               <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-              <div class="dwon_ic_con"><img (click)="downloaddetailobf(row)" src="assets/images/download_icon.png"></div>
+              <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
               <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" src="assets/images/download_icon.png"></div>
           </mat-cell>
         </ng-container>
@@ -178,23 +179,23 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
             
                 <mat-cell *matCellDef="let row" >
-                  <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate)" >Edit</button>&nbsp;
+                  <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
                   <button mat-raised-button color="primary">Reject</button>
                  </mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionSubmitted">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionReinitialize">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                <mat-cell *matCellDef="let row" >
               <button mat-flat-button class="creat_bt edit_bt">Edit</button>
-              <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Initiate PPL</button>
+              <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
             </mat-cell>
            
          
@@ -202,7 +203,8 @@
              </ng-container>
              <ng-container  matColumnDef="ActionApprovedPPL">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt">Edit</button></mat-cell>
+            <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+            <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
              </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -216,15 +218,18 @@
       <ng-template #mytemplate>
         <form [formGroup]="_obfservices.ObfCreateForm">
         <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
-          <button mat-button mat-dialog-close>Cancel</button>
+          <div class="headerdiv">
+          <span class="Edit">Edit</span>
+          <button mat-button mat-dialog-close class="Icon-ionic-md-close">X</button>
+        </div>
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
               <div class="mat_fld_box_in" fxFlex="50">
                 <div class="mt-cust-fd" fxFlex="1 1 100%">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select solution category</mat-label>
-        <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher">
-          <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+        <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher">
+          <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="dscdsbld" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
             {{Solution.Solutioncategory}}
           </mat-option>
@@ -243,7 +248,7 @@
                       <!-- <mat-option>-- None --</mat-option> -->
                       <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                     >
-                        <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+                        <mat-option *ngFor="let list of group.Serviceslist" [disabled]="true" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
                           {{list.viewValue}} 
                         </mat-option>
                       </mat-optgroup>
@@ -255,12 +260,12 @@
                 </div>
               </div>
             </div>
-            <!-- <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
               <div class="mat_fld_box_in" fxFlex="1 1 100%">
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Other Services</mat-label>
-                    <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave('services')" [errorStateMatcher]="matcher" required/>
+                    <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                     <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                       Services:Other is <strong>required</strong>
                     </mat-error>
@@ -275,7 +280,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Other Solutions</mat-label>
-                    <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave('solution')" [errorStateMatcher]="matcher" required/>
+                    <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
                     <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
                       Solution:Other is <strong>required</strong>
                     </mat-error>
@@ -289,7 +294,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Other Integrated Solutions</mat-label>
-                      <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave('integratedsolution')" [errorStateMatcher]="matcher" required/>
+                      <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
                       <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
                         Integrated Solution:Other is <strong>required</strong>
                       </mat-error>
@@ -299,7 +304,7 @@
                     </mat-form-field>
                 </div>
               </div>
-            </div> -->
+            </div>
           </div>
 
           <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -318,7 +323,7 @@
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Sector</mat-label>
                     <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector">
-                      <mat-option *ngFor="let Sector of sectorlist" [value]="Sector.value"  >
+                      <mat-option *ngFor="let Sector of sectorlist" disabled [value]="Sector.value"  >
                         {{Sector.viewValue}}
                       </mat-option>
                     </mat-select>
@@ -335,8 +340,8 @@
                 <div class="mt-cust-fd" fxFlex="1 1 100%">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Sub Sector</mat-label>
-                    <mat-select (selectionChange)="onsubsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Subsector">
-                      <mat-option *ngFor="let Subsector of subsectorlisdisplay" [value]="Subsector.value"  >
+                    <mat-select (selectionChange)="onsubsectorchange($event)"  [errorStateMatcher]="matcher" formControlName="Subsector">
+                      <mat-option *ngFor="let Subsector of subsectorlisdisplay" disabled [value]="Subsector.value"  >
                         {{Subsector.viewValue}}
                       </mat-option>
                     </mat-select>
@@ -356,14 +361,17 @@
               <div class="mat_fld_box_in" fxFlex="23.4">
                 <div class="mt-cust-fd" fxFlex="1 1 100%">
                   <mat-form-field appearance="fill" class="example-full-width">
-                   
-                      <mat-label>Enter SAP Customer Code</mat-label>
-                      <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                      <input matInput formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
-                        Special characters are not allowed
-                      </mat-error>
-                  </mat-form-field>
+                               
+                    <mat-label>Enter SAP Customer Code</mat-label>
+                    <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
+                    <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
+                      Special characters are not allowed
+                    </mat-error>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
+                      SAP Customer Code length must be <strong>8 digits</strong>
+                    </mat-error>
+                </mat-form-field>
                 </div>
               </div>
               <div class="mat_fld_box_in" fxFlex="80">
@@ -394,7 +402,7 @@
             </div>
          
           </div>
-          
+          <button mat-button mat-dialog-close  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="editSubmit()">Submit</button>
         </div>
       </form>
    </ng-template>

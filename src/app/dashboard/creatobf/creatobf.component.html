@@ -34,8 +34,11 @@
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
-                            <div class="mat_upload_tit">
+                            <div class="mat_upload_tit" *ngIf="!isppl" >
                               Attach OBF SHEET 
+                            </div>
+                            <div class="mat_upload_tit" *ngIf="isppl" >
+                              Attach PPL SHEET 
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
@@ -56,8 +59,11 @@
                               <button [disabled]="!(coversheetfiles.length >0) || iscoversheet" (click)="uploadfiles(coversheetfiles,'coversheet')" class="creat_bt" mat-flat-button>Upload</button>
                             </div>
                             <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0)">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="!isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded Attach Obf Sheet 
+                             </div>
+                             <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
+                              Uploaded PPL Sheet 
                              </div>
                             <div *ngIf="Coversheetprogress.length == 0">
                               
@@ -472,9 +478,12 @@
                                
                                   <mat-label>Enter SAP Customer Code</mat-label>
                                   <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                                  <input matInput formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                                  <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
                                     Special characters are not allowed
+                                  </mat-error>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
+                                    SAP Customer Code length must be <strong>8 digits</strong>
                                   </mat-error>
                               </mat-form-field>
                             </div>
@@ -604,9 +613,7 @@
                           <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
                           <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
                           </div>
-                          <div class="sap_io_wr" *ngIf="(this.SAPIONum.length < 35)">
-                            {{this.SAPIONum}}
-                          </div>
+                          
                         
                       </div>
                    </div>
@@ -676,7 +683,8 @@
               {{_obfservices.obfmodel._customer_name}}
             </div>
           </div>
-           
+        
+      
                       </div>
                       <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                         <div class="mat_previe_box">
@@ -769,10 +777,14 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div>
+                        
+                           <div *ngIf="(this.service.length > 35)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
-                        <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
+                              <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
+                              <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
+                           </div>
+                           <div *ngIf="(this.service.length < 35)">
+                            {{(this.service)}}  
                            </div>
                         </div>
                      </div> 
@@ -792,7 +804,7 @@
                           <div class="prev_tit">
                             Assumption & Risk
                           </div>
-                          <div class="prev_dis">
+                          <div class="prev_dis" >
                             {{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>

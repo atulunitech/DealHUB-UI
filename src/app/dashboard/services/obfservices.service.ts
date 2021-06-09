@@ -72,7 +72,11 @@ class obfsolutionandservices
   sapio:SAPIO[] = [];
   _dh_comment:string;
 }
-
+class PPl_details
+{
+  PPL_dh_id:number;
+  tablename:string;
+}
 class obfsummary{
   
   solutionDetails:solutionDetails[];
@@ -81,7 +85,8 @@ class obfsummary{
   CommentDetails:CommentDetails[];
   VersionDetails:VersionDetails[];
   servicelist:solutionservicelist[];
- 
+  PPl_details:PPl_details[];
+  SAPdetail:SAPdetail[];
 
 }
 class solutionservicelist
@@ -128,6 +133,10 @@ class uploadDetails{
   exceptionalcase_ceo_updatedby:string;
   Cust_SAP_IO_Number:number;
   is_latest_version:number;
+  phase_code:string;
+  parent_dh_main_id:number;
+  ppl_init:number;
+  ppl_status:string;
 }
 
 class solutionDetails
@@ -235,6 +244,7 @@ class editObf{
   _total_project_life:string;
   _irr_surplus_cash:number;
   _ebt:number;
+  _parent_dh_main_id:number;
   _capex:number;
   _irr_borrowed_fund:number;
   _is_loi_po_uploaded:string;
@@ -268,7 +278,11 @@ class editObf{
     is_on_hold:number;
 
   }
-
+class SAPdetail
+{
+  cust_sap_io_number:string;
+  tablename:string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -316,7 +330,7 @@ export class OBFServices {
       Createddate:new FormControl(""),
       Sapio:new FormControl(null,[this.SIOnumbervalidate]),
       Customername:new FormControl("",Validators.required),
-      Sapcustomercode:new FormControl("",[this.NoSpecialCharacters]),
+      Sapcustomercode:new FormControl("",[this.NoSpecialCharacters,this.SIOnumbervalidate]),
       Projectprimarylocation:new FormControl(""),
       Solutiontype:new FormControl(""),
       Sector:new FormControl(""),
@@ -359,6 +373,12 @@ export class OBFServices {
        httpOptions);  
   }
 
+  editsapcustcode_and_io(model:obf): Observable<any> {  
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/EditCustomerCodeandIo",model ,
+       httpOptions);  
+  }
+
   savesolutionandservices(model:obfsolutionandservices): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveServiceSolutionSector",model ,
@@ -372,7 +392,7 @@ export class OBFServices {
   }
 
    SIOnumbervalidate(control: AbstractControl): {[key: string]: any} | null  {
-    if (control.value && control.value.length != 8) {
+    if (control.value && control.value.toString().length != 8) {
       return { 'Sionumberinvalid': true };
     }
     return null;
@@ -492,6 +512,7 @@ export class OBFServices {
         this.obfmodel._vertical_id = this.editObfObject._vertical_id;
         this.obfmodel._verticalhead_id = this.editObfObject._verticalhead_id;
         this.obfmodel._dh_desc = this.editObfObject._dh_desc;
+        this.obfmodel._parent_dh_main_id = this.editObfObject._parent_dh_main_id;
         this.obfmodel._total_revenue = this.editObfObject._total_revenue;
         this.obfmodel._total_cost = this.editObfObject._total_cost;
         this.obfmodel._total_margin = this.editObfObject._total_margin;

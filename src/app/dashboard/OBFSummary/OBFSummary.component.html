@@ -2,8 +2,9 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
     <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
         <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> BACK</div>
-    <div class="com_title conm_title_obf"  *ngIf="(this.privilege_name) ==  'OBF Initiator' || (this.privilege_name) ==  'OBF Reviewer'">OBF Summary</div>
-    <div class="com_title conm_title_obf" *ngIf="(this.privilege_name) ==  'PPL Initiator'">PPL Summary</div>
+    <div class="com_title conm_title_obf"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}</div>
+   
+   
 </div>
 <div>
   <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
@@ -16,13 +17,11 @@
         <mat-accordion [multi]="true">
             <mat-expansion-panel [expanded]="true" disabled>
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                    <mat-panel-title  *ngIf="(this.privilege_name) ==  'OBF Initiator' || (this.privilege_name) ==  'OBF Reviewer'">
-                      OBF Summary
+                    <mat-panel-title>
+                      {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
+                      <button mat-flat-button class="creat_bt edit_bt"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                     </mat-panel-title>
-                    <mat-panel-title  *ngIf="(this.privilege_name) ==  'PPL Initiator'">
-                      PPL Summary
-                    </mat-panel-title>
-                  </mat-expansion-panel-header>
+                   </mat-expansion-panel-header>
                   <form [formGroup]="obfsummaryform">
                   <div class="mat_exp_wrp">
                    
@@ -47,14 +46,9 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" >
-                       <!-- <div  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number.length > 20)">
-                         {{(SAPNumMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) : (_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number) | slice:0:50 }}  
-                         <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                         <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
-                         </div> -->
+                     <div class="prev_dis" style=" width: 200px;word-break: break-word;">
                          <div>
-                           {{_obfservices.obfsummarymodel.uploadDetails[0].Cust_SAP_IO_Number}}
+                           {{this.SAPIONo}}
                          </div>
                      </div>
                   </div>
@@ -105,11 +99,6 @@
                
                </div>
             </div>
-                      
-                    
-                      
-            
-           
                       </div>
                       
                       <div fxLayout="row " fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp color_none_fld">
@@ -275,7 +264,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 10)">
+                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 20)">
                         {{(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc)}}  
                        </div>
                    </div> 
@@ -315,7 +304,7 @@
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      LOI/Po
+                      LOI/PO
                     </div>
                     <div class="prev_dis">
                     
@@ -323,12 +312,12 @@
                       
                     </div>
                  </div>
-                 <div class="mat_previe_box" >
+                 <div class="mat_previe_box"  *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   <div class="prev_dis" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
                   <div class="mat_cu_indic">
- <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
+                  <div class="prev_dis mt-cust-fd-com" *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
                   
@@ -340,14 +329,7 @@
                       {{this.cfomessgae}}
                     </label>
                     </div>
-                    <!-- <div class="prev_dis"  *ngIf="MarginException">
-                      <label>
-                        Margin Exception Requested by VSH.
-                      </label>
-                      </div> -->
-                      <div class="mar_exc" *ngIf="MarginException">
-                        Margin Exception Requested by VSH.
-                      </div>
+                   
                   <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
@@ -355,6 +337,9 @@
                     <label>
                       {{this.CEOmessage}}
                     </label>
+                    </div>
+                    <div class="mar_exc" *ngIf="MarginException">
+                      Margin Exception Requested by VSH.
                     </div>
                   </div>
                  
@@ -401,27 +386,17 @@
                             </div>
                           </perfect-scrollbar>
                           <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
+                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
                                     <mat-label>Enter Comments </mat-label>
-                                      <input matInput formControlName="comments" style="margin-left: 0px;"/>
+                                      <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
                                       </mat-error>
                                     </mat-form-field>
                                 </div>
-                              
-
-                              <!-- <mat-form-field>
-                              
-                               <input type="text" matInput formControlName="comments">
-                               
-                               <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
-                                 Comment is <strong>required</strong>
-                               </mat-error>
-                             </mat-form-field> -->
                              <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
                              
                             </div>
@@ -444,7 +419,7 @@
                           <div (click)="downloadCoversheet($event)" class="up_pdf_com">
                              Download
                              <span>
-                               <img src="../../../assets/images/dwon-file-icon.png">
+                               <img src="assets/images/dwon-file-icon.png">
                              </span>
                           </div>
                           <!-- <div class="up_pdf_com dw_pdf_com">
@@ -465,13 +440,13 @@
                         <div (click)="downloadsuppodocument($event)" class="up_pdf_com">
                            Download
                            <span>
-                             <img src="../../../assets/images/dwon-file-icon.png">
+                             <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
                         <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload($event,'Supporting')" >
                           Upload
                           <span>
-                            <img src="../../../assets/images/up-file-icon.png">
+                            <img src="assets/images/up-file-icon.png">
                           </span>
                        </div>
                       </div>
@@ -482,16 +457,16 @@
                       LOI/PO/Agreement
                     </div>
                     <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                      <div class="up_pdf_com" (click)="OpenDocDownload($event,'Supporting')">
+                      <div class="up_pdf_com" (click)="downloadLOIp($event)">
                          Download
                          <span>
-                           <img src="../../../assets/images/dwon-file-icon.png">
+                           <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
                       <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'loipo')"  >
                         Upload
                         <span>
-                          <img src="../../../assets/images/up-file-icon.png">
+                          <img src="assets/images/up-file-icon.png">
                         </span>
                      </div>
                     </div>
@@ -505,13 +480,13 @@
                     <div class="up_pdf_com" (click)="downloadFinal($event)">
                        Download
                        <span>
-                         <img src="../../../assets/images/dwon-file-icon.png">
+                         <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
                     <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'FinalAgg')" >
                       Upload
                       <span>
-                        <img src="../../../assets/images/up-file-icon.png">
+                        <img src="assets/images/up-file-icon.png">
                       </span>
                    </div>
                   </div>
@@ -584,6 +559,10 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
                       <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
                        </ng-container>
+                       <ng-container  matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                      <mat-cell  *matCellDef="let row" (click)="getdownloadfile(row)" ><img *ngIf="row.actions != ''" src="assets/images/download_icon.png"></mat-cell>
+                       </ng-container>
                     
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -599,7 +578,7 @@
               <button mat-flat-button class="creat_bt mat_fot_bt on_hold_bt" (click)="onHoldDetails()">On Hold</button>
             </div>
             <div class="mat_fot_drf" >
-              <button mat-flat-button class="creat_bt mat_fot_bt rej_tran" (click)="RejectDeatils()"> Rejected</button>
+              <button mat-flat-button class="creat_bt mat_fot_bt rej_tran" (click)="RejectDeatils()"> Reject</button>
               <button mat-flat-button class="creat_bt" (click)="ApproveDeatils()">
                 Approve
               </button>
@@ -640,7 +619,9 @@
                 <mat-option value="LOI">
                   LOI
                 </mat-option>
-             
+                <mat-option value="Agreement">
+                  Agreement
+                </mat-option>
               </mat-select>
               
             </mat-form-field>
