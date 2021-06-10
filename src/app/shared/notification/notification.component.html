@@ -3,12 +3,21 @@
 </div>
 <div class="not_cont"  (click)="Get_System_Notification()" [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
      <div class="not_fi_titl">
-        All Notifications
+       <div class="see_all">All Notifications</div> 
+       <div class="see_all_read">Mark all as read
+         <div class="cross_all">
+            <div class="cross_in">
+              <div class="md"></div>
+            </div>
+          </div>
+       </div>
      </div>
      <div class="not_fy_box" *ngFor="let details of commonService.notificationDetails">
-         <div class="not_left_con"><img src="assets/images/user_icon.png"></div>
+        <div class="not_clos"><img src="../../../assets/images/not_cross.png"></div>
+         <div class="not_left_con new_not_left"><img src="assets/images/not_icon.png"></div>
          
-         <div>
+         <div class="not_right_con">
+            <h2>User</h2>
             <h3>{{details.notification_text}}</h3>
             <p>{{details.notification_date}}</p>
         </div>
