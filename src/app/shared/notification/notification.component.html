@@ -5,12 +5,16 @@
      <div class="not_fi_titl">
         All Notifications
      </div>
-     <div class="not_fy_box" *ngFor="let details of commonService.notificationDetails">
+     <div (click)="markallread()">Mark all as read</div>
+     <div class="not_fy_box" (click)="Update_System_Notification(details.dh_system_notification_id)"   *ngFor="let details of commonService.notificationDetails" >
          <div class="not_left_con"><img src="assets/images/user_icon.png"></div>
          
          <div>
             <h3>{{details.notification_text}}</h3>
-            <p>{{details.notification_date}}</p>
+            <p>{{details.notification_date|date}}</p>
+            {{details.IsRead}}
+          
         </div>
+
      </div>
 </div>
