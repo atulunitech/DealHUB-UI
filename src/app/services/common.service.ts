@@ -47,11 +47,18 @@ Get_System_Notification(usercode:string)
    console.log(data);
    this.notificationDetails = data.notification;
  
-   console.log("check data after transformation");
+  
    console.log( this.notificationDetails);
 
 
   // this.router.navigate(['/DealHUB/dashboard/OBFSummary']);
    
     }
+  
+    Update_System_Notification(model:any)
+ {
+    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+     return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model ,
+        httpOptions);  
+ }
 }

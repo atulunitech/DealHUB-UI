@@ -19,7 +19,10 @@
          <div class="not_right_con">
             <h2>User</h2>
             <h3>{{details.notification_text}}</h3>
-            <p>{{details.notification_date}}</p>
+            <p>{{details.notification_date|date}}</p>
+            {{details.IsRead}}
+          
         </div>
+
      </div>
 </div>
