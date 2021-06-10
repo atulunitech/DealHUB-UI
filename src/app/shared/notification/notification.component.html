@@ -1,15 +1,16 @@
 <div class="fead_cont" (click)="not_view()">
 
 </div>
-<div class="not_cont" [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
+<div class="not_cont"  (click)="Get_System_Notification()" [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
      <div class="not_fi_titl">
         All Notifications
      </div>
-     <div class="not_fy_box">
+     <div class="not_fy_box" *ngFor="let details of commonService.notificationDetails">
          <div class="not_left_con"><img src="assets/images/user_icon.png"></div>
+         
          <div>
-             <h3>Lorem Ipsum</h3>
-             <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</p>
-         </div>
+            <h3>{{details.notification_text}}</h3>
+            <p>{{details.notification_date}}</p>
+        </div>
      </div>
 </div>
