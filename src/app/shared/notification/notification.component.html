@@ -12,7 +12,7 @@
           </div>
        </div>
      </div>
-     <div class="not_fy_box" [ngStyle]="{'backgroundColor': details.IsRead == '0' ? '#fff' : '#e5eeff' }"  (click)="Update_System_Notification(details.dh_system_notification_id)" *ngFor="let details of commonService.notificationDetails">
+     <div class="not_fy_box" [ngStyle]="{'backgroundColor': details.IsRead === '0' ? '#fff' : '#e5eeff' }"  (click)="Update_System_Notification(details.dh_system_notification_id)" *ngFor="let details of commonService.notificationDetails">
         <div class="not_clos"><img src="../../../assets/images/not_cross.png"></div>
          <div class="not_left_con new_not_left"><img src="assets/images/not_icon.png"></div>
          
