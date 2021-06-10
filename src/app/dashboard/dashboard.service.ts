@@ -45,7 +45,8 @@ export class DashboardService {
   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
   params: new HttpParams().set('dh_id', dh_id.toString())
   .set('dh_header_id',dh_header_id.toString()) };  
-  return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetAttachmentDocument",
+  return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetAttachmentDocument",
      httpOptions);  
  }
+ 
 }
