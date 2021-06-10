@@ -586,9 +586,11 @@ class filesdetail
   }
   }
     const dialogRef = this.dialog.open(this.callAPIDialog, {
-      width: '500px',
-      height:'600px',
-      disableClose: true,
+      // width: '500px',
+      // height:'600px',
+      // disableClose: true,
+      panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
      // data: { campaignId: this.params.id }
   })
  
