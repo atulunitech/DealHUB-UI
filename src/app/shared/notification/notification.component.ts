@@ -5,6 +5,7 @@ import { CommonService } from '../../services/common.service';
 export class systemnotificationparameters{
   _dh_system_notification_id:number;
   _IsRead:number;
+  _IsSoftDelete:number;
 }
 @Component({
   selector: 'app-notification',
@@ -21,6 +22,7 @@ export class NotificationComponent implements OnInit {
 
   not_view()
   {
+    this.Update_System_Notification();
     this.Get_System_Notification();
     this.commonService.notification();
    // this.Get_System_Notification();
@@ -38,45 +40,75 @@ export class NotificationComponent implements OnInit {
 
     })
   }
-  systemnotificationparameters:systemnotificationparameters[]=[];
-  Update_System_Notification(_dh_system_notification_id)
+  clickonnotification(dh_system_notification_id)
   {
-    let Savenotification:systemnotificationparameters = new systemnotificationparameters();
-    Savenotification._dh_system_notification_id=_dh_system_notification_id;
-    Savenotification._IsRead=0;
-    this.systemnotificationparameters.push(Savenotification);
-    this.commonService.Update_System_Notification(this.systemnotificationparameters).subscribe(data=>{
-      console.log(data);
-      var jsonresult=JSON.parse(data);
-      this.commonService.initializeNotification(JSON.parse(data));
-      this.Get_System_Notification();
+    
+    let index=this.commonService.notificationDetails.findIndex(obj=> obj.dh_system_notification_id==dh_system_notification_id);
+    this.commonService.notificationDetails[index].IsRead=0;
+
+  }
+  systemnotificationparameters:systemnotificationparameters[]=[];
+  Update_System_Notification()
+  {
+    if(this.commonService.notificationDetails != undefined)
+    {
+      let index=this.commonService.notificationDetails.findIndex(obj=> obj.IsRead==0);
+      if(index>-1)
+      {
+        if(this.commonService.notificationDetails.length !=0)
+      { 
+      
+        for(let i=0;i<this.commonService.notificationDetails.length;i++)
+        {
+          if(this.commonService.notificationDetails[i].IsRead==0)
+          {
+            let Savenotification:systemnotificationparameters = new systemnotificationparameters();
+            Savenotification._dh_system_notification_id=this.commonService.notificationDetails[i].dh_system_notification_id;
+            Savenotification._IsRead=0;
+            this.systemnotificationparameters.push(Savenotification);
+          }
+        } 
+        
+      }
+        this.commonService.Update_System_Notification(this.systemnotificationparameters).subscribe(data=>{
+          console.log(data);
+          var jsonresult=JSON.parse(data);
+          this.Get_System_Notification();
+          //this.commonService.initializeNotification(JSON.parse(data));
+        })
+      }
+    }
+   
+  
+     
       //alert("notifcation called");
 
-    })
+    
   }
   markallread()
   {
-    this.systemnotificationparameters=[];
     if(this.commonService.notificationDetails.length !=0)
-    { 
-      let Savenotification:systemnotificationparameters = new systemnotificationparameters();
+    {
       for(let i=0;i<this.commonService.notificationDetails.length;i++)
       {
-       
-        Savenotification._dh_system_notification_id=this.commonService.notificationDetails[i].dh_system_notification_id;
-        Savenotification._IsRead=0;
-        
-        this.systemnotificationparameters.push(Savenotification);
-      } 
-      
+        this.commonService.notificationDetails[i].IsRead=0;
+      }
     }
-    this.commonService.Update_System_Notification(this.systemnotificationparameters).subscribe(data=>{
-      console.log(data);
-      var jsonresult=JSON.parse(data);
-      this.commonService.initializeNotification(JSON.parse(data));
-     this.Get_System_Notification();
-      //alert("notifcation called");
 
-    })
+  }
+  cancelnotification(dh_system_notification_id)
+  {
+           let Savenotification:systemnotificationparameters = new systemnotificationparameters();
+            Savenotification._dh_system_notification_id=dh_system_notification_id;
+            Savenotification._IsRead=0;
+            Savenotification._IsSoftDelete=1;
+            this.systemnotificationparameters.push(Savenotification);
+            this.commonService.Update_System_Notification(this.systemnotificationparameters).subscribe(data=>{
+              console.log(data);
+              var jsonresult=JSON.parse(data);
+              this.Get_System_Notification();
+            // this.commonService.initializeNotification(JSON.parse(data));
+            })
+          
   }
 }

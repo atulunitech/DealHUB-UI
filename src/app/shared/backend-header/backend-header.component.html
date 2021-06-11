@@ -12,5 +12,5 @@
 
 <div class="not_alt" (click)="not_view()">
     <img src="assets/images/notification_icon.png">
-    <span>{{this.commonService.notificationDetails.length==0?'0' :this.commonService.notificationDetails.length}}</span>
+    <span>{{this.commonService.notificationDetails == undefined || this.commonService.notificationDetails.length==0?'0' :this.commonService.notificationDetails.length}}</span>
 </div>
