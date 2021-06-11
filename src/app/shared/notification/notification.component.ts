@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit {
 
   not_view()
   {
-   // this.Get_System_Notification();
+    this.Get_System_Notification();
     this.commonService.notification();
    // this.Get_System_Notification();
   }
@@ -49,7 +49,7 @@ export class NotificationComponent implements OnInit {
       console.log(data);
       var jsonresult=JSON.parse(data);
       this.commonService.initializeNotification(JSON.parse(data));
-     this.Get_System_Notification();
+      this.Get_System_Notification();
       //alert("notifcation called");
 
     })
