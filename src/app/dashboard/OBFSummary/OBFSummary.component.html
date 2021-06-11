@@ -184,7 +184,7 @@
                       Total Project Life 
                     </div>
                     <div class="prev_dis">
-                      {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}}  Days
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}} 
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -245,12 +245,12 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div *ngIf="(this.service.length > 35)">
+                          <div *ngIf="(this.service.length > 20)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 35)">
+                           <div *ngIf="(this.service.length < 20)">
                             {{(this.service)}}  
                            </div>
                         </div>
