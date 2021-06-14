@@ -988,3 +988,23 @@
     }
 }
 /*e*/
+
+.dwon_ic_con
+{
+    cursor: pointer;
+    img
+    {
+       @include heightwidth(15px,initial);
+    }
+}
+
+.summ_obf_click
+{
+    font-size: 11px;
+    line-height: initial;
+    padding: 0;
+    margin-left: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 500;
+}
