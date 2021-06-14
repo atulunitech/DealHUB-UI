@@ -876,16 +876,18 @@ downloaddetailFinalAgg(row)
       else if(selection==4)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-      
-          this.filterdata=this.dashboardData.filter(obj=>
-            {
-              if(obj.shortcurrentstatus=='rejected')
-              {
-                return obj;
-              }
-            }
-          );
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
+        }
+        else
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
+        }
+        
         this.listData=new MatTableDataSource(this.filterdata);
+
+        
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }

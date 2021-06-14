@@ -20,7 +20,7 @@
        </div>
      </div>
      <div class="not_fy_box" [ngStyle]="{'backgroundColor': details.IsRead === 0 ? '#fff' : '#e5eeff' }"  (click)="clickonnotification(details.dh_system_notification_id)" *ngFor="let details of commonService.notificationDetails">
-        <div class="not_clos" (click)="cancelnotification(details.dh_system_notification_id)"><img src="../../../assets/images/not_cross.png"></div>
+        <div class="not_clos" (click)="cancelnotification(details.dh_system_notification_id)"><img src="assets/images/not_cross.png"></div>
          <div class="not_left_con new_not_left"><img src="assets/images/not_icon.png"></div>
          
          <div class="not_right_con">
