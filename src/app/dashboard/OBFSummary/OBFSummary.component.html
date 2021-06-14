@@ -46,7 +46,7 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" style=" width: 200px;word-break: break-word;">
+                     <div class="prev_dis dis_io" >
                          <div>
                            {{this.SAPIONo}}
                          </div>
@@ -76,13 +76,13 @@
                    {{_obfservices.obfsummarymodel.uploadDetails[0].VerticalHeadName}} 
                  </div>
               </div>
-              <div class="mat_previe_box">
+              <div class="mat_previe_box selc_version_box">
                <!-- <div class="prev_tit">
                  Version
                </div> -->
                <!-- [disabled]="loiopdisabled" -->
                <div class="prev_dis" >
-                <div class="mt-cust-fd upl_sec_cut" style="margin: 0;margin-top: -7px;position: relative;top: 4px;">
+                <div class="mt-cust-fd upl_sec_cut selc_version" >
                   <mat-form-field appearance="fill" class="example-full-width" >
                     <mat-label>Select version</mat-label>
                     <mat-select  formControlName="version" disableOptionCentering>

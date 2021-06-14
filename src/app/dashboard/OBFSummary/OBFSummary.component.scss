@@ -68,6 +68,10 @@
                     max-width: 300px;
                     @include heightwidth(auto,initial);
                     @include padding(inherit,24px,20px,24px);
+                    &.selc_version_box
+                            {
+                                max-width: 145px !important ;
+                            }
                     .prev_tit
                     {
                         opacity: 0.6;
@@ -91,7 +95,14 @@
                                 font-weight: 400;
                                 font-style: italic;                            
                             }
-                        
+                            
+                        .selc_version
+                        {
+                            margin: 0;margin-top: -7px;position: relative;top: 4px;
+                            display: contents;
+                        }
+                       
+
                     }
                     .mat_cu_indic
                     {
@@ -335,6 +346,7 @@
                            .prev_dis
                            {
                                @include margin(initial,initial,5px,initial);
+                              
                            }
                            .mat_comment_box
                            {
@@ -434,6 +446,11 @@
                         .prev_dis
                         {
                             color: #141414;
+                            &.dis_io
+                            {
+                             max-width: 200px;word-break: break-word;
+
+                            }
                         }
                         .prev_tit
                         {
