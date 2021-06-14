@@ -3,7 +3,11 @@
 </div>
 <div class="not_cont"   [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
    
-<div class="not_not_found" style="display: none;">No new notifications</div>
+<div class="not_not_found" >
+<div class="img_notf"><img src="../../../assets/images/notf_not_aw.png"></div>
+<h3>No notifications yet !</h3>
+<p>Will notify you when something arrives.</p>
+</div>
      <div class="not_fi_titl">
        <div class="see_all">All Notifications</div> 
        <div class="see_all_read" (click)="markallread()">Mark all as read

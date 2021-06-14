@@ -15,10 +15,35 @@ position: absolute;
 z-index: 99;
 color: #ccc;
 width: 100%;
-transform: translate(0px, 50%);
+transform: translate(0px, -50%);
 top: 50%;
 font-size: 0.9rem;
 text-transform: capitalize;
+display: none;
+&.no_not_displ
+{
+    display: block;
+}
+.img_notf
+{
+    background-image: linear-gradient(to bottom, #f0f5fc -30%, #ffffff 50%);
+    border-radius: 50%;
+    padding: 35px 0 35px 0;
+    width: 200px;
+    margin: 0 auto;
+    text-align: center;
+    img{width: 100px;}
+}
+h3{
+    color: #525252;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+p{
+    color: #2258bf;
+    font-size: 0.950rem;
+    font-weight: 500;
+}
     }
 
     &.view
