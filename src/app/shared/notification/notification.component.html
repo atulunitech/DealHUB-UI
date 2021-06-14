@@ -1,15 +1,26 @@
 <div class="fead_cont" (click)="not_view()">
 
 </div>
-<div class="not_cont" [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
+<div class="not_cont"   [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
      <div class="not_fi_titl">
-        All Notifications
+       <div class="see_all">All Notifications</div> 
+       <div class="see_all_read" (click)="markallread()">Mark all as read
+         <div class="cross_all">
+            <div class="cross_in">
+              <div class="md"></div>
+            </div>
+          </div>
+       </div>
      </div>
-     <div class="not_fy_box">
-         <div class="not_left_con"><img src="assets/images/user_icon.png"></div>
-         <div>
-             <h3>Lorem Ipsum</h3>
-             <p>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy</p>
+     <div class="not_fy_box" [ngStyle]="{'backgroundColor': details.IsRead === 0 ? '#fff' : '#e5eeff' }"  (click)="clickonnotification(details.dh_system_notification_id)" *ngFor="let details of commonService.notificationDetails">
+        <div class="not_clos" (click)="cancelnotification(details.dh_system_notification_id)"><img src="assets/images/not_cross.png"></div>
+         <div class="not_left_con new_not_left"><img src="assets/images/not_icon.png"></div>
+         
+         <div class="not_right_con">
+            <h2>User</h2>
+            <h3>{{details.notification_text}}</h3>
+            <p>{{details.notification_date|date}}</p>
          </div>
+
      </div>
 </div>

@@ -20,7 +20,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
-
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -39,6 +40,7 @@ class CommentDetails
   Version_name:string;
   Status:string;
   role_code:string;
+  Initials:string;
 }
 class filesdetail
 {
@@ -55,7 +57,9 @@ class filesdetail
   })
 
   export class OBFSummaryComponent implements OnInit {
-   
+    public types: string = 'component';
+    @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+    @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
       comments : new FormControl("",[Validators.required]),
@@ -446,7 +450,8 @@ class filesdetail
   SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
-    if(this.obfsummaryform.get("comments").value!= "")
+    
+    if(this.obfsummaryform.get("comments").value!= "" || this.types === 'directive' && this.directiveRef)
     {
       
       var comment=this.obfsummaryform.get("comments").value;
@@ -462,10 +467,24 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
+      const fullName = this.User_name. split(' ');
+      const initials = fullName. shift(). charAt(0) + fullName. pop(). charAt(0);
+
+
+      SaveComment.Initials= initials. toUpperCase();
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
+       this.directiveRef.scrollToBottom(1000);
      
     }
+      else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+      this.componentRef.directiveRef.scrollToBottom();
+    }
+    //  if (this.types === 'directive' && this.directiveRef) {
+    //   this.directiveRef.scrollToBottom();
+    // } else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+    //   this.componentRef.directiveRef.scrollToBottom();
+    // }
   }
   deletecomment()
   {
@@ -567,9 +586,11 @@ class filesdetail
   }
   }
     const dialogRef = this.dialog.open(this.callAPIDialog, {
-      width: '500px',
-      height:'600px',
-      disableClose: true,
+      // width: '500px',
+      // height:'600px',
+      // disableClose: true,
+      panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
      // data: { campaignId: this.params.id }
   })
  

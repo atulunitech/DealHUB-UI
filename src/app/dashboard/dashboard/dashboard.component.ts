@@ -629,9 +629,11 @@ downloaddetailobf(element)
     window.open(url);
   }
 }
-downloaddetailFinalAgg(element)
+downloaddetailFinalAgg(row)
 {
-
+  var dh_id=row.dh_id;
+  var dh_header_id=row.dh_header_id;
+  this.getattachment(dh_id,dh_header_id);
 }
   getToolTipData(issueId: any): any {
     
@@ -874,16 +876,18 @@ downloaddetailFinalAgg(element)
       else if(selection==4)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-      
-          this.filterdata=this.dashboardData.filter(obj=>
-            {
-              if(obj.shortcurrentstatus=='rejected')
-              {
-                return obj;
-              }
-            }
-          );
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
+        }
+        else
+        {
+          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
+        }
+        
         this.listData=new MatTableDataSource(this.filterdata);
+
+        
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }
@@ -1279,8 +1283,37 @@ validateform()
   }
   return true;
 }
-getattachment(row)
+getattachment(dh_id,dh_header_id)
 {
-  
+ 
+  this._dashboardservice.GetAttachmentDocument(dh_id,dh_header_id).subscribe(data=>{
+    console.log(data);
+    var jsonresult=JSON.parse(data);
+    if(jsonresult != null || jsonresult.AttachmentDetails.length !=0)
+    {
+      let index=jsonresult.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+      if(index > -1)
+      {
+        for(let i=0;i< jsonresult.AttachmentDetails.length;i++)
+        {
+          if(jsonresult.AttachmentDetails[i].description=="FinalAgg")
+          {
+              let url="";
+              url = environment.apiUrl+jsonresult.AttachmentDetails[i].filepath;
+              window.open(url);
+          }
+        }
+      }
+      else{
+        this._mesgBox.showError("No Final Aggrement Documents to Download");
+      }
+     
+    }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+    
+  })
 }
 }

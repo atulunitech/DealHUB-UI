@@ -608,10 +608,11 @@
                         SAP IO Number
                       </div>
                       <div class="prev_dis">
-                        <div class="sap_io_wr"  *ngIf="(this.SAPIONum.length > 35)">
-                          {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}  
-                          <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a>
+                        <div class="sap_io_wr" >
+                          {{this.SAPIONum }}  
+                          <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
+                          <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
                           </div>
                           
                         
@@ -778,12 +779,12 @@
                         </div>
                         <div class="prev_dis">
                         
-                           <div *ngIf="(this.service.length > 35)">
+                           <div *ngIf="(this.service.length > 10)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 35)">
+                           <div *ngIf="(this.service.length < 10)">
                             {{(this.service)}}  
                            </div>
                         </div>
