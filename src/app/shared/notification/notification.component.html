@@ -2,14 +2,21 @@
 
 </div>
 <div class="not_cont"   [ngClass]="this.commonService.notification_view ? 'view' : 'viewnot'">
+   
+<div class="not_not_found" style="display: none;">no-notification</div>
      <div class="not_fi_titl">
        <div class="see_all">All Notifications</div> 
        <div class="see_all_read" (click)="markallread()">Mark all as read
-         <div class="cross_all">
+         <!-- <div class="cross_all" >
             <div class="cross_in">
               <div class="md"></div>
             </div>
-          </div>
+          </div> -->
+       </div>
+       <div class="cross_all" (click)="not_view()" >
+         <div class="cross_in">
+           <div class="md"></div>
+         </div>
        </div>
      </div>
      <div class="not_fy_box" [ngStyle]="{'backgroundColor': details.IsRead === 0 ? '#fff' : '#e5eeff' }"  (click)="clickonnotification(details.dh_system_notification_id)" *ngFor="let details of commonService.notificationDetails">
