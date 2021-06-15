@@ -13,7 +13,7 @@
 </div>
 </div>
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
-    <div class="cust-accor">
+    <div class="cust-accor summary_accor">
         <mat-accordion [multi]="true">
             <mat-expansion-panel [expanded]="true" disabled>
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
@@ -361,12 +361,15 @@
                           </div>
                           <perfect-scrollbar class="perfect_scroll_com"  >
                             <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
-                              <div class="us_comm_nt">
-                                {{details.Initials}}
+                              <div class="us_comm_nt" title="{{details.role_code}}">
+                                <!-- {{details.Initials}} -->
+                                {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="Role_name" style="display: none;">{{details.role_name}}</div>
-                                <div class="Fullname">{{details.Fullname}}<span>({{details.role_code}})</span></div>
+                                <div class="Fullname">{{details.Fullname}}<span>
+                                  <!-- ({{details.role_code}}) -->
+                                </span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
                                   <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
@@ -540,7 +543,7 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel style="margin-top: 20px;">
+            <mat-expansion-panel class="last_exp_pan" style="margin-top: 20px;">
                 <mat-expansion-panel-header collapsedHeight="50px"  expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History
