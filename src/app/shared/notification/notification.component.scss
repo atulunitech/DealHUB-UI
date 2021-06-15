@@ -8,6 +8,44 @@
     background-color: #fff;
     box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
     position: relative;
+    .not_not_found
+    {
+        text-align: center;
+position: absolute;
+z-index: 99;
+color: #ccc;
+width: 100%;
+transform: translate(0px, -50%);
+top: 50%;
+font-size: 0.9rem;
+text-transform: capitalize;
+display: none;
+&.no_not_displ
+{
+    display: block;
+}
+.img_notf
+{
+    background-image: linear-gradient(to bottom, #f0f5fc -30%, #ffffff 50%);
+    border-radius: 50%;
+    padding: 35px 0 35px 0;
+    width: 200px;
+    margin: 0 auto;
+    text-align: center;
+    img{width: 100px;}
+}
+h3{
+    color: #525252;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+p{
+    color: #2258bf;
+    font-size: 0.950rem;
+    font-weight: 500;
+}
+    }
+
     &.view
     {
         width: 360px;
@@ -32,6 +70,7 @@
     padding-right: 20px;
     background-color: #f1f1f1;
     justify-content: space-between;
+    position: relative;
     .see_all
     {
         color: #000;
@@ -47,31 +86,61 @@
         align-items: center;
         display: inherit;
         cursor: pointer;
-        .cross_all
-        {
-            display: inline-block;
-    width: 16px;
+        padding-right: 22px;
+//         .cross_all
+//         {
+//             display: inline-block;
+//             width: 16px;
+//             height: 16px;
+//             border-left: 1px solid #2258bf;
+//             margin-left: 7px;
+//             padding-left: 2px;
+//             .cross_in
+//             {
+//                 height: 16px;
+//                 width: 2px;
+//                 margin-left: 11px;
+//                 background-color: #2258bf;
+//                 transform: rotate(45deg);
+//                 Z-index: 1;
+//                 .md {
+//                     height: 16px;
+//                 width: 2px;
+//                 background-color: #2258bf;
+//                 transform: rotate(90deg);
+//                 Z-index: 2;
+//                 }
+//   }
+//         }
+    }
+    .cross_all
+    {
+        display: inline-block;
+    width: 22px;
     height: 16px;
     border-left: 1px solid #2258bf;
     margin-left: 7px;
     padding-left: 2px;
-  .cross_in
-  {
-    height: 16px;
+    position: absolute;
+    right: 10px;
+    top: 22px;
+    cursor: pointer;
+        .cross_in
+        {
+            height: 16px;
     width: 2px;
     margin-left: 11px;
-    background-color: #2258bf;
+    background-color: #000;
     transform: rotate(45deg);
     Z-index: 1;
-    .md {
-        height: 16px;
+            .md {
+                height: 16px;
     width: 2px;
-    background-color: #2258bf;
+    background-color: #000;
     transform: rotate(90deg);
     Z-index: 2;
-      }
-  }
-        }
+            }
+}
     }
     }
     .not_fy_box

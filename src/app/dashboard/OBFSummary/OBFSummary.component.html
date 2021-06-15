@@ -19,7 +19,7 @@
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
                       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
-                      <button mat-flat-button class="creat_bt edit_bt"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
+                      <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                     </mat-panel-title>
                    </mat-expansion-panel-header>
                   <form [formGroup]="obfsummaryform">
@@ -46,7 +46,7 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" style=" width: 200px;word-break: break-word;">
+                     <div class="prev_dis dis_io" >
                          <div>
                            {{this.SAPIONo}}
                          </div>
@@ -76,13 +76,13 @@
                    {{_obfservices.obfsummarymodel.uploadDetails[0].VerticalHeadName}} 
                  </div>
               </div>
-              <div class="mat_previe_box">
+              <div class="mat_previe_box selc_version_box">
                <!-- <div class="prev_tit">
                  Version
                </div> -->
                <!-- [disabled]="loiopdisabled" -->
                <div class="prev_dis" >
-                <div class="mt-cust-fd upl_sec_cut" style="margin: 0;margin-top: -7px;position: relative;top: 4px;">
+                <div class="mt-cust-fd upl_sec_cut selc_version" >
                   <mat-form-field appearance="fill" class="example-full-width" >
                     <mat-label>Select version</mat-label>
                     <mat-select  formControlName="version" disableOptionCentering>
@@ -362,7 +362,7 @@
                           <perfect-scrollbar class="perfect_scroll_com"  >
                             <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
                               <div class="us_comm_nt">
-                                {{details.Initials}}
+                                {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="Role_name" style="display: none;">{{details.role_name}}</div>
@@ -376,7 +376,7 @@
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
                               
                               <div class="us_comm_nt">
-                                {{SaveCommentdetail[0].Initials}}
+                                {{SaveCommentdetail[0].role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="close_com">
@@ -399,6 +399,9 @@
                                       <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
+                                      </mat-error>
+                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
+                                        Black-Listed characters `<>'"&` are not allowed
                                       </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -566,7 +569,11 @@
                        </ng-container>
                        <ng-container  matColumnDef="actions">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-                      <mat-cell  *matCellDef="let row" (click)="getdownloadfile(row)" ><img *ngIf="row.actions != ''" src="assets/images/download_icon.png"></mat-cell>
+                      <mat-cell  *matCellDef="let row" (click)="getdownloadfile(row)" >
+                        <!-- <img *ngIf="row.actions != ''" src="assets/images/download_icon.png"> -->
+                        <div class="dwon_ic_con" *ngIf="row.actions != ''"><img src="assets/images/download_icon.png"></div>
+
+                      </mat-cell>
                        </ng-container>
                     
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
