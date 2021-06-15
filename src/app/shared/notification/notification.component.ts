@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { CommonService } from '../../services/common.service';
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
  
 
 export class systemnotificationparameters{
+  
   _dh_system_notification_id:number;
   _IsRead:number;
   _IsSoftDelete:number;
@@ -13,7 +16,8 @@ export class systemnotificationparameters{
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit {
-
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+  @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   constructor(public commonService:CommonService) { }
 
   ngOnInit(): void {
