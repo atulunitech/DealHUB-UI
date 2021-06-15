@@ -701,7 +701,7 @@ class filesdetail
    {
 
     this._obfservices._approveRejectModel.isapproved=0;
-    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
     this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
@@ -818,37 +818,66 @@ class filesdetail
 
 	}
   onRemove(files:File[],event) {
+    console.log(event);
+		files.splice(files.indexOf(event), 1);
+   
+  
      if(this.Type == "loipo")
     {
-      //this.isloipo = !this.isloipo;
-
-     
+       this.loipofiles=files;
+       this.uploadDocfiles=this.loipofiles;
     }
     else if(this.Type == "support")
     {
-      
-      // this.isSupport = !this.isSupport;
-    }
-		console.log(event);
-		files.splice(files.indexOf(event), 1);
-   
-    if(this.loipofiles.length == 0)
-      {
-        
-       this.loipofiles=files;
-       this.uploadDocfiles=this.loipofiles;
-      }
-    if(this.supportfiles.length == 0)
-    {
-      //this.isloipo = !this.isloipo;
       this.supportfiles=files;
-      this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
+      this.uploadDocfiles=this.supportfiles;
+    
     }
+    else if(this.Type =='FinalAgg')
+    {
+     
+     this.FinalAggfiles=files;
+     this.uploadDocfiles=this.FinalAggfiles;
+    } 
+    
 
 	}
   SaveAttachment()
   {
     //this.isloipo = !this.isloipo;
+   
+  if(this.Type == "loipo")
+  {
+    if(this.filelist.length !=0)
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description = this.Loipodropdown;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    
+  }
+   else{
+    if(this.filelist.length !=0)
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description = this.filelist[i].description;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+   } 
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
           console.log(result);
@@ -857,8 +886,8 @@ class filesdetail
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
            
-            this.Attachments=[];
-            this.dialog.closeAll();
+           // this.Attachments=[];
+           // this.dialog.closeAll();
 
           }
         
@@ -951,6 +980,7 @@ class filesdetail
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this.Loipodropdown;
          this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
+
          this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "Supporting")
