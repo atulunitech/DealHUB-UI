@@ -701,7 +701,7 @@ class filesdetail
    {
 
     this._obfservices._approveRejectModel.isapproved=0;
-    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
     this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
