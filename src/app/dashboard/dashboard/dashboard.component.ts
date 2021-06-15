@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
    RejectedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
    ApprovedOBf: string[] = ['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
    ApprovedPPL: string[] = ['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
-
+   ReviewerApproved:string[]=['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
    
    
    // dataSource = ELEMENT_DATA;
@@ -836,7 +836,7 @@ downloaddetailFinalAgg(row)
             }
            );
          this.listData=new MatTableDataSource(this.filterdata);
-         this.displayedColumns=this.PendingReviewercolumn;
+         this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
       else if(selection==2)
@@ -853,7 +853,7 @@ downloaddetailFinalAgg(row)
         );
         this.listData=new MatTableDataSource(filterdata);
 
-        this.displayedColumns=this.RejectedScreenColumn;
+        this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
       else if(selection==3)
@@ -869,7 +869,7 @@ downloaddetailFinalAgg(row)
          );
         this.listData=new MatTableDataSource(this.filterdata);
 
-        this.displayedColumns=this.ApprovedOBf;
+        this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
         
       }
@@ -888,7 +888,7 @@ downloaddetailFinalAgg(row)
         this.listData=new MatTableDataSource(this.filterdata);
 
         
-        this.displayedColumns=this.ApprovedPPL;
+        this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
       }
     }
