@@ -379,7 +379,7 @@
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
                               
                               <div class="us_comm_nt">
-                                {{SaveCommentdetail[0].Initials}}
+                                {{SaveCommentdetail[0].role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="close_com">
@@ -402,6 +402,9 @@
                                       <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
+                                      </mat-error>
+                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
+                                        Black-Listed characters `<>'"&` are not allowed
                                       </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -602,7 +605,7 @@
 <div>
   <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
-<mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
   <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
