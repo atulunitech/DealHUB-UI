@@ -541,6 +541,15 @@
 {
     background-color:#fafafa;
     @include padding(10px,0px,0px,10px);
+    ::ng-deep perfect-scrollbar > div > div.ps__rail-y {
+        opacity: 9;
+        .ps__thumb-y
+        {
+            background-color: #2258bf;
+        }
+      }
+      
+      
     .prev_tit_com
     {
         color:#342e59;
@@ -603,10 +612,12 @@
     {
         @include heightwidth(initial,225px);
         @include padding(initial,12px,initial,initial);
+        
         .text_cont_cmm
         {
             @include padding(1px,1px,1px,1px);
             @include margin(initial,initial,10px,initial);
+            
             &.cmm_in
             {
                 flex-direction: row-reverse !important;
@@ -1004,6 +1015,7 @@
     line-height: initial;
     padding: 0;
     margin-left: 10px;
+    margin-right: -10px;
     padding-left: 20px;
     padding-right: 20px;
     font-weight: 500;
