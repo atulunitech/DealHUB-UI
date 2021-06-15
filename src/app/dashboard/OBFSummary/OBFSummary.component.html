@@ -362,7 +362,7 @@
                           <perfect-scrollbar class="perfect_scroll_com"  >
                             <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
                               <div class="us_comm_nt">
-                                {{details.Initials}}
+                                {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="Role_name" style="display: none;">{{details.role_name}}</div>
@@ -376,7 +376,7 @@
                             <div *ngIf="commentVisiable" fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm cmm_in">
                               
                               <div class="us_comm_nt">
-                                {{SaveCommentdetail[0].Initials}}
+                                {{SaveCommentdetail[0].role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="close_com">
@@ -399,6 +399,9 @@
                                       <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
+                                      </mat-error>
+                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
+                                        Black-Listed characters `<>'"&` are not allowed
                                       </mat-error>
                                     </mat-form-field>
                                 </div>

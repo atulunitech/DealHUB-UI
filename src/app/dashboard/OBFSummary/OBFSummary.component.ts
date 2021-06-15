@@ -3,7 +3,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
+
 import { OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
@@ -57,19 +58,19 @@ class filesdetail
   })
 
   export class OBFSummaryComponent implements OnInit {
-    public types: string = 'component';
+  //  public types: string = 'component';
     @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
     @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
-      comments : new FormControl("",[Validators.required]),
+      comments : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
       MarginException:new FormControl("",[Validators.required]),
       ExceptionCFO:new  FormControl("",[Validators.required]),
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
     });
    
-    noComment:boolean=false;
+ //   noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
     paymentRead=false;
@@ -451,7 +452,7 @@ class filesdetail
   SaveComment()
   {
     
-    if(this.obfsummaryform.get("comments").value!= "" || this.types === 'directive' && this.directiveRef)
+    if(this.obfsummaryform.get("comments").value!= "")
     {
       
       var comment=this.obfsummaryform.get("comments").value;
@@ -467,17 +468,13 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-      const fullName = this.User_name. split(' ');
-      const initials = fullName. shift(). charAt(0) + fullName. pop(). charAt(0);
-
-
-      SaveComment.Initials= initials. toUpperCase();
+   
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
-       this.directiveRef.scrollToBottom(1000);
-     
+      console.log('wait');
+       this.componentRef.directiveRef.scrollToBottom(500);
     }
-      else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+      else {
       this.componentRef.directiveRef.scrollToBottom();
     }
     //  if (this.types === 'directive' && this.directiveRef) {
@@ -489,7 +486,8 @@ class filesdetail
   deletecomment()
   {
     this.commentVisiable=false;
-   // this.obfsummaryform.controls["comments"].setValue('');
+    this.obfsummaryform.controls["comments"].setValue('');
+
     this.SaveCommentdetail=[];
 
   }
@@ -505,7 +503,7 @@ class filesdetail
     this.LoiPoprogress= this.uploaddocprocess;
     this.filelist=[];
    
-    let savefile:filesdetail = new filesdetail();
+   
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
       if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
@@ -514,6 +512,7 @@ class filesdetail
         {
             if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
             {
+              let savefile:filesdetail = new filesdetail();
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -522,6 +521,7 @@ class filesdetail
             }
            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
             {
+              let savefile:filesdetail = new filesdetail();
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -529,6 +529,7 @@ class filesdetail
             }
             else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
             {
+              let savefile:filesdetail = new filesdetail();
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -543,7 +544,7 @@ class filesdetail
   {
     this.uploadDocfiles=this.supportfiles;
     this.SupportPoprogress= this.uploaddocprocess;
-    let savefile:filesdetail = new filesdetail();
+   
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
@@ -553,6 +554,7 @@ class filesdetail
       {
           if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
           {
+            let savefile:filesdetail = new filesdetail();
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
             savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -566,7 +568,7 @@ class filesdetail
   {
     this.uploadDocfiles=this.FinalAggfiles;
     this.finalProgress= this.uploaddocprocess;
-    let savefile:filesdetail = new filesdetail();
+   
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
@@ -576,6 +578,7 @@ class filesdetail
       {
           if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
           {
+             let savefile:filesdetail = new filesdetail();
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
             savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -637,7 +640,7 @@ class filesdetail
   if(this.obfsummaryform.get("comments").value == "")
   {
     this.obfsummaryform.controls["comments"].markAsTouched();
-    this.noComment = true;
+  //  this.noComment = true;
     return false;
     //return this.obfsummaryform.controls["comments"].hasError("required");
   }
@@ -678,6 +681,25 @@ class filesdetail
   }
   onHoldDetails()
   {
+    if(this.SaveCommentdetail.length == 0)
+   {
+//
+  if(this.obfsummaryform.get("comments").value == "")
+  {
+    this.obfsummaryform.controls["comments"].markAsTouched();
+    //this.noComment = true;
+    return false;
+    //return this.obfsummaryform.controls["comments"].hasError("required");
+  }
+  else
+  {
+    this._mesgBox.showError("Please Submit Comment");
+  }
+  
+   } 
+   else
+   {
+
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment="";
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -703,6 +725,7 @@ class filesdetail
       }
     });
   }
+}
   
   bytesToSize(bytes):number {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
@@ -927,6 +950,7 @@ class filesdetail
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this.Loipodropdown;
+         this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
          this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "Supporting")
@@ -937,6 +961,7 @@ class filesdetail
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
            this.SaveAttachmentParameter._description = "support";
+           this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
            this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "FinalAgg")
@@ -947,6 +972,7 @@ class filesdetail
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
            this.SaveAttachmentParameter._description = "FinalAgg";
+           this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
@@ -1164,5 +1190,14 @@ class filesdetail
       var url=environment.apiUrl + event.actions;
       window.open(url);
     }
+  }
+  
+
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidservices': true };
+    }
+    return null;
   }
   }
