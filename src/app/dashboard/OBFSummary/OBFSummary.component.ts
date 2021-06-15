@@ -630,13 +630,25 @@ class filesdetail
     });
   }
   RejectDeatils()
-  {  if(this.obfsummaryform.get("comments").value == "")
+   {  
+   if(this.SaveCommentdetail.length == 0)
+   {
+//
+  if(this.obfsummaryform.get("comments").value == "")
   {
-     //return this.obfsummaryform.controls["comments"].hasError("required");
-     this.obfsummaryform.controls["comments"].markAsTouched();
-     this.noComment = true;
+    this.obfsummaryform.controls["comments"].markAsTouched();
+    this.noComment = true;
     return false;
+    //return this.obfsummaryform.controls["comments"].hasError("required");
   }
+  else
+  {
+    this._mesgBox.showError("Please Submit Comment");
+  }
+  
+   } 
+   else
+   {
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -662,6 +674,7 @@ class filesdetail
       }
     });
 
+  }
   }
   onHoldDetails()
   {
