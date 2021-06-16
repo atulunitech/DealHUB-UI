@@ -885,8 +885,12 @@ class filesdetail
           if(REsult[0].status ="Success")
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
-           
-           this.Attachments=[];
+           this.uploaddocprocess=[];
+            this.Attachments=[];
+            this.filelist=[];
+            this.loipofiles=[];
+            this.supportfiles=[];
+            this.FinalAggfiles=[];
             this.dialog.closeAll();
 
           }
