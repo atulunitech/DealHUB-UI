@@ -885,8 +885,12 @@ class filesdetail
           if(REsult[0].status ="Success")
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
-           
-           this.Attachments=[];
+           this.uploaddocprocess=[];
+            this.Attachments=[];
+            this.filelist=[];
+            this.loipofiles=[];
+            this.supportfiles=[];
+            this.FinalAggfiles=[];
             this.dialog.closeAll();
 
           }
@@ -1035,62 +1039,14 @@ class filesdetail
     );
     }
   }
-  removeFile(files:File[],event)
+  removeFile(files:filesdetail[],event)
   {
  
   console.log(event);
   files.splice(files.indexOf(event), 1);
  
-
-   if(this.Type == "loipo")
-  {
-     this.loipofiles=files;
-     this.uploadDocfiles=this.loipofiles;
-  }
-  else if(this.Type == "support")
-  {
-    this.supportfiles=files;
-    this.uploadDocfiles=this.supportfiles;
-  
-  }
-  else if(this.Type =='FinalAgg')
-  {
-   
-   this.FinalAggfiles=files;
-   this.uploadDocfiles=this.FinalAggfiles;
-  } 
   this.SaveAttachment();
-  // if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
-  //   {
-  //     for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
-  //     {
-  //       if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
-  //       {
-  //         this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-  //       }
-  //       else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
-  //       {
-
-  //         this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-  //       }
-  //       else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
-  //       {
-
-  //         this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-  //       }
-  //       else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
-  //       {
-
-  //         this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-  //       }
-  //       else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
-  //       {
-
-  //         this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-  //       }
-        
-  //     }
-  //   }
+  
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
