@@ -34,7 +34,10 @@ export class CommonService {
   }
 
   hide() {
-    this._loading.next(false);
+    setTimeout(() => {
+      this._loading.next(false);
+    },2000 );
+    
   }
 
   menuevent(){
