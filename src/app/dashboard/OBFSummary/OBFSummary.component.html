@@ -372,7 +372,8 @@
                                 </span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
-                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span><span>{{details.commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                         
@@ -389,7 +390,8 @@
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>
                                 <div class="dh_comment">{{SaveCommentdetail[0].dh_comment}}</div>
-                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span> <span>{{SaveCommentdetail[0].commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                           </perfect-scrollbar>

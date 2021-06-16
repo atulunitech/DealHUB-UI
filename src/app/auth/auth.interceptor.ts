@@ -14,10 +14,12 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router, public commonService:CommonService) { }
   
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-      
+      this.commonService.show();
         if (req.headers.get('No-Auth') == "True")
         {
+          this.commonService.hide();
             return next.handle(req.clone());
+            
         }
         else
         {
@@ -30,8 +32,10 @@ export class AuthInterceptor implements HttpInterceptor {
                     //headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('Token'))
                     headers
                 });
+                this.commonService.hide();
                 return next.handle(clonedreq).pipe(
                     tap(
+                      
                       (error:any) => {
                         // if (error.status === 401)
                         console.log("redirected here even token is not null");
@@ -57,7 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
          
 
-        this.commonService.show();
+       
         return next.handle(req).pipe(
             finalize(() => {
               this.commonService.hide();

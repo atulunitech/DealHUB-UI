@@ -468,7 +468,7 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-   
+      
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
       console.log('wait');
@@ -499,8 +499,8 @@ class filesdetail
 
     if(this.Type == "loipo")
   {
-    this.uploadDocfiles=this.loipofiles;
-    this.LoiPoprogress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.loipofiles;
+    // this.LoiPoprogress= this.uploaddocprocess;
     this.filelist=[];
    
    
@@ -542,8 +542,8 @@ class filesdetail
   }
   else if(this.Type == "Supporting")
   {
-    this.uploadDocfiles=this.supportfiles;
-    this.SupportPoprogress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.supportfiles;
+    // this.SupportPoprogress= this.uploaddocprocess;
    
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
@@ -566,8 +566,8 @@ class filesdetail
   }
   else if(this.Type == "FinalAgg")
   {
-    this.uploadDocfiles=this.FinalAggfiles;
-    this.finalProgress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.FinalAggfiles;
+    // this.finalProgress= this.uploaddocprocess;
    
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
@@ -827,7 +827,7 @@ class filesdetail
        this.loipofiles=files;
        this.uploadDocfiles=this.loipofiles;
     }
-    else if(this.Type == "support")
+    else if(this.Type == "Supporting")
     {
       this.supportfiles=files;
       this.uploadDocfiles=this.supportfiles;
@@ -1043,9 +1043,15 @@ class filesdetail
   {
  
   console.log(event);
+
   files.splice(files.indexOf(event), 1);
+  
+  this.filelist=files;
  
-  this.SaveAttachment();
+    this.SaveAttachment();
+  
+
+ 
   
   }
   onversionchange(evt,dh_id,dh_header_id)
