@@ -540,7 +540,7 @@ $colours: (
   yellow: #fdba2c
 );
 
-$animation-duration: 3.5s;
+$animation-duration: 2.5s;
 .header_load
 {
   position: fixed;
@@ -555,7 +555,7 @@ $animation-duration: 3.5s;
   left: 0;
   padding-top: $preloader-height;
   width: 100%;
-  background-color: colour(green);
+  background-color: colour(blue);
   animation: preloader-background linear $animation-duration infinite;
   
   &::before,
@@ -566,7 +566,7 @@ $animation-duration: 3.5s;
     z-index: 2;
     width: 0;
     height: $preloader-height;
-    background: #afa;
+    background: blue;
     animation: preloader-front linear $animation-duration infinite;
     content: '';
   }
@@ -583,7 +583,7 @@ $animation-duration: 3.5s;
 // Animations
 @keyframes preloader-background {
   0%, 24.9% {
-    background-color: colour(green);
+    background-color: colour(blue);
   }
   
   25%, 49.9% {
@@ -602,7 +602,7 @@ $animation-duration: 3.5s;
 @keyframes preloader-front {
   0% {
     width: 0;
-    background-color: colour(red);
+    background-color: colour(blue);
   }
   
   24.9% {
@@ -638,7 +638,7 @@ $animation-duration: 3.5s;
   
   100% {
     width: 50%;
-    background-color: colour(green);
+    background-color: colour(blue);
   }
 }
 
