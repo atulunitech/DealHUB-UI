@@ -1039,7 +1039,7 @@ class filesdetail
     );
     }
   }
-  removeFile(files:FileList[],event)
+  removeFile(files:filesdetail[],event)
   {
  
   console.log(event);
