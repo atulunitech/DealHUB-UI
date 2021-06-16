@@ -1,5 +1,8 @@
 <app-side-nave class="side-navbar" [ngClass]="this.commonService.menu_status ? 'open' : 'close'"></app-side-nave>
 <div class="page" [ngClass]="this.commonService.menu_status ? 'open' : 'close'">
+    <div class="header_load">
+        <div aria-busy="true" aria-label="Loading, please wait." role="progressbar"></div>
+      </div>
 <app-backend-header fxLayout="row" fxLayoutAlign="space-between center"  class="back_head" >
 
 </app-backend-header>

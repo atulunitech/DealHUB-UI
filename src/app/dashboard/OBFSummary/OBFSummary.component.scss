@@ -53,7 +53,26 @@
 
 .cust-accor
 {
-    
+    &.summary_accor
+    {
+        ::ng-deep .mat-accordion-multi
+    {
+        .mat-expansion-panel
+        {
+            &.last_exp_pan
+            {
+                .mat-expanded
+                {
+                    background-color: rgb(229, 238, 255);
+                }
+              
+               
+            }
+            
+            
+        }
+    }
+    }
     ::ng-deep .mat-accordion
     {
         .mat-expansion-panel-body
@@ -541,6 +560,15 @@
 {
     background-color:#fafafa;
     @include padding(10px,0px,0px,10px);
+    ::ng-deep perfect-scrollbar > div > div.ps__rail-y {
+        opacity: 9;
+        .ps__thumb-y
+        {
+            background-color: #2258bf;
+        }
+      }
+      
+      
     .prev_tit_com
     {
         color:#342e59;
@@ -603,10 +631,12 @@
     {
         @include heightwidth(initial,225px);
         @include padding(initial,12px,initial,initial);
+        
         .text_cont_cmm
         {
             @include padding(1px,1px,1px,1px);
             @include margin(initial,initial,10px,initial);
+            
             &.cmm_in
             {
                 flex-direction: row-reverse !important;
@@ -658,15 +688,17 @@
             .us_comm_nt
             {
                 border: 3px solid #345d9d;
-    padding: 6px 7px 6px 8px;
     border-radius: 50%;
     line-height: inherit;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #345d9d;
     margin-right: 7px;
     font-weight: 900;
-    min-width: 42px;
-    text-align: center;
+    min-width: 47px;
+    height: 47px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
             }
             .us_coment_dt
             {
@@ -1004,6 +1036,7 @@
     line-height: initial;
     padding: 0;
     margin-left: 10px;
+    margin-right: -10px;
     padding-left: 20px;
     padding-right: 20px;
     font-weight: 500;

@@ -10,7 +10,12 @@ import { BackendFooterComponent } from './backend-footer/backend-footer.componen
 import { SideNaveComponent } from './side-nave/side-nave.component';
 import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
 import { NotificationComponent } from './notification/notification.component';
+import { PerfectScrollbarModule, PerfectScrollbarConfigInterface,
+  PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  wheelPropagation: true
+};
 
 
 @NgModule({
@@ -28,10 +33,15 @@ import { NotificationComponent } from './notification/notification.component';
   imports: [
     CommonModule,
     FlexLayoutModule,
+    PerfectScrollbarModule,
     SharedRoutingModule
   ],
   providers:[
-    MessageBoxComponent
+    MessageBoxComponent,
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
   ]
 })
 export class SharedModule { }
