@@ -548,7 +548,6 @@ $animation-duration: 3.5s;
   height: 100%;
   z-index: 999;
   backdrop-filter: blur(8px);
-  display: none;
 }
 .header_load [role="progressbar"][aria-busy="true"] {
   position: absolute;

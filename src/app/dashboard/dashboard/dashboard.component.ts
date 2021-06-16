@@ -17,6 +17,7 @@ import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { environment } from 'src/environments/environment.prod';
+import { CommonService } from 'src/app/services/common.service';
 
 //region Model
 export class DashBoardModel
@@ -125,7 +126,8 @@ export class DashboardComponent implements OnInit {
   //   cancelLabel: 'Mégse',
   //   applyLabel: 'Ok',
   // };
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { 
+  loading$ = this.commonService.loading$;
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }

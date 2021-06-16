@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {HttpHeaders,HttpParams,HttpClient} from '@angular/common/http'
-import {Observable, observable} from 'rxjs'
+import {Observable, observable, BehaviorSubject } from 'rxjs'
 import { environment } from 'src/environments/environment';
 
 export class notificationDetails
@@ -18,6 +18,8 @@ export class notificationDetails
 })
 export class CommonService {
 
+  private _loading = new BehaviorSubject<boolean>(false);
+  public readonly loading$ = this._loading.asObservable();
   
   menu_status: boolean = false;
   notification_view: boolean = false;
@@ -26,6 +28,15 @@ export class CommonService {
   { 
 
   }
+
+  show() {
+    this._loading.next(true);
+  }
+
+  hide() {
+    this._loading.next(false);
+  }
+
   menuevent(){
     this.menu_status = !this.menu_status;       
 }
