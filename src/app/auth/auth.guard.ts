@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
   constructor(private router:Router)
   {}
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-   
+   //alert(childRoute.url[0].path);
     if(localStorage.getItem("Token") == "")
    {
      this.router.navigateByUrl('/login'); 
@@ -17,6 +17,20 @@ export class AuthGuard implements CanActivate,CanActivateChild {
     }
     else
     {
+      if(childRoute.url[0] != undefined && childRoute.url[0].path == "Obf")
+      {
+        if(sessionStorage.getItem("privilege_name") == "OBF Initiator" || (sessionStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
+        {
+        return true;
+         }
+        else
+        {
+          this.router.navigateByUrl('/login'); 
+        return false;
+      }
+
+      }
+      
       return true;
     }
     // if(localStorage.getItem('Token') != null)

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SidenavService} from './side-nave.services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 
 export class MenuModel
 {
@@ -15,6 +16,7 @@ export class MenuModel
   styleUrls: ['./side-nave.component.scss']
 })
 export class SideNaveComponent implements OnInit {
+  
 
 
   menus:any=null;
@@ -79,9 +81,19 @@ export class SideNaveComponent implements OnInit {
  
   Logout()
   {
-    localStorage.setItem("UserCode","");
-    localStorage.setItem("Token","");
-    this.router.navigate(['/']);  
+    let data =new MenuModel();
+    data._user_code = localStorage.getItem("UserCode");
+    data.token = localStorage.getItem("Token");
+    this._commomservices.deletetoken(data).subscribe(data =>{
+      let res = JSON.parse(data);
+      if(res.result == "Success")
+      {
+        //alert("Token deleted");
+        localStorage.setItem("UserCode","");
+        localStorage.setItem("Token","");
+        this.router.navigate(['/']);
+      }
+    });  
   }
   mergeConfig(options) {
  
@@ -109,7 +121,7 @@ export class SideNaveComponent implements OnInit {
     }
 
   }
-  constructor(private menuservice:SidenavService,private router: Router) { }
+  constructor(private menuservice:SidenavService,private router: Router,private _commomservices:CommonService) { }
   GetMenus()
   {
     this._menumodel._user_code=localStorage.getItem("UserCode");
