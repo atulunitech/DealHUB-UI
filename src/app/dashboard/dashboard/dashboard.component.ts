@@ -18,6 +18,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { environment } from 'src/environments/environment.prod';
 import { CommonService } from 'src/app/services/common.service';
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+
 
 //region Model
 export class DashBoardModel
@@ -70,7 +73,8 @@ class SaveAttachmentParameter{
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+  @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
@@ -542,8 +546,10 @@ openModal(templateRef,row) {
     this._mesgBox.showError(error.message);
    });
   let dialogRef = this.dialog.open(templateRef, {
-       width: '880px',
+      //  width: '880px',
        // data: { name: this.name, animal: this.animal }
+       panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -559,10 +565,12 @@ UploadFinalAggrement(element)
   this.dh_header_id=element.dh_header_id;
 
   const dialogRef = this.dialog.open(this.callAPIDialog, {
-    width: '500px',
-    height:'600px',
-    disableClose: true,
+    // width: '500px',
+    // height:'600px',
+    // disableClose: true,
    // data: { campaignId: this.params.id }
+   panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
 })
 
 }
