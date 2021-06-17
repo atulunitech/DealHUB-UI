@@ -468,7 +468,7 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-   
+      
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
       console.log('wait');
@@ -499,8 +499,8 @@ class filesdetail
 
     if(this.Type == "loipo")
   {
-    this.uploadDocfiles=this.loipofiles;
-    this.LoiPoprogress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.loipofiles;
+    // this.LoiPoprogress= this.uploaddocprocess;
     this.filelist=[];
    
    
@@ -542,8 +542,8 @@ class filesdetail
   }
   else if(this.Type == "Supporting")
   {
-    this.uploadDocfiles=this.supportfiles;
-    this.SupportPoprogress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.supportfiles;
+    // this.SupportPoprogress= this.uploaddocprocess;
    
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
@@ -566,8 +566,8 @@ class filesdetail
   }
   else if(this.Type == "FinalAgg")
   {
-    this.uploadDocfiles=this.FinalAggfiles;
-    this.finalProgress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.FinalAggfiles;
+    // this.finalProgress= this.uploaddocprocess;
    
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
@@ -827,7 +827,7 @@ class filesdetail
        this.loipofiles=files;
        this.uploadDocfiles=this.loipofiles;
     }
-    else if(this.Type == "support")
+    else if(this.Type == "Supporting")
     {
       this.supportfiles=files;
       this.uploadDocfiles=this.supportfiles;
@@ -885,13 +885,18 @@ class filesdetail
           if(REsult[0].status ="Success")
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
-           
-           // this.Attachments=[];
-           // this.dialog.closeAll();
+           this.uploaddocprocess=[];
+            this.Attachments=[];
+            this.filelist=[];
+            this.loipofiles=[];
+            this.supportfiles=[];
+            this.FinalAggfiles=[];
+            this.dialog.closeAll();
 
           }
         
     });
+    this.getdetailsfordh_id(this.dh_id);
   }
   uploadfiles(files:File[])
   {
@@ -1034,42 +1039,20 @@ class filesdetail
     );
     }
   }
-  removeFile(file:filesdetail[],event)
+  removeFile(files:filesdetail[],event)
   {
  
   console.log(event);
-  file.splice(file.indexOf(event), 1);
-  if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
-    {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
-      {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
-        {
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
-        {
 
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
-        {
+  files.splice(files.indexOf(event), 1);
+  
+  this.filelist=files;
+ 
+    this.SaveAttachment();
+  
 
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
-        {
-
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
-        {
-
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        
-      }
-    }
+ 
+  
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
@@ -1221,8 +1204,6 @@ class filesdetail
       window.open(url);
     }
   }
-  
-
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[<>'"&]/;
     if (control.value && format.test(control.value)) {

@@ -7,7 +7,7 @@ import { CommonService } from '../../services/common.service';
   styleUrls: ['./backend-layout.component.scss']
 })
 export class BackendLayoutComponent implements OnInit {
-
+  loading$ = this.commonService.loading$;
   constructor(public commonService:CommonService) { }
 
   ngOnInit(): void {

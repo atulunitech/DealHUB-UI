@@ -13,11 +13,11 @@
 </div>
 </div>
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
-    <div class="cust-accor">
+    <div class="cust-accor summary_accor">
         <mat-accordion [multi]="true">
             <mat-expansion-panel [expanded]="true" disabled>
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                    <mat-panel-title>
+                    <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
                       <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                     </mat-panel-title>
@@ -361,15 +361,19 @@
                           </div>
                           <perfect-scrollbar class="perfect_scroll_com"  >
                             <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
-                              <div class="us_comm_nt">
+                              <div class="us_comm_nt" title="{{details.role_code}}">
+                                <!-- {{details.Initials}} -->
                                 {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
                                 <div class="Role_name" style="display: none;">{{details.role_name}}</div>
-                                <div class="Fullname">{{details.Fullname}}<span>({{details.role_code}})</span></div>
+                                <div class="Fullname">{{details.Fullname}}<span>
+                                  <!-- ({{details.role_code}}) -->
+                                </span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
-                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span><span>{{details.commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                         
@@ -386,7 +390,8 @@
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>
                                 <div class="dh_comment">{{SaveCommentdetail[0].dh_comment}}</div>
-                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span> <span>{{SaveCommentdetail[0].commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                           </perfect-scrollbar>
@@ -543,8 +548,8 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel style="margin-top: 20px;">
-                <mat-expansion-panel-header collapsedHeight="50px" style="background-color: rgb(229, 238, 255);" expandedHeight="50px">
+            <mat-expansion-panel class="last_exp_pan" style="margin-top: 20px;">
+                <mat-expansion-panel-header collapsedHeight="50px"  expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History
                     </mat-panel-title>
@@ -602,7 +607,7 @@
 <div>
   <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
-<mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
   <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">

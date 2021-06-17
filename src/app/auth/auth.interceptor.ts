@@ -1,21 +1,25 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpUserEvent, HttpEvent, HttpErrorResponse,HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { request } from "node:http";
 import { Observable } from "rxjs";
-import {catchError,map, tap} from "rxjs/operators";
+import {catchError,map, tap,finalize} from "rxjs/operators";
+import { CommonService } from "../services/common.service";
 
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, public commonService:CommonService) { }
   
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      
+    intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+      this.commonService.show();
         if (req.headers.get('No-Auth') == "True")
         {
+          this.commonService.hide();
             return next.handle(req.clone());
+            
         }
         else
         {
@@ -28,8 +32,10 @@ export class AuthInterceptor implements HttpInterceptor {
                     //headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('Token'))
                     headers
                 });
+                this.commonService.hide();
                 return next.handle(clonedreq).pipe(
                     tap(
+                      
                       (error:any) => {
                         // if (error.status === 401)
                         console.log("redirected here even token is not null");
@@ -55,6 +61,11 @@ export class AuthInterceptor implements HttpInterceptor {
         }
          
 
-        
+       
+        return next.handle(req).pipe(
+            finalize(() => {
+              this.commonService.hide();
+            })
+          );
     }
 }
