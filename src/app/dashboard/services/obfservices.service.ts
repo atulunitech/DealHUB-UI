@@ -457,7 +457,8 @@ export class OBFServices {
       }
       SaveAttachment(data:SaveAttachmentParameter[]):Observable<any>
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) 
+        };  
         return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data,
            httpOptions); 
       }
