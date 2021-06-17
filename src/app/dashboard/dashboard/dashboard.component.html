@@ -132,7 +132,7 @@
         <perfect-scrollbar class="perfect_scroll_com" [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container  [matColumnDef]="theRemovedElement.columnDef">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>{{ theRemovedElement.header }}</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
               <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
               
             </ng-container>
@@ -140,7 +140,12 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header>ApprovalStatus</mat-header-cell>
               <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
-                <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
+                <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
+                <div class="set-size charts-container">
+                <div class="pie-wrapper pie-wrapper--solid progress-88">
+    <span class="label">10<span class="smaller">%</span></span>
+  </div>
+</div>
             </mat-cell>
           </ng-container>
            
@@ -176,12 +181,12 @@
                   <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
                </ng-container>
                
-               <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd>
+               <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd style="min-width: 300px;">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               
                   <mat-cell *matCellDef="let row" >
                     <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
-                    <button mat-raised-button color="primary">Reject</button>
+                    <button mat-flat-button class=" reject_bt">Reject</button>
                    </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
@@ -190,7 +195,7 @@
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+              <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
@@ -204,7 +209,7 @@
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+              <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt approv_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
