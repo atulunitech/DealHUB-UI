@@ -204,8 +204,8 @@ export class CreatobfComponent implements OnInit {
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
     public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
   { 
-    this._obfservices.createform();
-    this._obfservices.createnewobfmodelandeditobfmodel();
+    // this._obfservices.createform();
+    // this._obfservices.createnewobfmodelandeditobfmodel();
   }
   files: File[] = [];
   coversheetfiles: File[] = [];
@@ -214,6 +214,7 @@ export class CreatobfComponent implements OnInit {
   step = 0;
   panelOpenState:boolean=true;
   verticallist:verticallist[]=[];
+  domainlist:verticallist[]=[];
   Verticalheadlist:Verticalhead[];
   
   visible = true;
@@ -228,6 +229,7 @@ export class CreatobfComponent implements OnInit {
   reinitiateobf:boolean = false;
   isppl:boolean = false;
   initiateppl:boolean = false;
+  reinitiatefordisable:boolean = false;
 
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
@@ -243,7 +245,11 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this._obfservices.createform();
+    this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
+    this.reinitiatefordisable = false;
+
     this.isppl = false;
     this.initiateppl = false;
     this._obfservices.obfmodel._dh_id =0;
@@ -309,10 +315,7 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.initializeobfmodelandform();
       this.editobfinitialization();
      // this.getotherservicesandsolutions();
-      if(this.initiateppl)
-      {
-        this.removeuploadfilesforinitiateppl();
-      }
+      
    },
    error =>
    {
@@ -330,6 +333,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
     this._obfservices.ObfCreateForm.patchValue({Loipodropdown:""});
     this._obfservices.ObfCreateForm.patchValue({Selfdeclare:""});
+    this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
+    this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
@@ -364,6 +369,7 @@ export class CreatobfComponent implements OnInit {
       {
          this._obfservices.ObfCreateForm.patchValue({Vertical:verticalname});
       }
+      console.log(this._obfservices.ObfCreateForm);
       if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
       {
         this.loiopdisabled = true;
@@ -396,6 +402,20 @@ export class CreatobfComponent implements OnInit {
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
        console.log(this._obfservices.obfmodel);
+       this.reinitiatefordisable = this.reinitiateobf;
+       if(this.reinitiatefordisable)
+       {
+         this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+       }
+      //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
+      //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
+      //  console.log(this._obfservices.ObfCreateForm.controls["Vertical"])
+      //  this._obfservices.ObfCreateForm.controls["Vertical"].setValue("alpha");
+      //  console.log(this._obfservices.ObfCreateForm.value);
+      if(this.initiateppl)
+      {
+        this.removeuploadfilesforinitiateppl();
+      }
   }
 
   getverticalname(verticallist:verticallist[])
@@ -491,6 +511,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        this.subsectorlist = res.subsector;
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
+       this.domainlist = res.domains;
        if(this.isEditObf)
        {
          this.editobfinitialization();
@@ -1354,6 +1375,25 @@ downloadCoversheet(event)
     // console.log(ws.A1.h);
     try{
       let count:number = 0;
+      if(ws.H3 == undefined || ws.H3.w == "#N/A" )
+      {
+      count +=1;
+    }
+    else{
+      let domain = ws.H3.w;
+      let index = this.domainlist.findIndex(obj => obj.viewValue == domain.toString().trim());
+      if(index > -1)
+      {
+        domain = this.domainlist[index].value.toString().trim();
+        this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
+        this._obfservices.obfmodel._projecttype = domain;
+      }
+      else
+      {
+        count +=1;
+      }
+    
+   }
       if(ws.E4 == undefined || ws.E4.w == "#N/A" )
       {
       count +=1;
@@ -1443,12 +1483,12 @@ downloadCoversheet(event)
   //let verticalheadid = res[0].vertical_head_id;
    this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
   }
-    let value: any = ws.H3.v;
-    const parsedDate: Date = new Date(value);
-     //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
-    // value = df(parsedDate, "dd/mm/yyyy");
-    value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
-    this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
+    // let value: any = ws.H3.v;
+    // const parsedDate: Date = new Date(value);
+    //  //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
+    // // value = df(parsedDate, "dd/mm/yyyy");
+    // value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
+    // this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
    
     if(ws.E9 == undefined || ws.E9.w == "#N/A")
     {
@@ -1913,6 +1953,13 @@ downloadCoversheet(event)
   {
     let count:number = 0;
     let message = "";
+    if(this._obfservices.ObfCreateForm.get('Projecttype').errors)
+    {
+      //alert("Project name is required");
+      // this._mesgBox.showError("Project name is required");
+      message += "Project Type"+",";
+      count +=1;
+    }
     if(this._obfservices.ObfCreateForm.get('Projectname').errors)
     {
       //alert("Project name is required");

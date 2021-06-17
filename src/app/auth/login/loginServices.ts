@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class loginservices
 {
- 
+    usercode:string="";
     constructor(private http:HttpClient){}
      
     getLoginDetails(loginDetail: any): Observable<any> {  

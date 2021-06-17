@@ -177,6 +177,7 @@ class obf{
   _dh_project_name:string;
   _opportunity_id:string;
   _dh_location:string;
+  _projecttype:string;
   _vertical_id:number;
   _verticalhead_id:number;
   _dh_desc:string;
@@ -239,6 +240,7 @@ class editObf{
   _vertical_id:number;
   _verticalhead_id:number;
   _dh_desc:string;
+  _projecttype:string;
   _total_revenue:number;
   _total_cost:number;
   _total_margin:number;
@@ -321,7 +323,7 @@ export class OBFServices {
       Loipodropdown: new FormControl(""),
       Selfdeclare: new FormControl(""),
       Projectname:new FormControl("",Validators.required),
-      Projecttype:new FormControl(""),
+      Projecttype:new FormControl("",Validators.required),
       Solutioncategory:new FormControl(""),
       Otherservicesandcategories:new FormControl(null),
       Opportunityid:new FormControl("",Validators.required),
@@ -513,6 +515,7 @@ export class OBFServices {
         this.obfmodel._vertical_id = this.editObfObject._vertical_id;
         this.obfmodel._verticalhead_id = this.editObfObject._verticalhead_id;
         this.obfmodel._dh_desc = this.editObfObject._dh_desc;
+        this.obfmodel._projecttype = this.editObfObject._projecttype;
         this.obfmodel._parent_dh_main_id = this.editObfObject._parent_dh_main_id;
         this.obfmodel._total_revenue = this.editObfObject._total_revenue;
         this.obfmodel._total_cost = this.editObfObject._total_cost;
@@ -560,6 +563,7 @@ export class OBFServices {
         this.supportarray = this.getarrayforsupport(this.editObfObject.Attachments); 
         this.ObfCreateForm.patchValue({
           coversheet :this.obfmodel._fpath,
+          Projecttype: this.obfmodel._projecttype,
           Loiposheet:this.loipoarray[0] != undefined ?this.loipoarray[0]._fpath:"",
           Supportpath:this.supportarray != undefined?this.supportarray:"",
           Loipodropdown:this.loipoarray[0] !=undefined?this.loipoarray[0]._description:null,

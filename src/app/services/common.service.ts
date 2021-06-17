@@ -20,6 +20,7 @@ export class CommonService {
 
   
   menu_status: boolean = false;
+  usercode:string ="";
   notification_view: boolean = false;
   
   constructor(private http:HttpClient) 

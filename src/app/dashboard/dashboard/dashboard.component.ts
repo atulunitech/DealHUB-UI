@@ -17,6 +17,9 @@ import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { environment } from 'src/environments/environment.prod';
+import { Observable } from 'rxjs/internal/Observable';
+import { startWith } from 'rxjs/internal/operators/startWith';
+import { map } from 'rxjs/internal/operators/map';
 
 //region Model
 export class DashBoardModel
@@ -62,6 +65,15 @@ class SaveAttachmentParameter{
   _created_by:string;
   _description:string;
 }
+
+export class searchfilter{
+  value:string;
+  viewValue:string;
+}
+// class searchvalues
+// {
+
+// }
 //end region
 @Component({
   selector: 'app-dashboard',
@@ -78,6 +90,10 @@ export class DashboardComponent implements OnInit {
   open() {
     this.picker.open();
   }
+  searchwords: string="";
+  searchfiltercontrol = new FormControl();
+  statusfiltercontrol = new FormControl();
+  searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'ProjectName'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
    DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
@@ -97,8 +113,10 @@ export class DashboardComponent implements OnInit {
   displayedColumns:Array<any>;
   theRemovedElement:any="";
   dataSource:any;
+  selectedcolumn:number;
   searchKey: string;
   dashboardData:any[]=[];
+  statusfilter:any[]=[];
   filterdata:any[]=[];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -129,11 +147,167 @@ export class DashboardComponent implements OnInit {
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }
- 
+   keys:any[] = [];
+   autocompletearr:any[] = [];
+   searchControl = new FormControl();
+   filteredOptions: Observable<string[]>;
 
-  
+   statusfiltermethod(evt)
+   {
+    if(evt.isUserInput){
+    // alert(evt.target.value);
+    let datefilter:any = [];
+    
+  datefilter = this.filterdata.filter(o => o.currentstatus_search == evt.source.value);
+  this.listData=new MatTableDataSource(datefilter);
+    }
+   }
+  selectfilter(evt)
+  {
+    //this.keys = [];
+    let finalrray:any[] = [];
+    if(evt.isUserInput)
+    {
+      if(evt.source.selected)
+      {
+        this.keys.push(evt.source.value);
+        this.keys[evt.source.value] = new Array;
+        
+        let res = this.returncolumnvalue(evt.source.value.toString());
+        this.keys[evt.source.value].push(res);
+         //console.log(res);
+        // console.log( keys[evt.source.value]);
+        
+         for(let i = 0;i< this.keys.length;i++)
+         {
+          let newarr =  this.keys[i];
+          console.log(this.keys[newarr]);
+          let newres = this.keys[newarr];
+          if(i == 0)
+          {
+          finalrray = newres[0].slice();
+          //break;
+         }
+         else
+         {
+           let viewres = newres[0].slice();
+          for(let j = 0;j < viewres.length;j++)
+          {
+            finalrray[j] = finalrray[j]+","+viewres[j];
+          }
+        }
+         //  console.log();
+        //  if(this.keys.length > 2 && i == (this.keys.length -1))
+        //  {
+        //   let newarr =  this.keys[0];
+        //   console.log(this.keys[newarr]);
+        //   let newres = this.keys[newarr];
+        //   finalrray = newres;
+        //  }
+         }
+         finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
+         console.log("The below Final Array");
+         this.autocompletearr = finalrray;
+         console.log(finalrray);
+      }
+      else
+      {
+        let index = this.keys.findIndex(res=> res == evt.source.value);
+        if (index >-1) {
+          this.keys.splice(index, 1);
+          
+        }
+        for(let i = 0;i< this.keys.length;i++)
+         {
+          let newarr =  this.keys[i];
+          console.log(this.keys[newarr]);
+          let newres = this.keys[newarr];
+          if(i == 0)
+          {
+          finalrray = newres[0];
+          //break;
+         }
+         else
+         {
+           let viewres = newres[0];
+          for(let j = 0;j < viewres.length;j++)
+          {
+            finalrray[j] = finalrray[j]+","+viewres[j];
+          }
+        }
+         //  console.log();
+         }
+         finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
+         console.log("The below Final Array");
+         this.autocompletearr = finalrray;
+         console.log(finalrray);
+      }
+    }
+    
+  }
+
+  applyFilter() {
+    this.listData.filter = this.searchwords.trim().toLowerCase();
+  }
+  returncolumnvalue(val)
+  {let arr = [];
+    this.dashboardData.forEach(value =>{
+      arr.push(value[val]);
+    }); 
+   // let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
+    return arr;
+  }
+
+  returnsortedvalue(val)
+  {let arr = [];
+    let res = this.dashboardData.filter(obj =>{ 
+      let phasecode = (this.privilege_name == "OBF Initiator" || this.privilege_name == "OBF Reviewer")?"OBF":"PPL";
+      if(obj.is_submitted == 1 && obj.phase_code == phasecode)
+      {
+        return obj;
+      }
+  });
+    if(res != undefined || res != null)
+    {
+    res.forEach(value =>{
+      arr.push(value[val]);
+    }); 
+  }
+    let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
+    return unique;
+  }
+
+  cardsearcharray:any[] = [];
+  searchtextchange(value)
+  {
+    this.cardsearcharray = [];
+    let res = value.split(',');
+    this.cardsearcharray = res;
+    this.listData=new MatTableDataSource(this.dashboardData); 
+    this.listData=new MatTableDataSource(this.filterdata); 
+    for(let i=0;i< res.length;i++)
+    {
+      this.listData.filter = res[i].trim().toLowerCase();
+      this.listData = new MatTableDataSource(this.listData.filteredData);
+     // this.cardsearcharray = this.listData.filteredData;
+    }
+  }  
+
+  getdatafromsearchandfiltereddata()
+  {
+    this.listData=new MatTableDataSource(this.filterdata); 
+    for(let i=0;i< this.cardsearcharray.length;i++)
+    {
+      this.listData.filter = this.cardsearcharray[i].trim().toLowerCase();
+      this.listData = new MatTableDataSource(this.listData.filteredData);
+     this.filterdata = this.listData.filteredData;
+    }
+
+  }
 
   ngOnInit() {
+    this.cardsearcharray = [];
+    this.autocompletearr = [];
     this.dscdsbld = false;
     // Get list of columns by gathering unique keys of objects found in DATA.
     this.Dashboardvalid = new FormGroup({
@@ -148,6 +322,22 @@ export class DashboardComponent implements OnInit {
     this.GetDatabaseCount();
     this.getcreateobfmasters();
     this.getsolutionmaster();
+    this.filteredOptions = this.searchControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  onSearchClear(){
+    this.cardsearcharray = [];
+    this.addColumn(this.selectedcolumn);
+    this.searchControl.setValue("");
   }
 
   getcreateobfmasters()
@@ -532,6 +722,7 @@ openModal(templateRef,row) {
       this._obfservices.ObfCreateForm.controls['otherservices'].disable();
       this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
       this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
       console.log("checkmodel after model click");
       console.log(this._obfservices.ObfCreateForm);
    },
@@ -651,6 +842,7 @@ downloaddetailFinalAgg(row)
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
        this.BindGridDetails();
+       this.statusfilter =  this.returnsortedvalue("currentstatus_search");
     },
     (error:HttpErrorResponse)=>{
     
@@ -717,6 +909,8 @@ downloaddetailFinalAgg(row)
   // }
   filterValue:string;
   addColumn(selection) {
+    this.selectedcolumn = parseInt(selection);
+    // alert(this.autocompletearr.length);
     this.picker.clear();
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
@@ -725,15 +919,18 @@ downloaddetailFinalAgg(row)
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>{
+        this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
             return obj;
           }
          // obj.shortcurrentstatus=='draft'
          } );
-        this.listData=new MatTableDataSource(this.filterdata);
-
+           if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+          this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
@@ -749,8 +946,12 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
-        this.listData=new MatTableDataSource(this.filterdata);
-
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+          this.listData=new MatTableDataSource(this.filterdata);
+        
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -758,14 +959,16 @@ downloaddetailFinalAgg(row)
       {
         //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(obj=>
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='rejected' )
           {
-            if(obj.shortcurrentstatus=='rejected' )
-            {
-              return obj;
-            }
-          }
-         );
+            return obj;
+          }}
+        );
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
@@ -781,6 +984,10 @@ downloaddetailFinalAgg(row)
             return obj;
           }
             });
+            if(this.cardsearcharray.length > 0)
+            {
+             this.getdatafromsearchandfiltereddata();
+            }
         this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ApprovedOBf;
        
@@ -799,6 +1006,10 @@ downloaddetailFinalAgg(row)
           this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
         }
         
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
 
         
@@ -810,15 +1021,18 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
-         
-      this.filterdata=this.dashboardData.filter(obj=>
-        {
-          if(obj.shortcurrentstatus=='Submitted' )
+        this.filterdata=this.dashboardData.filter(obj=>
           {
-            return obj;
+            if(obj.shortcurrentstatus=='Submitted' )
+            {
+              return obj;
+            }
           }
+        );
+        if(this.cardsearcharray.length > 0)
+        {
+         this.getdatafromsearchandfiltereddata();
         }
-      );
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
@@ -827,14 +1041,19 @@ downloaddetailFinalAgg(row)
       {
          //Approved section
          this.listData=new MatTableDataSource(this.dashboardData); 
-          this.filterdata=this.dashboardData.filter(obj=>
+         this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if( obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved' )
             {
-              if( obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved' )
-              {
-                return obj;
-              }
+              return obj;
             }
-           );
+          }
+         );
+         
+         if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
@@ -843,7 +1062,7 @@ downloaddetailFinalAgg(row)
       {
       
         this.listData=new MatTableDataSource(this.dashboardData); 
-        let filterdata=this.dashboardData.filter(obj=>
+        this.filterdata=this.dashboardData.filter(obj=>
           {
             if( obj.shortcurrentstatus=='Rejected')
             {
@@ -851,7 +1070,11 @@ downloaddetailFinalAgg(row)
             }
           }
         );
-        this.listData=new MatTableDataSource(filterdata);
+        if(this.cardsearcharray.length > 0)
+        {
+         this.getdatafromsearchandfiltereddata();
+        }
+        this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
@@ -859,7 +1082,7 @@ downloaddetailFinalAgg(row)
       else if(selection==3)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-         this.filterdata=this.dashboardData.filter(obj=>
+        this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
             {
@@ -867,6 +1090,10 @@ downloaddetailFinalAgg(row)
             }
           }
          );
+         if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ReviewerApproved;
@@ -876,17 +1103,23 @@ downloaddetailFinalAgg(row)
       else if(selection==4)
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
-        if(this.privilege_name=="PPL Reviewer")
-        {
-          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
-        }
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='rejected')
+            {
+              return obj;
+            }
         else
         {
           this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
-        }
-        
+          }
+        );
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
-
+        this.displayedColumns=this.ReviewerApproved;
         
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
