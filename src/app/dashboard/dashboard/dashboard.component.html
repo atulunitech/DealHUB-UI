@@ -24,8 +24,29 @@
 </p> -->
   </div>
       <div class="serch_box_ms">
+        <mat-form-field appearance="fill">
+          <mat-label>Status Filter</mat-label>
+          <mat-select [formControl]="statusfiltercontrol" >
+            <mat-option *ngFor="let filter of statusfilter" (onSelectionChange)="statusfiltermethod($event)" [value]="filter">{{filter}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Search Filter</mat-label>
+          <mat-select [formControl]="searchfiltercontrol" multiple>
+            <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
        <div class="search_con">
-         <input type="search" placeholder="Search"  autocomplete="off">
+        <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+         <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto">
+         <mat-autocomplete #auto="matAutocomplete" >
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <button  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
+          <mat-icon>close</mat-icon>
+        </button>
        </div>
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
      </div>
@@ -194,7 +215,7 @@
              <ng-container  matColumnDef="ActionApprovedOBF">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                <mat-cell *matCellDef="let row" >
-              <button mat-flat-button class="creat_bt edit_bt">Edit</button>
+              <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
               <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
             </mat-cell>
            

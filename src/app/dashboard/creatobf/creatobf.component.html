@@ -342,8 +342,8 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category *</mat-label>
-                    <mat-select  formControlName="Solutioncategory" [errorStateMatcher]="matcher" disableOptionCentering>
-                      <mat-option *ngFor="let Solution of Solutiongroup" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+                    <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" >
+                      <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="reinitiatefordisable" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
                         {{Solution.Solutioncategory}}
                       </mat-option>
@@ -359,11 +359,11 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select type of service/solution category *</mat-label>
-                                <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple  disableOptionCentering>
+                                <mat-select [formControl]="servicesControl"  [errorStateMatcher]="matcher" multiple  >
                                   <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
-                                    <mat-option *ngFor="let list of group.Serviceslist" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+                                    <mat-option *ngFor="let list of group.Serviceslist" [disabled]="reinitiatefordisable"   (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
                                       {{list.viewValue}} 
                                     </mat-option>
                                   </mat-optgroup>
@@ -380,7 +380,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
-                                <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="otherservices" [disabled]="reinitiatefordisable" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                                   Services:Other is <strong>required</strong>
                                 </mat-error>
@@ -395,7 +395,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Solutions</mat-label>
-                                <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="othersolutions" [disabled]="reinitiatefordisable" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
                                   Solution:Other is <strong>required</strong>
                                 </mat-error>
@@ -409,7 +409,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Integrated Solutions</mat-label>
-                                  <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
+                                  <input matInput formControlName="otherintegratedsolutions" [disabled]="reinitiatefordisable" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
                                     Integrated Solution:Other is <strong>required</strong>
                                   </mat-error>
@@ -428,7 +428,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Vertical *</mat-label>
-                                  <input matInput formControlName="Vertical" [readonly]="true"  value="{{_obfservices.ObfCreateForm.get('Vertical').value}}"/>
+                                  <input matInput formControlName="Vertical" [readonly]="true" />
                                 </mat-form-field>
                             </div>
                           </div>
@@ -438,7 +438,7 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select Sector *</mat-label>
                                 <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector" disableOptionCentering>
-                                  <mat-option *ngFor="let Sector of sectorlist" [value]="Sector.value"  >
+                                  <mat-option *ngFor="let Sector of sectorlist" [disabled]="reinitiatefordisable" [value]="Sector.value"  >
                                     {{Sector.viewValue}}
                                   </mat-option>
                                 </mat-select>
@@ -456,7 +456,7 @@
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select Sub Sector</mat-label>
                                 <mat-select (selectionChange)="onsubsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Subsector" disableOptionCentering>
-                                  <mat-option *ngFor="let Subsector of subsectorlisdisplay" [value]="Subsector.value"  >
+                                  <mat-option *ngFor="let Subsector of subsectorlisdisplay" [disabled]="reinitiatefordisable" [value]="Subsector.value"  >
                                     {{Subsector.viewValue}}
                                   </mat-option>
                                 </mat-select>
@@ -478,7 +478,7 @@
                                
                                   <mat-label>Enter SAP Customer Code</mat-label>
                                   <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                                  <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                                  <input matInput type="number" formControlName="Sapcustomercode"  (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
                                     Special characters are not allowed
                                   </mat-error>
