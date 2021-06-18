@@ -852,13 +852,14 @@ class filesdetail
     
 
 	}
+  dispalyloading:boolean=false;
   SaveAttachment()
   {
     //this.isloipo = !this.isloipo;
-   
+    this.dispalyloading=true;
   if(this.Type == "loipo")
   {
-    if(this.filelist.length !=0)
+    if(this.filelist.length !=0 )
     {
       for(let i=0;i< this.filelist.length;i++)
       {
@@ -928,6 +929,7 @@ class filesdetail
       this.Attachments.push(SaveAttachment);
     }
    } 
+
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
           
@@ -946,12 +948,11 @@ class filesdetail
            this.getdetailsfordh_id(this.dh_id);
            this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
            setTimeout(() => {
-           
              this.OpenDocDownload('button',this.Type);
            },3000 );
          
           }
-        
+          this.dispalyloading=false;
     });
   
    
