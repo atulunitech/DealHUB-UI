@@ -150,87 +150,95 @@
       
     </div>
       <div class="fl_table_con" >
-        <table mat-table [dataSource]="listData" class="ms_table" matSort>
-          <ng-container  [matColumnDef]="theRemovedElement.columnDef">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>{{ theRemovedElement.header }}</mat-header-cell>
-            <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
-            
-          </ng-container>
-          <ng-container matColumnDef="ApprovalStatus">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>ApprovalStatus</mat-header-cell>
-            <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-              <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
-              <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
-          </mat-cell>
-        </ng-container>
-         
-
-          <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
-              <div *ngIf="column.columnDef == 'download'">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-              <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
-            </div>
-            <div *ngIf="column.columnDef != 'download'">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
-              <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}</mat-cell>
-            </div>
-          </ng-container>
-          <ng-container matColumnDef="FinalAgg">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>FinalAgg</mat-header-cell>
-            <mat-cell *matCellDef="let row" >
-              <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-              <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
-              <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" src="assets/images/download_icon.png"></div>
-          </mat-cell>
-        </ng-container>
-            <ng-container matColumnDef="DetailedOBF">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>DetailedOBF</mat-header-cell>
+        <perfect-scrollbar class="perfect_scroll_com" [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" >
+          <table mat-table [dataSource]="listData" class="ms_table" matSort>
+            <ng-container  [matColumnDef]="theRemovedElement.columnDef">
+              <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
+              <mat-cell [matTooltip]="getToolTipData(row)" *matCellDef="let row">{{ theRemovedElement.cell(row) }}</mat-cell>
+              
+            </ng-container>
+            <ng-container matColumnDef="ApprovalStatus">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>ApprovalStatus</mat-header-cell>
               <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-                <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
+                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
+                <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
+                <div class="set-size charts-container">
+                <div class="pie-wrapper pie-wrapper--solid progress-88">
+    <span class="label">10<span class="smaller">%</span></span>
+  </div>
+</div>
             </mat-cell>
           </ng-container>
-            <ng-container  matColumnDef="ActionDraft">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            
-                <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
-             </ng-container>
-             
-             <ng-container  matColumnDef="ActionPendingforapproval">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            
-                <mat-cell *matCellDef="let row" >
-                  <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
-                  <button mat-raised-button color="primary">Reject</button>
-                 </mat-cell>
-             </ng-container>
-             <ng-container  matColumnDef="ActionSubmitted">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
-             </ng-container>
-             <ng-container  matColumnDef="ActionReinitialize">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-raised-button color="primary" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
-             </ng-container>
-             <ng-container  matColumnDef="ActionApprovedOBF">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-               <mat-cell *matCellDef="let row" >
-              <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
-              <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
+           
+  
+            <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+                <div *ngIf="column.columnDef == 'download'">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+                <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
+              </div>
+              <div *ngIf="column.columnDef != 'download'">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}</mat-cell>
+              </div>
+            </ng-container>
+            <ng-container matColumnDef="FinalAgg">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>FinalAgg</mat-header-cell>
+              <mat-cell *matCellDef="let row" >
+                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
+                <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
+                <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" style="margin-left: 10px;" src="assets/images/upload_icon.png"></div>
             </mat-cell>
+          </ng-container>
+              <ng-container matColumnDef="DetailedOBF">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>DetailedOBF</mat-header-cell>
+                <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
+                  <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
+                  <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
+              </mat-cell>
+            </ng-container>
+              <ng-container  matColumnDef="ActionDraft" stickyEnd>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              
+                  <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+               </ng-container>
+               
+               <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd style="min-width: 300px;">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              
+                  <mat-cell *matCellDef="let row" >
+                    <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
+                    
+                   </mat-cell>
+               </ng-container>
+               <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
+               </ng-container>
+               <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+               </ng-container>
+               <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                 <mat-cell *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt edit_bt">Edit</button>
+                <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
+              </mat-cell>
+             
            
-         
-          
-             </ng-container>
-             <ng-container  matColumnDef="ActionApprovedPPL">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-            <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
-            <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-             </ng-container>
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-           
-        </table>
+            
+               </ng-container>
+               <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt approv_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+              <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+               </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+             
+          </table>
+        </perfect-scrollbar>
+        
         <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >

@@ -177,7 +177,7 @@ class obf{
   _dh_project_name:string;
   _opportunity_id:string;
   _dh_location:string;
-  _projecttype:string;
+  _projecttype:number;
   _vertical_id:number;
   _verticalhead_id:number;
   _dh_desc:string;
@@ -240,7 +240,7 @@ class editObf{
   _vertical_id:number;
   _verticalhead_id:number;
   _dh_desc:string;
-  _projecttype:string;
+  _projecttype:number;
   _total_revenue:number;
   _total_cost:number;
   _total_margin:number;
@@ -331,9 +331,9 @@ export class OBFServices {
       Vertical:new FormControl("",Validators.required),
       Verticalhead:new FormControl("",Validators.required),
       Createddate:new FormControl(""),
-      Sapio:new FormControl(null,[this.SIOnumbervalidate]),
+      Sapio:new FormControl(null,[this.OnlyDigits,this.SIOnumbervalidate]),
       Customername:new FormControl("",Validators.required),
-      Sapcustomercode:new FormControl("",[this.NoSpecialCharacters,this.SIOnumbervalidate]),
+      Sapcustomercode:new FormControl("",[this.OnlyDigits,this.SIOnumbervalidate]),
       Projectprimarylocation:new FormControl(""),
       Solutiontype:new FormControl(""),
       Sector:new FormControl(""),
@@ -355,7 +355,7 @@ export class OBFServices {
       otherservices:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
       othersolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
       otherintegratedsolutions:new FormControl({value:"",disabled:true},[this.NoSpecialCharacters]),
-      comments:new FormControl("")
+      comments:new FormControl("",[this.NoSpecialCharacters])
      });
    }
    GetCreateOBFMasters(usercode: string): Observable<any> {  
@@ -402,9 +402,17 @@ export class OBFServices {
   }
 
   NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[^a-zA-z0-9 ]/;
+    var format = /[^a-zA-z0-9., ]/;
     if (control.value && format.test(control.value)) {
       return { 'invalidservices': true };
+    }
+    return null;
+  }
+
+  OnlyDigits(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[^0-9]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidnumber': true };
     }
     return null;
   }
@@ -459,7 +467,8 @@ export class OBFServices {
       }
       SaveAttachment(data:SaveAttachmentParameter[]):Observable<any>
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) 
+        };  
         return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data,
            httpOptions); 
       }

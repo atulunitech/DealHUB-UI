@@ -478,9 +478,9 @@
                                
                                   <mat-label>Enter SAP Customer Code</mat-label>
                                   <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                                  <input matInput type="number" formControlName="Sapcustomercode"  (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
-                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
-                                    Special characters are not allowed
+                                  <input matInput type="text" formControlName="Sapcustomercode"  (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidnumber">
+                                    Only Numbers are allowed
                                   </mat-error>
                                   <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
                                     SAP Customer Code length must be <strong>8 digits</strong>
@@ -499,15 +499,18 @@
                         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                       </mat-chip>
                       <input placeholder="SAP IO ..." 
-                      type="number"
+                      type="text"
                       formControlName="Sapio"
                       [matChipInputFor]="chipList"
                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                       [matChipInputAddOnBlur]="addOnBlur"
                       (matChipInputTokenEnd)="add($event)">
                     </mat-chip-list>
-                    <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.Sionumberinvalid">
                       SAP IO Number length must be <strong>8 digits</strong>
+                    </mat-error>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
+                      Only numbers are allowed
                     </mat-error>
                               </mat-form-field>
                               
@@ -535,6 +538,9 @@
                                 <mat-form-field class="example-full-width" appearance="fill">
                                   <mat-label>Leave a comment</mat-label>
                                   <textarea matInput formControlName="comments" (change)="SavetoModel()"></textarea>
+                                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.comments.errors?.invalidservices">
+                                    <strong>Special Characters</strong> are not allowed
+                                  </mat-error>
                                 </mat-form-field>
                                 
                               </div>

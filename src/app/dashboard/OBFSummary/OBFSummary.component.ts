@@ -80,8 +80,7 @@ class filesdetail
     privilege_name:string;
     subscription: Subscription;
     dh_id:number;
-    supportfilecount:number=0;
-    FinalAggfilecount:number=0;
+   
     dh_header_id:number;
   SupportPoprogress:any[] = [];
   finalProgress:any[]=[];
@@ -134,7 +133,7 @@ class filesdetail
     this.role_name=localStorage.getItem("role_name");
 
     this.User_name= localStorage.getItem("UserName"); 
-    console.log(this._obfservices.obfsummarymodel);
+  
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
      (params => {
@@ -159,7 +158,7 @@ class filesdetail
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-      console.log(data);
+     
     //  this._obfservices.initializeobf(JSON.parse(data));
       var jsondata=JSON.parse(data);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
@@ -303,10 +302,7 @@ class filesdetail
   {
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
-    
-      console.log("DashBoardData");
-      console.log(Result);
-      var loginresult =Result;
+     var loginresult =Result;
       this.dashboardData= JSON.parse(Result);
       this.listData = new MatTableDataSource(this.dashboardData);
       
@@ -471,7 +467,7 @@ class filesdetail
       
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
-      console.log('wait');
+     
        this.componentRef.directiveRef.scrollToBottom(500);
     }
       else {
@@ -491,7 +487,7 @@ class filesdetail
     this.SaveCommentdetail=[];
 
   }
-  OpenDocDownload(event,Type)
+  OpenDocDownload(callFrom,Type)
   {
     this.Type=Type;
     this.uploadDocfiles=[];
@@ -588,6 +584,8 @@ class filesdetail
     }
   }
   }
+  if(callFrom=="button")
+  {
     const dialogRef = this.dialog.open(this.callAPIDialog, {
       // width: '500px',
       // height:'600px',
@@ -596,6 +594,8 @@ class filesdetail
       backdropClass: 'popupBackdropClass',
      // data: { campaignId: this.params.id }
   })
+  }
+   
  
 
 
@@ -740,20 +740,20 @@ class filesdetail
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
-      // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+    
        if( Math.floor(this.bytesToSize(element.size)) == 0)
        {
-         throw new Error("The file size of "+element.name+" is invalid" );
+        this._mesgBox.showUpdate("The file size of "+element.name+" is invalid" );
        }
  
        if(format.test(element.name))
        {
-         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+        this._mesgBox.showUpdate(element.name+" :name contains special characters,Kindly rename and upload again");
         }
        // if( this.bytesToSize(element.size) > 4)
        if( element.size > 4194304)
        {
-         throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+        this._mesgBox.showUpdate("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
        }
  
      });
@@ -763,18 +763,23 @@ class filesdetail
        {
         if(event.addedFiles.length > 1)
         {
-          throw new Error("Kindly upload only one valid LOI/PO Sheet");
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
         }
          if(this.loipofiles.length >= 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
-          this._mesgBox.showError("Kindly upload only one valid LOI/PO Sheet");
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
+          return false;
+         }
+         else if(this.filelist.length>=1)
+         {
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
           return false;
          }
          else{
            if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
-            throw new Error("Kindly select LOI or PO file type");
+            this._mesgBox.showUpdate("Kindly select LOI or PO file type");
            }
         this.loipofiles.push(...event.addedFiles);
        
@@ -784,31 +789,36 @@ class filesdetail
        }
        else if(this.Type=='Supporting')
        {
-        this.supportfilecount +=1;
-        if(this.supportfilecount > 1)
-        {
-
-        }
-       this.supportfiles.push(...event.addedFiles);
+        
+        this.supportfiles.push(...event.addedFiles);
         this.uploadDocfiles=this.supportfiles;
         // this.files = this.supportfiles;
        }
        else if(this.Type=='FinalAgg')
        {
-         this.FinalAggfilecount +=1;
-         if(this.FinalAggfilecount > 1)
+         if(event.addedFiles.length > 1)
          {
-
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement ");
+           return false;
+         }
+        else  if(this.FinalAggfiles.length >= 1 )
+          {
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement");
+           return false;
+          }
+          else if(this.filelist.length>=1)
+          {
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement");
+           return false;
+          }
+         else{
+          this.FinalAggfiles.push(...event.addedFiles);
+          this.uploadDocfiles=this.FinalAggfiles;
          }
         
-        this.FinalAggfiles.push(...event.addedFiles);
-      
-
-        this.uploadDocfiles=this.FinalAggfiles;
         // this.files = this.supportfiles;
        }
-       console.log("check progrss value");
-       console.log(this.progress);
+     
 		// this.files.push(...event.addedFiles);
   }
   catch(e)
@@ -818,7 +828,7 @@ class filesdetail
 
 	}
   onRemove(files:File[],event) {
-    console.log(event);
+    
 		files.splice(files.indexOf(event), 1);
    
   
@@ -861,6 +871,23 @@ class filesdetail
         this.Attachments.push(SaveAttachment);
       }
     }
+    else{
+      
+      var type
+      
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+     
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
     
   }
    else{
@@ -877,14 +904,38 @@ class filesdetail
         this.Attachments.push(SaveAttachment);
       }
     }
+    else{
+      
+      var type
+      if(this.Type=='Supporting')
+      {
+        type='support';
+      }
+      else if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else if(this.Type=='FinalAgg')
+      {
+        type="FinalAgg";
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
    } 
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
-          console.log(result);
+          
           var REsult=JSON.parse(result);
           if(REsult[0].status ="Success")
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+            this.uploadDocfiles=[];
            this.uploaddocprocess=[];
             this.Attachments=[];
             this.filelist=[];
@@ -892,11 +943,18 @@ class filesdetail
             this.supportfiles=[];
             this.FinalAggfiles=[];
             this.dialog.closeAll();
-
+           this.getdetailsfordh_id(this.dh_id);
+           this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+           setTimeout(() => {
+           
+             this.OpenDocDownload('button',this.Type);
+           },3000 );
+         
           }
         
     });
-    this.getdetailsfordh_id(this.dh_id);
+  
+   
   }
   uploadfiles(files:File[])
   {
@@ -946,7 +1004,7 @@ class filesdetail
        
         if(event.type === HttpEventType.UploadProgress)
         {
-          console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
+         
           this.progress = Math.round(event.loaded/event.total * 100);
           
     if(this.Type  == "loipo")
@@ -968,7 +1026,7 @@ class filesdetail
         }
         else if(event.type === HttpEventType.Response)
         {
-        console.log(event.body);
+       
         path = JSON.stringify(event.body);
         path=path.split('"').join('');
         path = path.substring(0,path.length -1);
@@ -1042,13 +1100,13 @@ class filesdetail
   removeFile(files:filesdetail[],event)
   {
  
-  console.log(event);
+  
 
   files.splice(files.indexOf(event), 1);
   
   this.filelist=files;
  
-    this.SaveAttachment();
+ this.SaveAttachment();
   
 
  
@@ -1056,7 +1114,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-   console.log(dh_id,dh_header_id);
+  
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1182,7 +1240,7 @@ class filesdetail
   getSAPCode()
   {
     this.SAPIONo ="";
-    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
+    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined &&  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
     {
       for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)
       {
@@ -1205,10 +1263,15 @@ class filesdetail
     }
   }
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&]/;
+    var format = /[<>'"&@$#*^%!]/;
     if (control.value && format.test(control.value)) {
       return { 'invalidservices': true };
     }
     return null;
+  }
+  CloseDialog()
+  {
+    this.dialog.closeAll();
+   // this.SaveAttachment();
   }
   }

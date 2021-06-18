@@ -37,7 +37,7 @@ export class MessageBoxComponent implements OnInit {
   
   showUpdate(content) {
     this._snackBar.open(content,'X', {
-      duration: 1000,
+      duration: 2000,
       verticalPosition: 'top',
       horizontalPosition:'right',
       panelClass:"custom_sneak_bar"
