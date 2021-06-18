@@ -608,7 +608,7 @@
   <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" (click)="CloseDialog()" class="close"></a></div>
     <mat-dialog-content class="mat-typography">
-  <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
+    <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
       
@@ -706,7 +706,11 @@
         <li>{{ msg }}</li>
       </ul>
     </div>
-  </div>
+    <div>
+      <button [disabled]="disablesavebutton" (click)="saveattachmentFromuploadbutton()"  class="creat_bt" mat-flat-button>Save</button>
+    </div>
+
+    </div>
 </mat-dialog-content>
 <!-- <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>

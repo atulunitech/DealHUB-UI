@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
 import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -115,6 +116,7 @@ class filesdetail
   shortcurrentstatus:string="";
   ServiceMore:boolean=false;
   SAPNumMore:boolean=false;
+  disablesavebutton:boolean=true;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -957,6 +959,51 @@ class filesdetail
   
    
   }
+  saveattachmentFromuploadbutton()
+  {
+    if(this.filelist.length !=0 )
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description =  this.filelist[i].description;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    if(this.Attachments.length !=0)
+    {
+      
+      this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
+        {
+            
+            var REsult=JSON.parse(result);
+            if(REsult[0].status ="Success")
+            {
+              this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+              this.uploadDocfiles=[];
+             this.uploaddocprocess=[];
+              this.Attachments=[];
+              this.filelist=[];
+              this.loipofiles=[];
+              this.supportfiles=[];
+              this.FinalAggfiles=[];
+              this.dialog.closeAll();
+             this.getdetailsfordh_id(this.dh_id);
+             this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+             setTimeout(() => {
+               this.OpenDocDownload('button',this.Type);
+             },3000 );
+           
+            }
+            this.dispalyloading=false;
+      });
+    }
+    
+  }
   uploadfiles(files:File[])
   {
     let val = true;
@@ -982,24 +1029,24 @@ class filesdetail
     var path="";
     var consolidatedpath="";
     for (let i = 0; i < files.length; i++) {
-     if(this.Type == "loipo")
+    if(this.Type == "loipo")
     {
       this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
       
     }
     else if(this.Type == "Supporting")
     {
       this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
     else if(this.Type == "FinalAgg")
     {
       this.finalProgress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
-      
-      path="";
+    
+    path="";
     this._dashboardservice.uploadImage(files[i]).subscribe(
       event => {
        
@@ -1070,10 +1117,8 @@ class filesdetail
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
-      this.SaveAttachment();
-      }
-
      
+      }
       },
       (err:any)=>{
      if(this.Type  == "loipo")
@@ -1097,21 +1142,15 @@ class filesdetail
       }
     );
     }
+    this.disablesavebutton=false;
   }
   removeFile(files:filesdetail[],event)
   {
- 
-  
-
   files.splice(files.indexOf(event), 1);
   
   this.filelist=files;
  
  this.SaveAttachment();
-  
-
- 
-  
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
