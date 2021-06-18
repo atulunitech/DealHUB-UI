@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BnNgIdleService } from 'bn-ng-idle';
+import { CommonService } from './services/common.service';
+import { MenuModel } from './shared/side-nave/side-nave.component';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import { BnNgIdleService } from 'bn-ng-idle';
 export class AppComponent {
   title = 'DealHUB-UI';
 
-  constructor(private bnIdle: BnNgIdleService,private router:Router) {
+  constructor(private bnIdle: BnNgIdleService,private router:Router,private _commomservices:CommonService) {
  
   }
  
@@ -25,7 +27,19 @@ export class AppComponent {
       if (isTimedOut) {
         if(localStorage.getItem("rememberCurrentUser") != "true")
         {
-          this.router.navigateByUrl('/login');
+          let data =new MenuModel();
+          data._user_code = localStorage.getItem("UserCode");
+         data.token = localStorage.getItem("Token");
+          this._commomservices.deletetoken(data).subscribe(data =>{
+         let res = JSON.parse(data);
+      if(res.result == "Success")
+      {
+       // alert("Token deleted");
+        localStorage.setItem("UserCode","");
+        localStorage.setItem("Token","");
+        this.router.navigate(['/']);
+      }
+    });  
         }
       }
     });

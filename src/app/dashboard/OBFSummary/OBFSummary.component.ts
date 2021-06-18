@@ -871,6 +871,23 @@ class filesdetail
         this.Attachments.push(SaveAttachment);
       }
     }
+    else{
+      
+      var type
+      
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+     
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
     
   }
    else{
@@ -925,12 +942,12 @@ class filesdetail
             this.loipofiles=[];
             this.supportfiles=[];
             this.FinalAggfiles=[];
-           // this.dialog.closeAll();
+            this.dialog.closeAll();
            this.getdetailsfordh_id(this.dh_id);
            this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
            setTimeout(() => {
            
-             this.OpenDocDownload('NotFromButton',this.Type);
+             this.OpenDocDownload('button',this.Type);
            },3000 );
          
           }

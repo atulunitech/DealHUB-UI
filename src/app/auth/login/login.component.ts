@@ -16,6 +16,7 @@ export class LoginModel
   _token:string;
    _SecretKey:string;
   privilege_name:string;
+  _attempt:string;
   role_name:string;
   UserName:string;
 }
@@ -156,6 +157,7 @@ export class LoginComponent implements OnInit {
   
       this.loginmodel._user_code=this.loginvalid.get('userID').value;
       this.loginmodel._SecretKey = this.key;
+      this.loginmodel._attempt = "1";
       this.loginmodel._password=this.loginvalid.get('Password').value;
       this.RememberMe = this.loginvalid.get('RememberMe').value;
   
@@ -201,9 +203,12 @@ export class LoginComponent implements OnInit {
       },
       (error:HttpErrorResponse)=>{
         this.disablebutton=false;
+        let res = error.error.Record.MESSAGE;
         if(error.status == 401)
         {
-          this._mesgBox.showError("Please Enter Correct Login ID Or Password");
+          //this._mesgBox.showError("Please Enter Correct Login ID Or Password");
+          this.loginmodel._attempt =  (parseInt(this.loginmodel._attempt) +1).toString();
+          this._mesgBox.showError(res);
         }
         if(error.status !=0)
         {
@@ -241,9 +246,11 @@ export class LoginComponent implements OnInit {
     if(this.ResetPasswordForm.get('ResetPasswordUserid').value != "" )
     {
       this.loginmodel._user_code=this.ResetPasswordForm.get('ResetPasswordUserid').value;
+      //this._loginservice.usercode = this.ResetPasswordForm.get('ResetPasswordUserid').value;
+      localStorage.setItem("ResetUC",this.ResetPasswordForm.get('ResetPasswordUserid').value);
       this.loginmodel._password=this.loginvalid.get('Password').value;
       this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
-        alert("Email Send.");
+        this._mesgBox.showSucess("Email send.");
        
       });
     }

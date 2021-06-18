@@ -12,7 +12,6 @@ export class notificationDetails
   tablename:string;
  }
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,8 +19,8 @@ export class CommonService {
 
   private _loading = new BehaviorSubject<boolean>(false);
   public readonly loading$ = this._loading.asObservable();
-  
   menu_status: boolean = false;
+  usercode:string ="";
   notification_view: boolean = false;
   
   constructor(private http:HttpClient) 
@@ -75,4 +74,10 @@ Get_System_Notification(usercode:string)
      return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model ,
         httpOptions);  
  }
+
+deletetoken(usercode:any): Observable<any> {  
+  //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};  
+  return this.http.post<any>(environment.apiUrl+"Api/Auth/DeleteToken",usercode
+     );  
+}
 }
