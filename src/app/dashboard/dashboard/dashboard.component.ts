@@ -1115,7 +1115,7 @@ downloaddetailFinalAgg(row)
         {
           this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
           }
-        );
+          });
         if(this.cardsearcharray.length > 0)
            {
             this.getdatafromsearchandfiltereddata();
