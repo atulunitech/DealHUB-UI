@@ -1149,8 +1149,8 @@ class filesdetail
   files.splice(files.indexOf(event), 1);
   
   this.filelist=files;
- 
- this.SaveAttachment();
+  this.disablesavebutton=false;
+ //this.SaveAttachment();
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
