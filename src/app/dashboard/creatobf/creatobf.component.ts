@@ -1216,6 +1216,7 @@ downloadCoversheet(event)
     if(indexnew > -1)
     {
       array.splice(index,1);
+      this.supportfiles=array;
     }
     // console.log(attachment);
     if(array.length == 0)

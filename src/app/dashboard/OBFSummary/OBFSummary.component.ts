@@ -200,7 +200,7 @@ class filesdetail
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
          this.CFOMess=true;
-          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
           {
             this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
@@ -962,6 +962,7 @@ class filesdetail
   }
   saveattachmentFromuploadbutton()
   {
+    this.disablesavebutton=true;
     if(this.filelist.length !=0 )
     {
       for(let i=0;i< this.filelist.length;i++)
@@ -975,9 +976,33 @@ class filesdetail
         this.Attachments.push(SaveAttachment);
       }
     }
+    else
+    {
+      var type="";
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else{
+        if(this.Type=='Supporting')
+        {
+          type='support';
+        }
+        else if(this.Type=='FinalAgg')
+        {
+          type="FinalAgg";
+        }
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
     if(this.Attachments.length !=0)
     {
-      
       this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
         {
             
@@ -1003,6 +1028,7 @@ class filesdetail
             this.dispalyloading=false;
       });
     }
+    
     
   }
   uploadfiles(files:File[])
