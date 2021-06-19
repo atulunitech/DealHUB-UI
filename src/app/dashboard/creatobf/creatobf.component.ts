@@ -1216,7 +1216,8 @@ downloadCoversheet(event)
     if(indexnew > -1)
     {
       array.splice(index,1);
-      this.supportfiles=array;
+     
+      //this.supportfiles=array;
     }
     // console.log(attachment);
     if(array.length == 0)
@@ -1241,6 +1242,11 @@ downloadCoversheet(event)
     if(indexnew > -1)
     {
       array.splice(index,1);
+      let tempindex = this.supportfiles.findIndex(obj => obj.name == attachment.fileName);
+      if(tempindex>-1)
+      {
+        this.supportfiles.splice(tempindex,1);
+      }
     }
 
     if(array.length == 0)
