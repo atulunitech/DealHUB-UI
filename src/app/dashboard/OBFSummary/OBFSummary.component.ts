@@ -782,6 +782,7 @@ class filesdetail
            if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
             this._mesgBox.showUpdate("Kindly select LOI or PO file type");
+            return false;
            }
         this.loipofiles.push(...event.addedFiles);
        
@@ -995,7 +996,7 @@ class filesdetail
              this.getdetailsfordh_id(this.dh_id);
              this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
              setTimeout(() => {
-               this.OpenDocDownload('button',this.Type);
+               this.OpenDocDownload('NOtButton',this.Type);
              },3000 );
            
             }
