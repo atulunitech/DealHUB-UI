@@ -13,13 +13,13 @@
 </div>
 </div>
 <div  fxLayout="column" fxLayoutAlign=" none"  class="filter_cont obf_form_cont">
-    <div class="cust-accor">
+    <div class="cust-accor summary_accor">
         <mat-accordion [multi]="true">
             <mat-expansion-panel [expanded]="true" disabled>
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
-                    <mat-panel-title>
+                    <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
-                      <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator' "> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
+                      <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                     </mat-panel-title>
                    </mat-expansion-panel-header>
                   <form [formGroup]="obfsummaryform">
@@ -46,7 +46,7 @@
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
-                     <div class="prev_dis" style=" width: 271px;word-break: break-word;">
+                     <div class="prev_dis dis_io" >
                          <div>
                            {{this.SAPIONo}}
                          </div>
@@ -76,13 +76,13 @@
                    {{_obfservices.obfsummarymodel.uploadDetails[0].VerticalHeadName}} 
                  </div>
               </div>
-              <div class="mat_previe_box">
+              <div class="mat_previe_box selc_version_box">
                <!-- <div class="prev_tit">
                  Version
                </div> -->
                <!-- [disabled]="loiopdisabled" -->
                <div class="prev_dis" >
-                <div class="mt-cust-fd upl_sec_cut" style="margin: 0;margin-top: -7px;position: relative;top: 4px;">
+                <div class="mt-cust-fd upl_sec_cut selc_version" >
                   <mat-form-field appearance="fill" class="example-full-width" >
                     <mat-label>Select version</mat-label>
                     <mat-select  formControlName="version" disableOptionCentering>
@@ -99,11 +99,6 @@
                
                </div>
             </div>
-                      
-                    
-                      
-            
-           
                       </div>
                       
                       <div fxLayout="row " fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp color_none_fld">
@@ -189,7 +184,7 @@
                       Total Project Life 
                     </div>
                     <div class="prev_dis">
-                      {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}}  Days
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}} 
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -250,12 +245,12 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div *ngIf="(this.service.length > 35)">
+                          <div *ngIf="(this.service.length > 20)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 35)">
+                           <div *ngIf="(this.service.length < 20)">
                             {{(this.service)}}  
                            </div>
                         </div>
@@ -269,7 +264,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 10)">
+                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 20)">
                         {{(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc)}}  
                        </div>
                    </div> 
@@ -309,7 +304,7 @@
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      LOI/Po
+                      LOI/PO
                     </div>
                     <div class="prev_dis">
                     
@@ -317,36 +312,42 @@
                       
                     </div>
                  </div>
-                 <div class="mat_previe_box" >
-                  <div class="prev_tit" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                 <div class="mat_previe_box"  *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                  <div class="prev_dis" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
-                  <div class="prev_dis" *ngIf="this.role_name == 'VSH'">
+                  <div class="mat_cu_indic">
+                  <div class="prev_dis mt-cust-fd-com"  *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
-                  <div>
-                    </div>
-                  <div class="prev_dis"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
+                  
+                  <div class="prev_dis mt-cust-fd-com"  *ngIf="this.role_name == 'PH'|| this.role_name == 'CFO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCFO" [disabled]="disableCFOcontrol">Exception case-CFO approval</mat-slide-toggle>
                   </div>
-                  <div class="prev_tit"  *ngIf="CEOMess">
+                  <div class="prev_tit cf0message"  *ngIf="CEOMess">
                     <label>
                       {{this.cfomessgae}}
                     </label>
                     </div>
-                    <div class="prev_dis"  *ngIf="MarginException">
-                      <label>
-                        Margin Exception Requested by VSH.
-                      </label>
-                      </div>
-                  <div class="prev_dis"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
+                   
+                  <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
-                  <div class="prev_tit"  *ngIf="CFOMess">
+                  <div class="prev_tit cf0message"  *ngIf="CFOMess">
                     <label>
                       {{this.CEOmessage}}
                     </label>
                     </div>
+                    <div class="mar_exc" style="margin-left: 35px;
+                    padding-top: 7px;
+                    border-top: 1px solid #ccc;
+                    margin-top: 10px;
+                    border-top: solid 1px #707070;
+                    font-weight: 500;" *ngIf="MarginException">
+                      Margin Exception Requested by VSH.
+                    </div>
+                  </div>
+                 
                    
                </div>
 
@@ -360,15 +361,19 @@
                           </div>
                           <perfect-scrollbar class="perfect_scroll_com"  >
                             <div fxLayout="row" fxLayoutAlign=" start" class="text_cont_cmm" *ngFor="let details of _obfservices.obfsummarymodel.CommentDetails">
-                              <div class="us_comm_nt">
+                              <div class="us_comm_nt" title="{{details.role_code}}">
+                                <!-- {{details.Initials}} -->
                                 {{details.role_code}}
                               </div>
                               <div class="us_coment_dt">
-                                <div class="Role_name">{{details.role_name}}</div>
-                                <div class="Fullname">{{details.Fullname}}</div>
+                                <div class="Role_name" style="display: none;">{{details.role_name}}</div>
+                                <div class="Fullname">{{details.Fullname}}<span>
+                                  <!-- ({{details.role_code}}) -->
+                                </span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
-                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span><span class="span_tim">{{details.commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                         
@@ -385,32 +390,26 @@
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>
                                 <div class="dh_comment">{{SaveCommentdetail[0].dh_comment}}</div>
-                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span></div>
+                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span> <span class="span_tim">{{SaveCommentdetail[0].commented_on | date:'h:mm a'}}</span>
+                                  </div>
                               </div>
                             </div>
                           </perfect-scrollbar>
                           <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)">
+                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
                                     <mat-label>Enter Comments </mat-label>
-                                      <input matInput formControlName="comments" style="margin-left: 0px;"/>
+                                      <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
                                       <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
                                         Comment is <strong>required</strong>
                                       </mat-error>
+                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
+                                        Black-Listed characters `<>'"&` are not allowed
+                                      </mat-error>
                                     </mat-form-field>
                                 </div>
-                              
-
-                              <!-- <mat-form-field>
-                              
-                               <input type="text" matInput formControlName="comments">
-                               
-                               <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required">
-                                 Comment is <strong>required</strong>
-                               </mat-error>
-                             </mat-form-field> -->
                              <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
                              
                             </div>
@@ -457,7 +456,7 @@
                              <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
-                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload($event,'Supporting')" >
+                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
                           Upload
                           <span>
                             <img src="assets/images/up-file-icon.png">
@@ -471,13 +470,13 @@
                       LOI/PO/Agreement
                     </div>
                     <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                      <div class="up_pdf_com" (click)="OpenDocDownload($event,'Supporting')">
+                      <div class="up_pdf_com" (click)="downloadLOIp($event)">
                          Download
                          <span>
                            <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
-                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'loipo')"  >
+                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
                         Upload
                         <span>
                           <img src="assets/images/up-file-icon.png">
@@ -497,7 +496,7 @@
                          <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
-                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload($event,'FinalAgg')" >
+                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
                       Upload
                       <span>
                         <img src="assets/images/up-file-icon.png">
@@ -549,14 +548,14 @@
                  </div>
                 </form>
             </mat-expansion-panel>
-            <mat-expansion-panel >
-                <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+            <mat-expansion-panel class="last_exp_pan" style="margin-top: 20px;">
+                <mat-expansion-panel-header collapsedHeight="50px"  expandedHeight="50px">
                     <mat-panel-title>
                         Detailed Timeline History
                     </mat-panel-title>
                   </mat-expansion-panel-header>
                   <div class="fl_table_con">
-                    <table mat-table [dataSource]="listData" class="ms_table" matSort>
+                    <table mat-table [dataSource]="listData" class="ms_table" style="margin-top: 10px;" matSort>
                       <ng-container  matColumnDef="username">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
                       <mat-cell *matCellDef="let row" >{{row.username}}</mat-cell>
@@ -573,6 +572,14 @@
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
                       <mat-cell *matCellDef="let row" >{{row.comments}}</mat-cell>
                        </ng-container>
+                       <ng-container  matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                      <mat-cell  *matCellDef="let row" (click)="getdownloadfile(row)" >
+                        <!-- <img *ngIf="row.actions != ''" src="assets/images/download_icon.png"> -->
+                        <div class="dwon_ic_con" *ngIf="row.actions != ''"><img src="assets/images/download_icon.png"></div>
+
+                      </mat-cell>
+                       </ng-container>
                     
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -588,7 +595,7 @@
               <button mat-flat-button class="creat_bt mat_fot_bt on_hold_bt" (click)="onHoldDetails()">On Hold</button>
             </div>
             <div class="mat_fot_drf" >
-              <button mat-flat-button class="creat_bt mat_fot_bt rej_tran" (click)="RejectDeatils()"> Rejected</button>
+              <button mat-flat-button class="creat_bt mat_fot_bt rej_tran" (click)="RejectDeatils()"> Reject</button>
               <button mat-flat-button class="creat_bt" (click)="ApproveDeatils()">
                 Approve
               </button>
@@ -599,95 +606,121 @@
 
 <div>
   <ng-template #callAPIDialog>
-    <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
-      <button mat-button mat-dialog-close>Cancel</button>
-      <div fxFlex="auto " class="mat_upload_in_wr">
-        <div class="mat_upload_tit">
-         Uploading Document
-        </div>
-        <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
-          <ngx-dropzone-label class="matUp_lable">
-            <div><img src="assets/images/Group Upload.png"></div>
-            <div class="drap_titl">
-            Chosse or Drag & Drop
-              <div class="in_titl">Or select file from your system</div>
-            </div>
-            
-          </ngx-dropzone-label>
-         
-            
-        </ngx-dropzone>
-        <div class="bt_uplad_con">
-          <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
-          <div *ngIf="this.Type=='loipo'">
-            <mat-form-field appearance="fill" class="example-full-width">
-              <mat-label>Select Type</mat-label>
-              <mat-select [(ngModel)]="Loipodropdown">
-                <mat-option value="PO"  >
-                  PO
-                </mat-option>
-                <mat-option value="LOI">
-                  LOI
-                </mat-option>
-             
-              </mat-select>
-              
-            </mat-form-field>
+    <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" (click)="CloseDialog()" class="close"></a></div>
+    <mat-dialog-content class="mat-typography">
+    <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <div fxFlex="auto " class="mat_upload_in_wr">
+      
+      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
+        <ngx-dropzone-label class="matUp_lable">
+          <div><img src="assets/images/Group Upload.png"></div>
+          <div class="drap_titl">
+          Chosse or Drag & Drop
+            <div class="in_titl">Or select file from your system</div>
           </div>
-         
-
-          <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
-        </div>
-        <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
-        <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
-          Uploading: 
-         </div>
-        <div *ngIf="uploaddocprocess.length == 0">
           
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div class="doc_icon">
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
-              {{ f.name }}
-            </div> 
+        </ngx-dropzone-label>
+       
+          
+      </ngx-dropzone>
+      <div class="bt_uplad_con">
+        <!-- <div class="cr_corner"><img src="assets/images/fold_icon.png"></div> -->
+        <div class="mt-cust-fd upl_sec_cut" *ngIf="this.Type=='loipo'">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Select Type</mat-label>
+            <mat-select [(ngModel)]="Loipodropdown">
+              <mat-option value="PO"  >
+                PO
+              </mat-option>
+              <mat-option value="LOI">
+                LOI
+              </mat-option>
+              <mat-option value="Agreement">
+                Agreement
+              </mat-option>
+            </mat-select>
             
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
+          </mat-form-field>
+        </div>
+       
+
+        <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
       </div>
-      <div *ngIf="uploaddocprocess.length > 0">
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
-            <div class="doc_icon" >
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" style="position: relative;" >
-              {{ f.name }}
-             </div> 
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </div>
-      <div *ngIf="filelist.length > 0">
-        <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
-          <ngx-dropzone-label class="drop_lab_cs">
-            <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
-            <div class="doc_icon" >
-              <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-            </div>
-            <div class="doc_cont" style="position: relative;" >
-              {{ f.filename }}
-             </div> 
-          </ngx-dropzone-label>
-        </ngx-dropzone-preview>
-      </div>
-     </div>
-      <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-        <ul *ngFor="let msg of message; let i = index">
-          <li>{{ msg }}</li>
-        </ul>
-      </div>
+      <!-- <input [disabled]="!(coversheetfiles.length >0)" class="btn btn-primary" (click)="uploadfiles(coversheetfiles,'coversheet')" type="button" value="Upload"/> -->
+      <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
+        Uploading: 
+       </div>
+       <div *ngIf="dispalyloading">
+        <span>
+          <h4>Loading...</h4>
+        </span>
+        
+       </div>
+       <div *ngIf="!dispalyloading">
+        <div *ngIf="uploaddocprocess.length == 0">
+        
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div class="doc_icon">
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
+                {{ f.name }}
+              </div> 
+              
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+        <div *ngIf="uploaddocprocess.length > 0">
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+              <div class="doc_icon" >
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" style="position: relative;" >
+                {{ f.name }}
+               </div> 
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+        <div *ngIf="filelist.length > 0">
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
+              <div class="doc_icon" >
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" style="position: relative;" >
+                {{ f.filename }}
+               </div> 
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+       </div>
+     
+   </div>
+    <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+      <ul *ngFor="let msg of message; let i = index">
+        <li>{{ msg }}</li>
+      </ul>
     </div>
+    <div>
+      <button [disabled]="disablesavebutton" (click)="saveattachmentFromuploadbutton()"  class="creat_bt" mat-flat-button>Save</button>
+    </div>
+
+    </div>
+</mat-dialog-content>
+<!-- <mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
+</mat-dialog-actions> -->
+
+
+<!-- Copyright 2021 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
+    
   </ng-template>
 </div>

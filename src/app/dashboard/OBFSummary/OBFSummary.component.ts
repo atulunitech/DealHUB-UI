@@ -3,7 +3,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { DashboardService } from '../dashboard.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
+
 import { OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
 import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
@@ -20,7 +21,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
-
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -39,6 +42,7 @@ class CommentDetails
   Version_name:string;
   Status:string;
   role_code:string;
+  Initials:string;
 }
 class filesdetail
 {
@@ -55,17 +59,19 @@ class filesdetail
   })
 
   export class OBFSummaryComponent implements OnInit {
-   
+  //  public types: string = 'component';
+    @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+    @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
     // comments = new FormControl('', Validators.required);
     obfsummaryform = new FormGroup({
-      comments : new FormControl("",[Validators.required]),
+      comments : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
       MarginException:new FormControl("",[Validators.required]),
       ExceptionCFO:new  FormControl("",[Validators.required]),
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
     });
    
-    noComment:boolean=false;
+ //   noComment:boolean=false;
     readMore = false;
     BrifreadMore=false;
     paymentRead=false;
@@ -75,8 +81,7 @@ class filesdetail
     privilege_name:string;
     subscription: Subscription;
     dh_id:number;
-    supportfilecount:number=0;
-    FinalAggfilecount:number=0;
+   
     dh_header_id:number;
   SupportPoprogress:any[] = [];
   finalProgress:any[]=[];
@@ -92,7 +97,7 @@ class filesdetail
   columns:Array<any>;
  // displayedColumns:Array<any>;
   dashboardData:any[]=[];
-  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment',];
+  displayedColumns: string[] = ['username','TimeLine','currentstatus','comment','actions'];
   progress: number = 0;
   uploadDocfiles:File[]=[];
 
@@ -111,6 +116,7 @@ class filesdetail
   shortcurrentstatus:string="";
   ServiceMore:boolean=false;
   SAPNumMore:boolean=false;
+  disablesavebutton:boolean=true;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -129,7 +135,7 @@ class filesdetail
     this.role_name=localStorage.getItem("role_name");
 
     this.User_name= localStorage.getItem("UserName"); 
-    console.log(this._obfservices.obfsummarymodel);
+  
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
      (params => {
@@ -150,10 +156,11 @@ class filesdetail
   disableCFOcontrol:boolean=false;
   disableCEOcontrol:boolean=false;
   disableMargincontrol:boolean=false;
+  ShowViewButton:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-      console.log(data);
+     
     //  this._obfservices.initializeobf(JSON.parse(data));
       var jsondata=JSON.parse(data);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
@@ -173,7 +180,7 @@ class filesdetail
         this.CEOMess=true;
         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
          {
-         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
          this.disableCFOcontrol=true;
          }
         else  {
@@ -193,7 +200,7 @@ class filesdetail
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
          this.CFOMess=true;
-          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
           {
             this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
@@ -214,8 +221,13 @@ class filesdetail
           this.CEOMess=true;
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
          }
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
       }
       if(this.role_name=='VH')
       {
@@ -233,6 +245,16 @@ class filesdetail
          //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
+      
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].ppl_init == 0)
+        {
+          this.ShowViewButton=true;
+         // this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
+        }
+        
+       }
+
       //this.obfsummaryform.controls["version"].setValue();
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
@@ -282,11 +304,8 @@ class filesdetail
   {
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
-    
-      console.log("DashBoardData");
-      console.log(Result);
-      var loginresult =Result;
-      this.dashboardData=JSON.parse(Result);
+     var loginresult =Result;
+      this.dashboardData= JSON.parse(Result);
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
@@ -322,17 +341,25 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-    if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+    if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+      if(index>-1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
-          
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+            
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No Supporting Documents to Download");
+      }
+      
     }
     else
     {
@@ -351,16 +378,24 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI" || this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO" ||  this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement" )
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
         }
       }
+      else{
+        this._mesgBox.showError("No LOI or PO Documents to Download");
+      }
+     
     }
     else
     {
@@ -377,21 +412,32 @@ class filesdetail
     event.preventDefault();
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
-     if(this._obfservices.obfsummarymodel.AttachmentDetails.length== 0)
+     if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+      if(index > -1)
       {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+        for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
-           var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
-           window.open(url);
+          if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
+          {
+             var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+             window.open(url);
+          }
+          
         }
       }
+      else{
+        this._mesgBox.showError("No Final Aggrement Documents to Download");
+      }
+
     }
+
     else
     {
       this._mesgBox.showError("No Final Aggrement Documents to Download");
     }
+   
   }
     else
     {
@@ -403,18 +449,12 @@ class filesdetail
   SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
+    
     if(this.obfsummaryform.get("comments").value!= "")
     {
       
       var comment=this.obfsummaryform.get("comments").value;
-      // this.SaveCommentdetail[0].Fullname=this.User_name;
-      // this.SaveCommentdetail[0].Role_name= this.role_name;
-      // this.SaveCommentdetail[0].Status="Pending";
-      // this.SaveCommentdetail[0].Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
-      // this.SaveCommentdetail[0].commented_on=  this.today;
-      // this.SaveCommentdetail[0].dh_comment=comment;
-      // this.SaveCommentdetail[0].role_code=this.role_name;
-
+     
 
       let SaveComment:CommentDetails = new CommentDetails();
       var comment=this.obfsummaryform.get("comments").value;
@@ -426,30 +466,30 @@ class filesdetail
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
-      // if(this.role_name =='Salesperson')
-      // {
-      //   SaveComment.role_code='SP';
-      // }
-      // else{
-      //   SaveComment.role_code=this.role_name;
-      // }
-     
-
+      
       this.commentVisiable=true;
-     // this.obfsummaryform.controls["comments"].setValue('');
        this.SaveCommentdetail.push(SaveComment);
-      //  this.CommentDetails.push(SaveComment);
-    //  this._obfservices.obfsummarymodel.CommentDetails.push(this.SaveCommentdetail[0]);
+     
+       this.componentRef.directiveRef.scrollToBottom(500);
     }
+      else {
+      this.componentRef.directiveRef.scrollToBottom();
+    }
+    //  if (this.types === 'directive' && this.directiveRef) {
+    //   this.directiveRef.scrollToBottom();
+    // } else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
+    //   this.componentRef.directiveRef.scrollToBottom();
+    // }
   }
   deletecomment()
   {
     this.commentVisiable=false;
-   // this.obfsummaryform.controls["comments"].setValue('');
+    this.obfsummaryform.controls["comments"].setValue('');
+
     this.SaveCommentdetail=[];
 
   }
-  OpenDocDownload(event,Type)
+  OpenDocDownload(callFrom,Type)
   {
     this.Type=Type;
     this.uploadDocfiles=[];
@@ -457,11 +497,11 @@ class filesdetail
 
     if(this.Type == "loipo")
   {
-    this.uploadDocfiles=this.loipofiles;
-    this.LoiPoprogress= this.uploaddocprocess;
+    // this.uploadDocfiles=this.loipofiles;
+    // this.LoiPoprogress= this.uploaddocprocess;
     this.filelist=[];
    
-    let savefile:filesdetail = new filesdetail();
+   
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
       if(this._obfservices.obfsummarymodel.AttachmentDetails.length !=0)
@@ -470,6 +510,7 @@ class filesdetail
         {
             if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
             {
+              let savefile:filesdetail = new filesdetail();
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -478,6 +519,15 @@ class filesdetail
             }
            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
             {
+              let savefile:filesdetail = new filesdetail();
+              savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
+              savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
+              savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+              this.filelist.push(savefile);
+            }
+            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
+            {
+              let savefile:filesdetail = new filesdetail();
               savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -490,9 +540,9 @@ class filesdetail
   }
   else if(this.Type == "Supporting")
   {
-    this.uploadDocfiles=this.supportfiles;
-    this.SupportPoprogress= this.uploaddocprocess;
-    let savefile:filesdetail = new filesdetail();
+    // this.uploadDocfiles=this.supportfiles;
+    // this.SupportPoprogress= this.uploaddocprocess;
+   
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
@@ -502,6 +552,7 @@ class filesdetail
       {
           if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
           {
+            let savefile:filesdetail = new filesdetail();
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
             savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -513,9 +564,9 @@ class filesdetail
   }
   else if(this.Type == "FinalAgg")
   {
-    this.uploadDocfiles=this.FinalAggfiles;
-    this.finalProgress= this.uploaddocprocess;
-    let savefile:filesdetail = new filesdetail();
+    // this.uploadDocfiles=this.FinalAggfiles;
+    // this.finalProgress= this.uploaddocprocess;
+   
     this.filelist=[];
     if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
     {
@@ -525,6 +576,7 @@ class filesdetail
       {
           if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
           {
+             let savefile:filesdetail = new filesdetail();
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
             savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
@@ -534,12 +586,18 @@ class filesdetail
     }
   }
   }
+  if(callFrom=="button")
+  {
     const dialogRef = this.dialog.open(this.callAPIDialog, {
-      width: '500px',
-      height:'600px',
-      disableClose: true,
+      // width: '500px',
+      // height:'600px',
+      // disableClose: true,
+      panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
      // data: { campaignId: this.params.id }
   })
+  }
+   
  
 
 
@@ -577,13 +635,25 @@ class filesdetail
     });
   }
   RejectDeatils()
-  {  if(this.obfsummaryform.get("comments").value == "")
+   {  
+   if(this.SaveCommentdetail.length == 0)
+   {
+//
+  if(this.obfsummaryform.get("comments").value == "")
   {
-     //return this.obfsummaryform.controls["comments"].hasError("required");
-     this.obfsummaryform.controls["comments"].markAsTouched();
-     this.noComment = true;
+    this.obfsummaryform.controls["comments"].markAsTouched();
+  //  this.noComment = true;
     return false;
+    //return this.obfsummaryform.controls["comments"].hasError("required");
   }
+  else
+  {
+    this._mesgBox.showError("Please Submit Comment");
+  }
+  
+   } 
+   else
+   {
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -610,10 +680,30 @@ class filesdetail
     });
 
   }
+  }
   onHoldDetails()
   {
+    if(this.SaveCommentdetail.length == 0)
+   {
+//
+  if(this.obfsummaryform.get("comments").value == "")
+  {
+    this.obfsummaryform.controls["comments"].markAsTouched();
+    //this.noComment = true;
+    return false;
+    //return this.obfsummaryform.controls["comments"].hasError("required");
+  }
+  else
+  {
+    this._mesgBox.showError("Please Submit Comment");
+  }
+  
+   } 
+   else
+   {
+
     this._obfservices._approveRejectModel.isapproved=0;
-    this._obfservices._approveRejectModel.rejectcomment="";
+    this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
     this._obfservices._approveRejectModel._dh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
@@ -637,6 +727,7 @@ class filesdetail
       }
     });
   }
+}
   
   bytesToSize(bytes):number {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
@@ -651,20 +742,20 @@ class filesdetail
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
-      // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
+    
        if( Math.floor(this.bytesToSize(element.size)) == 0)
        {
-         throw new Error("The file size of "+element.name+" is invalid" );
+        this._mesgBox.showUpdate("The file size of "+element.name+" is invalid" );
        }
  
        if(format.test(element.name))
        {
-         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
+        this._mesgBox.showUpdate(element.name+" :name contains special characters,Kindly rename and upload again");
         }
        // if( this.bytesToSize(element.size) > 4)
        if( element.size > 4194304)
        {
-         throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+        this._mesgBox.showUpdate("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
        }
  
      });
@@ -674,18 +765,24 @@ class filesdetail
        {
         if(event.addedFiles.length > 1)
         {
-          throw new Error("Kindly upload only one valid LOI/PO Sheet");
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
         }
          if(this.loipofiles.length >= 1 )
          {
          // alert("Kindly upload only one Loi / Po file");
-          this._mesgBox.showError("Kindly upload only one valid LOI/PO Sheet");
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
+          return false;
+         }
+         else if(this.filelist.length>=1)
+         {
+          this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
           return false;
          }
          else{
            if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
-            throw new Error("Kindly select LOI or PO file type");
+            this._mesgBox.showUpdate("Kindly select LOI or PO file type");
+            return false;
            }
         this.loipofiles.push(...event.addedFiles);
        
@@ -695,31 +792,36 @@ class filesdetail
        }
        else if(this.Type=='Supporting')
        {
-        this.supportfilecount +=1;
-        if(this.supportfilecount > 1)
-        {
-
-        }
-       this.supportfiles.push(...event.addedFiles);
+        
+        this.supportfiles.push(...event.addedFiles);
         this.uploadDocfiles=this.supportfiles;
         // this.files = this.supportfiles;
        }
        else if(this.Type=='FinalAgg')
        {
-         this.FinalAggfilecount +=1;
-         if(this.FinalAggfilecount > 1)
+         if(event.addedFiles.length > 1)
          {
-
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement ");
+           return false;
+         }
+        else  if(this.FinalAggfiles.length >= 1 )
+          {
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement");
+           return false;
+          }
+          else if(this.filelist.length>=1)
+          {
+           this._mesgBox.showUpdate("Kindly upload only one valid Final Agreement");
+           return false;
+          }
+         else{
+          this.FinalAggfiles.push(...event.addedFiles);
+          this.uploadDocfiles=this.FinalAggfiles;
          }
         
-        this.FinalAggfiles.push(...event.addedFiles);
-      
-
-        this.uploadDocfiles=this.FinalAggfiles;
         // this.files = this.supportfiles;
        }
-       console.log("check progrss value");
-       console.log(this.progress);
+     
 		// this.files.push(...event.addedFiles);
   }
   catch(e)
@@ -729,51 +831,205 @@ class filesdetail
 
 	}
   onRemove(files:File[],event) {
-     if(this.Type == "loipo")
-    {
-      //this.isloipo = !this.isloipo;
-
-     
-    }
-    else if(this.Type == "support")
-    {
-      
-      // this.isSupport = !this.isSupport;
-    }
-		console.log(event);
+    
 		files.splice(files.indexOf(event), 1);
    
-    if(this.loipofiles.length == 0)
-      {
-        
+  
+     if(this.Type == "loipo")
+    {
        this.loipofiles=files;
        this.uploadDocfiles=this.loipofiles;
-      }
-    if(this.supportfiles.length == 0)
-    {
-      //this.isloipo = !this.isloipo;
-      this.supportfiles=files;
-      this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
     }
+    else if(this.Type == "Supporting")
+    {
+      this.supportfiles=files;
+      this.uploadDocfiles=this.supportfiles;
+    
+    }
+    else if(this.Type =='FinalAgg')
+    {
+     
+     this.FinalAggfiles=files;
+     this.uploadDocfiles=this.FinalAggfiles;
+    } 
+    
 
 	}
+  dispalyloading:boolean=false;
   SaveAttachment()
   {
     //this.isloipo = !this.isloipo;
+    this.dispalyloading=true;
+  if(this.Type == "loipo")
+  {
+    if(this.filelist.length !=0 )
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description = this.Loipodropdown;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    else{
+      
+      var type
+      
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+     
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
+    
+  }
+   else{
+    if(this.filelist.length !=0)
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description = this.filelist[i].description;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    else{
+      
+      var type
+      if(this.Type=='Supporting')
+      {
+        type='support';
+      }
+      else if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else if(this.Type=='FinalAgg')
+      {
+        type="FinalAgg";
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
+   } 
+
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
-          console.log(result);
+          
           var REsult=JSON.parse(result);
           if(REsult[0].status ="Success")
           {
             this._mesgBox.showSucess("Attachment Uploaded Successfully.");
-           
+            this.uploadDocfiles=[];
+           this.uploaddocprocess=[];
             this.Attachments=[];
+            this.filelist=[];
+            this.loipofiles=[];
+            this.supportfiles=[];
+            this.FinalAggfiles=[];
             this.dialog.closeAll();
-
+           this.getdetailsfordh_id(this.dh_id);
+           this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+           setTimeout(() => {
+             this.OpenDocDownload('button',this.Type);
+           },3000 );
+         
           }
-        
+          this.dispalyloading=false;
     });
+  
+   
+  }
+  saveattachmentFromuploadbutton()
+  {
+    this.disablesavebutton=true;
+    if(this.filelist.length !=0 )
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description =  this.filelist[i].description;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    else
+    {
+      var type="";
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else{
+        if(this.Type=='Supporting')
+        {
+          type='support';
+        }
+        else if(this.Type=='FinalAgg')
+        {
+          type="FinalAgg";
+        }
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
+    if(this.Attachments.length !=0)
+    {
+      this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
+        {
+            
+            var REsult=JSON.parse(result);
+            if(REsult[0].status ="Success")
+            {
+              this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+              this.uploadDocfiles=[];
+             this.uploaddocprocess=[];
+              this.Attachments=[];
+              this.filelist=[];
+              this.loipofiles=[];
+              this.supportfiles=[];
+              this.FinalAggfiles=[];
+              this.dialog.closeAll();
+             this.getdetailsfordh_id(this.dh_id);
+             this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+             setTimeout(() => {
+               this.OpenDocDownload('NOtButton',this.Type);
+             },3000 );
+           
+            }
+            this.dispalyloading=false;
+      });
+    }
+    
+    
   }
   uploadfiles(files:File[])
   {
@@ -800,30 +1056,30 @@ class filesdetail
     var path="";
     var consolidatedpath="";
     for (let i = 0; i < files.length; i++) {
-     if(this.Type == "loipo")
+    if(this.Type == "loipo")
     {
       this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
       
     }
     else if(this.Type == "Supporting")
     {
       this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
     else if(this.Type == "FinalAgg")
     {
       this.finalProgress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
-      
-      path="";
+    
+    path="";
     this._dashboardservice.uploadImage(files[i]).subscribe(
       event => {
        
         if(event.type === HttpEventType.UploadProgress)
         {
-          console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
+         
           this.progress = Math.round(event.loaded/event.total * 100);
           
     if(this.Type  == "loipo")
@@ -845,7 +1101,7 @@ class filesdetail
         }
         else if(event.type === HttpEventType.Response)
         {
-        console.log(event.body);
+       
         path = JSON.stringify(event.body);
         path=path.split('"').join('');
         path = path.substring(0,path.length -1);
@@ -861,6 +1117,8 @@ class filesdetail
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this.Loipodropdown;
+         this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
+
          this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "Supporting")
@@ -871,6 +1129,7 @@ class filesdetail
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
            this.SaveAttachmentParameter._description = "support";
+           this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
            this.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(this.Type  == "FinalAgg")
@@ -881,13 +1140,12 @@ class filesdetail
           this.SaveAttachmentParameter._fname= files[i].name; 
            this.SaveAttachmentParameter._fpath = path;
            this.SaveAttachmentParameter._description = "FinalAgg";
+           this.SaveAttachmentParameter. _created_by=localStorage.getItem("UserCode");
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
-      this.SaveAttachment();
-      }
-
      
+      }
       },
       (err:any)=>{
      if(this.Type  == "loipo")
@@ -911,41 +1169,19 @@ class filesdetail
       }
     );
     }
+    this.disablesavebutton=false;
   }
-  removeFile(file:filesdetail[],event)
+  removeFile(files:filesdetail[],event)
   {
- 
-  console.log(event);
-  file.splice(file.indexOf(event), 1);
-  if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
-    {
-      for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
-      {
-        if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="support")
-        {
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="FinalAgg")
-        {
-
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
-        {
-
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-        else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
-        {
-
-          this._obfservices.obfsummarymodel.AttachmentDetails.splice(i);
-        }
-      }
-    }
+  files.splice(files.indexOf(event), 1);
+  
+  this.filelist=files;
+  this.disablesavebutton=false;
+ //this.SaveAttachment();
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-   
+  
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -977,7 +1213,7 @@ class filesdetail
        this.CEOMess=true;
        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
         {
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
         this.disableCFOcontrol=true;
         }
        else  {
@@ -1030,13 +1266,19 @@ class filesdetail
          this.CEOMess=true;
          this.disableCFOcontrol=true;
          this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/Po";
+        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
         }
         else{
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
         }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+        // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
      }
+    
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
@@ -1064,7 +1306,8 @@ class filesdetail
   SAPIONo:string="";
   getSAPCode()
   {
-    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined ||  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
+    this.SAPIONo ="";
+    if( this._obfservices.obfsummarymodel.SAPdetail !=undefined &&  this._obfservices.obfsummarymodel.SAPdetail.length !=0)
     {
       for(let i=0;i< this._obfservices.obfsummarymodel.SAPdetail.length;i++)
       {
@@ -1072,5 +1315,30 @@ class filesdetail
       }
       this.SAPIONo=this.SAPIONo.substring(1);
     }
+  }
+  getdownloadfile(event)
+  {
+    
+    if(event.actions== "")
+    {
+      this._mesgBox.showError("No Documents to Download");
+    }
+    else
+    {
+      var url=environment.apiUrl + event.actions;
+      window.open(url);
+    }
+  }
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&@$#*^%!]/;
+    if (control.value && format.test(control.value)) {
+      return { 'invalidservices': true };
+    }
+    return null;
+  }
+  CloseDialog()
+  {
+    this.dialog.closeAll();
+   // this.SaveAttachment();
   }
   }

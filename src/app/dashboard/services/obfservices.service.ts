@@ -135,6 +135,8 @@ class uploadDetails{
   is_latest_version:number;
   phase_code:string;
   parent_dh_main_id:number;
+  ppl_init:number;
+  ppl_status:string;
 }
 
 class solutionDetails
@@ -159,6 +161,7 @@ class CommentDetails
   Version_name:string;
   Status:string;
   role_code:string;
+  Initials:string;
 }
 class VersionDetails{
   Version_name:number;
@@ -464,7 +467,8 @@ export class OBFServices {
       }
       SaveAttachment(data:SaveAttachmentParameter[]):Observable<any>
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) 
+        };  
         return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data,
            httpOptions); 
       }
@@ -650,5 +654,6 @@ export class OBFServices {
         });
     
       }
+      
 }
 

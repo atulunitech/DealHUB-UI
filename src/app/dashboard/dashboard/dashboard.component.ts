@@ -17,6 +17,10 @@ import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { environment } from 'src/environments/environment.prod';
+import { CommonService } from 'src/app/services/common.service';
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
@@ -83,7 +87,8 @@ export class searchfilter{
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+  @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
@@ -149,7 +154,8 @@ export class DashboardComponent implements OnInit {
   //   cancelLabel: 'Mégse',
   //   applyLabel: 'Ok',
   // };
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent) { 
+  loading$ = this.commonService.loading$;
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }
@@ -834,8 +840,10 @@ openModal(templateRef,row) {
     this._mesgBox.showError(error.message);
    });
   let dialogRef = this.dialog.open(templateRef, {
-       width: '880px',
+      //  width: '880px',
        // data: { name: this.name, animal: this.animal }
+       panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -851,10 +859,12 @@ UploadFinalAggrement(element)
   this.dh_header_id=element.dh_header_id;
 
   const dialogRef = this.dialog.open(this.callAPIDialog, {
-    width: '500px',
-    height:'600px',
-    disableClose: true,
+    // width: '500px',
+    // height:'600px',
+    // disableClose: true,
    // data: { campaignId: this.params.id }
+   panelClass: 'custom-modalbox',
+      backdropClass: 'popupBackdropClass',
 })
 
 }
@@ -922,6 +932,12 @@ downloaddetailobf(element)
     var url=environment.apiUrl + element.mainobf;
     window.open(url);
   }
+}
+downloaddetailFinalAgg(row)
+{
+  var dh_id=row.dh_id;
+  var dh_header_id=row.dh_header_id;
+  this.getattachment(dh_id,dh_header_id);
 }
   getToolTipData(issueId: any): any {
     
@@ -1620,5 +1636,37 @@ validateform()
   }
   return true;
 }
-
+getattachment(dh_id,dh_header_id)
+{
+ 
+  this._dashboardservice.GetAttachmentDocument(dh_id,dh_header_id).subscribe(data=>{
+    console.log(data);
+    var jsonresult=JSON.parse(data);
+    if(jsonresult != null || jsonresult.AttachmentDetails.length !=0)
+    {
+      let index=jsonresult.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+      if(index > -1)
+      {
+        for(let i=0;i< jsonresult.AttachmentDetails.length;i++)
+        {
+          if(jsonresult.AttachmentDetails[i].description=="FinalAgg")
+          {
+              let url="";
+              url = environment.apiUrl+jsonresult.AttachmentDetails[i].filepath;
+              window.open(url);
+          }
+        }
+      }
+      else{
+        this._mesgBox.showError("No Final Aggrement Documents to Download");
+      }
+     
+    }
+    else
+    {
+      this._mesgBox.showError("No Final Aggrement Documents to Download");
+    }
+    
+  })
+}
 }

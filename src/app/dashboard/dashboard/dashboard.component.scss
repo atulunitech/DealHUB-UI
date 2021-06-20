@@ -246,7 +246,7 @@
 .reject_bt
 {
     @include padding(0,25px,0,25px);
-    background-color: $thm-rj-bt;
+    background-color: $thm-rj-bt !important;
 }
 .approv_bt
 {
@@ -255,6 +255,18 @@
 }
 .fl_table_con
 {
+    .perfect_scroll_com
+    {
+        padding-bottom: 9px;
+    }
+    ::ng-deep perfect-scrollbar > div > div.ps__rail-x {
+        opacity: 9;
+       
+        .ps__thumb-x
+        {
+            background-color: #ccc;
+        }
+      }
     ::ng-deep .mat-paginator-range-actions{
        
         .mat-icon-button
@@ -293,9 +305,11 @@
     }
     .ms_table
     {
-        min-width: 100%;
+        // width: 100%;
+        // max-width: 120%;
+        display: grid;
         background-color: transparent;
-       
+        
             .mat-row
             {
                 border-left: 1px solid rgba(0,0,0,.12);
@@ -303,6 +317,55 @@
                 &.mat-row:nth-child(odd)
                 {
                     background-color: #fff;
+                    &.mat-table-sticky
+                    {
+                        background-color: #fff;
+                    }
+                }
+                &.mat-row:nth-child(2n+0)
+                {
+                    background-color: #fafafa;
+                    &.mat-table-sticky
+                    {
+                        background-color: #fafafa;
+                    }
+                }
+                .mat-cell
+                {
+                    min-width: 150px;
+                    word-break: break-word;
+                    padding-right: 10px;
+                    &.cdk-column-ProjectName
+                    {
+                        min-width: 180px;
+                    }
+                    &.cdk-column-Code
+            {
+                min-width: 90px
+            }
+            &.cdk-column-Total_Cost
+            {
+                min-width: 110px
+            }
+            &.cdk-column-Total_Revenue
+            {
+                min-width: 130px
+            }
+            &.cdk-column-Gross_Margin
+            {
+                min-width: 120px;
+            }
+            &.cdk-column-ApprovalStatus
+            {
+                min-width: 165px;
+            }
+                    
+                    &.mat-table-sticky
+                    {
+                        min-width: 250px;
+                        
+                        
+                    }
                 }
             }
         
@@ -316,10 +379,41 @@
         {
             color: #505050;
             opacity: inherit;
+            min-width: 150px;
+            padding-right: 10px;
+            word-break: break-word;
             @include font-size(0.90);
             @include font-weight(bold);
-            
-            
+            &.cdk-column-ProjectName
+                    {
+                        min-width: 180px;
+                    }
+            &.cdk-column-Code
+            {
+                min-width: 90px
+            }
+            &.cdk-column-Total_Cost
+            {
+                min-width: 110px
+            }
+            &.cdk-column-Total_Revenue
+            {
+                min-width: 130px
+            }
+            &.cdk-column-Gross_Margin
+            {
+                min-width: 120px;
+            }
+            &.cdk-column-ApprovalStatus
+            {
+                min-width: 165px;
+            }
+
+            &.mat-table-sticky
+            {
+               min-width: 250px;
+                
+            }
         }
         }
         
@@ -377,3 +471,243 @@
 
 
 
+/*s*/
+::ng-deep.cdk-overlay-container
+{
+    .cdk-overlay-backdrop
+    {
+        &.popupBackdropClass 
+        {   
+        background: rgba(255,255,255,0.5);
+        backdrop-filter: blur(5px);
+            
+        }
+        
+    }
+    .custom-modalbox
+    {
+        .mat_upload_box
+                        {
+                            cursor: pointer;
+                        @include margin(inherit,0px,inherit,0px);
+                        @include padding(0px,0px,0px,0px);
+                        @include border-radius(2px);
+                        .mat_upload_in_wr
+                        {
+                            .dro_wrp
+                            {
+                                position: relative !important; 
+                                padding: 19px !important;
+                                margin: 0 !important;
+                                display: inline-block !important;
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin-top: 10px !important;
+                                margin-bottom: 10px !important;
+                                padding-right: 40px !important;
+                                min-height: auto !important;
+                                min-width: 100% !important;
+                                height: auto !important;
+                                background: #fff !important;
+                                .ng-star-inserted
+                                {
+                                    opacity: 9;
+                                    background-color: #fc625d;
+                                    @include margin(2px,2px,initial,initial); 
+                                }
+                                .drop_lab_cs
+                                {
+                                    @include flexbox();
+                                    align-items: center;
+                                    .doc_icon
+                                    {
+                                        img
+                                        {
+                                            @include heightwidth(22px,initial);
+                                        }
+                                    }
+                                    .doc_cont
+                                    {
+                                        line-height: initial;
+                                        background-color: transparent;
+                                        @include font-weight(semi-bold);
+                                        @include font-size(0.8);
+
+                                        div
+                                        {
+                                            margin-bottom: 2px;
+                                            @include font-size(0.75);
+                                            @include font-weight(normal);
+                                        }
+                                    }
+                                }
+                            }
+                            .bt_uplad_con
+                            {
+                                text-align: right;
+                                align-items: center;
+                                justify-content: flex-end;
+                                background: #D9E6FF;
+                                border: 2px dashed #2258bf;
+                                border-bottom: none;
+                                @include position(relative);
+                                @include margin(-61px,initial,15px,initial);
+                                @include padding(10px,15px,10px,10px);
+                                @include flexbox();
+                                .creat_bt
+                                {
+                                    @include border-radius(4px);
+                                }
+                                .cr_corner
+                                {
+                                    @include position(absolute,initial,initial,-9px,0);
+                                    &::after
+                            {
+                                content: "";
+                                position: absolute;
+                                top: -9px;
+                                right: -6px;
+                                border-top: 80px solid transparent;
+                                border-left: 80px solid #eaeaea;
+                                width: 0;
+                            }
+                                }
+                            }
+                           .mat_upload_tit
+                           {
+                               .cus_check
+                               {
+                                   @include font-size(0.85);
+                                   margin-top: -4px;
+                                    position: relative;
+                                    top: 4px;
+                               }
+                            text-transform: uppercase;
+                            @include font-size(0.85);
+                            @include font-weight(semi-bold);
+                            @include padding(0px,0px,10px,0px);
+                           }
+                           .mat_up_con
+                           {
+                            border: 2px dashed #2258bf;
+                            background-color: #e5eeff;
+                            position: relative;
+                            justify-content: start;
+                            align-items: baseline;
+                            
+                            .matUp_lable
+                            {
+                                text-align: left;
+                                @include flexbox();
+                                @include margin(0,0,0,0);
+                                @include padding(18px,initial,initial,18px);
+                                img{margin-right: 7px}
+                                .drap_titl
+                                {
+                                    line-height: initial;
+                                    @include font-weight(semi-bold);
+                                    @include font-size(1);
+                                    color: $thm-text-color;
+                                    
+                                    .in_titl
+                                    {
+                                        @include font-weight(normal);
+                                        @include font-size(0.9);
+                                    }
+                                }
+                            }
+                            
+                           }
+                          
+                        }
+                        }
+                        .edit_box_popup
+                        {
+                            min-width: 700px;
+                            padding-top: 5px;
+                        }
+                        .mat-dialog-actions
+                        {
+                            .mat_fot_bt
+                            {
+                                background-color: transparent;
+                                color: $thm-tex-col-dar;
+                                @include font-weight(semi-bold);
+                                @include font-size(0.9);
+                                &[disabled][disabled]
+                                {
+                                    color: #ccc;
+                                }
+                            }
+                        }
+        .pop_title_wrp
+        {
+            position: relative;
+            .pop_head_titl
+            {
+                font-size: 0.90rem;
+    margin-top: -24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+                font-weight: 500;
+                &.edit_titl
+                {
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    margin-top: -20px;
+                }
+            }
+            .close {
+                position: absolute;
+                right: -20px;
+    top: 12px;
+                width: 32px;
+                height: 32px;
+                outline: none;
+                &::after
+                {
+                    position: absolute;
+                    left: 15px;
+                    content: ' ';
+                    height: 18px;
+                    width: 2px;
+                    background-color: #000;
+                    transform: rotate(-45deg);
+                }
+                &::before
+                {
+                    position: absolute;
+                    left: 15px;
+                    content: ' ';
+                    height: 18px;
+                    width: 2px;
+                    background-color: #000;
+                    transform: rotate(45deg);
+                }
+              }
+        }
+    }
+}
+/*e*/
+
+::ng-deep #mat-select-0-panel 
+{
+    margin-top: 19px;
+}
+
+::ng-deep #mat-select-1-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-2-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-3-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-4-panel
+{
+    margin-top:19px;
+}

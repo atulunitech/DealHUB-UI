@@ -22,7 +22,8 @@
     @include padding (initial,initial,20px,initial);
     @include position(absolute,0,0,initial,initial);
     @include transition(all 0.3s);
-    background-color: $thm-dash-bg;  
+    background-color: $thm-dash-bg; 
+    z-index: 0; 
     &.open
     {
         width: calc(100% - 200px);
@@ -48,8 +49,10 @@
     width: 100%;
     height: 100vh;
     overflow: auto;
-    background: rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.5);
+backdrop-filter: blur(5px);
 	z-index: -1;
+    overflow: hidden;
     
     &.open
     {
