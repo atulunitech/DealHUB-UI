@@ -20,6 +20,8 @@ import { environment } from 'src/environments/environment.prod';
 import { Observable } from 'rxjs/internal/Observable';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
+import { element } from 'protractor';
+import { TypeScriptEmitter } from '@angular/compiler';
 
 //region Model
 export class DashBoardModel
@@ -85,6 +87,9 @@ export class DashboardComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
+  startdate:any;
+  enddate:any;
+  dateselected:boolean=false;
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   open() {
@@ -277,7 +282,7 @@ export class DashboardComponent implements OnInit {
     let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
     return unique;
   }
-
+  //filtercheckboxbool:boolean=false;
   cardsearcharray:any[] = [];
   searchtextchange(value)
   {
@@ -286,6 +291,7 @@ export class DashboardComponent implements OnInit {
     this.cardsearcharray = res;
     this.listData=new MatTableDataSource(this.dashboardData); 
     this.listData=new MatTableDataSource(this.filterdata); 
+   // this.searchControl.setValue("Hello wolrd");
     for(let i=0;i< res.length;i++)
     {
       this.listData.filter = res[i].trim().toLowerCase();
@@ -293,6 +299,93 @@ export class DashboardComponent implements OnInit {
      // this.cardsearcharray = this.listData.filteredData;
     }
   }  
+
+  
+   multisearcharray:any[]=[];
+  // texttoshow:any[]=[];
+  toggleSelection(event,option)
+  {
+    if(event.checked)
+    {
+      this.multisearcharray.push(option)
+    }
+    else
+    {
+      let index = this.multisearcharray.findIndex(obj => obj == option);
+      if(index > -1)
+      {
+        this.multisearcharray.splice(index,1);
+      }
+    }
+   
+    //   this.multisearcharray.forEach(element=>{
+    //      let res = element.split(',');
+    //      res.forEach(element => {
+    //        this.texttoshow.push(element);
+    //      });
+    //   });
+    //   let texttoshow="";
+    //   this.texttoshow = this.texttoshow.filter((item, i, ar) => ar.indexOf(item) === i);
+    //   this.texttoshow.forEach(x =>{
+    //    texttoshow += x +",";
+    //   });
+    //   texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+    // this.searchControl.setValue(texttoshow);
+    
+  }
+
+  
+  filterdatafinal()
+  {
+    let showdatatotextbox:any[]=[];
+  let  checkdataarray:any[] = [];
+    this.multisearcharray.forEach(val=>{
+      let res = val.split(',');
+      this.cardsearcharray = res;
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.listData=new MatTableDataSource(this.filterdata); 
+      //this.searchControl.setValue("Hello wolrd");
+      for(let i=0;i< res.length;i++)
+      {
+        showdatatotextbox.push(res[i].trim());
+        this.listData.filter = res[i].trim().toLowerCase();
+        this.listData = new MatTableDataSource(this.listData.filteredData);
+       //this.cardsearcharray = this.listData.filteredData;
+       if(i == res.length - 1 && this.listData.filteredData.length > 0)
+       {
+       checkdataarray.push(this.listData.filteredData);
+      }
+      } 
+    });
+    let texttoshow="";
+    showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
+    showdatatotextbox.forEach(x =>{
+     texttoshow += x +",";
+    });
+    texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+    this.searchControl.setValue(texttoshow);
+    console.log("check data of both");
+    //console.log(this.checkdataarray);
+    let finallistdataarray:any[] = [];
+    if(checkdataarray.length > 0)
+    {
+      checkdataarray.forEach(newarr =>{
+            newarr.forEach(element => {
+                 let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
+                 if(index > -1)
+                 {}
+                 else
+                 {
+                   finallistdataarray.push(element);
+                 }
+            });
+
+      });
+    }
+    console.log(finallistdataarray);
+    this.listData=new MatTableDataSource(finallistdataarray); 
+    this.filterdata = this.listData.filteredData;
+  }
 
   getdatafromsearchandfiltereddata()
   {
@@ -307,6 +400,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateselected = false;
+    this.startdate= null;
+    this.enddate=null;
     this.cardsearcharray = [];
     this.autocompletearr = [];
     this.dscdsbld = false;
@@ -337,10 +433,12 @@ export class DashboardComponent implements OnInit {
 
   onSearchClear(){
     this.cardsearcharray = [];
+   // this.filtercheckboxbool=false;
+    this.multisearcharray = [];
     this.addColumn(this.selectedcolumn);
     this.searchControl.setValue("");
   }
-
+  
   getcreateobfmasters()
   {
     this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
@@ -431,10 +529,14 @@ datesUpdated(event)
 {
   let datefilter:any = [];
   console.log(event);
+  this.dateselected = true;
   console.log(new Date(event.startDate._d));
 console.log(new Date(event.endDate._d));
-datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
-this.listData=new MatTableDataSource(datefilter);
+this.startdate = new Date(event.startDate._d);
+this.enddate=new Date(event.endDate._d);
+//datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+this.listData=new MatTableDataSource(this.filterdata);
 
 }
 
@@ -906,7 +1008,8 @@ downloaddetailobf(element)
   addColumn(selection) {
     this.selectedcolumn = parseInt(selection);
     // alert(this.autocompletearr.length);
-    this.picker.clear();
+   // this.picker.clear();
+   alert(this.dateselected);
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -921,9 +1024,11 @@ downloaddetailobf(element)
           }
          // obj.shortcurrentstatus=='draft'
          } );
+         
            if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
 
@@ -943,7 +1048,8 @@ downloaddetailobf(element)
         );
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
         
@@ -962,7 +1068,8 @@ downloaddetailobf(element)
         );
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
@@ -981,7 +1088,8 @@ downloaddetailobf(element)
             });
             if(this.cardsearcharray.length > 0)
             {
-             this.getdatafromsearchandfiltereddata();
+            // this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
             }
         this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ApprovedOBf;
@@ -1003,7 +1111,8 @@ downloaddetailobf(element)
         
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1026,7 +1135,8 @@ downloaddetailobf(element)
         );
         if(this.cardsearcharray.length > 0)
         {
-         this.getdatafromsearchandfiltereddata();
+        // this.getdatafromsearchandfiltereddata();
+        this.filterdatafinal();
         }
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
@@ -1047,7 +1157,8 @@ downloaddetailobf(element)
          
          if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ReviewerApproved;
@@ -1067,7 +1178,8 @@ downloaddetailobf(element)
         );
         if(this.cardsearcharray.length > 0)
         {
-         this.getdatafromsearchandfiltereddata();
+         //this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
         }
         this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1087,7 +1199,8 @@ downloaddetailobf(element)
          );
          if(this.cardsearcharray.length > 0)
          {
-          this.getdatafromsearchandfiltereddata();
+         // this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
          }
         this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1108,7 +1221,8 @@ downloaddetailobf(element)
         );
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.ReviewerApproved;

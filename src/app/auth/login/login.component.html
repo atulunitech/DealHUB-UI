@@ -5,11 +5,14 @@
         <div>
             <div class="mt-cust-fd"  >
                 <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Login ID</mat-label>
+                    <mat-label>Email ID</mat-label>
                     <input matInput  formControlName="userID">
                     <mat-error *ngIf="checkError('userID', 'required')">Login ID is required</mat-error>
-                    <mat-error *ngIf="loginvalid.controls.userID.errors?.invalidservices">
+                    <!-- <mat-error *ngIf="loginvalid.controls.userID.errors?.invalidservices">
                         Black-Listed characters `<>'"&` are not allowed
+                      </mat-error> -->
+                      <mat-error *ngIf="loginvalid.controls.userID.errors?.email">
+                        Email ID is not valid
                       </mat-error>
                   </mat-form-field>
               </div>
