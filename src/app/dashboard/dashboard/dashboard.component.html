@@ -414,6 +414,56 @@
         <div>
           <span>Approval Status</span>
         </div>
+        <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+             Current Version
+            </div>
+            <div class="prev_dis">
+             {{this.approvalstatusdetail.versiondetail[0].version_name}}
+            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+           Code
+          </div>
+          <div class="prev_dis">
+           {{this.approvalstatusdetail.versiondetail[0].dh_code}}
+          </div>
+       </div>
+       <div class="mat_previe_box">
+        <div class="prev_tit">
+         Date
+        </div>
+        <div class="prev_dis">
+         {{this.approvalstatusdetail.versiondetail[0].datecreated}}
+        </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+       Project Name
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].dh_project_name}}
+      </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        opportunity Id
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].opportunity_id}}
+      </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        Vertical Name
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].vertical_name}}
+      </div>
+     </div>
+    </div>
       </mat-dialog-content>
       
       </ng-template>
