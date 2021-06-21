@@ -370,6 +370,19 @@
                         background-color: $thm-prm-bg;
                         @include margin(initial,-25px,15px,-25px);
                         @include padding(10px,24px,10px,24px);
+                        &.prm_mat_fld_box_wrp_prv
+                        {
+                            background-color: #f1f1f1;
+                            .prev_dis
+                            {
+                                color:#000;
+                            }
+                            .prev_tit
+                            {
+                                color: #000;
+                                opacity: 0.8;
+                            }
+                        }
                         .prev_dis
                         {
                             color: $thm-bg;
