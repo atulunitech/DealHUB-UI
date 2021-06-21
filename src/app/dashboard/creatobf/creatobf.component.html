@@ -889,8 +889,9 @@
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
-                            <div  class="mat_exp_title">Previous OBF </div>
-                            <div fxLayout="row wrap" fxLayoutAlign=" start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
+                         
+                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous OBF </div>
+                            <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
                               <div class="mat_previe_box">
                                 <div class="prev_tit">
                                   Total Revenue <br>₹ Cr 
