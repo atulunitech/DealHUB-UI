@@ -924,6 +924,7 @@
                                 background: #D9E6FF;
                                 border: 2px dashed #2258bf;
                                 border-bottom: none;
+                                 border-top: 0px;
                                 @include position(relative);
                                 @include margin(-61px,initial,15px,initial);
                                 @include padding(10px,15px,10px,10px);
