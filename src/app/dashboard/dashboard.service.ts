@@ -49,4 +49,11 @@ export class DashboardService {
      httpOptions);  
  }
  
+ GetDashboardProgress(dh_id: string): Observable<any> 
+ {
+  const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}),  params: new HttpParams().set('dh_id', dh_id.toString())};  
+  return this.http.get<any>(environment.apiUrl + '/Api/DashBoard/GetDashboardProgress',  
+     httpOptions);  
+
+ }
 }
