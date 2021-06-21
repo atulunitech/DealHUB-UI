@@ -9,7 +9,6 @@
     width: 45px;
     height: 28px;
     margin: 0 45px 33px 0;
-    font-family: HelveticaNeue !important;
     font-size: 24px;
     font-weight: bold;
     font-stretch: normal;
@@ -242,6 +241,7 @@
 {
     @include padding(0,25px,0,25px);
     @include font-weight(medium);
+    @include margin(0,7px,0,0);
 }
 .reject_bt
 {
@@ -550,6 +550,7 @@
                                 background: #D9E6FF;
                                 border: 2px dashed #2258bf;
                                 border-bottom: none;
+                                border-top: 0px;
                                 @include position(relative);
                                 @include margin(-61px,initial,15px,initial);
                                 @include padding(10px,15px,10px,10px);
@@ -621,11 +622,16 @@
                           
                         }
                         }
-                        .edit_box_popup
-                        {
-                            min-width: 700px;
-                            padding-top: 5px;
+                        .mat-dialog-content{
+                            background-color: #eaeaea;
+                            padding-top: 15px;
+                            .edit_box_popup
+                            {
+                                min-width: 700px;
+                                padding-top: 5px;
+                            }
                         }
+                       
                         .mat-dialog-actions
                         {
                             .mat_fot_bt

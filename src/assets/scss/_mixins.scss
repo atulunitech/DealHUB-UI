@@ -700,7 +700,7 @@ $animation-duration: 2.5s;
 // start chart
 
 // -- vars
-$bg-color: #34495e;
+$bg-color: #fff;
 $default-size: 1em;
 $label-font-size: $default-size / 4;
 $label-font-size-redo: $default-size * 4;
@@ -755,7 +755,8 @@ $label-font-size-redo: $default-size * 4;
 
 
 .set-size {
-  font-size: 4em;
+  font-size: 2.8em;
+  cursor: pointer;
 }
 
 .charts-container {
@@ -790,7 +791,7 @@ $label-font-size-redo: $default-size * 4;
 
     .half-circle {
       @include size(100%, 100%);
-      border: ($default-size / 10) solid #3498db;
+      border: ($default-size / 10) solid #4a8cda;
       border-radius: 50%;
       clip: rect(0, $default-size / 2, $default-size, 0);
       left: 0;
@@ -879,6 +880,7 @@ $label-font-size-redo: $default-size * 4;
   
   .label {
     background: transparent;
+    visibility: hidden;
   }
   
   &.progress-65 {
