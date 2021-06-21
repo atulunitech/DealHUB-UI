@@ -1528,7 +1528,7 @@ getattachment(dh_id,dh_header_id)
   this._dashboardservice.GetAttachmentDocument(dh_id,dh_header_id).subscribe(data=>{
     console.log(data);
     var jsonresult=JSON.parse(data);
-    if(jsonresult != null || jsonresult.AttachmentDetails.length !=0)
+    if(jsonresult.Table.length != 0 && jsonresult.AttachmentDetails.length !=0)
     {
       let index=jsonresult.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
       if(index > -1)
@@ -1539,6 +1539,7 @@ getattachment(dh_id,dh_header_id)
           {
               let url="";
               url = environment.apiUrl+jsonresult.AttachmentDetails[i].filepath;
+
               window.open(url);
           }
         }
