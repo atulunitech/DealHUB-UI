@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
+import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate,CanActivateChild {
-  constructor(private router:Router)
+  constructor(private router:Router,private _mesgBox: MessageBoxComponent)
   {}
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
    //alert(childRoute.url[0].path);
@@ -25,6 +26,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
          }
         else
         {
+          this._mesgBox.showError("Unauthorized access");
           this.router.navigateByUrl('/login'); 
         return false;
       }

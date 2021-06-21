@@ -8,6 +8,14 @@ import {Router} from "@angular/router";
 export interface SAPIO {
   _Cust_SAP_IO_Number: number;
 }
+export class CommonDetailsParameter{
+  dh_id:number;
+  dh_header_id:number;
+}
+export class GetObfMasterParameters
+{
+  userid:string;
+}
 
 class SaveAttachmentParameter{
   _dh_id:number;
@@ -358,40 +366,48 @@ export class OBFServices {
       comments:new FormControl("",[this.NoSpecialCharacters])
      });
    }
-   GetCreateOBFMasters(usercode: string): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
-    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetMasterOBF",  
-       httpOptions);  
+  //  GetCreateOBFMasters(usercode: string): Observable<any> {  
+  //   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
+  //   return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetMasterOBF",  
+  //      httpOptions);  
+  // }
+
+  GetCreateOBFMasters(usercode: string): Observable<any> {  
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
+    let model:GetObfMasterParameters = new GetObfMasterParameters();
+    model.userid = usercode;
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/GetMasterOBF",  
+    model);  
   }
 
-  getsolutionmaster(usercode: string): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
-    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
-       httpOptions);  
+  getsolutionmaster(usercode: string): Observable<any> { 
+    let model:GetObfMasterParameters = new GetObfMasterParameters();
+    model.userid = usercode; 
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/getmastersolutions",  
+       model);  
   }
 
   createobf(model:obf): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/CreateOBF",model ,
-       httpOptions);  
+  //  const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/CreateOBF",model 
+       );  
   }
 
   editsapcustcode_and_io(model:obf): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/EditCustomerCodeandIo",model ,
-       httpOptions);  
+   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/EditCustomerCodeandIo",model 
+       );  
   }
 
   savesolutionandservices(model:obfsolutionandservices): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveServiceSolutionSector",model ,
-       httpOptions);  
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveServiceSolutionSector",model);  
   }
 
   SubmitOBF(model:obfsubmit): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SubmitOBF",model ,
-       httpOptions);  
+   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SubmitOBF",model );  
   }
 
    SIOnumbervalidate(control: AbstractControl): {[key: string]: any} | null  {
@@ -417,24 +433,46 @@ export class OBFServices {
     return null;
   }
 
+  // getobfsummarydata(dh_id:number): Observable<any> {  
+  //   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('dh_id', dh_id.toString()) };  
+  //   return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetOBFSummaryDetails",
+  //      httpOptions);  
+       
+  // }
+
   getobfsummarydata(dh_id:number): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('dh_id', dh_id.toString()) };  
-    return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetOBFSummaryDetails",
-       httpOptions);  
+    let model:CommonDetailsParameter = new CommonDetailsParameter();
+    model.dh_id = dh_id;
+    model.dh_header_id=0;
+   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('dh_id', dh_id.toString()) };  
+    return this.http.post<any>(environment.apiUrl+"Api/DashBoard/GetOBFSummaryDetails",
+    model);  
        
   }
-  GetOBFSummaryDataVersionWise(dh_id:number,dh_header_id:number): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
-    params: new HttpParams().set('dh_id', dh_id.toString())
-    .set('dh_header_id',dh_header_id.toString()) };  
-    return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetOBFSummaryDataVersionWise",
-       httpOptions);  
+  // GetOBFSummaryDataVersionWise(dh_id:number,dh_header_id:number): Observable<any> {  
+  //   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+  //   params: new HttpParams().set('dh_id', dh_id.toString())
+  //   .set('dh_header_id',dh_header_id.toString()) };  
+  //   return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetOBFSummaryDataVersionWise",
+  //      httpOptions);  
+       
+  // }
+
+  GetOBFSummaryDataVersionWise(dh_id:number,dh_header_id:number): Observable<any> { 
+    let model:CommonDetailsParameter = new CommonDetailsParameter();
+    model.dh_id = dh_id;
+    model.dh_header_id = dh_header_id; 
+    // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+    // params: new HttpParams().set('dh_id', dh_id.toString())
+    // .set('dh_header_id',dh_header_id.toString()) };  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/GetOBFSummaryDataVersionWise",
+    model);  
        
   }
+
   geteditobfdata(editobf:editobfarguement): Observable<any> {  
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf,
-       httpOptions);  
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",editobf);  
        
   }
 
@@ -461,24 +499,34 @@ export class OBFServices {
       // }
       ApproveRejectObf(data:approveRejectModel): Observable<any> 
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/ApproveRejectObf",data,
-           httpOptions); 
+        //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/ApproveRejectObf",data); 
       }
       SaveAttachment(data:SaveAttachmentParameter[]):Observable<any>
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) 
-        };  
-        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data,
-           httpOptions); 
+        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) 
+        // };  
+        return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/SaveAttachmentDetails",data); 
       }
+      // GetDetailTimelineHistory(dh_id:number,dh_header_id:number):Observable<any>
+      // {
+      //   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+      //   params: new HttpParams().set('dh_id', dh_id.toString())
+      //   .set('dh_header_id',dh_header_id.toString()) };  
+      //   return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
+      //      httpOptions);  
+      // }
+
       GetDetailTimelineHistory(dh_id:number,dh_header_id:number):Observable<any>
       {
-        const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
-        params: new HttpParams().set('dh_id', dh_id.toString())
-        .set('dh_header_id',dh_header_id.toString()) };  
-        return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
-           httpOptions);  
+        let model:CommonDetailsParameter = new CommonDetailsParameter();
+        model.dh_id = dh_id;
+        model.dh_header_id = dh_header_id;
+        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+        // params: new HttpParams().set('dh_id', dh_id.toString())
+        // .set('dh_header_id',dh_header_id.toString()) };  
+        return this.http.post<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
+        model);  
       }
         coversheetarray:any[] = [];
         loipoarray:any[] = [];

@@ -19,6 +19,7 @@ export class LoginModel
   _attempt:string;
   role_name:string;
   UserName:string;
+  _ClientId:string;
 }
 //endregion
 
@@ -62,7 +63,7 @@ export class LoginComponent implements OnInit {
     // sample comment
     this.loginvalid = new FormGroup({
      
-      userID : new FormControl('', [Validators.required]),
+      userID : new FormControl('', [Validators.required,Validators.email]),
       Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
@@ -87,6 +88,24 @@ export class LoginComponent implements OnInit {
     
      }
     }
+
+    this.getClientKey();
+  }
+   
+  getClientKey()
+  {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this.loginmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
   }
 
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
@@ -148,7 +167,7 @@ export class LoginComponent implements OnInit {
   
       //below code is working fine, but commented to show changes in obf
        let encryptedpwd="";
-
+     // alert(this.key);
        encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
 
        this.loginvalid.get('Password').setValue(encryptedpwd);
@@ -186,6 +205,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("role_name",Result.user.role_name);
         localStorage.setItem("UserName",Result.user.UserName);
         localStorage.setItem("User_Id",Result.user.UserId);
+        localStorage.setItem("RequestId",Result.user.AntiforgeryKey);
         console.log(Result.user.UserName);
         
         

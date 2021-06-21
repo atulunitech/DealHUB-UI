@@ -387,7 +387,7 @@
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
           <input placeholder="SAP IO ..." 
-          type="number"
+          type="text"
           formControlName="Sapio"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -396,6 +396,9 @@
         </mat-chip-list>
         <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
           SAP IO Number length must be <strong>8 digits</strong>
+        </mat-error>
+        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
+          Only numbers are allowed
         </mat-error>
                   </mat-form-field>
                   

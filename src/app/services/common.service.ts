@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core'
 import {HttpHeaders,HttpParams,HttpClient} from '@angular/common/http'
 import {Observable, observable, BehaviorSubject } from 'rxjs'
 import { environment } from 'src/environments/environment';
+import { GetObfMasterParameters } from '../dashboard/services/obfservices.service';
 
 export class notificationDetails
  {
@@ -47,13 +48,24 @@ notification()
 {
   this.notification_view = !this.notification_view;
 }
+// Get_System_Notification(usercode:string)
+//  {
+//   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+//   params: new HttpParams().set('_user_code', usercode.toString())};
+//   return this.http.get<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
+//      httpOptions);  
+//  }
+
 Get_System_Notification(usercode:string)
  {
-  const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
-  params: new HttpParams().set('_user_code', usercode.toString())};
-  return this.http.get<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
-     httpOptions);  
+  let model:GetObfMasterParameters = new GetObfMasterParameters();
+  model.userid = usercode;
+  // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+  // params: new HttpParams().set('_user_code', usercode.toString())};
+  return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
+  model);  
  }
+
  notificationDetails:notificationDetails[];
  initializeNotification(data:any)
  {
@@ -70,9 +82,8 @@ Get_System_Notification(usercode:string)
   
     Update_System_Notification(model:any)
  {
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-     return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model ,
-        httpOptions);  
+   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+     return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model );  
  }
 
 deletetoken(usercode:any): Observable<any> {  

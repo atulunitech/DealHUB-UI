@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
   searchwords: string="";
   searchfiltercontrol = new FormControl();
   statusfiltercontrol = new FormControl();
-  searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'ProjectName'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
+  searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'ProjectName'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Project Primary Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
    DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
@@ -541,9 +541,16 @@ console.log(new Date(event.endDate._d));
 this.startdate = new Date(event.startDate._d);
 this.enddate=new Date(event.endDate._d);
 //datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
-this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
-this.listData=new MatTableDataSource(this.filterdata);
+//this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+//this.listData=new MatTableDataSource(this.filterdata);
+this.addColumn(this.selectedcolumn);
 
+}
+
+datefilter()
+{
+  this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
+this.listData=new MatTableDataSource(this.filterdata);
 }
 
   ngAfterViewInit() {
@@ -1025,7 +1032,7 @@ downloaddetailFinalAgg(row)
     this.selectedcolumn = parseInt(selection);
     // alert(this.autocompletearr.length);
    // this.picker.clear();
-   alert(this.dateselected);
+  // alert(this.dateselected);
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -1040,7 +1047,10 @@ downloaddetailFinalAgg(row)
           }
          // obj.shortcurrentstatus=='draft'
          } );
-         
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
            if(this.cardsearcharray.length > 0)
            {
            // this.getdatafromsearchandfiltereddata();
@@ -1062,6 +1072,10 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
             //this.getdatafromsearchandfiltereddata();
@@ -1082,6 +1096,10 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
             //this.getdatafromsearchandfiltereddata();
@@ -1102,6 +1120,10 @@ downloaddetailFinalAgg(row)
             return obj;
           }
             });
+            if(this.dateselected)
+         {
+           this.datefilter();
+         }
             if(this.cardsearcharray.length > 0)
             {
             // this.getdatafromsearchandfiltereddata();
@@ -1124,7 +1146,10 @@ downloaddetailFinalAgg(row)
         {
           this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
         }
-        
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
             //this.getdatafromsearchandfiltereddata();
@@ -1149,6 +1174,10 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
         {
         // this.getdatafromsearchandfiltereddata();
@@ -1170,7 +1199,10 @@ downloaddetailFinalAgg(row)
             }
           }
          );
-         
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
            {
             //this.getdatafromsearchandfiltereddata();
@@ -1192,6 +1224,10 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
         {
          //this.getdatafromsearchandfiltereddata();
@@ -1213,6 +1249,10 @@ downloaddetailFinalAgg(row)
             }
           }
          );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
          {
          // this.getdatafromsearchandfiltereddata();
@@ -1235,6 +1275,10 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
             //this.getdatafromsearchandfiltereddata();

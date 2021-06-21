@@ -5,13 +5,14 @@ import { request } from "node:http";
 import { Observable } from "rxjs";
 import {catchError,map, tap,finalize} from "rxjs/operators";
 import { CommonService } from "../services/common.service";
+import { MessageBoxComponent } from "../shared/MessageBox/MessageBox.Component";
 
 
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router, public commonService:CommonService) { }
+    constructor(private router: Router, public commonService:CommonService,private _mesgBox: MessageBoxComponent) { }
   
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       this.commonService.show();
@@ -27,6 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 const headers = new HttpHeaders({
                     'Authorization': "Bearer " + localStorage.getItem('Token'),
                     '_user_login': localStorage.getItem("UserCode"),
+                    '_RequestId': localStorage.getItem("RequestId"),
                     'Content-Type': 'application/json'
                   });
                 const clonedreq = req.clone({
@@ -46,6 +48,11 @@ export class AuthInterceptor implements HttpInterceptor {
                       
                         if (error instanceof HttpErrorResponse) {
                             if (error.status != 200) {
+                              if (error.status === 401)
+                              {
+                                this._mesgBox.showError("Unauthorized access");
+                                this.router.navigateByUrl('/login');
+                              }
                                 //this.router.navigateByUrl('/login');
                             }
                           }

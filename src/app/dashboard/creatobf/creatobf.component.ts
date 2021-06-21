@@ -1070,7 +1070,7 @@ downloadCoversheet(event)
       path="";
     this._dashboardservice.uploadImage(files[i]).subscribe(
       event => {
-
+       // files.splice(i,1);
         if(event.type === HttpEventType.UploadProgress)
         {
           console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
@@ -1133,8 +1133,13 @@ downloadCoversheet(event)
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
          console.log(this._obfservices.ObfCreateForm);
+         let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname);
+         if(index > -1)
+         {}
+         else{
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-        
+        }
+        //files.splice(i,1);
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        

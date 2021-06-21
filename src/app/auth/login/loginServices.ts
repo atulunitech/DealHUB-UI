@@ -18,6 +18,12 @@ export class loginservices
 	    loginDetail, httpOptions);  
 	  }
     
+    getClientKey(): Observable<any> {  
+	    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'}) };  
+	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/GetClientKey',  
+	     httpOptions);  
+	  }
+
     GetToken(TokenDetails):Observable<any>
     {
       const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'}) };  
@@ -35,8 +41,8 @@ export class loginservices
     sendemail(logindetails):Observable<any>
     {
 
-      const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'})};  
-	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/sendemail',logindetails,httpOptions
+      //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'})};  
+	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/sendemail',logindetails
         ); 
     }
     
