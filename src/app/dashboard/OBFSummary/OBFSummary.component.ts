@@ -200,7 +200,7 @@ class filesdetail
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
          this.CFOMess=true;
-          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
           {
             this.disableCEOcontrol=true;
             this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
@@ -751,6 +751,7 @@ class filesdetail
        if(format.test(element.name))
        {
         this._mesgBox.showUpdate(element.name+" :name contains special characters,Kindly rename and upload again");
+        
         }
        // if( this.bytesToSize(element.size) > 4)
        if( element.size > 4194304)
@@ -766,6 +767,7 @@ class filesdetail
         if(event.addedFiles.length > 1)
         {
           this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
+          return false;
         }
          if(this.loipofiles.length >= 1 )
          {
@@ -782,6 +784,7 @@ class filesdetail
            if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
             this._mesgBox.showUpdate("Kindly select LOI or PO file type");
+            return false;
            }
         this.loipofiles.push(...event.addedFiles);
        
@@ -961,6 +964,7 @@ class filesdetail
   }
   saveattachmentFromuploadbutton()
   {
+    this.disablesavebutton=true;
     if(this.filelist.length !=0 )
     {
       for(let i=0;i< this.filelist.length;i++)
@@ -974,9 +978,33 @@ class filesdetail
         this.Attachments.push(SaveAttachment);
       }
     }
+    else
+    {
+      var type="";
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else{
+        if(this.Type=='Supporting')
+        {
+          type='support';
+        }
+        else if(this.Type=='FinalAgg')
+        {
+          type="FinalAgg";
+        }
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
     if(this.Attachments.length !=0)
     {
-      
       this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
         {
             
@@ -995,13 +1023,14 @@ class filesdetail
              this.getdetailsfordh_id(this.dh_id);
              this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
              setTimeout(() => {
-               this.OpenDocDownload('button',this.Type);
+               this.OpenDocDownload('NOtButton',this.Type);
              },3000 );
            
             }
             this.dispalyloading=false;
       });
     }
+    
     
   }
   uploadfiles(files:File[])

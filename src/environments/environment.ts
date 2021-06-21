@@ -5,9 +5,15 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://103.81.89.7/DealhubAPI/'
+<<<<<<< HEAD
     // apiUrl:'http://localhost:52229/' 
   apiUrl: 'http://13.235.216.142/dealhubapidev/'
   // apiUrl: 'http://13.235.216.142/dealhubapiqa/'
+=======
+   apiUrl:'http://localhost:52229/' 
+  //apiUrl: 'http://13.235.216.142/dealhubapidev/'
+ // apiUrl: 'http://13.235.216.142/dealhubapiqa/'
+>>>>>>> da9ee4c3a6e903136c812d201d1e9a6505f4eecb
 };
 
 /*
