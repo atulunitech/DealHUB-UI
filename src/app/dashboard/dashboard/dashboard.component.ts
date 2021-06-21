@@ -137,7 +137,7 @@ export class DashboardComponent implements OnInit {
   highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
-  @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
   uploadDocfiles:File[]=[];
   uploaddocprocess:any[]=[];
   // selected: {startDate: Moment, endDate: Moment};
@@ -751,7 +751,7 @@ openModal(templateRef,row) {
 }
 dh_id:number=0;
 dh_header_id:number=0;
-UploadFinalAggrement(element)
+getapprovalstatus(element)
 {
   this.dh_id=element.dh_id;
   this.dh_header_id=element.dh_header_id;

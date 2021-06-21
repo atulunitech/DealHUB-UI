@@ -751,6 +751,7 @@ class filesdetail
        if(format.test(element.name))
        {
         this._mesgBox.showUpdate(element.name+" :name contains special characters,Kindly rename and upload again");
+        
         }
        // if( this.bytesToSize(element.size) > 4)
        if( element.size > 4194304)
@@ -766,6 +767,7 @@ class filesdetail
         if(event.addedFiles.length > 1)
         {
           this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
+          return false;
         }
          if(this.loipofiles.length >= 1 )
          {
