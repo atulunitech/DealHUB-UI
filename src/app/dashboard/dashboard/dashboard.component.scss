@@ -513,6 +513,7 @@
                                 {
                                     opacity: 9;
                                     background-color: #fc625d;
+                                    top: 20px;
                                     @include margin(2px,2px,initial,initial); 
                                 }
                                 .drop_lab_cs
@@ -653,8 +654,8 @@
             {
                 font-size: 0.90rem;
     margin-top: -24px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 14px;
+    padding-bottom: 14px;
                 font-weight: 500;
                 &.edit_titl
                 {
@@ -665,10 +666,10 @@
             }
             .close {
                 position: absolute;
-                right: -20px;
-    top: 12px;
+                right: -4px;
+                top: 14px;
                 width: 32px;
-                height: 32px;
+                height: 18px;
                 outline: none;
                 &::after
                 {
