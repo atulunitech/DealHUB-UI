@@ -1341,294 +1341,334 @@ downloadCoversheet(event)
            delete obj[old_key];                // delete old key
            }
     }
-  updatedatafromcoversheet(evt)
-  {
-    console.log(evt);
-   // const target : DataTransfer =  <DataTransfer>(evt.target);
-
-    if (evt.addedFiles.length !== 1) throw new Error('Cannot use multiple files');
-
-    const reader: FileReader = new FileReader();
-
-    reader.onload = (e: any) => {
-      const bstr: string = e.target.result;
-
-      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
-    
-            wb.SheetNames.forEach((element,index) =>{
-              wb.SheetNames[index] = element.toLowerCase();
-            });
-        if(!wb.SheetNames.includes("obf coversheet"))
-        {
-          this._mesgBox.showError("Standard OBF Coversheet not found");
-          this.coversheetfiles = [];
-          this.iscoversheet = !this.iscoversheet;
-          return false;
-        }
-        for (var key in wb.Sheets) {
-          if (Object.prototype.hasOwnProperty.call(wb.Sheets, key)) {
-            this.renameKey(wb.Sheets,key,key.toLowerCase());
-          }
-      }
-      const wsname : string = "obf coversheet";
+    updatedatafromcoversheet(evt)
+    {
+      console.log(evt);
+     // const target : DataTransfer =  <DataTransfer>(evt.target);
+  
+      if (evt.addedFiles.length !== 1) throw new Error('Cannot use multiple files');
+  
+      const reader: FileReader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        const bstr: string = e.target.result;
+  
+        const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary',cellDates:true });
       
-      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
-      console.log("get values");
-      console.log(ws);
-    // console.log(ws.A1.h);
-    try{
-      let count:number = 0;
-      if(ws.H3 == undefined || ws.H3.w == "#N/A" )
+              wb.SheetNames.forEach((element,index) =>{
+                wb.SheetNames[index] = element.toLowerCase();
+              });
+          if(!wb.SheetNames.includes("obf coversheet"))
+          {
+            this._mesgBox.showError("Standard OBF Coversheet not found");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
+          for (var key in wb.Sheets) {
+            if (Object.prototype.hasOwnProperty.call(wb.Sheets, key)) {
+              this.renameKey(wb.Sheets,key,key.toLowerCase());
+            }
+        }
+        const wsname : string = "obf coversheet";
+        
+        const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+        console.log("get values");
+        console.log(ws);
+      // console.log(ws.A1.h);
+      try{
+        let count:number = 0;
+        if(ws.H3 == undefined || ws.H3.w == "#N/A" )
+        {
+        count +=1;
+      }
+      else{
+        let domain = ws.H3.w;
+        let index = this.domainlist.findIndex(obj => obj.viewValue == domain.toString().trim());
+        if(index > -1)
+        {
+          domain = this.domainlist[index].value.toString().trim();
+          if(this.initiateppl)
+          {
+            if(domain != this._obfservices.editObfObject._projecttype)
+            {
+              this._mesgBox.showError("Project type does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
+          this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
+          this._obfservices.obfmodel._projecttype = domain;
+        }
+        else
+        {
+          count +=1;
+        }
+      
+     }
+        if(ws.E4 == undefined || ws.E4.w == "#N/A" )
+        {
+        count +=1;
+      }
+      else{
+        if(this.initiateppl)
+          {
+            if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name)
+            {
+              this._mesgBox.showError("Project name does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
+      this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
+      this._obfservices.obfmodel._dh_project_name = ws.E4.w;
+     }
+      if(ws.E5 == undefined || ws.E5.w == "#N/A" )
+      {
+      // throw new Error();
+      count +=1;
+    }
+    else{
+      this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
+      this._obfservices.obfmodel._customer_name = ws.E5.w;
+    }
+      // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: ws.E6.h});
+      // this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: ws.E7.h});
+      // this._obfservices.ObfCreateForm.patchValue({Projecttype: ws.E5.h});
+      if(ws.E6 == undefined || ws.E6.h == "#N/A")
+      {
+      count +=1;
+    }
+    else
+    {
+      this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
+      if(this.reinitiateobf)
+        {
+          if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+          {
+            this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
+        }
+      this._obfservices.obfmodel._opportunity_id = ws.E6.w;
+    }
+      if( ws.E7 == undefined || ws.E7.w == "#N/A")
       {
       count +=1;
     }
     else{
-      let domain = ws.H3.w;
-      let index = this.domainlist.findIndex(obj => obj.viewValue == domain.toString().trim());
-      if(index > -1)
-      {
-        domain = this.domainlist[index].value.toString().trim();
-        this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
-        this._obfservices.obfmodel._projecttype = domain;
-      }
-      else
+      if(this.initiateppl)
+          {
+            if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location)
+            {
+              this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
+      
+      this._obfservices.ObfCreateForm.patchValue({State: ws.E7.w});
+      this._obfservices.obfmodel._dh_location = ws.E7.w;
+    }
+      if(ws.E8 == undefined || ws.E8.w == "#N/A")
       {
         count +=1;
       }
-    
-   }
-      if(ws.E4 == undefined || ws.E4.w == "#N/A" )
+      else{
+      this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
+      var result = this.verticallist.filter(obj => {
+        return obj.viewValue === (ws.E8 == undefined?"":ws.E8.w);
+      // return obj.viewValue === "E-Commerce";
+     });
+     if(!(result.length > 0))
+     {
+       this._mesgBox.showError("Vertical field is not correct, please check.");
+       this.coversheetfiles = [];
+           return false; 
+     }
+      let verticalid = parseInt(result[0].value.toString());
+      if(verticalid == 6 || verticalid == 8)
       {
-      count +=1;
-    }
-    else{
-    this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
-    this._obfservices.obfmodel._dh_project_name = ws.E4.w;
-   }
-    if(ws.E5 == undefined || ws.E5.w == "#N/A" )
-    {
-    // throw new Error();
-    count +=1;
-  }
-  else{
-    this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
-    this._obfservices.obfmodel._customer_name = ws.E5.w;
-  }
-    // this._obfservices.ObfCreateForm.patchValue({Solutioncategory: ws.E6.h});
-    // this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories: ws.E7.h});
-    // this._obfservices.ObfCreateForm.patchValue({Projecttype: ws.E5.h});
-    if(ws.E6 == undefined || ws.E6.h == "#N/A")
-    {
-    count +=1;
-  }
-  else
-  {
-    this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
-    if(this.reinitiateobf)
-      {
-        if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+        if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
-          this.coversheetfiles = [];
-          this.iscoversheet = !this.iscoversheet;
-          return false;
+          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
         }
       }
-    this._obfservices.obfmodel._opportunity_id = ws.E6.w;
-  }
-    if( ws.E7 == undefined || ws.E7.w == "#N/A")
-    {
-    count +=1;
-  }
-  else{
-    this._obfservices.ObfCreateForm.patchValue({State: ws.E7.w});
-    this._obfservices.obfmodel._dh_location = ws.E7.w;
-  }
-    if(ws.E8 == undefined || ws.E8.w == "#N/A")
-    {
-      count +=1;
-    }
-    else{
-    this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
-    var result = this.verticallist.filter(obj => {
-      return obj.viewValue === (ws.E8 == undefined?"":ws.E8.w);
-    // return obj.viewValue === "E-Commerce";
-   });
-   if(!(result.length > 0))
-   {
-     this._mesgBox.showError("Vertical field is not correct, please check.");
-     this.coversheetfiles = [];
-         return false; 
-   }
-    let verticalid = parseInt(result[0].value.toString());
-
-    if(this.reinitiateobf)
-      {
-        if(this._obfservices.editObfObject._vertical_id != verticalid)
+      if(this.reinitiateobf)
         {
-          this._mesgBox.showError("Vertical different with previous OBF version");
-          this.coversheetfiles = [];
-          this.iscoversheet = !this.iscoversheet;
-          return false;
+          if(this._obfservices.editObfObject._vertical_id != verticalid)
+          {
+            this._mesgBox.showError("Vertical different with previous OBF version");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
         }
-      }
-   //let verticalid = 2;
-   this._obfservices.obfmodel._vertical_id = verticalid;
-
-   var ressec = this.sectorlist.filter(obj =>{
-     return obj.vertical_id === verticalid;
-   });
-   this.sectorlist = <sectors[]>ressec;
-   var res = this.Verticalheadlist.filter(obj => {
-    // return obj.viewValue === ws.E8.h;
-    return obj.value === verticalid;
-  });
-  //let verticalheadid = res[0].vertical_head_id;
-   this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
-  }
-    // let value: any = ws.H3.v;
-    // const parsedDate: Date = new Date(value);
-    //  //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
-    // // value = df(parsedDate, "dd/mm/yyyy");
-    // value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
-    // this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
-   
-    if(ws.E9 == undefined || ws.E9.w == "#N/A")
-    {
-      count +=1;
+     //let verticalid = 2;
+     this._obfservices.obfmodel._vertical_id = verticalid;
+  
+     var ressec = this.sectorlist.filter(obj =>{
+       return obj.vertical_id === verticalid;
+     });
+     this.sectorlist = <sectors[]>ressec;
+     var res = this.Verticalheadlist.filter(obj => {
+      // return obj.viewValue === ws.E8.h;
+      return obj.value === verticalid;
+    });
+    //let verticalheadid = res[0].vertical_head_id;
+     this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
     }
-    else{
-     this._obfservices.ObfCreateForm.patchValue({Verticalhead: ws.E9.w});
-    }
-    
-    //this._obfservices.ObfCreateForm.patchValue({Verticalhead: "abc"});
-    // this._obfservices.ObfCreateForm.patchValue({Sector: ws.E11.h});
-    // this._obfservices.ObfCreateForm.patchValue({Subsector: ws.E12.h});
-    if(ws.D12 == undefined || ws.D12.w == "#N/A" )
-    {
-      count +=1;
-    }
-    else{
-    this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
-    this._obfservices.obfmodel._dh_desc = ws.D12.w;
-  }
-    if(ws.D13 == undefined || ws.D13.w == "#N/A" )
-    {
-      count +=1;
-    }
-    else
-    {
-      this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
-    this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
-    }
-    
-    if(ws.F13 == undefined || ws.F13.w == "#N/A")
-    {
-      count +=1;
-    }
-    else{
-    this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
-    this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
-  }
-    if(ws.H13 == undefined || ws.H13.w == "#N/A" )
-    {
-      count +=1
-    }
-    else{
-    this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
-    this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
-  }
-    if(ws.D14 == undefined || ws.D14.w == "#N/A")
-    {
-       count +=1; 
-    }
-    else
-    {
-      this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
-    this._obfservices.obfmodel._total_project_life = ws.D14.w;
-    }
-    
-    
-    this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
-    this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
-    this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
-    this._obfservices.obfmodel._ebt = parseFloat(ws.H14 == undefined?0:ws.H14.w.toString().replace('%',""));
-    if(ws.D15 == undefined || ws.D15.w == "#N/A")
-    {
-      count +=1;
-    }
-    else{
-      this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
-    this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
-    }
-    
-    this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
-    this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15 == undefined?0:ws.F15.w.toString().replace('%',""));
-    if(ws.H15 == undefined || ws.H15.w == "#N/A" )
-    {
-      count +=1;
-    }
-    else{
-      this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
-      this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
-    }
-
-    if(ws.D16 == undefined || ws.D16.w == "#N/A")
-    {
-      count +=1;
-    }
-    else{
-      this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
-    this._obfservices.obfmodel._payment_term_desc = ws.D16.w;
-    }
-    
-    if(ws.D17 == undefined || ws.D17.w == "#N/A" )
-    {
-      count +=1;
-    }
-    else{
-      this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
-    this._obfservices.obfmodel._assumptions_and_risks = ws.D17.w;
-    }
-    
-    if(ws.D18 == undefined || ws.D18.w == "#N/A")
-    {
-      count +=1;
-    }
-    else{
-      this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
-      this._obfservices.obfmodel._loi_po_details = ws.D18.w;
-    }
-   
-    if(count > 0)
-    {
-      throw new Error();
-    }
-    
-    console.log("check form values");
-    console.log(this._obfservices.ObfCreateForm);
-    this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
-
-    //  console.log("MAin DATa: "+this.data);
-
-    //  let x = this.data.slice(1);
-    //   console.log("Sliced DATA"+x);
-    }
-    catch(Error)
-    {
-      let val =  this.validateform();
-      if(!val)
+      // let value: any = ws.H3.v;
+      // const parsedDate: Date = new Date(value);
+      //  //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
+      // // value = df(parsedDate, "dd/mm/yyyy");
+      // value =  this.datepipe.transform(parsedDate, 'yyyy/MM/dd');
+      // this._obfservices.ObfCreateForm.patchValue({Projectdate: value});
+     
+      if(ws.E9 == undefined || ws.E9.w == "#N/A")
       {
-        this.coversheetfiles = [];
-        this.iscoversheet = !this.iscoversheet;
-          return false; 
+        count +=1;
       }
-    }
+      else{
+       this._obfservices.ObfCreateForm.patchValue({Verticalhead: ws.E9.w});
+      }
       
-    };
-
-    reader.readAsBinaryString(evt.addedFiles[0]);
-  }
+      //this._obfservices.ObfCreateForm.patchValue({Verticalhead: "abc"});
+      // this._obfservices.ObfCreateForm.patchValue({Sector: ws.E11.h});
+      // this._obfservices.ObfCreateForm.patchValue({Subsector: ws.E12.h});
+      if(ws.D12 == undefined || ws.D12.w == "#N/A" )
+      {
+        count +=1;
+      }
+      else{
+      this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
+      this._obfservices.obfmodel._dh_desc = ws.D12.w;
+    }
+      if(ws.D13 == undefined || ws.D13.w == "#N/A" )
+      {
+        count +=1;
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
+      this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+      }
+      
+      if(ws.F13 == undefined || ws.F13.w == "#N/A")
+      {
+        count +=1;
+      }
+      else{
+      this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
+      this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+    }
+      if(ws.H13 == undefined || ws.H13.w == "#N/A" )
+      {
+        count +=1
+      }
+      else{
+      this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
+      this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+    }
+      if(ws.D14 == undefined || ws.D14.w == "#N/A")
+      {
+         count +=1; 
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
+      this._obfservices.obfmodel._total_project_life = ws.D14.w;
+      }
+      
+      
+      this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
+      this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
+      this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
+      this._obfservices.obfmodel._ebt = parseFloat(ws.H14 == undefined?0:ws.H14.w.toString().replace('%',""));
+      if(ws.D15 == undefined || ws.D15.w == "#N/A")
+      {
+        count +=1;
+      }
+      else{
+        this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
+      this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+      }
+      
+      this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
+      this._obfservices.obfmodel._irr_borrowed_fund = parseFloat(ws.F15 == undefined?0:ws.F15.w.toString().replace('%',""));
+      if(ws.H15 == undefined || ws.H15.w == "#N/A" )
+      {
+        count +=1;
+      }
+      else{
+        this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
+        this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+      }
+  
+      if(ws.D16 == undefined || ws.D16.w == "#N/A")
+      {
+        count +=1;
+      }
+      else{
+        this._obfservices.ObfCreateForm.patchValue({Payment_Terms_description: ws.D16.w})
+      this._obfservices.obfmodel._payment_term_desc = ws.D16.w;
+      }
+      
+      if(ws.D17 == undefined || ws.D17.w == "#N/A" )
+      {
+        count +=1;
+      }
+      else{
+        this._obfservices.ObfCreateForm.patchValue({Assumptionrisks: ws.D17.w});
+      this._obfservices.obfmodel._assumptions_and_risks = ws.D17.w;
+      }
+      
+      if(ws.D18 == undefined || ws.D18.w == "#N/A")
+      {
+        count +=1;
+      }
+      else{
+        this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
+        this._obfservices.obfmodel._loi_po_details = ws.D18.w;
+      }
+     
+      if(count > 0)
+      {
+        throw new Error();
+      }
+      
+      console.log("check form values");
+      console.log(this._obfservices.ObfCreateForm);
+      this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
+  
+      //  console.log("MAin DATa: "+this.data);
+  
+      //  let x = this.data.slice(1);
+      //   console.log("Sliced DATA"+x);
+      }
+      catch(Error)
+      {
+        let val =  this.validateform();
+        if(!val)
+        {
+          this.coversheetfiles = [];
+          this.iscoversheet = !this.iscoversheet;
+            return false; 
+        }
+      }
+        
+      };
+  
+      reader.readAsBinaryString(evt.addedFiles[0]);
+    }
   onFileChange(evt) {
     const excel = evt.target.files[0]
     // this._dashboardservice.uploadImage(excel).subscribe(
