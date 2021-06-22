@@ -179,15 +179,9 @@ class filesdetail
        {
         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
         this.CEOMess=true;
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-         {
-         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
-         this.disableCFOcontrol=true;
-         }
-        else  {
-          this.disableCFOcontrol=true;
-         this.cfomessgae="Approval required as per Pricing Team.";
-         }
+        this.disableCFOcontrol=true;
+        this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+       
        }
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
@@ -201,19 +195,9 @@ class filesdetail
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
          this.CFOMess=true;
-          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
-          {
-            this.disableCEOcontrol=true;
-            this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-          }
-         else {
-          this.disableCEOcontrol=true;
-             this.CEOmessage="Approval required as per Pricing Team.";
-            
-          }
+         this.disableCEOcontrol=true;
+         this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
         }
-        
-        
       }
       if(this.role_name=='PH')
       {
@@ -620,11 +604,43 @@ class filesdetail
   {
     if(this.role_name=='PH')
     {
-      // if()
-      // {
-
-      // }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="Y" &&  this.obfsummaryform.get("ExceptionCFO").value==true)
+      {
+            if(this.SaveCommentdetail.length == 0)
+            {
+            if(this.obfsummaryform.get("comments").value == "")
+          {
+            this.obfsummaryform.controls["comments"].markAsTouched();
+              return false;
+            
+          }
+          else
+          {
+            this._mesgBox.showError("Please Submit Comment");
+          }
+          
+            } 
+      }
+      else if( this.obfsummaryform.get("ExceptionCEO").value==true)
+      {
+            if(this.SaveCommentdetail.length == 0)
+            {
+        
+          if(this.obfsummaryform.get("comments").value == "")
+          {
+            this.obfsummaryform.controls["comments"].markAsTouched();
+              return false;
+            
+          }
+          else
+          {
+            this._mesgBox.showError("Please Submit Comment");
+          }
+          
+            } 
+      }
     }
+
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -1226,20 +1242,28 @@ class filesdetail
        
      if(this.role_name=='CFO')
      {
+      // if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      // {
+      //  this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+      //  this.CEOMess=true;
+      //  if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+      //   {
+      //   this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
+      //   this.disableCFOcontrol=true;
+      //   }
+      //  else  {
+
+      //    this.disableCFOcontrol=true;
+      //   this.cfomessgae="Approval required as per Pricing Team.";
+      //   }
+      // }
       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
       {
        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
        this.CEOMess=true;
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-        {
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
-        this.disableCFOcontrol=true;
-        }
-       else  {
-
-         this.disableCFOcontrol=true;
-        this.cfomessgae="Approval required as per Pricing Team.";
-        }
+       this.disableCFOcontrol=true;
+       this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+      
       }
       else{
         this.disableCFOcontrol=false;
@@ -1256,21 +1280,28 @@ class filesdetail
      }
      if(this.role_name=='CEO')
      {
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
-       {
-        this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
-        this.CFOMess=true;
-         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
-         {
-           this.disableCEOcontrol=true;
-           this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-         }
-        else {
-         this.disableCEOcontrol=true;
-            this.CEOmessage="Approval required as per Pricing Team.";
+      //  if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+      //  {
+      //   this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+      //   this.CFOMess=true;
+      //    if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+      //    {
+      //      this.disableCEOcontrol=true;
+      //      this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+      //    }
+      //   else {
+      //    this.disableCEOcontrol=true;
+      //       this.CEOmessage="Approval required as per Pricing Team.";
            
-         }
-       }
+      //    }
+      //  }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+      {
+       this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+       this.CFOMess=true;
+       this.disableCEOcontrol=true;
+       this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
+      }
        else{
         this.disableCEOcontrol=false;
         this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
