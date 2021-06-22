@@ -473,8 +473,12 @@ class filesdetail
       
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
-     
-       this.componentRef.directiveRef.scrollToBottom(500);
+       setTimeout(() => {
+        this.componentRef.directiveRef.scrollToBottom();
+       },1000
+       );
+
+       //this.componentRef.directiveRef.scrollToBottom(500);
     }
       else {
       this.componentRef.directiveRef.scrollToBottom();
