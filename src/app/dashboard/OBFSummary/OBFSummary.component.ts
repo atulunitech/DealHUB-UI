@@ -449,7 +449,8 @@ class filesdetail
   SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
-    
+    if(!this.obfsummaryform.controls.comments.errors)
+    {
     if(this.obfsummaryform.get("comments").value!= "")
     {
       
@@ -475,6 +476,7 @@ class filesdetail
       else {
       this.componentRef.directiveRef.scrollToBottom();
     }
+  }
     //  if (this.types === 'directive' && this.directiveRef) {
     //   this.directiveRef.scrollToBottom();
     // } else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
@@ -609,6 +611,13 @@ class filesdetail
   //Action Functions For Approve ,Rejected and OnHold function
   ApproveDeatils()
   {
+    if(this.role_name=='PH')
+    {
+      // if()
+      // {
+
+      // }
+    }
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -1331,10 +1340,14 @@ class filesdetail
       window.open(url);
     }
   }
+  commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[<>'"&@$#*^%!]/;
+
     if (control.value && format.test(control.value)) {
+     
       return { 'invalidservices': true };
+
     }
     return null;
   }

@@ -587,7 +587,7 @@
                 <mat-expansion-panel [disabled]="true"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
-                    3/3 Preview OBF <span class="is_done" [class.is_done_not]="!uploadnotdisabled || detailstickdisabled" ><img src="assets/images/active_tick.png" style="display: inline-block;
+                    3/3 {{this.isppl == false ?'Preview OBF':'Preview PPL'}} <span class="is_done" [class.is_done_not]="!uploadnotdisabled || detailstickdisabled" ><img src="assets/images/active_tick.png" style="display: inline-block;
                       margin-left: 55px;"></span>
                   </mat-panel-title>
   
