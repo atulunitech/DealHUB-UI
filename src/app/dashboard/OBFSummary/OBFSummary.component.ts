@@ -157,6 +157,7 @@ class filesdetail
   disableCEOcontrol:boolean=false;
   disableMargincontrol:boolean=false;
   ShowViewButton:boolean=false;
+  workflowindication:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -234,6 +235,7 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
+         this.workflowindication=true;
         // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
@@ -242,6 +244,7 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
+         this.workflowindication=true;
          //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
@@ -1188,6 +1191,7 @@ class filesdetail
   
   this.filelist=files;
   this.disablesavebutton=false;
+  this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
  //this.SaveAttachment();
   }
   onversionchange(evt,dh_id,dh_header_id)

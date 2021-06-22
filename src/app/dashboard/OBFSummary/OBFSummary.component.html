@@ -312,11 +312,12 @@
                       
                     </div>
                  </div>
-                 <div class="mat_previe_box"  *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
-                  <div class="prev_dis" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+
+                 <div class="mat_previe_box"  *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                  <div class="prev_dis" *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
-                  <div class="mat_cu_indic">
+                  <div class="mat_cu_indic" >
                   <div class="prev_dis mt-cust-fd-com"  *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
@@ -328,7 +329,7 @@
                     <label>
                       {{this.cfomessgae}}
                     </label>
-                    </div>
+                  </div>
                    
                   <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
                     <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
