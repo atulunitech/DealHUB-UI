@@ -5,13 +5,8 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://103.81.89.7/DealhubAPI/'
-<<<<<<< HEAD
  apiUrl:'http://localhost:52229/' 
   //apiUrl: 'http://13.235.216.142/dealhubapidev/'
-=======
-  //  apiUrl:'http://localhost:52229/' 
-  apiUrl: 'http://13.235.216.142/dealhubapidev/'
->>>>>>> 861bc6a35a446b98102942df1cbdf75565291866
  // apiUrl: 'http://13.235.216.142/dealhubapiqa/'
 };
 
