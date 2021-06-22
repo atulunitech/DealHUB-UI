@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import {Router} from "@angular/router"
-import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
@@ -26,6 +26,8 @@ import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
 import { element } from 'protractor';
 import { TypeScriptEmitter } from '@angular/compiler';
+import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
+import { loginservices } from 'src/app/auth/login/LoginServices';
 
 //region Model
 export class DashBoardModel
@@ -76,6 +78,14 @@ export class searchfilter{
   value:string;
   viewValue:string;
 }
+export class ResetErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
+    const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
+
+    return invalidCtrl || invalidParent;
+  }
+}
 // class searchvalues
 // {
 
@@ -87,9 +97,11 @@ export class searchfilter{
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  loginmodel:LoginModel=new LoginModel();
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
+  matcherreset = new ResetErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
   startdate:any;
@@ -143,8 +155,10 @@ export class DashboardComponent implements OnInit {
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+  @ViewChild('resetDialog') resetDialog: TemplateRef<any>;
   uploadDocfiles:File[]=[];
   uploaddocprocess:any[]=[];
+  key:string = "";
   // selected: {startDate: Moment, endDate: Moment};
   // alwaysShowCalendars: boolean;
   // locale: LocaleConfig = {
@@ -155,7 +169,8 @@ export class DashboardComponent implements OnInit {
   //   applyLabel: 'Ok',
   // };
   loading$ = this.commonService.loading$;
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService) { 
+  public loginvalid: FormGroup;
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }
@@ -429,6 +444,64 @@ export class DashboardComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value))
     );
+    this.commonService.getresetclickedevent().subscribe(res =>{
+     // alert(res);
+      if(res == true)
+      this.ResetModel();
+
+    });
+    this.loginvalid = new FormGroup({
+     
+      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}'),this.commonService.NoInvalidCharacters]),
+      confirmpassword : new FormControl('')
+    }, { validators: this.checkPasswords });
+
+    this.getClientKey();
+  }
+  
+  getClientKey()
+      {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this.loginmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
+     }
+  public checkError = (controlName: string, errorName: string) => {
+    return this.loginvalid.controls[controlName].hasError(errorName);
+  }
+  ResetPassword()
+  {
+    let encryptedpwd="";
+         alert(this.key);
+          encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
+          this.loginvalid.get('NewPassword').setValue(encryptedpwd);
+          this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
+          this.loginmodel._SecretKey = this.key;
+    this.loginmodel._user_code=localStorage.getItem("UserCode");
+    this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
+    
+     
+    this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
+     // alert("Password Changed Successfully.");
+     this._mesgBox.showSucess("Password Changed Successfully.");
+     this.router.navigateByUrl('/login');
+     
+    });
+  }
+
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    const password = group.get('NewPassword').value;
+    const confirmPassword = group.get('confirmpassword').value;
+  
+    return password === confirmPassword ? null : { notSame: true }     
   }
 
   private _filter(value: string): string[] {
@@ -804,6 +877,23 @@ onchange(evt,solutioncategory)
     console.log("checking in chip");
     console.log(this._obfservices.obfmodel);
   }
+
+  ResetModel() {
+    
+    let dialogRef = this.dialog.open(this.resetDialog, {
+        //  width: '880px',
+         // data: { name: this.name, animal: this.animal }
+         panelClass: 'custom-modalbox',
+        backdropClass: 'popupBackdropClass',
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        // this.animal = result;
+    });
+  }
+
+
 
 openModal(templateRef,row) {
   console.log(row);

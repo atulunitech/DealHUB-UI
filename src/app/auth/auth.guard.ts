@@ -26,6 +26,10 @@ export class AuthGuard implements CanActivate,CanActivateChild {
          }
         else
         {
+          localStorage.setItem("UserCode","");
+                            localStorage.setItem("Token","");
+                            localStorage.setItem("RequestId","");
+                            localStorage.setItem("userToken","");
           this._mesgBox.showError("Unauthorized access");
           this.router.navigateByUrl('/login'); 
         return false;

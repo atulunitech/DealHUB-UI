@@ -35,8 +35,10 @@ export class AppComponent {
       if(res.result == "Success")
       {
        // alert("Token deleted");
-        localStorage.setItem("UserCode","");
-        localStorage.setItem("Token","");
+       localStorage.setItem("UserCode","");
+       localStorage.setItem("Token","");
+       localStorage.setItem("RequestId","");
+       localStorage.setItem("userToken","");
         this.router.navigate(['/']);
       }
     });  

@@ -38,6 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.commonService.hide();
                 return next.handle(clonedreq).pipe(
                     tap(
+                      //this._commomservices.resetclicked.next(false);
                       
                       (error:any) => {
                         // if (error.status === 401)
@@ -45,11 +46,15 @@ export class AuthInterceptor implements HttpInterceptor {
                         console.log(clonedreq);
                         console.log(error);
                         console.log(error.type);
-                      
-                        if (error instanceof HttpErrorResponse) {
-                            if (error.status != 200) {
-                              if (error.status === 401)
+                        
+                        if(error instanceof HttpErrorResponse) {
+                            if(error.status != 200) {
+                              if(error.status === 401)
                               {
+                                localStorage.setItem("UserCode","");
+                                localStorage.setItem("Token","");
+                                localStorage.setItem("RequestId","");
+                                localStorage.setItem("userToken","");
                                 this._mesgBox.showError("Unauthorized access");
                                 this.router.navigateByUrl('/login');
                               }
@@ -59,7 +64,24 @@ export class AuthInterceptor implements HttpInterceptor {
 
                            
                     }
-                    )
+                    ),
+                    catchError((error:any)=>{
+                      if(error instanceof HttpErrorResponse) {
+                        if(error.status != 200) {
+                          if(error.status === 401)
+                          {
+                            localStorage.setItem("UserCode","");
+                            localStorage.setItem("Token","");
+                            localStorage.setItem("RequestId","");
+                            localStorage.setItem("userToken","");
+                            this._mesgBox.showError("Unauthorized access");
+                            this.router.navigateByUrl('/login');
+                          }
+                            //this.router.navigateByUrl('/login');
+                        }
+                      }
+                      return error;
+                    })
                   );
             }
             else {
@@ -73,6 +95,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(req).pipe(
             finalize(() => {
               this.commonService.hide();
+              this.commonService.resetclicked.next(false);
             })
           );
     }

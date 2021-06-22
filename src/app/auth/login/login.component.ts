@@ -52,11 +52,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
 
     //Password Secret key 
-    let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    localStorage.setItem("Token","");
-     this.key = "$!$030!m0l0l"+randomNumber.toString();
-    let plainTextBytes = this.stringtobytes(this.key);
-    this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
+    // let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    // localStorage.setItem("Token","");
+    //  this.key = "$!$030!m0l0l"+randomNumber.toString();
+    // let plainTextBytes = this.stringtobytes(this.key);
+    // this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
     
 
 

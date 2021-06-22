@@ -402,7 +402,14 @@ export class CreatobfComponent implements OnInit {
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
        console.log(this._obfservices.obfmodel);
+       if(this.editorcreateobfstring.trim() == "Re-initiate OBF")
+       {
+        this.reinitiatefordisable = false; 
+       }
+       else
+       {
        this.reinitiatefordisable = this.reinitiateobf;
+      }
        if(this.reinitiatefordisable)
        {
          this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
@@ -1026,6 +1033,7 @@ downloadCoversheet(event)
 
 	}
   SaveAttachmentParameter:SaveAttachmentParameter;
+  finalsupportarray:any[]=[];
   uploadfiles(files:File[],types)
   {
     let val = true;
@@ -1139,7 +1147,8 @@ downloadCoversheet(event)
          else{
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
-        //files.splice(i,1);
+        this.finalsupportarray.push(this.SupportPoprogress[i]);
+        files.splice(i,1);
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        
@@ -1393,6 +1402,16 @@ downloadCoversheet(event)
       if(index > -1)
       {
         domain = this.domainlist[index].value.toString().trim();
+        if(this.initiateppl)
+        {
+          if(domain != this._obfservices.editObfObject._projecttype)
+          {
+            this._mesgBox.showError("Project type does not matched with the previous version of OBF");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
+        }
         this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
         this._obfservices.obfmodel._projecttype = domain;
       }
@@ -1407,6 +1426,16 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
+      if(this.initiateppl)
+        {
+          if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name)
+          {
+            this._mesgBox.showError("Project name does not matched with the previous version of OBF");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
+        }
     this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
     this._obfservices.obfmodel._dh_project_name = ws.E4.w;
    }
@@ -1446,6 +1475,17 @@ downloadCoversheet(event)
     count +=1;
   }
   else{
+    if(this.initiateppl)
+        {
+          if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location)
+          {
+            this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }
+        }
+    
     this._obfservices.ObfCreateForm.patchValue({State: ws.E7.w});
     this._obfservices.obfmodel._dh_location = ws.E7.w;
   }
@@ -1466,7 +1506,16 @@ downloadCoversheet(event)
          return false; 
    }
     let verticalid = parseInt(result[0].value.toString());
-
+    if(verticalid == 6 || verticalid == 8)
+    {
+      if(this._obfservices.obfmodel._projecttype != 3)
+      {
+        this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+      }
+    }
     if(this.reinitiateobf)
       {
         if(this._obfservices.editObfObject._vertical_id != verticalid)

@@ -461,3 +461,53 @@
       
       </ng-template>
   </div>
+  <div>
+    <ng-template #resetDialog>
+      <form [formGroup]="loginvalid">
+      <mat-dialog-content class="mat-typography">
+        <div>
+          <p class="to_account">Sign in to your dealHUB account with 
+              the provided credential </p>
+         
+              <div>
+                  <div>
+                      <div class="mt-cust-fd"  >
+                          <mat-form-field appearance="fill" class="example-full-width">
+                              <mat-label>New Password</mat-label>
+                              <input matInput type="password" formControlName="NewPassword" >
+                                  <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
+                                  <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
+                                  <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
+                            </mat-form-field>
+                        </div>
+                  </div>
+                  <div>
+                      <div class="mt-cust-fd"  >
+                          <mat-form-field appearance="fill" class="example-full-width">
+                              <mat-label>Confirm Password</mat-label>
+                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset">
+                                  <mat-error *ngIf="checkError('confirmpassword', 'required')">Confirm password is required</mat-error>
+                                  <mat-error *ngIf="loginvalid.hasError('notSame')">
+                                      Passwords do not match
+                                    </mat-error> 
+                            </mat-form-field>
+                        </div>
+                  </div>
+                  <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
+                   
+                      <div><button mat-flat-button class="cus_bt" color="primary" [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button></div>
+                  </div> -->
+      
+               
+           </div>
+          
+
+      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
+      </mat-dialog-actions>
+    </form>
+    </ng-template>
+  </div>
