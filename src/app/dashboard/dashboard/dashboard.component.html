@@ -166,7 +166,7 @@
             </ng-container>
             <ng-container matColumnDef="ApprovalStatus">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Approval Status</mat-header-cell>
-              <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
+              <mat-cell *matCellDef="let row"  (click)="getapprovalstatus(row)">
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
@@ -189,11 +189,11 @@
               </div>
             </ng-container>
             <ng-container matColumnDef="FinalAgg">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Final Agg</mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Final Agreement</mat-header-cell>
               <mat-cell *matCellDef="let row" >
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
                 <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
-                <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" style="margin-left: 10px;" src="assets/images/upload_icon.png"></div>
+                <!-- <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" style="margin-left: 10px;" src="assets/images/upload_icon.png"></div> -->
             </mat-cell>
           </ng-container>
               <ng-container matColumnDef="DetailedOBF">
@@ -228,7 +228,7 @@
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell *matCellDef="let row" >
-                <button mat-flat-button class="creat_bt edit_bt">Edit</button>
+                <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
               </mat-cell>
              
@@ -419,44 +419,61 @@
    </div>
   <div>
     <ng-template #callAPIDialog>
-      <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
+    <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
-        <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
-          <!-- <button mat-button mat-dialog-close>Cancel</button> -->
-          <div fxFlex="auto " class="mat_upload_in_wr">
-            <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
-              <ngx-dropzone-label class="matUp_lable">
-                <div><img src="assets/images/Group Upload.png"></div>
-                <div class="drap_titl">
-                Chosse or Drag & Drop
-                  <div class="in_titl">Or select file from your system</div>
-                </div>
-               </ngx-dropzone-label>
-             
-                
-            </ngx-dropzone>
-            <div class="bt_uplad_con">
-              <!-- <div class="cr_corner"><img src="assets/images/fold_icon.png"></div> -->
-              <button [disabled]="!(uploadDocfiles.length >0)" (click)="uploadfiles(uploadDocfiles)"  class="creat_bt" mat-flat-button>Upload</button>
+        <div>
+          <span>Approval Status</span>
+        </div>
+        <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+             Current Version
             </div>
-            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
-              Uploading: 
-             </div>
-             <div *ngIf="uploadDocfiles.length > 0">
-              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" >
-                <ngx-dropzone-label class="drop_lab_cs">
-                  <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
-                  <div class="doc_icon" >
-                    <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-                  </div>
-                  <div class="doc_cont" style="position: relative;" >
-                    {{ f.name }}
-                   </div> 
-                </ngx-dropzone-label>
-              </ngx-dropzone-preview>
+            <div class="prev_dis">
+             {{this.approvalstatusdetail.versiondetail[0].version_name}}
             </div>
-            </div>
-            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+           Code
+          </div>
+          <div class="prev_dis">
+           {{this.approvalstatusdetail.versiondetail[0].dh_code}}
+          </div>
+       </div>
+       <div class="mat_previe_box">
+        <div class="prev_tit">
+         Date
+        </div>
+        <div class="prev_dis">
+         {{this.approvalstatusdetail.versiondetail[0].datecreated}}
+        </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+       Project Name
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].dh_project_name}}
+      </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        opportunity Id
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].opportunity_id}}
+      </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+        Vertical Name
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.versiondetail[0].vertical_name}}
+      </div>
+     </div>
+    </div>
       </mat-dialog-content>
       
       </ng-template>
