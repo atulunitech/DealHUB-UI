@@ -402,7 +402,15 @@ export class CreatobfComponent implements OnInit {
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
        console.log(this._obfservices.obfmodel);
-       this.reinitiatefordisable = this.reinitiateobf;
+      //  this.reinitiatefordisable = this.reinitiateobf;
+       if(this.editorcreateobfstring.trim() == "Re-initiate OBF")
+       {
+         this.reinitiatefordisable = false; 
+       }
+       else
+       {
+         this.reinitiatefordisable = this.reinitiateobf;
+       }
        if(this.reinitiatefordisable)
        {
          this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
