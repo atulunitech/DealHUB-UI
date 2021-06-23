@@ -312,11 +312,12 @@
                       
                     </div>
                  </div>
-                 <div class="mat_previe_box"  *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
-                  <div class="prev_dis" *ngIf="this.role_name == 'VSH' || this.role_name == 'SH' || this.role_name == 'VH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+
+                 <div class="mat_previe_box"  *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                  <div class="prev_dis" *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
-                  <div class="mat_cu_indic">
+                  <div class="mat_cu_indic" >
                   <div class="prev_dis mt-cust-fd-com"  *ngIf="this.role_name == 'VSH'">
                     <mat-slide-toggle color="primary" formControlName="MarginException" [disabled]="disableMargincontrol">Margin Exception Requested</mat-slide-toggle>
                   </div>
@@ -328,10 +329,10 @@
                     <label>
                       {{this.cfomessgae}}
                     </label>
-                    </div>
+                  </div>
                    
                   <div class="exc_ceo_app mt-cust-fd-com"  *ngIf="this.role_name == 'PH' || this.role_name == 'CEO'">
-                    <mat-slide-toggle color="primary" formControlName="ExceptionCEO" [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
+                    <mat-slide-toggle color="primary" formControlName="ExceptionCEO"  [disabled]="disableCEOcontrol">Exception case-CEO approval</mat-slide-toggle>
                   </div>
                   <div class="prev_tit cf0message"  *ngIf="CFOMess">
                     <label>
@@ -347,8 +348,6 @@
                       Margin Exception Requested by VSH.
                     </div>
                   </div>
-                 
-                   
                </div>
 
                       </div>
@@ -396,7 +395,7 @@
                             </div>
                           </perfect-scrollbar>
                           <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
+                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' ) &&  this.shortcurrentstatus !='rejected'">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
@@ -410,7 +409,7 @@
                                       </mat-error>
                                     </mat-form-field>
                                 </div>
-                             <button  mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
+                             <button mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
                              
                             </div>
                           </div>
@@ -456,7 +455,7 @@
                              <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
-                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
+                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') &&  this.shortcurrentstatus !='rejected'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
                           Upload
                           <span>
                             <img src="assets/images/up-file-icon.png">
@@ -476,7 +475,7 @@
                            <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
-                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )&& _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
+                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  ) &&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
                         Upload
                         <span>
                           <img src="assets/images/up-file-icon.png">
@@ -496,7 +495,7 @@
                          <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
-                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' ) && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
+                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' )&&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
                       Upload
                       <span>
                         <img src="assets/images/up-file-icon.png">
@@ -608,7 +607,7 @@
   <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Uploading Document</div> <a mat-dialog-close href="javascript:void(0)" (click)="CloseDialog()" class="close"></a></div>
     <mat-dialog-content class="mat-typography">
-  <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
+    <div fxLayout="column" fxLayoutAlign="none" class="mat_upload_box" style="width: 400px;" >
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
       
@@ -651,53 +650,66 @@
       <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="uploadDocfiles.length > 0">
         Uploading: 
        </div>
-      <div *ngIf="uploaddocprocess.length == 0">
+       <div *ngIf="dispalyloading">
+        <span>
+          <h4>Loading...</h4>
+        </span>
         
-      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
-        <ngx-dropzone-label class="drop_lab_cs">
-          <div class="doc_icon">
-            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-          </div>
-          <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
-            {{ f.name }}
-          </div> 
-          
-        </ngx-dropzone-label>
-      </ngx-dropzone-preview>
-    </div>
-    <div *ngIf="uploaddocprocess.length > 0">
-      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
-        <ngx-dropzone-label class="drop_lab_cs">
-          <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
-          <div class="doc_icon" >
-            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-          </div>
-          <div class="doc_cont" style="position: relative;" >
-            {{ f.name }}
-           </div> 
-        </ngx-dropzone-label>
-      </ngx-dropzone-preview>
-    </div>
-    <div *ngIf="filelist.length > 0">
-      <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
-        <ngx-dropzone-label class="drop_lab_cs">
-          <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
-          <div class="doc_icon" >
-            <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
-          </div>
-          <div class="doc_cont" style="position: relative;" >
-            {{ f.filename }}
-           </div> 
-        </ngx-dropzone-label>
-      </ngx-dropzone-preview>
-    </div>
+       </div>
+       <div *ngIf="!dispalyloading">
+        <div *ngIf="uploaddocprocess.length == 0">
+        
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploadDocfiles" [removable]="true" (removed)="onRemove(uploadDocfiles,f)">
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div class="doc_icon">
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" *ngIf="uploaddocprocess.length == 0">
+                {{ f.name }}
+              </div> 
+              
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+        <div *ngIf="uploaddocprocess.length > 0">
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of uploaddocprocess" >
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+              <div class="doc_icon" >
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" style="position: relative;" >
+                {{ f.name }}
+               </div> 
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+        <div *ngIf="filelist.length > 0">
+          <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of filelist" [removable]="true" (removed)="removeFile(filelist,f)">
+            <ngx-dropzone-label class="drop_lab_cs">
+              <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.filepath"></div>
+              <div class="doc_icon" >
+                <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+              </div>
+              <div class="doc_cont" style="position: relative;" >
+                {{ f.filename }}
+               </div> 
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </div>
+       </div>
+     
    </div>
     <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
       <ul *ngFor="let msg of message; let i = index">
         <li>{{ msg }}</li>
       </ul>
     </div>
-  </div>
+    <div>
+      <button [disabled]="disablesavebutton" (click)="saveattachmentFromuploadbutton()"  class="creat_bt" mat-flat-button>Save</button>
+    </div>
+
+    </div>
 </mat-dialog-content>
 <!-- <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>

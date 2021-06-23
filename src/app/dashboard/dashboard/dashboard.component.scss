@@ -9,7 +9,6 @@
     width: 45px;
     height: 28px;
     margin: 0 45px 33px 0;
-    font-family: HelveticaNeue !important;
     font-size: 24px;
     font-weight: bold;
     font-stretch: normal;
@@ -242,6 +241,7 @@
 {
     @include padding(0,25px,0,25px);
     @include font-weight(medium);
+    @include margin(0,7px,0,0);
 }
 .reject_bt
 {
@@ -307,6 +307,7 @@
     {
         // width: 100%;
         // max-width: 120%;
+        display: grid;
         background-color: transparent;
         
             .mat-row
@@ -549,6 +550,7 @@
                                 background: #D9E6FF;
                                 border: 2px dashed #2258bf;
                                 border-bottom: none;
+                                border-top: 0px;
                                 @include position(relative);
                                 @include margin(-61px,initial,15px,initial);
                                 @include padding(10px,15px,10px,10px);
@@ -620,6 +622,30 @@
                           
                         }
                         }
+                        .mat-dialog-content{
+                            background-color: #eaeaea;
+                            padding-top: 15px;
+                            .edit_box_popup
+                            {
+                                min-width: 700px;
+                                padding-top: 5px;
+                            }
+                        }
+                       
+                        .mat-dialog-actions
+                        {
+                            .mat_fot_bt
+                            {
+                                background-color: transparent;
+                                color: $thm-tex-col-dar;
+                                @include font-weight(semi-bold);
+                                @include font-size(0.9);
+                                &[disabled][disabled]
+                                {
+                                    color: #ccc;
+                                }
+                            }
+                        }
         .pop_title_wrp
         {
             position: relative;
@@ -630,6 +656,12 @@
     padding-top: 10px;
     padding-bottom: 10px;
                 font-weight: 500;
+                &.edit_titl
+                {
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    margin-top: -20px;
+                }
             }
             .close {
                 position: absolute;
@@ -663,3 +695,25 @@
     }
 }
 /*e*/
+
+::ng-deep #mat-select-0-panel 
+{
+    margin-top: 19px;
+}
+
+::ng-deep #mat-select-1-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-2-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-3-panel
+{
+    margin-top: 19px;
+}
+::ng-deep #mat-select-4-panel
+{
+    margin-top:19px;
+}

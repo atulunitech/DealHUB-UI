@@ -69,7 +69,41 @@ class SaveAttachmentParameter{
   _created_by:string;
   _description:string;
 }
+class versiondetail
+{
+  dh_id:number;
+  dh_header_id:number;
+  version_name:string;
+  dh_code:string;
+  datecreated: Date;
+  dh_project_name: string;
+  opportunity_id: string;
+  vertical_name:string;
+  tablename:string;
 
+}
+class TimeLine
+{
+  
+  dh_id: number;
+  dh_header_id: number;
+  process_detail_id: number;
+  seq:number;
+  currentstatus: string;
+  comments: string;
+  username: string;
+  TimeLine:Date;
+  actualtimeline: Date;
+  actiontakenbyid: number;
+  tablename: string;
+
+}
+ 
+class approvalstatusdetail
+{
+  versiondetail:versiondetail[];
+  TimeLine:TimeLine[];
+}
 export class searchfilter{
   value:string;
   viewValue:string;
@@ -90,6 +124,7 @@ export class DashboardComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
+  approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
   open() {
@@ -136,7 +171,7 @@ export class DashboardComponent implements OnInit {
   highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
-  @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
   uploadDocfiles:File[]=[];
   uploaddocprocess:any[]=[];
   // selected: {startDate: Moment, endDate: Moment};
@@ -750,7 +785,7 @@ openModal(templateRef,row) {
 }
 dh_id:number=0;
 dh_header_id:number=0;
-UploadFinalAggrement(element)
+getapprovalstatus(element)
 {
   this.dh_id=element.dh_id;
   this.dh_header_id=element.dh_header_id;
@@ -763,7 +798,11 @@ UploadFinalAggrement(element)
    panelClass: 'custom-modalbox',
       backdropClass: 'popupBackdropClass',
 })
-
+this._dashboardservice.GetDashboardProgress(this.dh_id.toString()).subscribe((Result)=>{
+  var jsondata=JSON.parse(Result);
+   this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
+   this.approvalstatusdetail.TimeLine=jsondata.versiondetail;
+});
 }
 
 otherssave(event,type:string){
@@ -1531,30 +1570,39 @@ getattachment(dh_id,dh_header_id)
   this._dashboardservice.GetAttachmentDocument(dh_id,dh_header_id).subscribe(data=>{
     console.log(data);
     var jsonresult=JSON.parse(data);
-    if(jsonresult != null || jsonresult.AttachmentDetails.length !=0)
+    if(jsonresult.Table == undefined)
     {
-      let index=jsonresult.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
-      if(index > -1)
+      if(jsonresult.AttachmentDetails.length !=0)
       {
-        for(let i=0;i< jsonresult.AttachmentDetails.length;i++)
+        let index=jsonresult.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+        if(index > -1)
         {
-          if(jsonresult.AttachmentDetails[i].description=="FinalAgg")
+          for(let i=0;i< jsonresult.AttachmentDetails.length;i++)
           {
-              let url="";
-              url = environment.apiUrl+jsonresult.AttachmentDetails[i].filepath;
-              window.open(url);
+            if(jsonresult.AttachmentDetails[i].description=="FinalAgg")
+            {
+                let url="";
+                url = environment.apiUrl+jsonresult.AttachmentDetails[i].filepath;
+  
+                window.open(url);
+            }
           }
         }
+        else{
+          this._mesgBox.showError("No Final Aggrement Documents to Download");
+        }
+       
       }
-      else{
+      else
+      {
         this._mesgBox.showError("No Final Aggrement Documents to Download");
       }
-     
     }
-    else
+    else if (jsonresult.AttachmentDetails == undefined)
     {
       this._mesgBox.showError("No Final Aggrement Documents to Download");
     }
+    
     
   })
 }

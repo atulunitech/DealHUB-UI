@@ -121,11 +121,11 @@
                            
                             </div>
                             
-                          <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+                          <!-- <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
                             <ul *ngFor="let msg of message; let i = index">
                               <li>{{ msg }}</li>
                             </ul>
-                          </div>
+                          </div> -->
                         </div>
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
@@ -144,9 +144,10 @@
                              
                               
                             </ngx-dropzone>
-                            <div class="bt_uplad_con" style="padding-top: 8px;padding-bottom: 8px;">
+                            <div class="bt_uplad_con" >
                               <div class="cr_corner"><img src="assets/images/fold_icon.png"></div>
-                              <div class="mt-cust-fd upl_sec_cut">
+                              <div class="mt-cust-fd upl_sec_cut" style="    position: absolute;
+                              right: 125px;">
                                 
                                 <mat-form-field appearance="fill" class="example-full-width">
                                   <mat-label>Select Type</mat-label>
@@ -586,7 +587,7 @@
                 <mat-expansion-panel [disabled]="true"  [expanded]="step === 2" (opened)="setStep(2)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                   <mat-panel-title>
-                    3/3 Preview OBF <span class="is_done" [class.is_done_not]="!uploadnotdisabled || detailstickdisabled" ><img src="assets/images/active_tick.png" style="display: inline-block;
+                    3/3 {{this.isppl == false ?'Preview OBF':'Preview PPL'}} <span class="is_done" [class.is_done_not]="!uploadnotdisabled || detailstickdisabled" ><img src="assets/images/active_tick.png" style="display: inline-block;
                       margin-left: 55px;"></span>
                   </mat-panel-title>
   
@@ -888,6 +889,86 @@
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
+                         
+                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous OBF </div>
+                            <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
+                              <div class="mat_previe_box">
+                                <div class="prev_tit">
+                                  Total Revenue <br>₹ Cr 
+                                </div>
+                                <div class="prev_dis">
+                                  {{_obfservices.editObfObject._total_revenue}}
+                                </div>
+                             </div>
+                             <div class="mat_previe_box">
+                              <div class="prev_tit">
+                                Total Cost<br> ₹ Cr 
+                              </div>
+                              <div class="prev_dis">
+                                {{_obfservices.editObfObject._total_cost}}
+                              </div>
+                           </div>
+                           <div class="mat_previe_box">
+                            <div class="prev_tit">
+                              Total Margin
+                            </div>
+                            <div class="prev_dis">
+                              {{_obfservices.editObfObject._total_margin}}
+                            </div>
+                         </div>
+                         <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Total Project Life
+                          </div>
+                          <div class="prev_dis">
+                            {{_obfservices.editObfObject._total_project_life}}
+                          </div>
+                       </div>
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          IRR % Surplus Cash
+                        </div>
+                        <div class="prev_dis">
+                          {{_obfservices.editObfObject._irr_surplus_cash}}
+                        </div>
+                     </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        EBT % 
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.editObfObject._ebt}}
+                      </div>
+                   </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      Capex ₹ Cr 
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.editObfObject._capex}}
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    IRR % Borrowed Fund  
+                  </div>
+                  <div class="prev_dis">
+                    {{_obfservices.editObfObject._irr_borrowed_fund}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                  Payment Terms  
+                </div>
+                <div class="prev_dis">
+                  {{_obfservices.editObfObject._payment_terms}} Days
+                </div>
+             </div>
+                
+                     
+                             
+                            </div>
+                              
                             <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp">
                             <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
                               <div class="mat_fot_drf" >
@@ -901,84 +982,7 @@
                               </div>
                             </div>
                                 </div>
-                                <div fxLayout="row wrap" *ngIf="reinitiateobf"  fxLayoutAlign=" start" class="mat_fld_box_wrp">
-                                
-                                <label>Previous OBF</label>
-                                <div class="previousobf">
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Total Revenue ₹ Cr 
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._total_revenue}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Total Cost ₹ Cr 
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._total_cost}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Total Margin
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._total_margin}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Total Project Life
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._total_project_life}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      IRR % Surplus Cash 
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._irr_surplus_cash}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      EBT % 
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._ebt}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Capex ₹ Cr  
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._capex}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      IRR % Borrowed Fund  
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._irr_borrowed_fund}}
-                                    </div>
-                                  </div>
-                                  <div class="mat_previe_box">
-                                    <div class="prev_tit">
-                                      Payment Terms  
-                                    </div>
-                                    <div class="prev_dis">
-                                      {{_obfservices.editObfObject._payment_terms}} Days
-                                    </div>
-                                  </div>
-                                </div>
-                                </div>
+                              
                   </div>
 
               

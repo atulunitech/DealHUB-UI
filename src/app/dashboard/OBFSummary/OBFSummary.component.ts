@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { MaterialModule } from '../../shared/materialmodule/materialmodule.module';
 import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -115,6 +116,7 @@ class filesdetail
   shortcurrentstatus:string="";
   ServiceMore:boolean=false;
   SAPNumMore:boolean=false;
+  disablesavebutton:boolean=true;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -155,6 +157,7 @@ class filesdetail
   disableCEOcontrol:boolean=false;
   disableMargincontrol:boolean=false;
   ShowViewButton:boolean=false;
+  workflowindication:boolean=false;
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
@@ -176,15 +179,9 @@ class filesdetail
        {
         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
         this.CEOMess=true;
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-         {
-         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
-         this.disableCFOcontrol=true;
-         }
-        else  {
-          this.disableCFOcontrol=true;
-         this.cfomessgae="Approval required as per Pricing Team.";
-         }
+        this.disableCFOcontrol=true;
+        this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+       
        }
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
@@ -198,19 +195,9 @@ class filesdetail
         {
          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
          this.CFOMess=true;
-          if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
-          {
-            this.disableCEOcontrol=true;
-            this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-          }
-         else {
-          this.disableCEOcontrol=true;
-             this.CEOmessage="Approval required as per Pricing Team.";
-            
-          }
+         this.disableCEOcontrol=true;
+         this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
         }
-        
-        
       }
       if(this.role_name=='PH')
       {
@@ -232,6 +219,7 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
+         this.workflowindication=true;
         // this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
@@ -240,6 +228,7 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
+         this.workflowindication=true;
          //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
@@ -447,7 +436,8 @@ class filesdetail
   SaveCommentdetail:CommentDetails[] = [];
   SaveComment()
   {
-    
+    if(!this.obfsummaryform.controls.comments.errors)
+    {
     if(this.obfsummaryform.get("comments").value!= "")
     {
       
@@ -467,12 +457,17 @@ class filesdetail
       
       this.commentVisiable=true;
        this.SaveCommentdetail.push(SaveComment);
-     
-       this.componentRef.directiveRef.scrollToBottom(500);
+       setTimeout(() => {
+        this.componentRef.directiveRef.scrollToBottom();
+       },1000
+       );
+
+       //this.componentRef.directiveRef.scrollToBottom(500);
     }
       else {
       this.componentRef.directiveRef.scrollToBottom();
     }
+  }
     //  if (this.types === 'directive' && this.directiveRef) {
     //   this.directiveRef.scrollToBottom();
     // } else if (this.types === 'component' && this.componentRef && this.componentRef.directiveRef) {
@@ -607,6 +602,45 @@ class filesdetail
   //Action Functions For Approve ,Rejected and OnHold function
   ApproveDeatils()
   {
+    if(this.role_name=='PH')
+    {
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="Y" &&  this.obfsummaryform.get("ExceptionCFO").value==true)
+      {
+            if(this.SaveCommentdetail.length == 0)
+            {
+            if(this.obfsummaryform.get("comments").value == "")
+          {
+            this.obfsummaryform.controls["comments"].markAsTouched();
+              return false;
+            
+          }
+          else
+          {
+            this._mesgBox.showError("Please Submit Comment");
+          }
+          
+            } 
+      }
+      else if( this.obfsummaryform.get("ExceptionCEO").value==true)
+      {
+            if(this.SaveCommentdetail.length == 0)
+            {
+        
+          if(this.obfsummaryform.get("comments").value == "")
+          {
+            this.obfsummaryform.controls["comments"].markAsTouched();
+              return false;
+            
+          }
+          else
+          {
+            this._mesgBox.showError("Please Submit Comment");
+          }
+          
+            } 
+      }
+    }
+
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -749,6 +783,7 @@ class filesdetail
        if(format.test(element.name))
        {
         this._mesgBox.showUpdate(element.name+" :name contains special characters,Kindly rename and upload again");
+        
         }
        // if( this.bytesToSize(element.size) > 4)
        if( element.size > 4194304)
@@ -764,6 +799,7 @@ class filesdetail
         if(event.addedFiles.length > 1)
         {
           this._mesgBox.showUpdate("Kindly upload only one valid LOI/PO Sheet");
+          return false;
         }
          if(this.loipofiles.length >= 1 )
          {
@@ -780,6 +816,7 @@ class filesdetail
            if(this.Loipodropdown == null || this.Loipodropdown == "")
            {
             this._mesgBox.showUpdate("Kindly select LOI or PO file type");
+            return false;
            }
         this.loipofiles.push(...event.addedFiles);
        
@@ -852,13 +889,14 @@ class filesdetail
     
 
 	}
+  dispalyloading:boolean=false;
   SaveAttachment()
   {
     //this.isloipo = !this.isloipo;
-   
+    this.dispalyloading=true;
   if(this.Type == "loipo")
   {
-    if(this.filelist.length !=0)
+    if(this.filelist.length !=0 )
     {
       for(let i=0;i< this.filelist.length;i++)
       {
@@ -928,6 +966,7 @@ class filesdetail
       this.Attachments.push(SaveAttachment);
     }
    } 
+
     this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
       {
           
@@ -946,15 +985,85 @@ class filesdetail
            this.getdetailsfordh_id(this.dh_id);
            this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
            setTimeout(() => {
-           
              this.OpenDocDownload('button',this.Type);
            },3000 );
          
           }
-        
+          this.dispalyloading=false;
     });
   
    
+  }
+  saveattachmentFromuploadbutton()
+  {
+    this.disablesavebutton=true;
+    if(this.filelist.length !=0 )
+    {
+      for(let i=0;i< this.filelist.length;i++)
+      {
+        let SaveAttachment = new SaveAttachmentParameter();
+        SaveAttachment._dh_id=this.dh_id;
+        SaveAttachment._dh_header_id=this.dh_header_id;
+        SaveAttachment._fname=  this.filelist[i].filename; 
+        SaveAttachment._fpath = this.filelist[i].filepath;
+        SaveAttachment._description =  this.filelist[i].description;
+        this.Attachments.push(SaveAttachment);
+      }
+    }
+    else
+    {
+      var type="";
+      if(this.Type=='loipo')
+      {
+        type="LOI";
+      }
+      else{
+        if(this.Type=='Supporting')
+        {
+          type='support';
+        }
+        else if(this.Type=='FinalAgg')
+        {
+          type="FinalAgg";
+        }
+      }
+      let SaveAttachment = new SaveAttachmentParameter();
+      SaveAttachment._dh_id=this.dh_id;
+      SaveAttachment._dh_header_id=this.dh_header_id;
+      SaveAttachment._fname= "Remove all Details"; 
+      SaveAttachment._fpath = "Remove all Details"; 
+      SaveAttachment._description = type ;
+      this.Attachments.push(SaveAttachment);
+    }
+    if(this.Attachments.length !=0)
+    {
+      this._obfservices.SaveAttachment(this.Attachments).subscribe(result=>
+        {
+            
+            var REsult=JSON.parse(result);
+            if(REsult[0].status ="Success")
+            {
+              this._mesgBox.showSucess("Attachment Uploaded Successfully.");
+              this.uploadDocfiles=[];
+             this.uploaddocprocess=[];
+              this.Attachments=[];
+              this.filelist=[];
+              this.loipofiles=[];
+              this.supportfiles=[];
+              this.FinalAggfiles=[];
+              this.dialog.closeAll();
+             this.getdetailsfordh_id(this.dh_id);
+             this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+             setTimeout(() => {
+               this.OpenDocDownload('NOtButton',this.Type);
+             },3000 );
+           
+            }
+            this.dispalyloading=false;
+      });
+    }
+    
+    
   }
   uploadfiles(files:File[])
   {
@@ -981,24 +1090,24 @@ class filesdetail
     var path="";
     var consolidatedpath="";
     for (let i = 0; i < files.length; i++) {
-     if(this.Type == "loipo")
+    if(this.Type == "loipo")
     {
       this.LoiPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
       
     }
     else if(this.Type == "Supporting")
     {
       this.SupportPoprogress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
     else if(this.Type == "FinalAgg")
     {
       this.finalProgress[i] = { value: 0, fileName: files[i].name };
-      this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
+      this.uploaddocprocess[i] = { value: 0, name: files[i].name };
     }
-      
-      path="";
+    
+    path="";
     this._dashboardservice.uploadImage(files[i]).subscribe(
       event => {
        
@@ -1069,10 +1178,8 @@ class filesdetail
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
-      this.SaveAttachment();
-      }
-
      
+      }
       },
       (err:any)=>{
      if(this.Type  == "loipo")
@@ -1096,21 +1203,16 @@ class filesdetail
       }
     );
     }
+    this.disablesavebutton=false;
   }
   removeFile(files:filesdetail[],event)
   {
- 
-  
-
   files.splice(files.indexOf(event), 1);
   
   this.filelist=files;
- 
- this.SaveAttachment();
-  
-
- 
-  
+  this.disablesavebutton=false;
+  this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+ //this.SaveAttachment();
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
@@ -1140,20 +1242,28 @@ class filesdetail
        
      if(this.role_name=='CFO')
      {
+      // if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      // {
+      //  this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+      //  this.CEOMess=true;
+      //  if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
+      //   {
+      //   this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
+      //   this.disableCFOcontrol=true;
+      //   }
+      //  else  {
+
+      //    this.disableCFOcontrol=true;
+      //   this.cfomessgae="Approval required as per Pricing Team.";
+      //   }
+      // }
       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
       {
        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
        this.CEOMess=true;
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-        {
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
-        this.disableCFOcontrol=true;
-        }
-       else  {
-
-         this.disableCFOcontrol=true;
-        this.cfomessgae="Approval required as per Pricing Team.";
-        }
+       this.disableCFOcontrol=true;
+       this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+      
       }
       else{
         this.disableCFOcontrol=false;
@@ -1170,21 +1280,28 @@ class filesdetail
      }
      if(this.role_name=='CEO')
      {
-       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
-       {
-        this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
-        this.CFOMess=true;
-         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
-         {
-           this.disableCEOcontrol=true;
-           this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
-         }
-        else {
-         this.disableCEOcontrol=true;
-            this.CEOmessage="Approval required as per Pricing Team.";
+      //  if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+      //  {
+      //   this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+      //   this.CFOMess=true;
+      //    if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby=='Exceptioncal Case CEO  Updated by system:-DOA Matrix  ')
+      //    {
+      //      this.disableCEOcontrol=true;
+      //      this.CEOmessage="Approval required as per DOA Matrix.GM Less than 10%";
+      //    }
+      //   else {
+      //    this.disableCEOcontrol=true;
+      //       this.CEOmessage="Approval required as per Pricing Team.";
            
-         }
-       }
+      //    }
+      //  }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+      {
+       this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+       this.CFOMess=true;
+       this.disableCEOcontrol=true;
+       this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
+      }
        else{
         this.disableCEOcontrol=false;
         this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
@@ -1262,10 +1379,14 @@ class filesdetail
       window.open(url);
     }
   }
+  commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[<>'"&@$#*^%!]/;
+
     if (control.value && format.test(control.value)) {
+     
       return { 'invalidservices': true };
+
     }
     return null;
   }
