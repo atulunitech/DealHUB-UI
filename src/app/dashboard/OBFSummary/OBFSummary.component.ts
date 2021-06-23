@@ -204,7 +204,7 @@ class filesdetail
         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
         {
           this.CEOMess=true;
-          this.disableCFOcontrol=false;
+          this.disableCFOcontrol=true;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
          this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
          }
@@ -1321,7 +1321,7 @@ class filesdetail
       if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
       {
         this.CEOMess=true;
-        this.disableCFOcontrol=false;
+        this.disableCFOcontrol=true;
         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
        this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
        }
