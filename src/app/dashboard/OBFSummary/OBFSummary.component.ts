@@ -1357,15 +1357,18 @@ class filesdetail
     );
     
   }
+  showuploadbutton:boolean=true;
   getOBFPPLDetails()
   {
      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
      {
+      this.showuploadbutton=false;
       this.getdetailsfordh_id(this._obfservices.obfsummarymodel.uploadDetails[0].parent_dh_main_id);
      }
      else if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
       if(this._obfservices.obfsummarymodel.PPl_details != undefined && this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id !=0)
       {
+        this.showuploadbutton=true;
         this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
       }
       
