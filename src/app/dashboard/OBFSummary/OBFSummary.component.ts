@@ -201,12 +201,19 @@ class filesdetail
       }
       if(this.role_name=='PH')
       {
-         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-         {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+        {
           this.CEOMess=true;
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
+         this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+         }
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+         {
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+          this.CFOMess=true;
+          this.disableCEOcontrol=true;
+          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
          }
          if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
@@ -1311,17 +1318,28 @@ class filesdetail
      }
      if(this.role_name=='PH')
      {
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-        {
-         this.CEOMess=true;
-         this.disableCFOcontrol=true;
-         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
-        }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      {
+        this.CEOMess=true;
+        this.disableCFOcontrol=false;
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+       }
         else{
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
         }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+         {
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+          this.CFOMess=true;
+          this.disableCEOcontrol=true;
+          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
+         }
+         else{
+          this.disableCEOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
+         }
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
