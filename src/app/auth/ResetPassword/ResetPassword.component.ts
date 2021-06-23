@@ -48,7 +48,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
       ngOnInit(): void {
         this.loginvalid = new FormGroup({
      
-            NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}'),this.commonService.NoInvalidCharacters]),
+            NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
             confirmpassword : new FormControl('')
           }, { validators: this.checkPasswords });
           this.getClientKey();

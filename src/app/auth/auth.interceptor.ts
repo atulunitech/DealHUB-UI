@@ -77,6 +77,14 @@ export class AuthInterceptor implements HttpInterceptor {
                             this._mesgBox.showError("Unauthorized access");
                             this.router.navigateByUrl('/login');
                           }
+
+                          if(error.status === 400)
+                          {
+                            //alert("400 error occured");
+                            //alert(error.message);
+                            //this._mesgBox.showError("Technical Error");
+                            this._mesgBox.showError(error.error.Record.MESSAGE);
+                          }
                             //this.router.navigateByUrl('/login');
                         }
                       }

@@ -487,7 +487,7 @@ export class DashboardComponent implements OnInit {
     });
     this.loginvalid = new FormGroup({
      
-      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}'),this.commonService.NoInvalidCharacters]),
+      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
       confirmpassword : new FormControl('')
     }, { validators: this.checkPasswords });
 
@@ -515,7 +515,7 @@ export class DashboardComponent implements OnInit {
   ResetPassword()
   {
     let encryptedpwd="";
-         alert(this.key);
+         //alert(this.key);
           encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
           this.loginvalid.get('NewPassword').setValue(encryptedpwd);
           this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
@@ -914,7 +914,12 @@ onchange(evt,solutioncategory)
   }
 
   ResetModel() {
-    
+    this.loginvalid.controls.NewPassword.setValue("");
+    this.loginvalid.controls.confirmpassword.setValue("");
+    this.loginvalid.controls["NewPassword"].markAsPristine();
+    this.loginvalid.controls["confirmpassword"].markAsPristine();
+    this.loginvalid.controls["NewPassword"].markAsUntouched();
+    this.loginvalid.controls["confirmpassword"].markAsUntouched();
     let dialogRef = this.dialog.open(this.resetDialog, {
         //  width: '880px',
          // data: { name: this.name, animal: this.animal }

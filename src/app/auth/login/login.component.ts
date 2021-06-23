@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+      this.key = "";
     //Password Secret key 
     // let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     // localStorage.setItem("Token","");
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
     // sample comment
     this.loginvalid = new FormGroup({
      
-      userID : new FormControl('', [Validators.required,Validators.email]),
+      userID : new FormControl('', [Validators.required,Validators.email,this.NoInvalidCharacters]),
       Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
 
     this.ResetPasswordForm=new FormGroup({
 
-      ResetPasswordUserid:new FormControl('',[Validators.required])
+      ResetPasswordUserid:new FormControl('',[Validators.required,Validators.email])
     });
     if(this.ResetPass != true)
     {
@@ -175,7 +175,7 @@ export class LoginComponent implements OnInit {
        console.log(this.loginvalid.get('Password').value);
   
       this.loginmodel._user_code=this.loginvalid.get('userID').value;
-      this.loginmodel._SecretKey = this.key;
+     // this.loginmodel._SecretKey = this.key;
       this.loginmodel._attempt = "1";
       this.loginmodel._password=this.loginvalid.get('Password').value;
       this.RememberMe = this.loginvalid.get('RememberMe').value;

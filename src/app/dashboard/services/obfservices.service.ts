@@ -176,6 +176,12 @@ class VersionDetails{
   dh_header_id:number;
   dh_id:number;
 }
+
+class fileinfo
+{
+  _filename:string;
+}
+
 class obf{
   _dh_id:number;
   _dh_header_id:number;
@@ -393,6 +399,14 @@ export class OBFServices {
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/CreateOBF",model 
        );  
   }
+  
+  deletefile(filename:string): Observable<any> {  
+    let fileinf:fileinfo = new fileinfo();
+    fileinf._filename = filename;
+    //  const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+      return this.http.post<any>(environment.apiUrl+"Api/Auth/deletefile",fileinf 
+         );  
+    }
 
   editsapcustcode_and_io(model:obf): Observable<any> {  
    // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  

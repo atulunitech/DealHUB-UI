@@ -1338,6 +1338,12 @@ downloadCoversheet(event)
 
   removeprogresscoversheet()
   {
+    // console.log(this._obfservices.obfmodel);
+    // //let filepath = this._obfservices.obfmodel._fpath;
+    // let filepath =  this.coversheetpath;
+    // this._obfservices.deletefile(this._obfservices.obfmodel._fpath).subscribe(res =>{
+    //    alert("hello world");
+    // });
     this.coversheetfiles =[];
     this.Coversheetprogress = [];
     this._obfservices.obfmodel._fname = "";

@@ -491,7 +491,7 @@
                       <div class="mt-cust-fd"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>New Password</mat-label>
-                              <input matInput type="password" formControlName="NewPassword" >
+                              <input matInput type="password" formControlName="NewPassword" autocomplete="off">
                                   <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
@@ -502,7 +502,7 @@
                       <div class="mt-cust-fd"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>Confirm Password</mat-label>
-                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset">
+                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
                                   <mat-error *ngIf="checkError('confirmpassword', 'required')">Confirm password is required</mat-error>
                                   <mat-error *ngIf="loginvalid.hasError('notSame')">
                                       Passwords do not match
