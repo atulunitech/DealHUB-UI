@@ -705,16 +705,13 @@
         <li>{{ msg }}</li>
       </ul>
     </div>
-    <div>
-      <button [disabled]="disablesavebutton" (click)="saveattachmentFromuploadbutton()"  class="creat_bt" mat-flat-button>Save</button>
-    </div>
+    
 
     </div>
 </mat-dialog-content>
-<!-- <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
-</mat-dialog-actions> -->
+<mat-dialog-actions align="end">
+  <button [disabled]="disablesavebutton" (click)="saveattachmentFromuploadbutton()"  class="creat_bt" mat-flat-button>Save</button>
+</mat-dialog-actions>
 
 
 <!-- Copyright 2021 Google LLC. All Rights Reserved.
