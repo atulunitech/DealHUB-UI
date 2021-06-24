@@ -196,12 +196,13 @@
 }
 .serch_box_ms
 {
+    margin-left: 10px;
   @include position(relative);
     .search_con
     {
         border: solid 1px #eeeeee;
-        @include border-radius(60px);
-        @include heightwidth(320px,inherit);
+        @include border-radius(0px);
+        @include heightwidth(200px,inherit);
         @include padding(5px,40px,5px,20px);
         background-color: $thm-bg;
         input
@@ -230,6 +231,15 @@
         @include position(absolute,11px,15px,inherit,inherit);
         img
         {@include heightwidth(18px,auto);}
+    }
+    .search_close
+    {
+        position: absolute;
+    right: 9px;
+    top: 8px;
+    z-index: 9;
+    background-color: white;
+    border: none;
     }
 }
 .bt_sp

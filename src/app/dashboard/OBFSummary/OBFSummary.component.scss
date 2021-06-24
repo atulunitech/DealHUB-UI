@@ -524,6 +524,8 @@
                 {
                     @include padding(4px,4px,4px,4px);
                     color: $thm-text-color;
+                    top: -3px;
+                    position: relative;
                 }
             }
         }

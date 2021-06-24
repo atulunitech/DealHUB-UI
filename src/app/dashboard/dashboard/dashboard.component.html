@@ -24,18 +24,22 @@
 </p> -->
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center">
-    <mat-form-field appearance="fill">
+    <div class="mt-cust-fd mt-cust-fd-fillter" fxFlex="1 1 100%">
+    <mat-form-field appearance="fill" class="example-full-width">
       <mat-label>Status Filter</mat-label>
-      <mat-select [formControl]="statusfiltercontrol" >
+      <mat-select [formControl]="statusfiltercontrol" disableOptionCentering>
         <mat-option *ngFor="let filter of statusfilter" (onSelectionChange)="statusfiltermethod($event)" [value]="filter">{{filter}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+  </div>
+  <div class="mt-cust-fd mt-cust-fd-fillter" fxFlex="1 1 100%">
+    <mat-form-field appearance="fill" class="example-full-width">
       <mat-label>Search Filter</mat-label>
-      <mat-select [formControl]="searchfiltercontrol" multiple>
+      <mat-select [formControl]="searchfiltercontrol" multiple disableOptionCentering>
         <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
   </div>
       <div class="serch_box_ms">
         
@@ -47,10 +51,11 @@
             {{option}}
           </mat-option>
         </mat-autocomplete>
-        <button  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
-          <mat-icon>close</mat-icon>
-        </button>
+        
        </div>
+       <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
+        <mat-icon>close</mat-icon>
+      </button>
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
      </div>
      <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" 
