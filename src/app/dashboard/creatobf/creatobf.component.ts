@@ -1297,7 +1297,8 @@ downloadCoversheet(event)
   onRemoveLoiAttachments()
   {
     
-    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    // let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "LOI" || obj._description == "PO" || obj._description == "Agreement");
     if(index > -1)
     {
       this._obfservices.obfmodel.Attachments.splice(index,1);
@@ -1305,7 +1306,7 @@ downloadCoversheet(event)
       this.uploadnotdisabled = false;
     }
 
-    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == "LOI" || obj._description == "PO" || obj._description == "Agreement");
     if(indexnew > -1)
     {
       this._obfservices.loipoarray.splice(index,1);

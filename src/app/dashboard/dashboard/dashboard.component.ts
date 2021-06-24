@@ -1093,7 +1093,7 @@ downloaddetailFinalAgg(row)
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
-            if( obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved' )
+            if( obj.shortcurrentstatus=='approved')
             {
               return obj;
             }
@@ -1134,7 +1134,7 @@ downloaddetailFinalAgg(row)
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
-            if(obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved')
+            if(obj.shortcurrentstatus=='cApproved')
             {
               return obj;
             }
