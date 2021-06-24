@@ -327,14 +327,19 @@
                 &.mat-row:nth-child(odd)
                 {
                     background-color: #fff;
+                    display: flex;
+                    align-items: stretch;
                     &.mat-table-sticky
                     {
                         background-color: #fff;
+                        
                     }
                 }
                 &.mat-row:nth-child(2n+0)
                 {
                     background-color: #fafafa;
+                    display: flex;
+                    align-items: stretch;
                     &.mat-table-sticky
                     {
                         background-color: #fafafa;
