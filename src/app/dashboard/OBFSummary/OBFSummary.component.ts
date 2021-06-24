@@ -1359,6 +1359,7 @@ class filesdetail
     
   }
   showuploadbutton:boolean=true;
+  
   getOBFPPLDetails()
   {
      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
@@ -1374,6 +1375,8 @@ class filesdetail
       }
       
      }
+
+
   }
   SAPIONo:string="";
   getSAPCode()
@@ -1403,7 +1406,7 @@ class filesdetail
   }
   commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&@$#*^%!]/;
+    var format = /[<>'"&@$#*^%!()]/;
 
     if (control.value && format.test(control.value)) {
      
