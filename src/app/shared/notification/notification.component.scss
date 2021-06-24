@@ -1,3 +1,5 @@
+@import '../../../assets/scss/mixins';
+@import '../../../assets/scss/variables';
 .fead_cont
 {
     flex: 1;
@@ -43,6 +45,7 @@ p{
     color: #2258bf;
     font-size: 0.950rem;
     font-weight: 500;
+    text-transform: initial;
 }
     }
 
