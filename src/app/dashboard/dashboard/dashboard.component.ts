@@ -1391,7 +1391,8 @@ editSubmit()
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
         this._mesgBox.showSucess("Documents uploaded Successfully");
-        this.router.navigate(['/DealHUB/dashboard']);
+        this.dialog.closeAll();
+      //  this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
         //alert("Technical error while uploading documents");
