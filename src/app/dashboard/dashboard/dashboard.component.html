@@ -204,31 +204,44 @@
                   <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
               </mat-cell>
             </ng-container>
-              <ng-container  matColumnDef="ActionDraft" stickyEnd>
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <ng-container  matColumnDef="ActionDraft"  stickyEnd>
+                <mat-header-cell class="headr-mat" style="min-width: auto;padding-left: 10px;
+                border-left: 1px solid #ccc;"  *matHeaderCellDef mat-sort-header>
+                  
+                  Action
+                </mat-header-cell>
               
-                  <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+                  <mat-cell *matCellDef="let row" style="min-width: auto;padding-left: 10px;
+                  border-left: 1px solid #ccc;" ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
                </ng-container>
                
-               <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd style="min-width: 300px;">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+               <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd >
+                <mat-header-cell style="min-width: auto;padding-left: 10px;
+                border-left: 1px solid #ccc;" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               
-                  <mat-cell *matCellDef="let row" >
+                  <mat-cell style="min-width: auto;padding-left: 10px;
+                  border-left: 1px solid #ccc;" *matCellDef="let row" >
                     <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
                     
                    </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
+                <mat-header-cell style="min-width: auto;padding-left: 10px;
+                border-left: 1px solid #ccc;" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell *matCellDef="let row" style="min-width: auto;padding-left: 10px;
+              border-left: 1px solid #ccc;"><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+                <mat-header-cell style="min-width: 150px;padding-left: 10px;
+                border-left: 1px solid #ccc;" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="min-width: 150px;padding-left: 10px;
+              border-left: 1px solid #ccc;" *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-                 <mat-cell *matCellDef="let row" >
+                <mat-header-cell style="padding-left: 10px;
+                border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '200px' : 'auto'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                 <mat-cell style="padding-left: 10px;
+                 border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '200px' : 'auto'}" *matCellDef="let row" >
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
               </mat-cell>
@@ -237,8 +250,12 @@
             
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" ><button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button><button mat-flat-button class="creat_bt approv_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+                <mat-header-cell style="min-width: 220px;padding-left: 10px;
+                border-left: 1px solid #ccc;" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="min-width: 220px;padding-left: 10px;
+              border-left: 1px solid #ccc;" *matCellDef="let row" >
+                <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
+                <button mat-flat-button class="creat_bt approv_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
