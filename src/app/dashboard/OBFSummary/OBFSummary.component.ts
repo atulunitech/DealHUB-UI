@@ -778,6 +778,7 @@ class filesdetail
 	onSelect(event) {
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+    this.disablesavebutton=true;
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
