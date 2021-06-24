@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { CommonService } from './services/common.service';
@@ -12,7 +13,7 @@ import { MenuModel } from './shared/side-nave/side-nave.component';
 export class AppComponent {
   title = 'DealHUB-UI';
 
-  constructor(private bnIdle: BnNgIdleService,private router:Router,private _commomservices:CommonService) {
+  constructor(private bnIdle: BnNgIdleService,private router:Router,private _commomservices:CommonService,private dialog:MatDialog) {
  
   }
  
@@ -35,6 +36,7 @@ export class AppComponent {
       if(res.result == "Success")
       {
        // alert("Token deleted");
+       this.dialog.closeAll();
         localStorage.setItem("UserCode","");
         localStorage.setItem("Token","");
         this.router.navigate(['/']);
