@@ -367,19 +367,23 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 110px
+                min-width: 165px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 130px
+                min-width: 165px
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 120px;
+                min-width: 160px;
             }
             &.cdk-column-ApprovalStatus
             {
                 min-width: 165px;
+            }
+            &.mat-column-Project_Name
+            {
+                min-width: 180px;
             }
                     
                     &.mat-table-sticky
@@ -415,19 +419,23 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 110px
+                min-width: 165px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 130px
+                min-width: 165px
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 120px;
+                min-width: 160px;
             }
             &.cdk-column-ApprovalStatus
             {
                 min-width: 165px;
+            }
+            &.mat-column-Project_Name
+            {
+                min-width: 180px;
             }
 
             &.mat-table-sticky
