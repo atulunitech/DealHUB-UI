@@ -1029,7 +1029,7 @@ downloaddetailFinalAgg(row)
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(
           obj=>{ //alert(obj.shortcurrentstatus);
-             if(obj.phase_code=='OBF' && (obj.shortcurrentstatus=='approved' || obj.shortcurrentstatus=='cApproved'))
+             if(obj.phase_code=='OBF' && obj.shortcurrentstatus=='cApproved')
           {
             return obj;
           }
@@ -1047,14 +1047,14 @@ downloaddetailFinalAgg(row)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
-        if(this.privilege_name=="PPL Initiator")
-        {
-          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved'));
-        }
-        else
-        {
-          this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
-        }
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.phase_code=='PPL' && obj.shortcurrentstatus=='cApproved')
+            {
+              return obj;
+            }
+          }
+        );
         
         if(this.cardsearcharray.length > 0)
            {
@@ -1134,7 +1134,7 @@ downloaddetailFinalAgg(row)
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
-            if(obj.shortcurrentstatus=='cApproved')
+            if(obj.phase_code=='OBF' && obj.shortcurrentstatus=='cApproved')
             {
               return obj;
             }
@@ -1155,7 +1155,7 @@ downloaddetailFinalAgg(row)
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
-            if(obj.shortcurrentstatus=='rejected')
+            if(obj.phase_code=='PPL' && obj.shortcurrentstatus=='cApproved')
             {
               return obj;
             }
@@ -1339,23 +1339,267 @@ downloaddetailFinalAgg(row)
 
   
   OBfcilck(selection)
-  {
-    if(selection==0)
+  { this.selectedcolumn = parseInt(selection);
+    // alert(this.autocompletearr.length);
+    this.picker.clear();
+  if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
-      //Draft Section.
-      this.listData=new MatTableDataSource();
-      //this.listData=new MatTableDataSource(this.dashboardData); 
-       this.filterdata=this.dashboardData.filter(obj=>obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL');
-      this.listData=new MatTableDataSource(this.filterdata);
+      if(selection==0)
+      {
+        //Draft Section.
+        
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='draft' && obj.phase_code=='OBF')
+          {
+            return obj;
+          }
+         // obj.shortcurrentstatus=='draft'
+         } );
+           if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+          this.listData=new MatTableDataSource(this.filterdata);
 
-
-      this.displayedColumns=this.DraftColumn;
+        this.displayedColumns=this.DraftColumn;
+        this.on_Highlight(1);
+      }
+      else if (selection==1)
+      {
+          //Submitted section
+         
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='OBF')
+          {
+            return obj;
+          }}
+        );
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+          this.listData=new MatTableDataSource(this.filterdata);
+        
+          this.displayedColumns=this.SubmittedScreenColumn;
+          this.on_Highlight(2);
+      }
+      else if(selection==2)
+      {
+        //Rejected
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>{
+          if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='OBF')
+          {
+            return obj;
+          }}
+        );
+        if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+        this.listData=new MatTableDataSource(this.filterdata);
+        this.displayedColumns=this.RejectedScreenColumn;
+        this.on_Highlight(3);
+      }
+    }
+    else if(this.privilege_name=="OBF Reviewer" || this.privilege_name=="PPL Reviewer")
+    {
+      if(selection==0)
+      {
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='OBF')
+            {
+              return obj;
+            }
+          }
+        );
+        if(this.cardsearcharray.length > 0)
+        {
+         this.getdatafromsearchandfiltereddata();
+        }
+      this.listData=new MatTableDataSource(this.filterdata); 
+      this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
+      }
+      else if (selection==1)
+      {
+         //Approved section
+         this.listData=new MatTableDataSource(this.dashboardData); 
+         this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if( obj.shortcurrentstatus=='approved' && obj.phase_code=='OBF')
+            {
+              return obj;
+            }
+          }
+         );
+         
+         if(this.cardsearcharray.length > 0)
+           {
+            this.getdatafromsearchandfiltereddata();
+           }
+         this.listData=new MatTableDataSource(this.filterdata);
+         this.displayedColumns=this.ReviewerApproved;
+         this.on_Highlight(2);
+      }
+      else if(selection==2)
+      {
+      
+        this.listData=new MatTableDataSource(this.dashboardData); 
+        this.filterdata=this.dashboardData.filter(obj=>
+          {
+            if( obj.shortcurrentstatus=='Rejected'&& obj.phase_code=='OBF')
+            {
+              return obj;
+            }
+          }
+        );
+        if(this.cardsearcharray.length > 0)
+        {
+         this.getdatafromsearchandfiltereddata();
+        }
+        this.listData=new MatTableDataSource(this.filterdata);
+
+        this.displayedColumns=this.ReviewerApproved;
+        this.on_Highlight(3);
+      }
+     
     }
   }
 PPLclick(selection)
 {
+  this.selectedcolumn = parseInt(selection);
+  // alert(this.autocompletearr.length);
+  this.picker.clear();
+if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
+  {
+    if(selection==0)
+    {
+      //Draft Section.
+      
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.filterdata=this.dashboardData.filter(obj=>{
+        if(obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL')
+        {
+          return obj;
+        }
+       // obj.shortcurrentstatus=='draft'
+       } );
+         if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
+        this.listData=new MatTableDataSource(this.filterdata);
 
+      this.displayedColumns=this.DraftColumn;
+      this.on_Highlight(1);
+    }
+    else if (selection==1)
+    {
+        //Submitted section
+       
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.filterdata=this.dashboardData.filter(obj=>{
+        if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
+        {
+          return obj;
+        }}
+      );
+      if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
+        this.listData=new MatTableDataSource(this.filterdata);
+      
+        this.displayedColumns=this.SubmittedScreenColumn;
+        this.on_Highlight(2);
+    }
+    else if(selection==2)
+    {
+      //Rejected
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.filterdata=this.dashboardData.filter(obj=>{
+        if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
+        {
+          return obj;
+        }}
+      );
+      if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
+      this.listData=new MatTableDataSource(this.filterdata);
+      this.displayedColumns=this.RejectedScreenColumn;
+      this.on_Highlight(3);
+    }
+  }
+  else if(this.privilege_name=="OBF Reviewer" || this.privilege_name=="PPL Reviewer")
+  {
+    if(selection==0)
+    {
+      this.filterdata=this.dashboardData.filter(obj=>
+        {
+          if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
+          {
+            return obj;
+          }
+        }
+      );
+      if(this.cardsearcharray.length > 0)
+      {
+       this.getdatafromsearchandfiltereddata();
+      }
+    this.listData=new MatTableDataSource(this.filterdata); 
+    this.displayedColumns=this.PendingReviewercolumn;
+    this.on_Highlight(1);
+    }
+    else if (selection==1)
+    {
+       //Approved section
+       this.listData=new MatTableDataSource(this.dashboardData); 
+       this.filterdata=this.dashboardData.filter(obj=>
+        {
+          if( obj.shortcurrentstatus=='approved' && obj.phase_code=='PPL')
+          {
+            return obj;
+          }
+        }
+       );
+       
+       if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
+       this.listData=new MatTableDataSource(this.filterdata);
+       this.displayedColumns=this.ReviewerApproved;
+       this.on_Highlight(2);
+    }
+    else if(selection==2)
+    {
+    
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.filterdata=this.dashboardData.filter(obj=>
+        {
+          if( obj.shortcurrentstatus=='Rejected'&& obj.phase_code=='PPL')
+          {
+            return obj;
+          }
+        }
+      );
+      if(this.cardsearcharray.length > 0)
+      {
+       this.getdatafromsearchandfiltereddata();
+      }
+      this.listData=new MatTableDataSource(this.filterdata);
+
+      this.displayedColumns=this.ReviewerApproved;
+      this.on_Highlight(3);
+    }
+   
+  }
 }
 
 editSubmit()
