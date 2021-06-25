@@ -140,7 +140,7 @@ export class DashboardComponent implements OnInit {
    PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
    RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
    ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
-   ApprovedPPL: string[] = ['ApprovalStatus','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
+   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
    ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
 
    
