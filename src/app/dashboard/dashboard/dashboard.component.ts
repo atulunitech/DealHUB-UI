@@ -403,15 +403,17 @@ export class DashboardComponent implements OnInit {
    //alert(error.message);
  });
   }
-
+  MsgOnButton:string="";
   checkdisable(row)
   {
     if(row.ppl_init == 1)
     {
+      this.MsgOnButton="PPL is already initiated";
       return true;
     }
     else
     {
+      this.MsgOnButton="";
       return false;
     }
   }
@@ -882,6 +884,7 @@ downloaddetailFinalAgg(row)
     return JSON.stringify(issueId);
    
 }
+
   CallDashBoardService()
   {
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");

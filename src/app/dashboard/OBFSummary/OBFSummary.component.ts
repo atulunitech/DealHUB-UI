@@ -198,6 +198,11 @@ class filesdetail
          this.disableCEOcontrol=true;
          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
         }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+         //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+        }
       }
       if(this.role_name=='PH')
       {
@@ -1314,7 +1319,11 @@ class filesdetail
         this.disableCEOcontrol=false;
         this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
        }
-       
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+       {
+        this.MarginException=true;
+        //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+       }
        
      }
      if(this.role_name=='PH')
