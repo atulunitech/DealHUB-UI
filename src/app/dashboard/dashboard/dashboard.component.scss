@@ -196,12 +196,13 @@
 }
 .serch_box_ms
 {
+    margin-left: 10px;
   @include position(relative);
     .search_con
     {
         border: solid 1px #eeeeee;
-        @include border-radius(60px);
-        @include heightwidth(320px,inherit);
+        @include border-radius(0px);
+        @include heightwidth(200px,inherit);
         @include padding(5px,40px,5px,20px);
         background-color: $thm-bg;
         input
@@ -231,6 +232,15 @@
         img
         {@include heightwidth(18px,auto);}
     }
+    .search_close
+    {
+        position: absolute;
+    right: 9px;
+    top: 8px;
+    z-index: 9;
+    background-color: white;
+    border: none;
+    }
 }
 .bt_sp
 {
@@ -258,6 +268,8 @@
     .perfect_scroll_com
     {
         padding-bottom: 9px;
+        border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
     }
     ::ng-deep perfect-scrollbar > div > div.ps__rail-x {
         opacity: 9;
@@ -312,19 +324,27 @@
         
             .mat-row
             {
-                border-left: 1px solid rgba(0,0,0,.12);
-                border-right: 1px solid rgba(0,0,0,.12);
+                // border-left: 1px solid rgba(0,0,0,.12);
+                // border-right: 1px solid rgba(0,0,0,.12);
+                border: 0px;
+                border-left: 0px solid rgba(0,0,0,.12);
+                border-right: 0px solid rgba(0,0,0,.12);
                 &.mat-row:nth-child(odd)
                 {
                     background-color: #fff;
+                    display: flex;
+                    align-items: stretch;
                     &.mat-table-sticky
                     {
                         background-color: #fff;
+                        
                     }
                 }
                 &.mat-row:nth-child(2n+0)
                 {
                     background-color: #fafafa;
+                    display: flex;
+                    align-items: stretch;
                     &.mat-table-sticky
                     {
                         background-color: #fafafa;
@@ -335,6 +355,8 @@
                     min-width: 150px;
                     word-break: break-word;
                     padding-right: 10px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -345,19 +367,23 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 110px
+                min-width: 165px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 130px
+                min-width: 165px
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 120px;
+                min-width: 160px;
             }
             &.cdk-column-ApprovalStatus
             {
                 min-width: 165px;
+            }
+            &.mat-column-Project_Name
+            {
+                min-width: 180px;
             }
                     
                     &.mat-table-sticky
@@ -371,10 +397,9 @@
         
         .mat-header-row
         {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            
             background-color: #fff;
-            border: 1px solid rgba(0,0,0,.12);
+            border-bottom: 1px solid rgba(0,0,0,.12);
             .mat-header-cell
         {
             color: #505050;
@@ -394,19 +419,23 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 110px
+                min-width: 165px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 130px
+                min-width: 165px
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 120px;
+                min-width: 160px;
             }
             &.cdk-column-ApprovalStatus
             {
                 min-width: 165px;
+            }
+            &.mat-column-Project_Name
+            {
+                min-width: 180px;
             }
 
             &.mat-table-sticky
@@ -513,6 +542,7 @@
                                 {
                                     opacity: 9;
                                     background-color: #fc625d;
+                                    top: 20px;
                                     @include margin(2px,2px,initial,initial); 
                                 }
                                 .drop_lab_cs
@@ -653,8 +683,8 @@
             {
                 font-size: 0.90rem;
     margin-top: -24px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 14px;
+    padding-bottom: 14px;
                 font-weight: 500;
                 &.edit_titl
                 {
@@ -665,10 +695,10 @@
             }
             .close {
                 position: absolute;
-                right: -20px;
-    top: 12px;
+                right: -4px;
+                top: 14px;
                 width: 32px;
-                height: 32px;
+                height: 18px;
                 outline: none;
                 &::after
                 {

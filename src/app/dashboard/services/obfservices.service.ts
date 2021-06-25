@@ -432,7 +432,7 @@ export class OBFServices {
   }
 
   NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[^a-zA-z0-9., ]/;
+    var format = /[^a-zA-z0-9.,() % & ]/;
     if (control.value && format.test(control.value)) {
       return { 'invalidservices': true };
     }
