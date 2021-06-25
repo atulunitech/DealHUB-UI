@@ -1025,23 +1025,24 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3 )
       {
-        //Approved OBF
         this.listData=new MatTableDataSource(this.dashboardData); 
-        this.filterdata=this.dashboardData.filter(
-          obj=>{ //alert(obj.shortcurrentstatus);
-             if(obj.phase_code=='OBF' && obj.shortcurrentstatus=='cApproved')
+        this.filterdata=this.dashboardData.filter(obj=>
           {
-            return obj;
-          }
-            });
-            if(this.cardsearcharray.length > 0)
+            if(obj.phase_code=='OBF' &&  obj.shortcurrentstatus=='approved')
             {
-             this.getdatafromsearchandfiltereddata();
+              return obj;
             }
+          }
+         );
+         if(this.cardsearcharray.length > 0)
+         {
+          this.getdatafromsearchandfiltereddata();
+         }
         this.listData=new MatTableDataSource(this.filterdata);
-         this.displayedColumns=this.ApprovedOBf;
-       
+
+        this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
+        
       }
       else if(selection==4)
       {
