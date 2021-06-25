@@ -268,6 +268,8 @@
     .perfect_scroll_com
     {
         padding-bottom: 9px;
+        border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
     }
     ::ng-deep perfect-scrollbar > div > div.ps__rail-x {
         opacity: 9;
@@ -322,8 +324,11 @@
         
             .mat-row
             {
-                border-left: 1px solid rgba(0,0,0,.12);
-                border-right: 1px solid rgba(0,0,0,.12);
+                // border-left: 1px solid rgba(0,0,0,.12);
+                // border-right: 1px solid rgba(0,0,0,.12);
+                border: 0px;
+                border-left: 0px solid rgba(0,0,0,.12);
+                border-right: 0px solid rgba(0,0,0,.12);
                 &.mat-row:nth-child(odd)
                 {
                     background-color: #fff;
@@ -350,6 +355,8 @@
                     min-width: 150px;
                     word-break: break-word;
                     padding-right: 10px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -386,10 +393,9 @@
         
         .mat-header-row
         {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            
             background-color: #fff;
-            border: 1px solid rgba(0,0,0,.12);
+            border-bottom: 1px solid rgba(0,0,0,.12);
             .mat-header-cell
         {
             color: #505050;
