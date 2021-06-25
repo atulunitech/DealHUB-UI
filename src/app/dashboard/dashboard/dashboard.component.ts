@@ -1040,7 +1040,7 @@ downloaddetailFinalAgg(row)
          }
         this.listData=new MatTableDataSource(this.filterdata);
 
-        this.displayedColumns=this.ReviewerApproved;
+        this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
       }
