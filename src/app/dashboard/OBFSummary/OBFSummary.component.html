@@ -2,7 +2,13 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
     <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
         <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> BACK</div>
-    <div class="com_title conm_title_obf"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}</div>
+    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus != 'approved'"> 
+      {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF' ) ? ('OBF Summary') : ('PPL Summary')}}
+     </div>
+    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus == 'approved'"> 
+      {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('Approved OBF Summary') : ('Approved PPL Summary')}}
+     
+    </div>
    
    
 </div>
@@ -19,7 +25,7 @@
                 <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
-                      <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
+                      <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator') || this._obfservices.obfsummarymodel.PPl_details != undefined"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                     </mat-panel-title>
                    </mat-expansion-panel-header>
                   <form [formGroup]="obfsummaryform">
@@ -588,7 +594,7 @@
             </mat-expansion-panel>
         </mat-accordion>
         </div>
-        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp wrp_bt_con" *ngIf="this.privilege_name != 'OBF Initiator' && this.shortcurrentstatus=='Submitted'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
+        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp wrp_bt_con" *ngIf="this.privilege_name != 'OBF Initiator' &&  this.showuploadbutton == true && this.shortcurrentstatus=='Submitted'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt on_hold_bt" (click)="onHoldDetails()">On Hold</button>
