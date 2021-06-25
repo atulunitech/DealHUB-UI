@@ -920,6 +920,7 @@ downloaddetailFinalAgg(row)
         ? columns
         : [...columns, column]
     }, [])
+    
   // Describe the columns for <mat-table>.
   this.columns = columns.map(column => {
     return { 
