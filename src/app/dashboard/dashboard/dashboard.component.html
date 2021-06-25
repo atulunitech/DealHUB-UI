@@ -239,9 +239,9 @@
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell style="padding-left: 10px;
-                border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '200px' : 'auto'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : 'auto'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px;
-                 border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '200px' : 'auto'}" *matCellDef="let row" >
+                 border-left: 1px solid #ccc;" [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : 'auto'}" *matCellDef="let row" >
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)" (click)="initiateppl(row)">Initiate PPL</button>
               </mat-cell>
