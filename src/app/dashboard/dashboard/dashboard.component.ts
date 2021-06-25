@@ -920,7 +920,7 @@ downloaddetailFinalAgg(row)
         ? columns
         : [...columns, column]
     }, [])
-    
+
   // Describe the columns for <mat-table>.
   this.columns = columns.map(column => {
     return { 
@@ -1095,7 +1095,7 @@ downloaddetailFinalAgg(row)
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
-            if( obj.shortcurrentstatus=='cApproved')
+            if( obj.shortcurrentstatus=='approved')
             {
               return obj;
             }
