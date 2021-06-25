@@ -1,5 +1,6 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpUserEvent, HttpEvent, HttpErrorResponse,HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { request } from "node:http";
 import { Observable } from "rxjs";
@@ -11,7 +12,7 @@ import { CommonService } from "../services/common.service";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private router: Router, public commonService:CommonService) { }
+    constructor(private router: Router, public commonService:CommonService,public dialog:MatDialog) { }
   
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       this.commonService.show();
@@ -36,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.commonService.hide();
                 return next.handle(clonedreq).pipe(
                     tap(
-                      
+                     
                       (error:any) => {
                         // if (error.status === 401)
                         console.log("redirected here even token is not null");
@@ -65,6 +66,7 @@ export class AuthInterceptor implements HttpInterceptor {
        
         return next.handle(req).pipe(
             finalize(() => {
+            //  this.dialog.closeAll();
               this.commonService.hide();
             })
           );

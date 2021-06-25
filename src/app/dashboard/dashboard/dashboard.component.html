@@ -180,15 +180,29 @@
            
   
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+              <div *ngIf="column.columnDef == 'Total_Cost'">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
+                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+              </div>
+              <div *ngIf="column.columnDef == 'Total_Revenue'">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
+                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+              </div>
+              <div *ngIf="column.columnDef == 'Gross_Margin'">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}%</mat-header-cell>
+                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}%</mat-cell>
+              </div>
                 <div *ngIf="column.columnDef == 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
                 <mat-cell  *matCellDef="let row"><a href="{{ column.cell(row) }}">download</a></mat-cell>
               </div>
               <div *ngIf="column.columnDef != 'download'">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}</mat-cell>
               </div>
+              
             </ng-container>
+           
             <ng-container matColumnDef="FinalAgg">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Final Agreement</mat-header-cell>
               <mat-cell *matCellDef="let row" >
