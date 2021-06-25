@@ -1301,7 +1301,8 @@ downloadCoversheet(event)
   onRemoveLoiAttachments()
   {
     
-    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    // let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "LOI" || obj._description == "PO" || obj._description == "Agreement");
     if(index > -1)
     {
       this._obfservices.obfmodel.Attachments.splice(index,1);
@@ -1309,7 +1310,7 @@ downloadCoversheet(event)
       this.uploadnotdisabled = false;
     }
 
-    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == this._obfservices.ObfCreateForm.get("Loipodropdown").value);
+    let indexnew = this._obfservices.loipoarray.findIndex(obj => obj._description == "LOI" || obj._description == "PO" || obj._description == "Agreement");
     if(indexnew > -1)
     {
       this._obfservices.loipoarray.splice(index,1);
@@ -2019,7 +2020,7 @@ downloadCoversheet(event)
     {
       //alert("Project name is required");
       // this._mesgBox.showError("Project name is required");
-      message += "Project name"+",";
+      message += "Project Name"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Customername').errors)
@@ -2027,7 +2028,7 @@ downloadCoversheet(event)
      // alert("Customer name is required");
       // this._mesgBox.showError("Customer name is required");
       // return false;
-      message += "Customer name"+",";
+      message += "Customer Name"+",";
       count +=1;
     }
     // else if(this._obfservices.ObfCreateForm.get('Solutioncategory').errors)
@@ -2074,7 +2075,7 @@ downloadCoversheet(event)
      // alert("Vertical head field is required");
       // this._mesgBox.showError("Vertical head field is required");
       // return false;
-      message += "Vertical head field"+",";
+      message += "Vertical Head Field"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Projectbrief').errors)
@@ -2082,7 +2083,7 @@ downloadCoversheet(event)
      // alert("Project brief is required");
     //  this._mesgBox.showError("Project brief is required");
     //   return false;
-      message += "Project brief"+",";
+      message += "Project Brief"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Totalrevenue').errors)
@@ -2090,7 +2091,7 @@ downloadCoversheet(event)
       //alert("Total revenue field is required");
       // this._mesgBox.showError("Total revenue field is required");
       // return false;
-      message += "Total revenue"+",";
+      message += "Total Revenue"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Totalcost').errors)
@@ -2098,7 +2099,7 @@ downloadCoversheet(event)
      // alert("Total cost field is required");
       //  this._mesgBox.showError("Total cost field is required");
       // return false;
-      message += "Total cost field"+",";
+      message += "Total Cost Field"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Totalmargin').errors)
@@ -2106,7 +2107,7 @@ downloadCoversheet(event)
       // alert("Total margin field is required");
       // this._mesgBox.showError("Total margin field is required");
       // return false;
-      message += "Total margin"+",";
+      message += "Total Margin"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Totalprojectlife').errors)
@@ -2114,7 +2115,7 @@ downloadCoversheet(event)
      // alert("Total project life field is required");
     //  this._mesgBox.showError("Total project life field is required");
     //   return false;
-    message += "Total project life"+",";
+    message += "Total Project Life"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Capex').errors)
@@ -2130,7 +2131,7 @@ downloadCoversheet(event)
      // alert("Payment terms field is required");
     //  this._mesgBox.showError("Payment terms field is required");
     //   return false;
-    message += "Payment terms"+",";
+    message += "Payment Terms"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Payment_Terms_description').errors)
@@ -2138,7 +2139,7 @@ downloadCoversheet(event)
      // alert("Payment terms field is required");
     //  this._mesgBox.showError("Payment terms description field is required");
     //   return false;
-    message += "Payment terms description"+",";
+    message += "Payment Terms Description"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Assumptionrisks').errors)
@@ -2146,7 +2147,7 @@ downloadCoversheet(event)
      // alert("Assumption and risks  field is required");
     //  this._mesgBox.showError("Assumption and risks  field is required");
     //   return false;
-    message += "Assumption and risks"+",";
+    message += "Assumption and Risks"+",";
       count +=1;
     }
     if(this._obfservices.ObfCreateForm.get('Loipo').errors)

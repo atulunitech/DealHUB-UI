@@ -524,6 +524,8 @@
                 {
                     @include padding(4px,4px,4px,4px);
                     color: $thm-text-color;
+                    top: -3px;
+                    position: relative;
                 }
             }
         }
@@ -887,6 +889,7 @@
                                 {
                                     opacity: 9;
                                     background-color: #fc625d;
+                                    top: 20px;
                                     @include margin(2px,2px,initial,initial); 
                                 }
                                 .drop_lab_cs
@@ -954,8 +957,8 @@
                                {
                                    @include font-size(0.85);
                                    margin-top: -4px;
-    position: relative;
-    top: 4px;
+                                    position: relative;
+                                    top: 4px;
                                }
                             text-transform: uppercase;
                             @include font-size(0.85);
@@ -996,21 +999,30 @@
                           
                         }
                         }
+                        .mat-dialog-content{
+                            background-color: #eaeaea;
+                            padding-top: 15px;
+                            .edit_box_popup
+                            {
+                                min-width: 700px;
+                                padding-top: 5px;
+                            }
+                        }
         .pop_title_wrp
         {
             position: relative;
             .pop_head_titl
             {
                 font-size: 0.90rem;
-    margin-top: -24px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+                margin-top: -24px;
+                padding-top: 10px;
+                padding-bottom: 10px;
                 font-weight: 500;
             }
             .close {
                 position: absolute;
                 right: -20px;
-    top: 12px;
+                top: 12px;
                 width: 32px;
                 height: 32px;
                 outline: none;
@@ -1051,9 +1063,9 @@
 
 .summ_obf_click
 {
-    font-size: 11px;
-    line-height: initial;
-    padding: 0;
+    font-size: 12px;
+    line-height: inherit;
+    padding: 3px;
     margin-left: 10px;
     margin-right: -10px;
     padding-left: 20px;

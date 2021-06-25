@@ -201,12 +201,19 @@ class filesdetail
       }
       if(this.role_name=='PH')
       {
-         if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-         {
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+        {
           this.CEOMess=true;
-          this.disableCFOcontrol=false;
+          this.disableCFOcontrol=true;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-         this.cfomessgae="Approval required as per DOA Matrix.No LOI/PO";
+         this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+         }
+         if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+         {
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+          this.CFOMess=true;
+          this.disableCEOcontrol=true;
+          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
          }
          if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
@@ -771,6 +778,7 @@ class filesdetail
 	onSelect(event) {
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+    this.disablesavebutton=true;
     var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
@@ -1311,17 +1319,28 @@ class filesdetail
      }
      if(this.role_name=='PH')
      {
-        if(this._obfservices.obfsummarymodel.uploadDetails[0].is_loi_po_uploaded=="N")
-        {
-         this.CEOMess=true;
-         this.disableCFOcontrol=true;
-         this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
-        this.cfomessgae="Approval required as per DOA Matrix.No LoI/PO";
-        }
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
+      {
+        this.CEOMess=true;
+        this.disableCFOcontrol=true;
+        this.obfsummaryform.controls["ExceptionCFO"].setValue(true);
+       this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
+       }
         else{
           this.disableCFOcontrol=false;
           this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
         }
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptioncase_ceo==1)
+         {
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(true);
+          this.CFOMess=true;
+          this.disableCEOcontrol=true;
+          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
+         }
+         else{
+          this.disableCEOcontrol=false;
+          this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
+         }
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
@@ -1339,19 +1358,25 @@ class filesdetail
     );
     
   }
+  showuploadbutton:boolean=true;
+  
   getOBFPPLDetails()
   {
      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
      {
+      this.showuploadbutton=false;
       this.getdetailsfordh_id(this._obfservices.obfsummarymodel.uploadDetails[0].parent_dh_main_id);
      }
      else if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF') {
       if(this._obfservices.obfsummarymodel.PPl_details != undefined && this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id !=0)
       {
+        this.showuploadbutton=true;
         this.getdetailsfordh_id(this._obfservices.obfsummarymodel.PPl_details[0].PPL_dh_id);
       }
       
      }
+
+
   }
   SAPIONo:string="";
   getSAPCode()
@@ -1381,7 +1406,7 @@ class filesdetail
   }
   commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&@$#*^%!]/;
+    var format = /[<>'"&@$#*^%!()]/;
 
     if (control.value && format.test(control.value)) {
      
