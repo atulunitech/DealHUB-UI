@@ -403,17 +403,30 @@ export class DashboardComponent implements OnInit {
    //alert(error.message);
  });
   }
-  MsgOnButton:string="";
+  getmsg(row)
+  {
+    if(row.ppl_init == 1)
+    {
+      var mes='PPL is already initiated'
+      return mes;
+    }
+    else
+    {
+      
+     
+    }
+  }
+  //MsgOnButton:string="";
   checkdisable(row)
   {
     if(row.ppl_init == 1)
     {
-      this.MsgOnButton="PPL is already initiated";
+     // this.MsgOnButton="PPL is already initiated";
       return true;
     }
     else
     {
-      this.MsgOnButton="";
+      //this.MsgOnButton="";
       return false;
     }
   }
