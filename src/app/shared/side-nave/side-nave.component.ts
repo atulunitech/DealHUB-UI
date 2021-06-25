@@ -94,7 +94,7 @@ export class SideNaveComponent implements OnInit {
       if(res.result == "Success")
       {
         //alert("Token deleted");
-        localStorage.setItem("UserCode","");
+      //  localStorage.setItem("UserCode","");
         localStorage.setItem("Token","");
         localStorage.setItem("RequestId","");
         localStorage.setItem("userToken","");

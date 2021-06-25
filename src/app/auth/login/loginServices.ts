@@ -38,6 +38,13 @@ export class loginservices
         PasswordDetails, httpOptions); 
     }
     
+    ResetPasswordDashboard(PasswordDetails):Observable<any>
+    {
+     // const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'}) };  
+	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/ResetPasswordDashboard',  
+        PasswordDetails); 
+    }
+
     sendemail(logindetails):Observable<any>
     {
 

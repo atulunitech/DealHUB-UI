@@ -15,6 +15,11 @@ export class notificationDetails
   tablename:string;
  }
 
+ export class getnotificationparams
+{
+  _user_code:string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -66,8 +71,8 @@ notification()
 
 Get_System_Notification(usercode:string)
  {
-  let model:GetObfMasterParameters = new GetObfMasterParameters();
-  model.userid = usercode;
+  let model:getnotificationparams = new getnotificationparams();
+  model._user_code = usercode;
   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
   // params: new HttpParams().set('_user_code', usercode.toString())};
   return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",

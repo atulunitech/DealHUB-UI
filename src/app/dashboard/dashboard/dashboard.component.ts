@@ -487,11 +487,12 @@ export class DashboardComponent implements OnInit {
     });
     this.loginvalid = new FormGroup({
      
+      CurrentPassword : new FormControl('', [Validators.required,this.commonService.NoInvalidCharacters]),
       NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
       confirmpassword : new FormControl('')
     }, { validators: this.checkPasswords });
 
-    this.getClientKey();
+    
   }
   
   getClientKey()
@@ -515,16 +516,19 @@ export class DashboardComponent implements OnInit {
   ResetPassword()
   {
     let encryptedpwd="";
+    let encryptedcurrentpwd="";
          //alert(this.key);
           encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
+          encryptedcurrentpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('CurrentPassword').value);
           this.loginvalid.get('NewPassword').setValue(encryptedpwd);
           this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
-          this.loginmodel._SecretKey = this.key;
+          //this.loginmodel._SecretKey = this.key;
     this.loginmodel._user_code=localStorage.getItem("UserCode");
     this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
+    this.loginmodel._CurrentPassword = encryptedcurrentpwd;
     
      
-    this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
+    this._loginservice.ResetPasswordDashboard(this.loginmodel).subscribe(Result=>{
      // alert("Password Changed Successfully.");
      this._mesgBox.showSucess("Password Changed Successfully.");
      this.router.navigateByUrl('/login');
@@ -914,6 +918,7 @@ onchange(evt,solutioncategory)
   }
 
   ResetModel() {
+    this.getClientKey();
     this.loginvalid.controls.NewPassword.setValue("");
     this.loginvalid.controls.confirmpassword.setValue("");
     this.loginvalid.controls["NewPassword"].markAsPristine();

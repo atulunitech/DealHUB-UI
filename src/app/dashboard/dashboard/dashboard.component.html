@@ -487,6 +487,17 @@
               the provided credential </p>
          
               <div>
+                <div>
+                  <div class="mt-cust-fd"  >
+                      <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label>Current Password</mat-label>
+                          <input matInput type="password" formControlName="CurrentPassword" autocomplete="off">
+                              <mat-error *ngIf="checkError('CurrentPassword', 'required')">Current Password is required</mat-error>
+                              <!-- <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error> -->
+                              <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
+                        </mat-form-field>
+                    </div>
+              </div>
                   <div>
                       <div class="mt-cust-fd"  >
                           <mat-form-field appearance="fill" class="example-full-width">

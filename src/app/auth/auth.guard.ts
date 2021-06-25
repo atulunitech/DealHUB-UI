@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
          }
         else
         {
-          localStorage.setItem("UserCode","");
+         // localStorage.setItem("UserCode","");
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");

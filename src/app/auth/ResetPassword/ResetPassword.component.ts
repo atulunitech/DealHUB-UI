@@ -15,6 +15,7 @@ export class LoginModel
   _token:string;
   _ClientId:string;
   _SecretKey:string;
+  _CurrentPassword?:string;
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
