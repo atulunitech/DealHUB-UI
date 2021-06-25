@@ -919,12 +919,15 @@ onchange(evt,solutioncategory)
 
   ResetModel() {
     this.getClientKey();
+    this.loginvalid.controls.CurrentPassword.setValue("");
     this.loginvalid.controls.NewPassword.setValue("");
     this.loginvalid.controls.confirmpassword.setValue("");
     this.loginvalid.controls["NewPassword"].markAsPristine();
+    this.loginvalid.controls["CurrentPassword"].markAsPristine();
     this.loginvalid.controls["confirmpassword"].markAsPristine();
     this.loginvalid.controls["NewPassword"].markAsUntouched();
     this.loginvalid.controls["confirmpassword"].markAsUntouched();
+    this.loginvalid.controls["CurrentPassword"].markAsUntouched();
     let dialogRef = this.dialog.open(this.resetDialog, {
         //  width: '880px',
          // data: { name: this.name, animal: this.animal }
@@ -1168,6 +1171,7 @@ downloaddetailFinalAgg(row)
   // }
   filterValue:string;
   addColumn(selection) {
+    this.statusfiltercontrol.setValue("");
     this.selectedcolumn = parseInt(selection);
     // alert(this.autocompletearr.length);
    // this.picker.clear();
