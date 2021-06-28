@@ -435,7 +435,6 @@
         align-items: center;
         @include position(relative,0px,initial,initial,initial);
         @include flexbox();
-        
         img{
             display: inherit;
             @include heightwidth(20px,initial);
