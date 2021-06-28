@@ -817,7 +817,7 @@ getapprovalstatus(element)
 this._dashboardservice.GetDashboardProgress(this.dh_id.toString()).subscribe((Result)=>{
   var jsondata=JSON.parse(Result);
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
-   this.approvalstatusdetail.TimeLine=jsondata.versiondetail;
+   this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
 });
 }
 

@@ -451,9 +451,7 @@
     <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
-        <div>
-          <span>Approval Status</span>
-        </div>
+     
         <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
           <div class="mat_previe_box">
             <div class="prev_tit">
@@ -503,6 +501,40 @@
        {{this.approvalstatusdetail.versiondetail[0].vertical_name}}
       </div>
      </div>
+    </div>
+    <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+      <div class="mat_previe_box">
+        <div class="prev_tit">
+        User Name
+        </div>
+        <div class="prev_dis">
+         {{this.approvalstatusdetail.TimeLine[0].username}}
+        </div>
+     </div>
+     <div class="mat_previe_box">
+      <div class="prev_tit">
+      Timeline
+      </div>
+      <div class="prev_dis">
+       {{this.approvalstatusdetail.TimeLine[0].TimeLine}}
+      </div>
+   </div>
+   <div class="mat_previe_box">
+    <div class="prev_tit">
+    Status
+    </div>
+    <div class="prev_dis">
+     {{this.approvalstatusdetail.TimeLine[0].currentstatus}}
+    </div>
+ </div>
+ <div class="mat_previe_box">
+  <div class="prev_tit">
+  Comments
+  </div>
+  <div class="prev_dis">
+   {{this.approvalstatusdetail.TimeLine[0].comments}}
+  </div>
+</div>
     </div>
       </mat-dialog-content>
       

@@ -446,6 +446,7 @@ class filesdetail
   today:any=new Date();
   commentVisiable:boolean=false;
   SaveCommentdetail:CommentDetails[] = [];
+  versionName:string='';
   SaveComment()
   {
     if(!this.obfsummaryform.controls.comments.errors)
@@ -463,6 +464,7 @@ class filesdetail
       SaveComment.role_name= this.role_name;
       SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+  
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
@@ -473,6 +475,7 @@ class filesdetail
         this.componentRef.directiveRef.scrollToBottom();
        },1000
        );
+       this.versionName=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
 
        //this.componentRef.directiveRef.scrollToBottom(500);
     }
@@ -1229,6 +1232,7 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
+    // this.SaveCommentdetail=[];
   
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
@@ -1357,15 +1361,30 @@ class filesdetail
         }
      }
     
+     if(this.SaveCommentdetail.length !=0)
+     {
+       var comment =this.obfsummaryform.get("comments").value;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].Version_name==this.versionName)
+       {
+        this.commentVisiable=true;
+       }
+       else{
+        this.commentVisiable=false;
+       }
+     }
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
+      // this.obfsummaryform.controls["comments"].setValue('');
+
+      // this.SaveCommentdetail=[];
+      
     },
     (error)=>{
       alert(error.message);
     }
     );
-    
+  
   }
   showuploadbutton:boolean=true;
   

@@ -336,6 +336,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
     this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+    this.loiopdisabled = false;  
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
   
@@ -413,7 +414,10 @@ export class CreatobfComponent implements OnInit {
        }
        if(this.reinitiatefordisable)
        {
-         this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+        this._obfservices.ObfCreateForm.controls['otherservices'].disable();
+      this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
+      this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
        }
       //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
       //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
@@ -1126,9 +1130,23 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
-         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+         //this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+
+         
          this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
+                  
+          if(this.isEditObf)
+                  {​​​​​​​​
+          let desc = this._obfservices.loipoarray[0] !=undefined?this._obfservices.loipoarray[0]._description:"";
+          let index = this._obfservices.obfmodel.Attachments.findIndex(obj=>obj._description == desc);
+          if(index > -1)
+                    {​​​​​​​​
+          this._obfservices.obfmodel.Attachments.splice(index,1);
+                    }​​​​​​​​
+                  }​​​​​​​​
+          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+
         }
         else if(types == "support")
         {
@@ -1399,7 +1417,7 @@ downloadCoversheet(event)
           domain = this.domainlist[index].value.toString().trim();
           if(this.initiateppl)
           {
-            if(domain != this._obfservices.editObfObject._projecttype)
+            if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
               this._mesgBox.showError("Project type does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1423,7 +1441,7 @@ downloadCoversheet(event)
       else{
         if(this.initiateppl)
           {
-            if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name)
+            if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name.trim())
             {
               this._mesgBox.showError("Project name does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1472,7 +1490,7 @@ downloadCoversheet(event)
     else{
       if(this.initiateppl)
           {
-            if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location)
+            if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location.toString().trim())
             {
               this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1505,7 +1523,7 @@ downloadCoversheet(event)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network or Enterprise Mobility");
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
