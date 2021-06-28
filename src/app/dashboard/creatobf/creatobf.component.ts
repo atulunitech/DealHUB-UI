@@ -412,7 +412,10 @@ export class CreatobfComponent implements OnInit {
       }
        if(this.reinitiatefordisable)
        {
-         this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+        this._obfservices.ObfCreateForm.controls['otherservices'].disable();
+      this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
+      this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
        }
       //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
       //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
