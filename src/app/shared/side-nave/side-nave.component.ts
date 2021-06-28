@@ -32,19 +32,22 @@ export class SideNaveComponent implements OnInit {
     //this.GetMenus();
     this.menus = [
       { 
-        name: 'User Id',
+        name: localStorage.getItem("UserName"),
+        Role:localStorage.getItem("role_name"),
         iconClass: 'user_icon.png',
         url:"javascript:void(0)",
         active: true,
       },
       { 
        name: 'Menu 1',
+       Role:null,
        iconClass: 'user_login_icon.png',
        url:"javascript:void(0)",
        active: false,
      },
      { 
        name: 'Logout',
+       Role:null,
        iconClass: 'log_out_icon.png',
        url: "javascript:void(0)",
        active: false,

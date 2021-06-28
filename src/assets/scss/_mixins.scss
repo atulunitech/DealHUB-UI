@@ -159,6 +159,48 @@
 // start
 .mt-cust-fd {
  
+  &.mt-cust-fd-fillter
+  {
+    width: 140px;
+    ::ng-deep .mat-form-field {
+      
+      width: 100%;
+      &.ng-untouched {
+        &.mat-focused {
+          .mat-form-field-wrapper {
+            .mat-form-field-flex {
+              
+              background-color: #fff;
+            }
+          }
+        }
+      }
+      &.ng-touched {
+        &.mat-focused {
+          .mat-form-field-wrapper {
+            .mat-form-field-flex {
+              
+              background-color: #fff;
+            }
+          }
+        }
+      }
+      .mat-form-field-wrapper
+      {
+        padding-bottom: 0px;
+        .mat-form-field-flex
+        {
+          background-color: #fff;
+          padding: .35em .75em 0 .75em;
+          .mat-form-field-infix
+          {
+            padding: .25em 0 .35em 0;
+          }
+        }
+      }
+     
+    }
+  }
   ::ng-deep .mat-form-field {
     width: 100%;
     
@@ -755,7 +797,7 @@ $label-font-size-redo: $default-size * 4;
 
 
 .set-size {
-  font-size: 2.1em;
+  font-size: 1.6em;
   cursor: pointer;
 }
 
