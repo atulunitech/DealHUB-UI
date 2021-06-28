@@ -30,7 +30,7 @@ export class DashboardService {
        formData.append('Image', image, image.name);
        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True'}),observe:"events",reportProgress: true};  
        return this.http.post(environment.apiUrl + '/Api/Auth/UploadImage', formData,{
-          //  headers: new HttpHeaders({ 'No-Auth':'True'}),
+            headers: new HttpHeaders({ 'No-Auth':'True'}),
            reportProgress: true,
            observe: 'events'
          });

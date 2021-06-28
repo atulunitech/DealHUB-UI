@@ -336,6 +336,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
     this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+    this.loiopdisabled = false;
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
   
@@ -1129,9 +1130,19 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
-         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+        // this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
+         if(this.isEditObf)
+         {
+          let desc = this._obfservices.loipoarray[0] !=undefined?this._obfservices.loipoarray[0]._description:"";
+          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == desc);
+          if(index > -1)
+           {
+            this._obfservices.obfmodel.Attachments.splice(index,1);
+           }
+         }
+         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(types == "support")
         {
@@ -1144,7 +1155,7 @@ downloadCoversheet(event)
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
          console.log(this._obfservices.ObfCreateForm);
-         let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname);
+         let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
          if(index > -1)
          {}
          else{
@@ -1520,7 +1531,7 @@ downloadCoversheet(event)
     {
       if(this._obfservices.obfmodel._projecttype != 3)
       {
-        this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+        this._mesgBox.showError("Project type can be only `Transportation` for MLL Network or Enterprise Mobility");
             this.coversheetfiles = [];
             this.iscoversheet = !this.iscoversheet;
             return false;
