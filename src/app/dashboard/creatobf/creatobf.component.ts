@@ -261,7 +261,7 @@ export class CreatobfComponent implements OnInit {
     this.detailstickdisabled = true;
     this.getcreateobfmasters();
     this.getsolutionmaster();
-    this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
+    this.today=this.datepipe.transform(this.today);
     this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
       status => this.SAPIOchiplist.errorState = status === 'INVALID'
     );

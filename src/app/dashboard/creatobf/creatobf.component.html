@@ -654,7 +654,7 @@
                       Created On
                     </div>
                     <div class="prev_dis">
-                      {{this.today }}
+                      {{this.today | date}}
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -839,16 +839,15 @@
                         Payment Terms Description
                       </div>
                       <div class="prev_dis">
-                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
-                        <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
+                        {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
+                    
                        </div>
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
                       Project Date
                     </div>
-                    <div class="prev_dis">{{this.today }}
+                    <div class="prev_dis">{{this.today | date}}
                      </div>
                  </div>
                    

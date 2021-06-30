@@ -44,7 +44,7 @@
       <div class="serch_box_ms">
         
        <div class="search_con">
-        <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+        <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
          <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto">
          <mat-autocomplete #auto="matAutocomplete" >
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)">
@@ -270,7 +270,7 @@
               <mat-cell style="min-width: 250px;padding-left: 10px;
                " *matCellDef="let row" >
                 <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
-                <button mat-flat-button class="creat_bt approv_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+                <button mat-flat-button class="creat_bt approv_bt"  *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
