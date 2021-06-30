@@ -301,10 +301,10 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Project Date
+                      Project Type
                     </div>
                     <div class="prev_dis">  
-                      {{_obfservices.obfsummarymodel.uploadDetails[0].created_on | date}} 
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].project_type}} 
                      </div>
                  </div>
                    
@@ -318,8 +318,8 @@
                       
                     </div>
                  </div>
-
-                 <div class="mat_previe_box"  *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                 <div *ngIf="this.shortcurrentstatus !='cApproved'">
+                  <div class="mat_previe_box"  *ngIf=" this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   <div class="prev_dis" *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
@@ -355,6 +355,7 @@
                     </div>
                   </div>
                </div>
+              </div>
 
                       </div>
                       

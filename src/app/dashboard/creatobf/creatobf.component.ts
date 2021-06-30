@@ -325,6 +325,7 @@ export class CreatobfComponent implements OnInit {
 
   removeuploadfilesforinitiateppl()
   {
+    this._obfservices.obfmodel.Attachments= [];
     this._obfservices.coversheetarray = [];
     this._obfservices.loipoarray= [];
     this._obfservices.supportarray = [];
@@ -337,6 +338,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
     this.loiopdisabled = false;  
+    this.supportchecked = true;
+    this.checked_d = false;
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
   }
   
@@ -444,7 +447,14 @@ export class CreatobfComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
+    
+    let index  = this._obfservices.obfmodel.sapio.findIndex(obj =>obj._Cust_SAP_IO_Number == parseInt(value.trim()));
+    if(index > -1)
+    {
+      this._mesgBox.showError("SAP IO number already exists");
+        return;
+    }
+    
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);

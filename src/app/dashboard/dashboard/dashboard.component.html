@@ -452,13 +452,13 @@
     <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
      
-        <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+     <div  fxLayout="row" fxLayoutAlign="space-between start" *ngFor="let details of this.approvalstatusdetail.versiondetail"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
           <div class="mat_previe_box">
             <div class="prev_tit">
              Current Version
             </div>
             <div class="prev_dis">
-             {{this.approvalstatusdetail.versiondetail[0].version_name}}
+             {{details.version_name}}
             </div>
          </div>
          <div class="mat_previe_box">
@@ -466,7 +466,7 @@
            Code
           </div>
           <div class="prev_dis">
-           {{this.approvalstatusdetail.versiondetail[0].dh_code}}
+           {{details.dh_code}}
           </div>
        </div>
        <div class="mat_previe_box">
@@ -474,7 +474,7 @@
          Date
         </div>
         <div class="prev_dis">
-         {{this.approvalstatusdetail.versiondetail[0].datecreated}}
+         {{details.datecreated}}
         </div>
      </div>
      <div class="mat_previe_box">
@@ -482,7 +482,7 @@
        Project Name
       </div>
       <div class="prev_dis">
-       {{this.approvalstatusdetail.versiondetail[0].dh_project_name}}
+       {{details.dh_project_name}}
       </div>
      </div>
      <div class="mat_previe_box">
@@ -490,7 +490,7 @@
         opportunity Id
       </div>
       <div class="prev_dis">
-       {{this.approvalstatusdetail.versiondetail[0].opportunity_id}}
+       {{details.opportunity_id}}
       </div>
      </div>
      <div class="mat_previe_box">
@@ -498,17 +498,17 @@
         Vertical Name
       </div>
       <div class="prev_dis">
-       {{this.approvalstatusdetail.versiondetail[0].vertical_name}}
+       {{details.vertical_name}}
       </div>
      </div>
     </div>
-    <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+    <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of this.approvalstatusdetail.TimeLine">
       <div class="mat_previe_box">
         <div class="prev_tit">
         User Name
         </div>
         <div class="prev_dis">
-         {{this.approvalstatusdetail.TimeLine[0].username}}
+         {{timeline.username}}
         </div>
      </div>
      <div class="mat_previe_box">
@@ -516,7 +516,7 @@
       Timeline
       </div>
       <div class="prev_dis">
-       {{this.approvalstatusdetail.TimeLine[0].TimeLine}}
+       {{timeline.TimeLine}}
       </div>
    </div>
    <div class="mat_previe_box">
@@ -524,7 +524,7 @@
     Status
     </div>
     <div class="prev_dis">
-     {{this.approvalstatusdetail.TimeLine[0].currentstatus}}
+     {{timeline.currentstatus}}
     </div>
  </div>
  <div class="mat_previe_box">
@@ -532,7 +532,7 @@
   Comments
   </div>
   <div class="prev_dis">
-   {{this.approvalstatusdetail.TimeLine[0].comments}}
+   {{timeline.comments}}
   </div>
 </div>
     </div>

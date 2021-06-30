@@ -137,6 +137,8 @@ class uploadDetails{
   parent_dh_main_id:number;
   ppl_init:number;
   ppl_status:string;
+  project_type:string;
+
 }
 
 class solutionDetails
