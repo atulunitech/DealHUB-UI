@@ -183,6 +183,7 @@ class filesdetail
         this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
        
        }
+      
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
@@ -198,6 +199,7 @@ class filesdetail
          this.disableCEOcontrol=true;
          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
         }
+       
         if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
         {
          this.MarginException=true;
@@ -871,7 +873,7 @@ class filesdetail
         
         // this.files = this.supportfiles;
        }
-     
+    // this.Attachments=[];
 		// this.files.push(...event.addedFiles);
   }
   catch(e)
@@ -1285,7 +1287,7 @@ class filesdetail
       else{
         this.disableCFOcontrol=false;
         this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
-    }
+      }
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
       {
        this.MarginException=true;

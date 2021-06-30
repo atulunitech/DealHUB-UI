@@ -340,6 +340,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
     this.loiopdisabled = false;  
+    this.supportchecked = true;
+    this.checked_d = false;
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
     this.supportchecked = true;
     this.checked_d = false;

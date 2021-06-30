@@ -2,10 +2,10 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont creat_bof_con" >
     <div fxLayout="row" fxLayoutAlign="start center" class="creat_obf_tit">
         <div class="back_rout" routerLink="/DealHUB/dashboard"><img src="assets/images/arrow_icon.png"> BACK</div>
-    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus != 'approved' && this._obfservices.obfsummarymodel.PPl_details == undefined"> 
+    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus != 'cApproved' && this._obfservices.obfsummarymodel.PPl_details == undefined"> 
       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF' ) ? ('OBF Summary') : ('PPL Summary')}}
      </div>
-    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus == 'approved'|| this._obfservices.obfsummarymodel.PPl_details != undefined "> 
+    <div class="com_title conm_title_obf" *ngIf="this.shortcurrentstatus == 'cApproved'|| this._obfservices.obfsummarymodel.PPl_details != undefined "> 
       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('Approved OBF Summary') : ('Approved PPL Summary')}}
      
     </div>
@@ -301,10 +301,10 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Project Date
+                      Project Type
                     </div>
                     <div class="prev_dis">  
-                      {{_obfservices.obfsummarymodel.uploadDetails[0].created_on | date}} 
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].project_type}} 
                      </div>
                  </div>
                    
@@ -318,8 +318,8 @@
                       
                     </div>
                  </div>
-
-                 <div class="mat_previe_box"  *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
+                 <div *ngIf="this.shortcurrentstatus !='cApproved'">
+                  <div class="mat_previe_box"  *ngIf=" this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   <div class="prev_dis" *ngIf="this.workflowindication==true || this.role_name == 'VSH' || this.role_name == 'PH'|| this.role_name == 'CFO' || this.role_name == 'CEO'">
                   Workflow Indicator
                   </div>
@@ -355,6 +355,7 @@
                     </div>
                   </div>
                </div>
+              </div>
 
                       </div>
                       
