@@ -39,7 +39,7 @@ export class SideNaveComponent implements OnInit {
         active: true,
       },
       { 
-       name: 'Menu 1',
+       name: 'Resetpassword',
        Role:null,
        iconClass: 'user_login_icon.png',
        url:"javascript:void(0)",
@@ -130,7 +130,7 @@ export class SideNaveComponent implements OnInit {
         this.Logout();
     }
     
-    if(this.menus[index].name=='User Id')
+    if(this.menus[index].name=='Resetpassword')
     {
      
         this.resetpassword();

@@ -222,6 +222,8 @@ export class DashboardComponent implements OnInit {
     
   datefilter = this.filterdata.filter(o => o.currentstatus_search == evt.source.value);
   this.listData=new MatTableDataSource(datefilter);
+  this.listData.sort = this.sort;
+ this.listData.paginator = this.paginator;
     }
    }
   selectfilter(evt)
@@ -440,6 +442,8 @@ export class DashboardComponent implements OnInit {
     }
     console.log(finallistdataarray);
     this.listData=new MatTableDataSource(finallistdataarray); 
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
     this.filterdata = this.listData.filteredData;
   }
 
@@ -480,7 +484,7 @@ export class DashboardComponent implements OnInit {
       map(value => this._filter(value))
     );
     this.commonService.getresetclickedevent().subscribe(res =>{
-     // alert(res);
+      //alert(res);
       if(res == true)
       this.ResetModel();
 
@@ -678,11 +682,13 @@ datefilter()
 {
   this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
 this.listData=new MatTableDataSource(this.filterdata);
+this.listData.sort = this.sort;
+this.listData.paginator = this.paginator;
 }
 
   ngAfterViewInit() {
     this.listData.sort = this.sort;
-    this.listData.paginator = this.paginator
+    this.listData.paginator = this.paginator;
 }
 
 Solutionservicesarray:Solutionservices[] =[];
@@ -1190,6 +1196,7 @@ downloaddetailFinalAgg(row)
   addColumn(selection) {
     this.statusfiltercontrol.setValue("");
     this.selectedcolumn = parseInt(selection);
+    this.searchwords = "";
     // alert(this.autocompletearr.length);
    // this.picker.clear();
   // alert(this.dateselected);
@@ -1280,6 +1287,10 @@ downloaddetailFinalAgg(row)
             }
           }
          );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
          {
           this.getdatafromsearchandfiltereddata();
@@ -1302,6 +1313,11 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         
         if(this.cardsearcharray.length > 0)
            {
@@ -1442,7 +1458,8 @@ downloaddetailFinalAgg(row)
         this.on_Highlight(5);
       }
     }
-   
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
   }
  
 
@@ -1613,7 +1630,7 @@ downloaddetailFinalAgg(row)
   OBfcilck(selection)
   { this.selectedcolumn = parseInt(selection);
     // alert(this.autocompletearr.length);
-    this.picker.clear();
+    //this.picker.clear();
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -1628,9 +1645,14 @@ downloaddetailFinalAgg(row)
           }
          // obj.shortcurrentstatus=='draft'
          } );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
            if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1648,9 +1670,14 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
-        if(this.cardsearcharray.length > 0)
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
         
@@ -1667,9 +1694,14 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
-        if(this.cardsearcharray.length > 0)
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
@@ -1688,10 +1720,15 @@ downloaddetailFinalAgg(row)
             }
           }
         );
-        if(this.cardsearcharray.length > 0)
-        {
-         this.getdatafromsearchandfiltereddata();
-        }
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
@@ -1709,9 +1746,14 @@ downloaddetailFinalAgg(row)
           }
          );
          
-         if(this.cardsearcharray.length > 0)
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ReviewerApproved;
@@ -1729,10 +1771,15 @@ downloaddetailFinalAgg(row)
             }
           }
         );
-        if(this.cardsearcharray.length > 0)
-        {
-         this.getdatafromsearchandfiltereddata();
-        }
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ReviewerApproved;
@@ -1740,12 +1787,14 @@ downloaddetailFinalAgg(row)
       }
      
     }
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
   }
 PPLclick(selection)
 {
   this.selectedcolumn = parseInt(selection);
   // alert(this.autocompletearr.length);
-  this.picker.clear();
+  //this.picker.clear();
 if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
@@ -1760,9 +1809,14 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
         }
        // obj.shortcurrentstatus=='draft'
        } );
+       if(this.dateselected)
+       {
+         this.datefilter();
+       }
          if(this.cardsearcharray.length > 0)
          {
-          this.getdatafromsearchandfiltereddata();
+         // this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
          }
         this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1780,10 +1834,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           return obj;
         }}
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
       
         this.displayedColumns=this.SubmittedScreenColumn;
@@ -1799,10 +1858,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           return obj;
         }}
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
       this.listData=new MatTableDataSource(this.filterdata);
       this.displayedColumns=this.RejectedScreenColumn;
       this.on_Highlight(3);
@@ -1820,10 +1884,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           }
         }
       );
-      if(this.cardsearcharray.length > 0)
-      {
-       this.getdatafromsearchandfiltereddata();
-      }
+      if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
     this.listData=new MatTableDataSource(this.filterdata); 
     this.displayedColumns=this.PendingReviewercolumn;
     this.on_Highlight(1);
@@ -1841,10 +1910,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
         }
        );
        
-       if(this.cardsearcharray.length > 0)
+       if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
        this.listData=new MatTableDataSource(this.filterdata);
        this.displayedColumns=this.ReviewerApproved;
        this.on_Highlight(2);
@@ -1861,10 +1935,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           }
         }
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
       {
-       this.getdatafromsearchandfiltereddata();
+        this.datefilter();
       }
+        if(this.cardsearcharray.length > 0)
+        {
+        // this.getdatafromsearchandfiltereddata();
+        this.filterdatafinal();
+        }
       this.listData=new MatTableDataSource(this.filterdata);
 
       this.displayedColumns=this.ReviewerApproved;
@@ -1872,6 +1951,8 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     }
    
   }
+  this.listData.sort = this.sort;
+this.listData.paginator = this.paginator;
 }
 
 editSubmit()

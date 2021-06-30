@@ -44,7 +44,7 @@
       <div class="serch_box_ms">
         
        <div class="search_con">
-        <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+        <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
          <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
          <mat-autocomplete #auto="matAutocomplete" >
           <!-- <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)"> -->

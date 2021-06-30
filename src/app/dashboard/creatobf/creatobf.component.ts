@@ -167,6 +167,7 @@ export class CreatobfComponent implements OnInit {
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
+  declarations:string = "";
     coversheetpath:string="";
     loipopath:string="";
     supportdocpath:string="";
@@ -245,6 +246,7 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this.declarations = "This OBF is without LOI / PO";
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -325,6 +327,7 @@ export class CreatobfComponent implements OnInit {
 
   removeuploadfilesforinitiateppl()
   {
+    this._obfservices.obfmodel.Attachments= [];
     this._obfservices.coversheetarray = [];
     this._obfservices.loipoarray= [];
     this._obfservices.supportarray = [];
@@ -338,6 +341,8 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
     this.loiopdisabled = false;  
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+    this.supportchecked = true;
+    this.checked_d = false;
   }
   
  
@@ -423,6 +428,10 @@ export class CreatobfComponent implements OnInit {
       //  console.log(this._obfservices.ObfCreateForm.controls["Vertical"])
       //  this._obfservices.ObfCreateForm.controls["Vertical"].setValue("alpha");
       //  console.log(this._obfservices.ObfCreateForm.value);
+      if(this.isppl)
+      {
+        this.declarations="This PPL is without LOI / PO"; 
+      }
       if(this.initiateppl)
       {
         this.removeuploadfilesforinitiateppl();
@@ -443,7 +452,13 @@ export class CreatobfComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
+    
+    let index  = this._obfservices.obfmodel.sapio.findIndex(obj =>obj._Cust_SAP_IO_Number == parseInt(value.trim()));
+    if(index > -1)
+    {
+      this._mesgBox.showError("SAP IO number already exists");
+        return;
+    }
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
