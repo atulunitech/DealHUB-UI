@@ -261,7 +261,7 @@
 .approv_bt
 {
     @include padding(0,25px,0,25px);
-    background-color: $thm-ap-bt;
+    background-color: $thm-ap-bt !important;
 }
 .fl_table_con
 {
