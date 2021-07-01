@@ -627,28 +627,13 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
-                        SAP IO Number
+                        Project Type
                       </div>
                       <div class="prev_dis">
-                        <div class="sap_io_wr" >
-                          {{this.SAPIONum }}  
-                          <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
-                          <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
-                          </div>
-                          
-                        
+                        {{projecttype}}
                       </div>
                    </div>
-                     <div class="mat_previe_box">
-                      <div class="prev_tit">
-                        SAP Customer Code
-                      </div>
-                      <div class="prev_dis">
-                        
-                        {{this._obfservices.obfmodel._sap_customer_code}}
-                      </div>
-                   </div>
+                  
                    <div class="mat_previe_box">
                     <div class="prev_tit">
                       Created On
@@ -706,6 +691,30 @@
               {{_obfservices.obfmodel._customer_name}}
             </div>
           </div>
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+              SAP IO Number
+            </div>
+            <div class="prev_dis">
+              <div class="sap_io_wr" >
+                {{this.SAPIONum }}  
+                <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
+                <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
+                </div>
+                
+              
+            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+            SAP Customer Code
+          </div>
+          <div class="prev_dis">
+            
+            {{this._obfservices.obfmodel._sap_customer_code}}
+          </div>
+       </div>
         
       
                       </div>
@@ -843,13 +852,13 @@
                     
                        </div>
                    </div>
-                   <div class="mat_previe_box">
+                   <!-- <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Project Date
+                      Project Type
                     </div>
-                    <div class="prev_dis">{{this.today | date}}
+                    <div class="prev_dis">{{ projecttype}}
                      </div>
-                 </div>
+                 </div> -->
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">

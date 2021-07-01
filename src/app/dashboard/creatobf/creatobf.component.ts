@@ -191,7 +191,7 @@ export class CreatobfComponent implements OnInit {
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";
-
+  projecttype:string="";
   pokemonControl = new FormControl();
   Solutionservicesarray:Solutionservices[] =[];
   Subsecotarray:subsecorlist[] =[];
@@ -431,6 +431,8 @@ export class CreatobfComponent implements OnInit {
       {
         this.removeuploadfilesforinitiateppl();
       }
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
   }
 
   getverticalname(verticallist:verticallist[])
@@ -1681,11 +1683,12 @@ downloadCoversheet(event)
       {
         throw new Error();
       }
-      
+     
       console.log("check form values");
       console.log(this._obfservices.ObfCreateForm);
       this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
       //  console.log("MAin DATa: "+this.data);
   
       //  let x = this.data.slice(1);
