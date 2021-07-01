@@ -9,9 +9,27 @@
         <img src="assets/images/DealHUB_logo.png" >
     </div>
 </div>
-<div>
-    {{UserName}}{{RoleName}}
+<div style="display: flex;align-items: center;">
+    <div style="display: flex;
+    align-items: center;
+    border-right: 1px solid #ccc;
+    padding-right: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;line-height: initial;">
+    <img style="width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #f1f1f1;
+" src="assets/images/not_icon.png">
+       <div>{{UserName}}
+         <div style="font-size: 0.6rem;
+         font-weight: 500;
+         font-style: italic;">({{RoleName}})</div>   
+        </div> 
+        
     </div>
+    
+   
 
 <div class="not_alt" (click)="not_view()">
     
@@ -21,4 +39,5 @@
     <span *ngIf=" this.commonService.notificationDetails != undefined" >
         <!-- {{this.commonService.notificationDetails == undefined || this.commonService.notificationDetails.length==0?'0' :this.commonService.notificationDetails.length}} -->
     </span>
+</div>
 </div>
