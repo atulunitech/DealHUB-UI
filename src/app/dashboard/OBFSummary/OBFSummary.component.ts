@@ -257,7 +257,7 @@ class filesdetail
        }
 
       //this.obfsummaryform.controls["version"].setValue();
-    //  this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
+      this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
       this.getSAPCode();
 
