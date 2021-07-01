@@ -64,7 +64,7 @@
 {
   position: relative;
   @include margin(inherit,50px,inherit,inherit);
-  background-color:#e5eeff;
+  background-color:transparent;
   // opacity: 0.5;
   @include font-size(1.2);
   @include border-radius(40px);
@@ -76,17 +76,15 @@
   span{
     position: absolute;
     font-size: 0.555rem;
-    background-color: #2258bf;
+    background-color: red;
     color: #fff;
     border-radius: 20px;
     border: 1px solid #fff;
-    top: -1px;
-    right: -10px;
-    width: 20px;
-    height: 20px;
+    width: 9px;
+    height: 9px;
     line-height: 18px;
-    top: -1px;
-    right: -6px;
+    top: 8px;
+    right: 12px;
     text-align: center;
     font-weight: 600;
   }
