@@ -1374,9 +1374,10 @@ class filesdetail
         this.commentVisiable=false;
        }
      }
+     this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
       this.getserviceslist();
       this.getSAPCode();
-      this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
+      
       // this.obfsummaryform.controls["comments"].setValue('');
 
       // this.SaveCommentdetail=[];

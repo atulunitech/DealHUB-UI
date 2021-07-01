@@ -49,6 +49,22 @@
                        </div>
                     </div>
                     <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        Customer Name
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].customer_name}} 
+                      </div>
+                    </div>
+                    <div class="mat_previe_box">
+                      <div class="prev_tit">
+                        Project Type
+                      </div>
+                      <div class="prev_dis">  
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].project_type}} 
+                       </div>
+                   </div>
+                    <!-- <div class="mat_previe_box">
                      <div class="prev_tit">
                        SAP IO Number
                      </div>
@@ -57,15 +73,15 @@
                            {{this.SAPIONo}}
                          </div>
                      </div>
-                  </div>
-                    <div class="mat_previe_box">
+                  </div> -->
+                    <!-- <div class="mat_previe_box">
                      <div class="prev_tit">
                        SAP Customer Code
                      </div>
                      <div class="prev_dis">
                        {{_obfservices.obfsummarymodel.uploadDetails[0].sap_customer_code}} 
                      </div>
-                  </div>
+                  </div> -->
                   <div class="mat_previe_box">
                    <div class="prev_tit">
                      Created On
@@ -108,7 +124,15 @@
                       </div>
                       
                       <div fxLayout="row " fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp color_none_fld">
-                          <div class="mat_previe_box">
+                        <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Vertical 
+                          </div>
+                          <div class="prev_dis">
+                            {{_obfservices.obfsummarymodel.uploadDetails[0].Vertical_name}} 
+                          </div>
+                       </div>
+                        <div class="mat_previe_box">
                             <div class="prev_tit">
                               Sector
                             </div>
@@ -124,22 +148,15 @@
                             {{_obfservices.obfsummarymodel.uploadDetails[0].subsector_name}} 
                           </div>
                        </div>
-                       <div class="mat_previe_box">
-                        <div class="prev_tit">
-                          Vertical 
-                        </div>
-                        <div class="prev_dis">
-                          {{_obfservices.obfsummarymodel.uploadDetails[0].Vertical_name}} 
-                        </div>
-                     </div>
-                     <div class="mat_previe_box">
+                     
+                     <!-- <div class="mat_previe_box">
                       <div class="prev_tit">
                         Vertical Head
                       </div>
                       <div class="prev_dis">
                         {{_obfservices.obfsummarymodel.uploadDetails[0].VerticalHeadName}} 
                       </div>
-                    </div>
+                    </div> -->
                                <div class="mat_previe_box">
                                 <div class="prev_tit">
                                   Project Primary Location / State
@@ -149,14 +166,14 @@
                                 </div>
                              </div>
                    
-                        <div class="mat_previe_box">
+                        <!-- <div class="mat_previe_box">
                           <div class="prev_tit">
                             Customer Name
                           </div>
                           <div class="prev_dis">
                             {{_obfservices.obfsummarymodel.uploadDetails[0].customer_name}} 
                           </div>
-                        </div>
+                        </div> -->
                          </div>
                       
                       <div fxLayout="row " fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp cl_widn_sapc">
@@ -179,6 +196,14 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
+                        Capex <br>₹ Cr 
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfsummarymodel.uploadDetails[0].capex}}
+                      </div>
+                   </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
                         Total Margin 
                       </div>
                       <div class="prev_dis">
@@ -187,20 +212,21 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
+                      Payment Terms
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.obfsummarymodel.uploadDetails[0].payment_terms}}  Days
+                    </div>
+                  </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
                       Total Project Life 
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}} 
                     </div>
                  </div>
-                 <div class="mat_previe_box">
-                  <div class="prev_tit">
-                    Capex <br>₹ Cr 
-                  </div>
-                  <div class="prev_dis">
-                    {{_obfservices.obfsummarymodel.uploadDetails[0].capex}}
-                  </div>
-               </div>
+                 
                <div class="mat_previe_box">
                 <div class="prev_tit">
                   EBT % 
@@ -211,7 +237,8 @@
              </div>
              <div class="mat_previe_box">
               <div class="prev_tit">
-                IRR % Surplus Cash
+                IRR % <br>
+                (Surplus Cash)
               </div>
               <div class="prev_dis">
                 {{_obfservices.obfsummarymodel.uploadDetails[0].irr_surplus_cash}} %
@@ -219,20 +246,13 @@
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
-              IRR % Borrowed <br>Fund
+              IRR % <br> Borrowed Fund
             </div>
             <div class="prev_dis">
               {{_obfservices.obfsummarymodel.uploadDetails[0].irr_borrowed_fund}} %
             </div>
           </div>
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              Payment Terms
-            </div>
-            <div class="prev_dis">
-              {{_obfservices.obfsummarymodel.uploadDetails[0].payment_terms}}  Days
-            </div>
-          </div>
+          
           
                       </div>
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp">
@@ -274,6 +294,24 @@
                         {{(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc)}}  
                        </div>
                    </div> 
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      SAP IO Number
+                    </div>
+                    <div class="prev_dis dis_io" >
+                        <div>
+                          {{this.SAPIONo}}
+                        </div>
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    SAP Customer Code
+                  </div>
+                  <div class="prev_dis">
+                    {{_obfservices.obfsummarymodel.uploadDetails[0].sap_customer_code}} 
+                  </div>
+               </div>
                        </div>
                        <div fxFlex="auto " class="mat_view_cont">
                         <div class="mat_previe_box">
@@ -299,14 +337,7 @@
                         {{_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc}}
                          </div>
                    </div>
-                   <div class="mat_previe_box">
-                    <div class="prev_tit">
-                      Project Type
-                    </div>
-                    <div class="prev_dis">  
-                      {{_obfservices.obfsummarymodel.uploadDetails[0].project_type}} 
-                     </div>
-                 </div>
+                 
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
@@ -378,7 +409,7 @@
                                 </span></div>
                                 <div class="Status">{{details.Status}}</div>
                                 <div class="dh_comment">{{details.dh_comment}}</div>
-                                  <div class="Version_name">Version:{{details.Version_name}} <span>{{details.commented_on | date}}</span><span class="span_tim">{{details.commented_on | date:'h:mm a'}}</span>
+                                  <div class="Version_name"> <span>{{details.commented_on | date}}</span><span class="span_tim">{{details.commented_on | date:'h:mm a'}}</span>
                                   </div>
                               </div>
                             </div>
@@ -396,7 +427,7 @@
                                 <div class="Fullname">{{SaveCommentdetail[0].Fullname}}</div>
                                 <div class="Status">{{SaveCommentdetail[0].Status}}</div>
                                 <div class="dh_comment">{{SaveCommentdetail[0].dh_comment}}</div>
-                                  <div class="Version_name">Version:{{SaveCommentdetail[0].Version_name}} <span>{{SaveCommentdetail[0].commented_on | date}}</span> <span class="span_tim">{{SaveCommentdetail[0].commented_on | date:'h:mm a'}}</span>
+                                  <div class="Version_name"><span>{{SaveCommentdetail[0].commented_on | date}}</span> <span class="span_tim">{{SaveCommentdetail[0].commented_on | date:'h:mm a'}}</span>
                                   </div>
                               </div>
                             </div>
@@ -622,7 +653,7 @@
         <ngx-dropzone-label class="matUp_lable">
           <div><img src="assets/images/Group Upload.png"></div>
           <div class="drap_titl">
-          Chosse or Drag & Drop
+              Choose or  Drag & Drop
             <div class="in_titl">Or select file from your system</div>
           </div>
           

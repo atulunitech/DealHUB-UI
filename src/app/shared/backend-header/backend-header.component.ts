@@ -9,8 +9,11 @@ import { CommonService } from '../../services/common.service';
 export class BackendHeaderComponent implements OnInit {
 
   constructor(public commonService:CommonService) { }
-
+  UserName:string="";
+  RoleName:string="";
   ngOnInit(): void {
+    this.UserName=localStorage.getItem("UserName");
+    this.RoleName=localStorage.getItem("role_name");
   }
 
  

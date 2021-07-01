@@ -627,34 +627,19 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
-                        SAP IO Number
+                        Project Type
                       </div>
                       <div class="prev_dis">
-                        <div class="sap_io_wr" >
-                          {{this.SAPIONum }}  
-                          <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
-                          <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
-                          </div>
-                          
-                        
+                        {{projecttype}}
                       </div>
                    </div>
-                     <div class="mat_previe_box">
-                      <div class="prev_tit">
-                        SAP Customer Code
-                      </div>
-                      <div class="prev_dis">
-                        
-                        {{this._obfservices.obfmodel._sap_customer_code}}
-                      </div>
-                   </div>
+                  
                    <div class="mat_previe_box">
                     <div class="prev_tit">
                       Created On
                     </div>
                     <div class="prev_dis">
-                      {{this.today }}
+                      {{this.today | date}}
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -690,14 +675,14 @@
               {{_obfservices.ObfCreateForm.get('Vertical').value}}
             </div>
          </div>
-           <div class="mat_previe_box">
+           <!-- <div class="mat_previe_box">
             <div class="prev_tit">
               Vertical Head
             </div>
             <div class="prev_dis">
               {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
             </div>
-          </div>
+          </div> -->
           <div class="mat_previe_box">
             <div class="prev_tit">
               Customer Name
@@ -706,6 +691,30 @@
               {{_obfservices.obfmodel._customer_name}}
             </div>
           </div>
+          <div class="mat_previe_box">
+            <div class="prev_tit">
+              SAP IO Number
+            </div>
+            <div class="prev_dis">
+              <div class="sap_io_wr" >
+                {{this.SAPIONum }}  
+                <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
+                <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
+                </div>
+                
+              
+            </div>
+         </div>
+         <div class="mat_previe_box">
+          <div class="prev_tit">
+            SAP Customer Code
+          </div>
+          <div class="prev_dis">
+            
+            {{this._obfservices.obfmodel._sap_customer_code}}
+          </div>
+       </div>
         
       
                       </div>
@@ -839,18 +848,17 @@
                         Payment Terms Description
                       </div>
                       <div class="prev_dis">
-                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
-                        <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
+                        {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
+                    
                        </div>
                    </div>
-                   <div class="mat_previe_box">
+                   <!-- <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Project Date
+                      Project Type
                     </div>
-                    <div class="prev_dis">{{this.today }}
+                    <div class="prev_dis">{{ projecttype}}
                      </div>
-                 </div>
+                 </div> -->
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
