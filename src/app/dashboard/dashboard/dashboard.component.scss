@@ -88,7 +88,7 @@
             }
             .fil_had_no
             {
-                @include font-size(1.4);
+                @include font-size(1.5);
                 @include position(relative,1px);
                 @include font-weight(bold);
             }
@@ -261,7 +261,7 @@
 .approv_bt
 {
     @include padding(0,25px,0,25px);
-    background-color: $thm-ap-bt;
+    // background-color: $thm-ap-bt !important;
 }
 .fl_table_con
 {
@@ -367,19 +367,34 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 165px
+                min-width: 115px;
+                max-width: 115px
+            }
+            &.cdk-column-Current_Status
+            {
+                min-width: 115px;
+                max-width: 115px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 165px
+                min-width: 125px;
+                max-width: 125px;
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 160px;
+                min-width: 100px;
+            }
+            &.cdk-column-DetailedOBF
+            {
+                min-width: 90px;
+            }
+            &.cdk-column-FinalAgg
+            {
+                min-width: 100px;
             }
             &.cdk-column-ApprovalStatus
             {
-                min-width: 165px;
+                min-width: 115px;
             }
             &.mat-column-Project_Name
             {
@@ -409,6 +424,13 @@
             word-break: break-word;
             @include font-size(0.90);
             @include font-weight(bold);
+            ::ng-deep.mat-sort-header-container
+            {
+                .mat-sort-header-button
+                {
+                    text-align: left;
+                }
+            }
             &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -419,19 +441,34 @@
             }
             &.cdk-column-Total_Cost
             {
-                min-width: 165px
+                min-width: 115px;
+                max-width: 115px
+            }
+            &.cdk-column-Current_Status
+            {
+                min-width: 115px;
+                max-width: 115px
             }
             &.cdk-column-Total_Revenue
             {
-                min-width: 165px
+                min-width: 125px;
+                max-width: 125px;
             }
             &.cdk-column-Gross_Margin
             {
-                min-width: 160px;
+                min-width: 100px;
+            }
+            &.cdk-column-DetailedOBF
+            {
+                min-width: 90px;
+            }
+            &.cdk-column-FinalAgg
+            {
+                min-width: 100px;
             }
             &.cdk-column-ApprovalStatus
             {
-                min-width: 165px;
+                min-width: 115px;
             }
             &.mat-column-Project_Name
             {
@@ -541,7 +578,7 @@
                                 .ng-star-inserted
                                 {
                                     opacity: 9;
-                                    background-color: #fc625d;
+                                    background-color: #FF352C;
                                     top: 20px;
                                     @include margin(2px,2px,initial,initial); 
                                 }

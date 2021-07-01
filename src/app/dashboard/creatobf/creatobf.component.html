@@ -102,7 +102,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
@@ -120,7 +120,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
@@ -211,7 +211,7 @@
                               <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
-                                  <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                  <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                   <div class="doc_icon">
                                     <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                   </div>
@@ -228,7 +228,7 @@
                                 <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
                                   
                                   <ngx-dropzone-label class="drop_lab_cs">
-                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                     <div class="doc_icon" >
                                       <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                     </div>
@@ -289,7 +289,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,SupportPoprogress)" >
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
@@ -306,7 +306,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
@@ -545,7 +545,7 @@
                           </div>
                         </div>
                         </div>
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
                           <div fxLayout="row" fxLayoutAlign="start" fxFlex="100">
                             
                             <div class="mat_fld_box_in" fxFlex="23.2770" >
@@ -577,7 +577,7 @@
                            </div>
                         </div>
                       </div>  -->
-                      <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 10px;">
                         <div class="mat_fot_drf">
                           <!-- <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid || this.isEditObf" (click)="Saveasdraft('details')">SAVE AS DRAFT</button> -->
                           <!-- <button mat-flat-button class="creat_bt mat_fot_bt" *ngIf="!isEditObf" [disabled]="!uploadnotdisabled"  (click)="Saveasdraft('details')">SAVE AS DRAFT</button> -->
