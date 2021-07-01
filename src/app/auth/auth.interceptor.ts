@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
         {
           setTimeout(() => {
             this.commonService.hide();
-          }, 5000);
+          }, 3000);
           
             return next.handle(req.clone());
             
