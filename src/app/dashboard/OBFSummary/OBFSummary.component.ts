@@ -1451,4 +1451,72 @@ class filesdetail
     this.dialog.closeAll();
    // this.SaveAttachment();
   }
+  Closefrompage()
+  {
+    if(this.role_name=='VSH')
+    {
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='PH')
+    {
+      if(this.obfsummaryform.get("ExceptionCFO").value==true && this.cfomessgae == "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if (this.obfsummaryform.get("ExceptionCEO").value==true && this.CEOmessage == ""){
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CFO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CEO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else{
+      this.router.navigate(['/DealHUB/dashboard']);
+    }
+    }
+  
   }

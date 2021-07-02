@@ -2362,7 +2362,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+       this._mesgBox.showSucess("Documents uploaded Successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2483,5 +2483,5 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._sap_customer_code = this._obfservices.ObfCreateForm.get("Sapcustomercode").value;
    // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
   }
-
+  
 }
