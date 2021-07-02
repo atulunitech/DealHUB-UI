@@ -1304,51 +1304,7 @@ downloaddetailFinalAgg(row)
           
       });
     }
-    uploadfiles(files:File[])
-    {
-    
-      for (let i = 0; i < files.length; i++) {
-       
-        this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
-        this.path="";
-        this._dashboardservice.uploadImage(files[i]).subscribe(
-          event => {
-            if(event.type === HttpEventType.UploadProgress)
-            {
-              console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
-              this.progress = Math.round(event.loaded/event.total * 100);
-              this.uploaddocprocess[i].value = Math.round(event.loaded/event.total * 100);
-            }
-            else if(event.type === HttpEventType.Response)
-            {
-              this.path = JSON.stringify(event.body);
-              this.path=this.path.split('"').join('');
-              this.path = this.path.substring(0,this.path.length -1);
-              this.consolidatedpath += this.path +",";
-              this.consolidatedpath = this.consolidatedpath.substring(0,this.consolidatedpath.length -1);
-              this.SaveAttachmentParameter = new SaveAttachmentParameter();
-              if(this.path!="")
-              {
-                this.SaveAttachmentParameter._dh_id=this.dh_id;
-                this.SaveAttachmentParameter._dh_header_id=this.dh_header_id;
-                 this.SaveAttachmentParameter._fname= files[i].name; 
-                 this.SaveAttachmentParameter._fpath = this.path;
-                 this.SaveAttachmentParameter._description = "FinalAgg";
-                 this.Attachments.push(this.SaveAttachmentParameter);
-              }
-            }
-            this.SaveAttachment();
-          },
-          
-          (err:any)=>{
-           
-             this.uploaddocprocess[i].value = 0;
-         
-           
-      }
-        )
-    }
-}
+  
   closedialog()
   {
    this.uploadDocfiles=[];
