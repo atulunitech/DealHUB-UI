@@ -381,7 +381,7 @@ class filesdetail
     {
      if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
       if(index > -1)
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
