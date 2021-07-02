@@ -493,7 +493,7 @@
                              <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
-                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator') && this.showuploadbutton == true  &&  this.shortcurrentstatus !='rejected'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
+                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator')  &&  this.shortcurrentstatus !='rejected'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
                           Upload
                           <span>
                             <img src="assets/images/up-file-icon.png">
@@ -513,7 +513,7 @@
                            <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
-                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  ) && this.showuploadbutton == true  &&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
+                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )   &&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
                         Upload
                         <span>
                           <img src="assets/images/up-file-icon.png">
@@ -533,7 +533,7 @@
                          <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
-                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' )&&  this.showuploadbutton == true  && this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
+                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' )  && this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
                       Upload
                       <span>
                         <img src="assets/images/up-file-icon.png">
@@ -626,7 +626,7 @@
             </mat-expansion-panel>
         </mat-accordion>
         </div>
-        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp wrp_bt_con" *ngIf="this.privilege_name != 'OBF Initiator' &&  this.showuploadbutton == true && this.shortcurrentstatus=='Submitted'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
+        <div fxLayout="column" fxLayoutAlign=" none"  class="mat_fld_box_wrp wrp_bt_con" *ngIf="this.privilege_name != 'OBF Initiator'  && this.shortcurrentstatus=='Submitted'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1">
           <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="mat_fot_drf" >
               <button mat-flat-button class="creat_bt mat_fot_bt on_hold_bt" (click)="onHoldDetails()">On Hold</button>
