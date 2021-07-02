@@ -771,31 +771,28 @@
     }
 }
 /*e*/
-
-::ng-deep #mat-select-0-panel 
+::ng-deep .cdk-overlay-pane
 {
     margin-top: 19px;
-}
-
-::ng-deep #mat-select-1-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-2-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-3-panel
-{
-    margin-top: 19px;
-}
-::ng-deep #mat-select-4-panel
-{
-    margin-top:19px;
-}
-::ng-deep #cdk-overlay-2
-{
-    right: 34px !important;
-    width: 300px !important;
+    .mat-autocomplete-panel
+    {
+        right: 50px !important;
+    min-width: 275px !important;
     left: auto !important;
+    margin-top: -10px;
+    }
 }
+// ::ng-deep #mat-select-0-panel, ::ng-deep #mat-select-7-panel
+// {
+//     margin-top: 19px;
+// }
+// ::ng-deep #mat-select-1-panel, ::ng-deep #mat-select-8-panel
+// {
+//     margin-top: 19px;
+// }
+// ::ng-deep #mat-autocomplete-0, ::ng-deep #mat-autocomplete-1
+// {
+//     right: 50px !important;
+//     min-width: 275px !important;
+//     left: auto !important;
+// }

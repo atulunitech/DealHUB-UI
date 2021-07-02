@@ -358,7 +358,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category *</mat-label>
-                    <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" >
+                    <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" disableOptionCentering>
                       <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="reinitiatefordisable" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
                         {{Solution.Solutioncategory}}
@@ -375,7 +375,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select type of service/solution category *</mat-label>
-                                <mat-select [formControl]="servicesControl"  [errorStateMatcher]="matcher" multiple  >
+                                <mat-select [formControl]="servicesControl"  [errorStateMatcher]="matcher" multiple disableOptionCentering >
                                   <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >

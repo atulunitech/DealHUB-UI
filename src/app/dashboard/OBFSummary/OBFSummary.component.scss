@@ -63,7 +63,7 @@
             {
                 .mat-expanded
                 {
-                    background-color: rgb(229, 238, 255);
+                    background-color: #F2F2F2;
                 }
               
                
@@ -391,7 +391,8 @@
                     }
                     &.prm_mat_fld_box_wrp
                     {
-                        background-color: #e5eeff;
+                        // background-color: #e5eeff;
+                        background-color: #F2F2F2;
                         @include margin(initial,-25px,0px,-25px);
                         @include padding(18px,24px,18px,24px);
                         &.color_none_fld
@@ -742,9 +743,9 @@
     }
     .dh_comment
     {
-        @include font-size(0.90);
+        @include font-size(0.85);
         @include font-weight(normal);
-        @include padding(1px,initial,5px,initial);
+        @include padding(5px,initial,6px,initial);
     }
     .Status{
         font-style: italic;
