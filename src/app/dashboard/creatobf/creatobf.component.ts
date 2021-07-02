@@ -164,6 +164,7 @@ export interface Solutiongroup {
 export class CreatobfComponent implements OnInit {
 
   sectorlist:sectors[] = [];
+  branchlist:verticallist[]=[];
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
@@ -247,6 +248,7 @@ export class CreatobfComponent implements OnInit {
   ngOnInit(): void {
     //this._obfservices.createform();
     this.declarations = "This OBF is without LOI / PO";
+    this.branchlist = [];
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -423,7 +425,14 @@ export class CreatobfComponent implements OnInit {
         this._obfservices.ObfCreateForm.controls['otherservices'].disable();
       this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
       this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      if(this._obfservices.obfmodel._sap_customer_code != null && this._obfservices.obfmodel._sap_customer_code != "")
+      {
       this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
+      }
        }
       //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
       //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
@@ -540,6 +549,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
        this.domainlist = res.domains;
+       this.branchlist = res.branch;
        if(this.isEditObf)
        {
          this.editobfinitialization();
@@ -1513,6 +1523,15 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
+      let branchname:string = ws.E7.w;
+      let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim() == branchname.toString().trim().toUpperCase());
+      if(indexbranch == -1)
+      {
+        this._mesgBox.showError("Branch location is not correct, kindly check");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+      }
       if(this.initiateppl)
           {
             if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location.toString().trim())
@@ -1690,6 +1709,17 @@ downloadCoversheet(event)
       else{
         this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
         this._obfservices.obfmodel._loi_po_details = ws.D18.w;
+      }
+
+      if(this.editorcreateobfstring.trim() == "Revise PPL")
+       {
+        if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim() == this._obfservices.editObfObject._payment_terms.toString().trim()) 
+       {
+        this._mesgBox.showError("Details are same as of previous PPL");
+        this.coversheetfiles = [];
+        this.iscoversheet = !this.iscoversheet;
+        return false;
+       } 
       }
      
       if(count > 0)

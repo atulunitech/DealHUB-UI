@@ -56,7 +56,7 @@ export class AuthInterceptor implements HttpInterceptor {
                                 localStorage.setItem("Token","");
                                 localStorage.setItem("RequestId","");
                                 localStorage.setItem("userToken","");
-                                this._mesgBox.showError("Unauthorized access");
+                                this._mesgBox.showError("Unauthorized access 401 tap");
                                 this.router.navigateByUrl('/login');
                               }
                                 //this.router.navigateByUrl('/login');
@@ -75,7 +75,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");
-                            this._mesgBox.showError("Unauthorized access");
+                            this._mesgBox.showError("Unauthorized access 401");
                             this.router.navigateByUrl('/login');
                           }
 
@@ -103,7 +103,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");
-              this._mesgBox.showError("Unauthorized access");
+              this._mesgBox.showError("Unauthorized access local storage");
               this.router.navigateByUrl('/login');
                 // this.router.navigateByUrl('/login');
             }

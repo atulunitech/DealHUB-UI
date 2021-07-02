@@ -35,6 +35,22 @@ export class DashBoardModel
   _user_code:string;
 }
 
+class count
+{
+  draftscount:number;
+  draftsobfcount:number;
+  draftpplcount:number;
+  submittedcount:number;
+  submittedobfcount:number;
+  submittedpplcount:number;
+  rejectedcount:number;
+  rejectedobfcount:number;
+  rejectedpplcount:number;
+  approvedobfcount:number;
+  approvedpplcount:number;
+
+}
+
 class Serviceslist{
   value:string;
   viewValue:string;
@@ -131,6 +147,7 @@ export class ResetErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  countparam:count = null;
   loginmodel:LoginModel=new LoginModel();
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
@@ -271,6 +288,7 @@ export class DashboardComponent implements OnInit {
          }
          finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
          console.log("The below Final Array");
+         console.log(this.keys);
          this.autocompletearr = finalrray;
          console.log(finalrray);
       }
@@ -395,6 +413,7 @@ export class DashboardComponent implements OnInit {
   
   filterdatafinal()
   {
+    this.getcountonfilter();
     let showdatatotextbox:any[]=[];
   let  checkdataarray:any[] = [];
     this.multisearcharray.forEach(val=>{
@@ -445,7 +464,59 @@ export class DashboardComponent implements OnInit {
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
     this.filterdata = this.listData.filteredData;
+   // this.getcounts(finallistdataarray);
   }
+
+   getcountonfilter()
+   {
+    let showdatatotextbox:any[]=[];
+    let  checkdataarray:any[] = [];
+      this.multisearcharray.forEach(val=>{
+        let res = val.split(',');
+        this.cardsearcharray = res;
+        this.listData=new MatTableDataSource(this.dashboardData); 
+       // this.listData=new MatTableDataSource(this.filterdata); 
+        //this.searchControl.setValue("Hello wolrd");
+        for(let i=0;i< res.length;i++)
+        {
+          showdatatotextbox.push(res[i].trim());
+          this.listData.filter = res[i].trim().toLowerCase();
+          this.listData = new MatTableDataSource(this.listData.filteredData);
+         //this.cardsearcharray = this.listData.filteredData;
+         if(i == res.length - 1 && this.listData.filteredData.length > 0)
+         {
+         checkdataarray.push(this.listData.filteredData);
+        }
+        } 
+      });
+      // let texttoshow="";
+      // showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
+      // showdatatotextbox.forEach(x =>{
+      //  texttoshow += x +",";
+      // });
+      // texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+      // this.searchControl.setValue(texttoshow);
+      // console.log("check data of both");
+      //console.log(this.checkdataarray);
+      let finallistdataarray:any[] = [];
+      if(checkdataarray.length > 0)
+      {
+        checkdataarray.forEach(newarr =>{
+              newarr.forEach(element => {
+                   let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
+                   if(index > -1)
+                   {}
+                   else
+                   {
+                     finallistdataarray.push(element);
+                   }
+              });
+  
+        });
+      }
+      console.log(finallistdataarray);
+      this.getcounts(finallistdataarray);
+   }
 
   getdatafromsearchandfiltereddata()
   {
@@ -550,7 +621,8 @@ export class DashboardComponent implements OnInit {
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    // return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return this.autocompletearr.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   onSearchClear(){
@@ -647,6 +719,11 @@ export class DashboardComponent implements OnInit {
     console.log(row);
   }
 
+  reviseppl(row)
+  {
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Revise PPL",reinitiate:"Y",isppl:"Y" } });
+  }
+
   getsolutionmaster()
 {
 this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
@@ -671,7 +748,8 @@ datesUpdated(event)
 console.log(new Date(event.endDate._d));
 this.startdate = new Date(event.startDate._d);
 this.enddate=new Date(event.endDate._d);
-//datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+datefilter = this.dashboardData.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+this.getcounts(datefilter);
 //this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
 //this.listData=new MatTableDataSource(this.filterdata);
 this.addColumn(this.selectedcolumn);
@@ -997,7 +1075,14 @@ openModal(templateRef,row) {
       this._obfservices.ObfCreateForm.controls['otherservices'].disable();
       this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
       this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      if(this._obfservices.obfmodel._sap_customer_code != null && this._obfservices.obfmodel._sap_customer_code != "")
+      {
       this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
+      }
       console.log("checkmodel after model click");
       console.log(this._obfservices.ObfCreateForm);
    },
@@ -1125,6 +1210,7 @@ downloaddetailFinalAgg(row)
       console.log(Result);
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
+      this.getcounts(this.dashboardData);
        this.BindGridDetails();
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
     },
@@ -1197,6 +1283,17 @@ downloaddetailFinalAgg(row)
     this.statusfiltercontrol.setValue("");
     this.selectedcolumn = parseInt(selection);
     this.searchwords = "";
+    // if(this.dateselected)
+    //      {
+    //        this.datefilter();
+    //        this.getcounts(this.filterdata);
+    //      }
+    // if(this.cardsearcharray.length > 0)
+    //       {
+    //        // this.getdatafromsearchandfiltereddata();
+    //        this.filterdatafinal();
+    //        this.getcounts(this.filterdata);
+    //       }
     // alert(this.autocompletearr.length);
    // this.picker.clear();
   // alert(this.dateselected);
@@ -1458,6 +1555,7 @@ downloaddetailFinalAgg(row)
         this.on_Highlight(5);
       }
     }
+   // this.getcounts(this.filterdata);
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
   }
@@ -2201,4 +2299,32 @@ getattachment(dh_id,dh_header_id)
     
   })
 }
+
+  getcounts(data)
+  {
+   if(this.privilege_name == "OBF Initiator" || this.privilege_name == "PPL Initiator")
+   {
+    this.countparam = new count();
+    //draft
+    this.countparam.draftscount = data.filter(obj => obj.shortcurrentstatus == 'draft').length;
+    this.countparam.draftsobfcount = data.filter(obj => obj.shortcurrentstatus == 'draft' && obj.phase_code == 'OBF').length;
+    this.countparam.draftpplcount = data.filter(obj => obj.shortcurrentstatus == 'draft' && obj.phase_code == 'PPL').length;
+
+    //submitted
+    this.countparam.submittedcount = data.filter(obj => obj.shortcurrentstatus == 'submitted').length;
+    this.countparam.submittedobfcount = data.filter(obj => obj.shortcurrentstatus == 'submitted' && obj.phase_code == 'OBF').length;
+    this.countparam.submittedpplcount = data.filter(obj => obj.shortcurrentstatus == 'submitted' && obj.phase_code == 'PPL').length;
+
+    //rejected
+    this.countparam.rejectedcount = data.filter(obj => obj.shortcurrentstatus == 'rejected').length;
+    this.countparam.rejectedobfcount = data.filter(obj => obj.shortcurrentstatus == 'rejected' && obj.phase_code == 'OBF').length;
+    this.countparam.rejectedpplcount = data.filter(obj => obj.shortcurrentstatus == 'rejected' && obj.phase_code == 'PPL').length;
+
+    //approved obf
+    this.countparam.approvedobfcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'OBF').length;
+    //approved ppl
+    this.countparam.approvedpplcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'PPL').length;
+   
+   }
+  }
 }

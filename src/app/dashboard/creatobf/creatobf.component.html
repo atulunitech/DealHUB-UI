@@ -104,7 +104,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -122,7 +122,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f._fname }}
@@ -213,7 +213,7 @@
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                   <div class="doc_icon">
-                                    <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                    <img src="assets/images/tick.png" style="margin-right: 15px;">
                                   </div>
                                   <div class="doc_cont" style="position: relative;" >
                                     {{ f.fileName }}
@@ -230,7 +230,7 @@
                                   <ngx-dropzone-label class="drop_lab_cs">
                                     <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
                                     <div class="doc_icon" >
-                                      <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                      <img src="assets/images/tick.png" style="margin-right: 15px;">
                                     </div>
                                     <div class="doc_cont" style="position: relative;" >
                                       {{ f._fname }}
@@ -303,7 +303,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon">
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -320,7 +320,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f._fname }}
@@ -362,7 +362,7 @@
                     
                   </mat-expansion-panel-header>
                   <div class="mat_exp_wrp">
-                    <div class="mat_exp_title">Enter details to create OBF </div>
+                    <div class="mat_exp_title">Enter details to create {{isppl?'PPL':'OBF'}} </div>
                     <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
                       <div fxLayout="row" fxLayoutAlign="space-between center">
                         <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
@@ -917,7 +917,7 @@
                                 
                             </div>
                          
-                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous OBF </div>
+                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?'PPL':'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
                               <div class="mat_previe_box">
                                 <div class="prev_tit">

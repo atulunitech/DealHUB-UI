@@ -280,6 +280,7 @@ class editObf{
   _solution_category_id:number;
   _loi_po_details:string;
   _payment_term_desc:string;
+  _version_name:string;
 }
  class approveRejectModel
 {
