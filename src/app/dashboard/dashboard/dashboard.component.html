@@ -11,10 +11,13 @@
       id="SearchDate"
       (change)="change($event)"  /> -->
   <div class="dash_date_wrp">
-    <div class="d_icon"><img src="assets/images/date_icon.JPG"></div>
+    <div class="d_icon ngx-daterangepicker-action" (click)="openDatepicker()" ><img class="ngx-daterangepicker-action" (click)="openDatepicker()" src="assets/images/date_icon.JPG"></div>
     <input type="text" matInput autocomplete="off"
     ngxDaterangepickerMd
     (datesUpdated)="datesUpdated($event)"
+    [closeOnAutoApply]="true"
+      [autoApply]="true"
+      [linkedCalendars]="true"
     [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
     [(ngModel)]="selected" placeholder="Start Date -- End Date"
     name="daterange"/>

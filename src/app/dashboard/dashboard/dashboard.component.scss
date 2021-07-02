@@ -490,15 +490,22 @@
     background-color: #fff;
     border: solid 1px #eeeeee;
     color: #342e59;
-    @include padding(0,10px,0,10px);
+    overflow: hidden;
+    @include padding(0,0px,0,0px);
     @include margin(initial,10px,initial,0px);
     @include heightwidth(215px,42px);
-    @include flexbox();
+    // @include flexbox();
     @include font-weight(normal);
     @include font-size(0.80);
     .d_icon
     {
         align-items: center;
+        border-left: 1px solid #eeeeee;
+        float: right;
+        height: 42px;
+        display: flex;
+        cursor: pointer;
+        @include padding(0,10px,0,10px);
         @include position(relative,0px,initial,initial,initial);
         @include flexbox();
         
@@ -508,13 +515,15 @@
         }
     }
     input{
-        border-left: solid 1px #eeeeee;
+        width: auto;
+        display: inline-block;
+        height: 42px;
         border-top:transparent;
         border-color: transparent;
         border-left-color: #eeeeee;
         @include padding(0,0px,0,10px);
-        @include margin(0,0px,0,10px);
-        @include heightwidth(100%,initial);
+        @include margin(0,0px,10px,0px);
+       
 
     }
 }
@@ -783,4 +792,10 @@
 ::ng-deep #mat-select-4-panel
 {
     margin-top:19px;
+}
+::ng-deep #cdk-overlay-2
+{
+    right: 34px !important;
+    width: 300px !important;
+    left: auto !important;
 }
