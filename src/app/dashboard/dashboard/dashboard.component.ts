@@ -125,9 +125,9 @@ export class DashboardComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
-  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
+  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
-  open() {
+  openDatepicker() {
     this.picker.open();
   }
   searchwords: string="";
