@@ -159,7 +159,7 @@ export class DashboardComponent implements OnInit {
   dashboardData:any[]=[];
   statusfilter:any[]=[];
   filterdata:any[]=[];
-  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -193,6 +193,14 @@ export class DashboardComponent implements OnInit {
    autocompletearr:any[] = [];
    searchControl = new FormControl();
    filteredOptions: Observable<string[]>;
+
+   @ViewChild(MatSort) sort: MatSort;
+ 
+   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+      this.paginator = mp;
+     
+      }
+  
 
    statusfiltermethod(evt)
    {
@@ -348,6 +356,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+   
     this.cardsearcharray = [];
     this.autocompletearr = [];
     this.dscdsbld = false;
@@ -495,7 +504,7 @@ this.listData=new MatTableDataSource(datefilter);
 }
 
   ngAfterViewInit() {
-    this.listData.sort = this.sort;
+    // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator
 }
 
@@ -909,6 +918,7 @@ downloaddetailFinalAgg(row)
       this.dashboardData=JSON.parse(Result);
        this.BindGridDetails();
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
+      
     },
     (error:HttpErrorResponse)=>{
     
@@ -960,6 +970,7 @@ downloaddetailFinalAgg(row)
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
   this.addColumn(0)
+  //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -986,6 +997,7 @@ downloaddetailFinalAgg(row)
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -998,7 +1010,8 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-
+          this.listData.paginator = this.paginator;
+          this.listData.sort = this.sort;
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
@@ -1007,6 +1020,7 @@ downloaddetailFinalAgg(row)
           //Submitted section
          
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' )
           {
@@ -1018,7 +1032,8 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-        
+          this.listData.paginator = this.paginator;
+          this.listData.sort = this.sort;
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -1026,6 +1041,7 @@ downloaddetailFinalAgg(row)
       {
         //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' )
           {
@@ -1037,12 +1053,15 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
         this.listData=new MatTableDataSource(this.filterdata);
+        this.listData.paginator = this.paginator;
+        this.listData.sort = this.sort;
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
       else if(selection==3 )
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='OBF' &&  obj.shortcurrentstatus=='approved')
@@ -1056,7 +1075,8 @@ downloaddetailFinalAgg(row)
           this.getdatafromsearchandfiltereddata();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+        this.listData.paginator = this.paginator;
+        this.listData.sort = this.sort;
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
@@ -1065,6 +1085,7 @@ downloaddetailFinalAgg(row)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
+      
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved')
@@ -1079,7 +1100,8 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-
+        this.listData.paginator = this.paginator;
+        this.listData.sort = this.sort;
         
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
