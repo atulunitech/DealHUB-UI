@@ -634,6 +634,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -655,6 +656,15 @@ class filesdetail
           }
           
             } 
+      }
+    }
+    if(this.role_name=='VSH')
+    {
+      if( this.obfsummaryform.get("MarginException").value==true)
+      {
+        this.obfsummaryform.controls["comments"].markAsTouched();
+        
+        return false;
       }
     }
 
