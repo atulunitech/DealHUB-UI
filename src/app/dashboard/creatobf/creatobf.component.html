@@ -627,6 +627,14 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
+                        Customer Name
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfmodel._customer_name}}
+                      </div>
+                    </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
                         Project Type
                       </div>
                       <div class="prev_dis">
@@ -644,12 +652,21 @@
                  </div>
                  <div class="mat_previe_box">
                   <div class="prev_tit">
-                    Project Primary Location / State
+                    Created BY
                   </div>
                   <div class="prev_dis">
-                    {{_obfservices.obfmodel._dh_location}}
+                    {{User_name}}
                   </div>
                </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                  Vertical 
+                </div>
+                <div class="prev_dis">
+                  {{_obfservices.ObfCreateForm.get('Vertical').value}}
+                </div>
+             </div>
+                
                <div class="mat_previe_box">
                 <div class="prev_tit">
                   Sector
@@ -669,10 +686,10 @@
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
-              Vertical 
+              Project Primary Location / State
             </div>
             <div class="prev_dis">
-              {{_obfservices.ObfCreateForm.get('Vertical').value}}
+              {{_obfservices.obfmodel._dh_location}}
             </div>
          </div>
            <!-- <div class="mat_previe_box">
@@ -683,38 +700,8 @@
               {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
             </div>
           </div> -->
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              Customer Name
-            </div>
-            <div class="prev_dis">
-              {{_obfservices.obfmodel._customer_name}}
-            </div>
-          </div>
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              SAP IO Number
-            </div>
-            <div class="prev_dis">
-              <div class="sap_io_wr" >
-                {{this.SAPIONum }}  
-                <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
-                <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
-                </div>
-                
-              
-            </div>
-         </div>
-         <div class="mat_previe_box">
-          <div class="prev_tit">
-            SAP Customer Code
-          </div>
-          <div class="prev_dis">
-            
-            {{this._obfservices.obfmodel._sap_customer_code}}
-          </div>
-       </div>
+      
+         
         
       
                       </div>
@@ -738,6 +725,14 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
+                        Capex <br>₹ Cr 
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfmodel._capex}}
+                      </div>
+                   </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
                         Total Margin 
                       </div>
                       <div class="prev_dis">
@@ -746,20 +741,21 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
+                      Payment Terms
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.obfmodel._payment_terms}} Days
+                    </div>
+                  </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
                       Total Project Life 
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfmodel._total_project_life}}
                     </div>
                  </div>
-                 <div class="mat_previe_box">
-                  <div class="prev_tit">
-                    Capex <br>₹ Cr 
-                  </div>
-                  <div class="prev_dis">
-                    {{_obfservices.obfmodel._capex}}
-                  </div>
-               </div>
+               
                <div class="mat_previe_box">
                 <div class="prev_tit">
                   EBT % 
@@ -770,7 +766,7 @@
              </div>
              <div class="mat_previe_box">
               <div class="prev_tit">
-                IRR % Surplus Cash
+                IRR %  <br> (Surplus Cash)
               </div>
               <div class="prev_dis">
                 {{_obfservices.obfmodel._irr_surplus_cash}} %
@@ -778,20 +774,13 @@
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
-              IRR % Borrowed <br>Fund
+              IRR %  <br> (Borrowed Fund)
             </div>
             <div class="prev_dis">
               {{_obfservices.obfmodel._irr_borrowed_fund}} %
             </div>
           </div>
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              Payment Terms
-            </div>
-            <div class="prev_dis">
-              {{_obfservices.obfmodel._payment_terms}} Days
-            </div>
-          </div>
+        
           
                       </div>
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp">
@@ -830,6 +819,30 @@
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
                    </div> 
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      SAP IO Number
+                    </div>
+                    <div class="prev_dis">
+                      <div class="sap_io_wr" >
+                        {{this.SAPIONum }}  
+                        <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
+                        <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
+                        </div>
+                        
+                      
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    SAP Customer Code
+                  </div>
+                  <div class="prev_dis">
+                    
+                    {{this._obfservices.obfmodel._sap_customer_code}}
+                  </div>
+               </div>
                        </div>
                        <div fxFlex="auto " class="mat_view_cont">
                         <div class="mat_previe_box">
@@ -933,12 +946,28 @@
                            </div>
                            <div class="mat_previe_box">
                             <div class="prev_tit">
+                              Capex ₹ Cr 
+                            </div>
+                            <div class="prev_dis">
+                              {{_obfservices.editObfObject._capex}}
+                            </div>
+                         </div>
+                           <div class="mat_previe_box">
+                            <div class="prev_tit">
                               Total Margin
                             </div>
                             <div class="prev_dis">
                               {{_obfservices.editObfObject._total_margin}}
                             </div>
                          </div>
+                         <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Payment Terms  
+                          </div>
+                          <div class="prev_dis">
+                            {{_obfservices.editObfObject._payment_terms}} Days
+                          </div>
+                       </div>
                          <div class="mat_previe_box">
                           <div class="prev_tit">
                             Total Project Life
@@ -949,44 +978,31 @@
                        </div>
                        <div class="mat_previe_box">
                         <div class="prev_tit">
-                          IRR % Surplus Cash
+                          EBT % 
+                        </div>
+                        <div class="prev_dis">
+                          {{_obfservices.editObfObject._ebt}}
+                        </div>
+                     </div>
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          IRR % <br/>(Surplus Cash)
                         </div>
                         <div class="prev_dis">
                           {{_obfservices.editObfObject._irr_surplus_cash}}
                         </div>
                      </div>
-                     <div class="mat_previe_box">
-                      <div class="prev_tit">
-                        EBT % 
-                      </div>
-                      <div class="prev_dis">
-                        {{_obfservices.editObfObject._ebt}}
-                      </div>
-                   </div>
-                   <div class="mat_previe_box">
-                    <div class="prev_tit">
-                      Capex ₹ Cr 
-                    </div>
-                    <div class="prev_dis">
-                      {{_obfservices.editObfObject._capex}}
-                    </div>
-                 </div>
+                    
+                 
                  <div class="mat_previe_box">
                   <div class="prev_tit">
-                    IRR % Borrowed Fund  
+                    IRR % <br> (Borrowed Fund)  
                   </div>
                   <div class="prev_dis">
                     {{_obfservices.editObfObject._irr_borrowed_fund}}
                   </div>
                </div>
-               <div class="mat_previe_box">
-                <div class="prev_tit">
-                  Payment Terms  
-                </div>
-                <div class="prev_dis">
-                  {{_obfservices.editObfObject._payment_terms}} Days
-                </div>
-             </div>
+              
                 
                      
                              

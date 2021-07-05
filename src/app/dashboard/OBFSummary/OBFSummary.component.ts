@@ -381,7 +381,7 @@ class filesdetail
     {
      if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
       if(index > -1)
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -634,6 +634,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -656,6 +657,25 @@ class filesdetail
           
             } 
       }
+    }
+    if(this.role_name=='VSH')
+    {
+      
+      if(this.SaveCommentdetail.length == 0)
+      {
+      if(this.obfsummaryform.get("comments").value == "")
+    {
+      this.obfsummaryform.controls["comments"].markAsTouched();
+        return false;
+      
+    }
+    
+    else
+    {
+      this._mesgBox.showError("Please Submit Comment");
+      return false;
+    }
+  }
     }
 
     this._obfservices._approveRejectModel.isapproved=1;
@@ -1451,4 +1471,72 @@ class filesdetail
     this.dialog.closeAll();
    // this.SaveAttachment();
   }
+  Closefrompage()
+  {
+    if(this.role_name=='VSH')
+    {
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='PH')
+    {
+      if(this.obfsummaryform.get("ExceptionCFO").value==true && this.cfomessgae == "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if (this.obfsummaryform.get("ExceptionCEO").value==true && this.CEOmessage == ""){
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CFO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CEO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else{
+      this.router.navigate(['/DealHUB/dashboard']);
+    }
+    }
+  
   }

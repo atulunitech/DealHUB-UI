@@ -237,6 +237,7 @@ export class CreatobfComponent implements OnInit {
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
+  User_name:string="";
   SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -245,6 +246,7 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this.User_name= localStorage.getItem("UserName"); 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -902,8 +904,17 @@ downloadLOIp(event)
 downloadCoversheet(event)
 {
   event.preventDefault();
-  let url = environment.apiUrl+this.coversheetpath;
+  if(this.coversheetpath != "")
+  {
+    let url = environment.apiUrl+this.coversheetpath;
+    window.open(url);
+  }
+ else{
+  let url = environment.apiUrl+this._obfservices.ObfCreateForm.get('coversheet').value;
   window.open(url);
+   
+ }
+  
 }
   
   message: string[] = [];
@@ -1130,7 +1141,7 @@ downloadCoversheet(event)
          this._obfservices.obfmodel._fname =  files[i].name;
          this._obfservices.obfmodel._fpath =  path;
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+    
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
   
@@ -1169,7 +1180,7 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+       
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         
@@ -1895,7 +1906,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");
@@ -2362,7 +2373,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+       this._mesgBox.showSucess("Documents uploaded Successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2483,5 +2494,5 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._sap_customer_code = this._obfservices.ObfCreateForm.get("Sapcustomercode").value;
    // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
   }
-
+  
 }

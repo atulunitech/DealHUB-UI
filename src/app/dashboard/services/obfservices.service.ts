@@ -138,6 +138,8 @@ class uploadDetails{
   ppl_init:number;
   ppl_status:string;
   project_type:string;
+  created_by:string;
+
 
 }
 
