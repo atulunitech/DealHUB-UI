@@ -24,12 +24,17 @@ export class DashboardService {
         DashBoardData);  
 	  }
  
-    uploadImage(image:File) {
+    uploadImage(image:File,types:string) {
       const formData: FormData = new FormData();
        let count=0;
        formData.append('Image', image, image.name);
+       let url = "";
+       if(types == "coversheet")
+       url = environment.apiUrl + '/Api/Auth/UploadObfFile';
+       else
+       url = environment.apiUrl + '/Api/Auth/UploadImage';
        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True'}),observe:"events",reportProgress: true};  
-       return this.http.post(environment.apiUrl + '/Api/Auth/UploadImage', formData,{
+       return this.http.post(url, formData,{
             headers: new HttpHeaders({ 'No-Auth':'True'}),
            reportProgress: true,
            observe: 'events'

@@ -1126,7 +1126,7 @@ class filesdetail
     }
     
     path="";
-    this._dashboardservice.uploadImage(files[i]).subscribe(
+    this._dashboardservice.uploadImage(files[i],"All").subscribe(
       event => {
        
         if(event.type === HttpEventType.UploadProgress)

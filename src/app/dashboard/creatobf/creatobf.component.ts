@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
+import { loginservices } from 'src/app/auth/login/LoginServices';
 
 
 interface Serviceslist {
@@ -204,7 +205,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute,private _loginservice:loginservices) 
   { 
     // this._obfservices.createform();
     // this._obfservices.createnewobfmodelandeditobfmodel();
@@ -232,7 +233,7 @@ export class CreatobfComponent implements OnInit {
   isppl:boolean = false;
   initiateppl:boolean = false;
   reinitiatefordisable:boolean = false;
-
+  key:string="";
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
   LoiPoprogress: any[] = [];
@@ -291,11 +292,28 @@ export class CreatobfComponent implements OnInit {
         this.geteditobfdata(params['dh_id'],params['dh_header_id']);
       }
   });
+  this.getClientKey();
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
    editObfSupportbol:boolean = false;
-
+  
+   getClientKey()
+      {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this._obfservices.obfmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
+     }
+  
   geteditobfdata(dh_id,dh_header_id)
   {
    let editobf:editobfarguement = new editobfarguement();
@@ -1107,7 +1125,7 @@ downloadCoversheet(event)
     }
       
       path="";
-    this._dashboardservice.uploadImage(files[i]).subscribe(
+    this._dashboardservice.uploadImage(files[i],types).subscribe(
       event => {
        // files.splice(i,1);
         if(event.type === HttpEventType.UploadProgress)
@@ -1809,6 +1827,7 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._mode = "insert";
      }
     this._obfservices.obfmodel._service_category = "";
+    this._obfservices.encryptfields();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)

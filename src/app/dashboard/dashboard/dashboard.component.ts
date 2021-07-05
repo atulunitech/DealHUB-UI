@@ -1680,7 +1680,7 @@ downloaddetailFinalAgg(row)
        
         this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
         this.path="";
-        this._dashboardservice.uploadImage(files[i]).subscribe(
+        this._dashboardservice.uploadImage(files[i],"All").subscribe(
           event => {
             if(event.type === HttpEventType.UploadProgress)
             {

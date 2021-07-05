@@ -229,6 +229,7 @@ class obf{
   _solution_category_id:number;
   _loi_po_details:string;
   _payment_term_desc:string;
+  _ClientId:string;
 }
 
 // class previousobf{
@@ -436,7 +437,7 @@ export class OBFServices {
 
   NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[^a-zA-z0-9.,() % &\n +]/;
-    if (control.value && format.test(control.value)) {
+    if ((control.value && format.test(control.value)) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
     return null;
@@ -719,6 +720,9 @@ export class OBFServices {
         });
     
       }
-      
+      // encryptfields()
+      // {
+      //   this.obfmodel.
+      // }
 }
 

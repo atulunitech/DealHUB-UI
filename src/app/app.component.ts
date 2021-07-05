@@ -62,13 +62,15 @@ export class AppComponent {
   //   });  
   // }
   
-    this.bnIdle.startWatching(600).subscribe((isTimedOut: boolean) => {
+    this.bnIdle.startWatching(300).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
         if(localStorage.getItem("rememberCurrentUser") != "true")
         {
           let data =new MenuModel();
           data._user_code = localStorage.getItem("UserCode");
          data.token = localStorage.getItem("Token");
+         if(localStorage.getItem("Token").toString() != "")
+         {
           this._commomservices.deletetoken(data).subscribe(data =>{
          let res = JSON.parse(data);
       if(res.result == "Success")
@@ -82,6 +84,7 @@ export class AppComponent {
         this.router.navigate(['/']);
       }
     });  
+  }
         }
       }
     });
