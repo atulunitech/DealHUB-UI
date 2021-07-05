@@ -237,6 +237,7 @@ export class CreatobfComponent implements OnInit {
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
+  User_name:string="";
   SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -245,6 +246,7 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this.User_name= localStorage.getItem("UserName"); 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -1895,7 +1897,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");

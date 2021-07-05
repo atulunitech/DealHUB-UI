@@ -1010,8 +1010,7 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-          this.listData.paginator = this.paginator;
-          this.listData.sort = this.sort;
+          
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
@@ -1032,8 +1031,7 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-          this.listData.paginator = this.paginator;
-          this.listData.sort = this.sort;
+         
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -1053,8 +1051,7 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-        this.listData.paginator = this.paginator;
-        this.listData.sort = this.sort;
+      
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
@@ -1075,8 +1072,7 @@ downloaddetailFinalAgg(row)
           this.getdatafromsearchandfiltereddata();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-        this.listData.paginator = this.paginator;
-        this.listData.sort = this.sort;
+       
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
@@ -1100,9 +1096,7 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-        this.listData.paginator = this.paginator;
-        this.listData.sort = this.sort;
-        
+      
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }
@@ -1124,6 +1118,7 @@ downloaddetailFinalAgg(row)
          this.getdatafromsearchandfiltereddata();
         }
       this.listData=new MatTableDataSource(this.filterdata); 
+     
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
@@ -1145,6 +1140,7 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
          this.listData=new MatTableDataSource(this.filterdata);
+       
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
@@ -1165,7 +1161,7 @@ downloaddetailFinalAgg(row)
          this.getdatafromsearchandfiltereddata();
         }
         this.listData=new MatTableDataSource(this.filterdata);
-
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
@@ -1185,7 +1181,7 @@ downloaddetailFinalAgg(row)
           this.getdatafromsearchandfiltereddata();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+     
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
         
@@ -1206,11 +1202,14 @@ downloaddetailFinalAgg(row)
             this.getdatafromsearchandfiltereddata();
            }
         this.listData=new MatTableDataSource(this.filterdata);
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
       }
     }
-   
+
+    this.listData.paginator = this.paginator;
+    this.listData.sort = this.sort;
   }
  
 
