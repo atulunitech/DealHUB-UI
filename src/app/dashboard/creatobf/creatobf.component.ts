@@ -904,8 +904,17 @@ downloadLOIp(event)
 downloadCoversheet(event)
 {
   event.preventDefault();
-  let url = environment.apiUrl+this.coversheetpath;
+  if(this.coversheetpath != "")
+  {
+    let url = environment.apiUrl+this.coversheetpath;
+    window.open(url);
+  }
+ else{
+  let url = environment.apiUrl+this._obfservices.ObfCreateForm.get('coversheet').value;
   window.open(url);
+   
+ }
+  
 }
   
   message: string[] = [];
@@ -1132,7 +1141,7 @@ downloadCoversheet(event)
          this._obfservices.obfmodel._fname =  files[i].name;
          this._obfservices.obfmodel._fpath =  path;
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+    
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
   
@@ -1171,7 +1180,7 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+       
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         
