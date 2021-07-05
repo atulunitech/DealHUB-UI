@@ -245,12 +245,16 @@
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                             <div fxFlex="auto " class="mat_upload_in_wr">
-                              <div class="mat_upload_tit">
+                               <!-- <div class="mat_upload_tit">
                                 <div class="cus_check">
                                 <mat-checkbox  class="example-margin" (change)="Supportcheckboxchange($event)" [checked]="checked_d" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
+                              </div> -->
+                              <div class="mat_upload_tit">
+                                Supporting Document
                               </div>
-                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked">
+                              <!-- <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked"> -->
+                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" >
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">

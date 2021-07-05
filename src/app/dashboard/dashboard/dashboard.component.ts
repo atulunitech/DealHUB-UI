@@ -243,6 +243,22 @@ export class DashboardComponent implements OnInit {
  this.listData.paginator = this.paginator;
     }
    }
+   bindfilterobject:any[]=[];
+   bindfilterobjectoninit()
+   {
+     let keyarray = ["Opp_Id","Project_Name","customer_name","dh_location","Vertical_name","sap_customer_code","sector_name","subsector_name","solutioncategory_name"];
+     keyarray.forEach(val =>{
+      let res = this.returncolumnvalue(val.toString()); 
+      res = res.filter((item, i, ar) => ar.indexOf(item) === i);
+      res.forEach(valnew =>{
+        let obj = {key:val,value:valnew};
+        this.bindfilterobject.push(obj);
+      });
+     });
+     //this.bindfilterobject = this.bindfilterobject.filter((item, i, ar) => ar.indexOf(item) === i);
+     console.log("get filtered object");
+     console.log(this.bindfilterobject);
+   }
   selectfilter(evt)
   {
     //this.keys = [];
@@ -532,6 +548,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.dateselected = false;
+    this.bindfilterobject = [];
     this.startdate= null;
     this.enddate=null;
     this.cardsearcharray = [];
@@ -1213,6 +1230,7 @@ downloaddetailFinalAgg(row)
       this.getcounts(this.dashboardData);
        this.BindGridDetails();
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
+       this.bindfilterobjectoninit();
     },
     (error:HttpErrorResponse)=>{
     

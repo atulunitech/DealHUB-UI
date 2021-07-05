@@ -1468,7 +1468,7 @@ downloadCoversheet(event)
         if(index > -1)
         {
           domain = this.domainlist[index].value.toString().trim();
-          if(this.initiateppl)
+          if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
@@ -1492,7 +1492,7 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
-        if(this.initiateppl)
+        if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name.trim())
             {
@@ -1511,6 +1511,16 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
+      if(this.reinitiateobf && this.isppl)
+          {
+            if(ws.E5.w.toString().trim() != this._obfservices.editObfObject._customer_name.toString().trim())
+            {
+              this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
       this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
       this._obfservices.obfmodel._customer_name = ws.E5.w;
     }
@@ -1550,7 +1560,7 @@ downloadCoversheet(event)
               this.iscoversheet = !this.iscoversheet;
               return false;
       }
-      if(this.initiateppl)
+      if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location.toString().trim())
             {
@@ -1581,11 +1591,21 @@ downloadCoversheet(event)
            return false; 
      }
       let verticalid = parseInt(result[0].value.toString());
-      if(verticalid == 6 || verticalid == 8)
+      if(verticalid == 8)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network or Enterprise Mobility");
+          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+        }
+      }
+      if(verticalid == 6)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1827,7 +1847,8 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._mode = "insert";
      }
     this._obfservices.obfmodel._service_category = "";
-    this._obfservices.encryptfields();
+    // this._obfservices.encryptfields();
+   this.obfmodelforencryption();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)
@@ -2411,7 +2432,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
 
       this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
-        
+      this.obfmodelforencryption();
       let val =  this.validateform();
       if(val)
     {
@@ -2434,7 +2455,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       (error:HttpErrorResponse)=>{
         this._mesgBox.showError(error.message);
         //alert(error.message);
-      })
+      });
     }
       }
     else
@@ -2543,6 +2564,23 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   {
     this._obfservices.obfmodel._sap_customer_code = this._obfservices.ObfCreateForm.get("Sapcustomercode").value;
    // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
+  }
+
+  obfmodelforencryption()
+  {
+    this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._sap_customer_code = this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
+
+  }
+
+  randomIntFromInterval(min, max) { // min and max included 
+    let randnum =  Math.floor(Math.random() * (max - min + 1) + min);
+    //let len = randnum.toString().length;
+   // return randnum.toString().trim() + (len + 1).toString().trim();
+   return randnum.toString().trim();
   }
 
 }
