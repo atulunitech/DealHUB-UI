@@ -660,12 +660,22 @@ class filesdetail
     }
     if(this.role_name=='VSH')
     {
-      if( this.obfsummaryform.get("MarginException").value==true)
+      
+      if(this.SaveCommentdetail.length == 0)
       {
-        this.obfsummaryform.controls["comments"].markAsTouched();
-        
+      if(this.obfsummaryform.get("comments").value == "")
+    {
+      this.obfsummaryform.controls["comments"].markAsTouched();
         return false;
-      }
+      
+    }
+    
+    else
+    {
+      this._mesgBox.showError("Please Submit Comment");
+      return false;
+    }
+  }
     }
 
     this._obfservices._approveRejectModel.isapproved=1;
