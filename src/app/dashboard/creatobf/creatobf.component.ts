@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
+import { loginservices } from 'src/app/auth/login/LoginServices';
 
 
 interface Serviceslist {
@@ -164,9 +165,11 @@ export interface Solutiongroup {
 export class CreatobfComponent implements OnInit {
 
   sectorlist:sectors[] = [];
+  branchlist:verticallist[]=[];
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
+  declarations:string = "";
     coversheetpath:string="";
     loipopath:string="";
     supportdocpath:string="";
@@ -202,7 +205,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute,private _loginservice:loginservices) 
   { 
     // this._obfservices.createform();
     // this._obfservices.createnewobfmodelandeditobfmodel();
@@ -230,7 +233,7 @@ export class CreatobfComponent implements OnInit {
   isppl:boolean = false;
   initiateppl:boolean = false;
   reinitiatefordisable:boolean = false;
-
+  key:string="";
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
   LoiPoprogress: any[] = [];
@@ -247,6 +250,8 @@ export class CreatobfComponent implements OnInit {
   ngOnInit(): void {
     //this._obfservices.createform();
     this.User_name= localStorage.getItem("UserName"); 
+    this.declarations = "This OBF is without LOI / PO";
+    this.branchlist = [];
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -289,11 +294,28 @@ export class CreatobfComponent implements OnInit {
         this.geteditobfdata(params['dh_id'],params['dh_header_id']);
       }
   });
+  this.getClientKey();
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
    editObfSupportbol:boolean = false;
-
+  
+   getClientKey()
+      {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this._obfservices.obfmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
+     }
+  
   geteditobfdata(dh_id,dh_header_id)
   {
    let editobf:editobfarguement = new editobfarguement();
@@ -343,6 +365,8 @@ export class CreatobfComponent implements OnInit {
     this.supportchecked = true;
     this.checked_d = false;
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+    this.supportchecked = true;
+    this.checked_d = false;
   }
   
  
@@ -408,27 +432,37 @@ export class CreatobfComponent implements OnInit {
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
        console.log(this._obfservices.obfmodel);
-      //  this.reinitiatefordisable = this.reinitiateobf;
        if(this.editorcreateobfstring.trim() == "Re-initiate OBF")
        {
-         this.reinitiatefordisable = false; 
+        this.reinitiatefordisable = false; 
        }
        else
        {
-         this.reinitiatefordisable = this.reinitiateobf;
-       }
+       this.reinitiatefordisable = this.reinitiateobf;
+      }
        if(this.reinitiatefordisable)
        {
         this._obfservices.ObfCreateForm.controls['otherservices'].disable();
       this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
       this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      if(this._obfservices.obfmodel._sap_customer_code != null && this._obfservices.obfmodel._sap_customer_code != "")
+      {
       this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
+      }
        }
       //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
       //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
       //  console.log(this._obfservices.ObfCreateForm.controls["Vertical"])
       //  this._obfservices.ObfCreateForm.controls["Vertical"].setValue("alpha");
       //  console.log(this._obfservices.ObfCreateForm.value);
+      if(this.isppl)
+      {
+        this.declarations="This PPL is without LOI / PO"; 
+      }
       if(this.initiateppl)
       {
         this.removeuploadfilesforinitiateppl();
@@ -458,7 +492,6 @@ export class CreatobfComponent implements OnInit {
       this._mesgBox.showError("SAP IO number already exists");
         return;
     }
-    
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
@@ -538,6 +571,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
        this.domainlist = res.domains;
+       this.branchlist = res.branch;
        if(this.isEditObf)
        {
          this.editobfinitialization();
@@ -1061,6 +1095,7 @@ downloadCoversheet(event)
 
 	}
   SaveAttachmentParameter:SaveAttachmentParameter;
+  finalsupportarray:any[]=[];
   uploadfiles(files:File[],types)
   {
     let val = true;
@@ -1103,9 +1138,9 @@ downloadCoversheet(event)
     }
       
       path="";
-    this._dashboardservice.uploadImage(files[i]).subscribe(
+    this._dashboardservice.uploadImage(files[i],types).subscribe(
       event => {
-
+       // files.splice(i,1);
         if(event.type === HttpEventType.UploadProgress)
         {
           console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
@@ -1153,23 +1188,19 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
-         //this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-
-         
+        // this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
-                  
-          if(this.isEditObf)
-                  {​​​​​​​​
+         if(this.isEditObf)
+         {
           let desc = this._obfservices.loipoarray[0] !=undefined?this._obfservices.loipoarray[0]._description:"";
-          let index = this._obfservices.obfmodel.Attachments.findIndex(obj=>obj._description == desc);
+          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == desc);
           if(index > -1)
-                    {​​​​​​​​
-          this._obfservices.obfmodel.Attachments.splice(index,1);
-                    }​​​​​​​​
-                  }​​​​​​​​
-          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-
+           {
+            this._obfservices.obfmodel.Attachments.splice(index,1);
+           }
+         }
+         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(types == "support")
         {
@@ -1182,8 +1213,14 @@ downloadCoversheet(event)
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
        
          console.log(this._obfservices.ObfCreateForm);
+         let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
+         if(index > -1)
+         {}
+         else{
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-        
+        }
+        this.finalsupportarray.push(this.SupportPoprogress[i]);
+        files.splice(i,1);
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        
@@ -1374,6 +1411,12 @@ downloadCoversheet(event)
 
   removeprogresscoversheet()
   {
+    // console.log(this._obfservices.obfmodel);
+    // //let filepath = this._obfservices.obfmodel._fpath;
+    // let filepath =  this.coversheetpath;
+    // this._obfservices.deletefile(this._obfservices.obfmodel._fpath).subscribe(res =>{
+    //    alert("hello world");
+    // });
     this.coversheetfiles =[];
     this.Coversheetprogress = [];
     this._obfservices.obfmodel._fname = "";
@@ -1438,7 +1481,7 @@ downloadCoversheet(event)
         if(index > -1)
         {
           domain = this.domainlist[index].value.toString().trim();
-          if(this.initiateppl)
+          if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
@@ -1462,7 +1505,7 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
-        if(this.initiateppl)
+        if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name.trim())
             {
@@ -1481,6 +1524,16 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
+      if(this.reinitiateobf && this.isppl)
+          {
+            if(ws.E5.w.toString().trim() != this._obfservices.editObfObject._customer_name.toString().trim())
+            {
+              this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
       this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
       this._obfservices.obfmodel._customer_name = ws.E5.w;
     }
@@ -1511,7 +1564,16 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
-      if(this.initiateppl)
+      let branchname:string = ws.E7.w;
+      let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim() == branchname.toString().trim().toUpperCase());
+      if(indexbranch == -1)
+      {
+        this._mesgBox.showError("Branch location is not correct, kindly check");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+      }
+      if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
             if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location.toString().trim())
             {
@@ -1542,11 +1604,21 @@ downloadCoversheet(event)
            return false; 
      }
       let verticalid = parseInt(result[0].value.toString());
-      if(verticalid == 6 || verticalid == 8)
+      if(verticalid == 8)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network or Enterprise Mobility");
+          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+        }
+      }
+      if(verticalid == 6)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1689,6 +1761,17 @@ downloadCoversheet(event)
         this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
         this._obfservices.obfmodel._loi_po_details = ws.D18.w;
       }
+
+      if(this.editorcreateobfstring.trim() == "Revise PPL")
+       {
+        if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim() == this._obfservices.editObfObject._payment_terms.toString().trim()) 
+       {
+        this._mesgBox.showError("Details are same as of previous PPL");
+        this.coversheetfiles = [];
+        this.iscoversheet = !this.iscoversheet;
+        return false;
+       } 
+      }
      
       if(count > 0)
       {
@@ -1778,6 +1861,8 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._mode = "insert";
      }
     this._obfservices.obfmodel._service_category = "";
+    // this._obfservices.encryptfields();
+   this.obfmodelforencryption();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)
@@ -2361,7 +2446,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
 
       this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
-        
+      this.obfmodelforencryption();
       let val =  this.validateform();
       if(val)
     {
@@ -2384,7 +2469,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       (error:HttpErrorResponse)=>{
         this._mesgBox.showError(error.message);
         //alert(error.message);
-      })
+      });
     }
       }
     else
@@ -2494,5 +2579,22 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._sap_customer_code = this._obfservices.ObfCreateForm.get("Sapcustomercode").value;
    // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
   }
-  
+
+  obfmodelforencryption()
+  {
+    this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._sap_customer_code = this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
+
+  }
+
+  randomIntFromInterval(min, max) { // min and max included 
+    let randnum =  Math.floor(Math.random() * (max - min + 1) + min);
+    //let len = randnum.toString().length;
+   // return randnum.toString().trim() + (len + 1).toString().trim();
+   return randnum.toString().trim();
+  }
+
 }

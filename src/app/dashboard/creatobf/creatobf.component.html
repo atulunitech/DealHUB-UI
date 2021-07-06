@@ -104,7 +104,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -122,7 +122,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f._fname }}
@@ -184,7 +184,7 @@
                             </div>
                             <div style="margin-top: 5px;position: relative;">
                              <div class="cus_check">
-                                <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">This OBF is without LOI / PO </mat-checkbox>
+                                <mat-checkbox  class="example-margin" formControlName="Selfdeclare" name="selfdec"  (change)="onCheckboxChange($event)" id="selfdec" value="self">{{declarations}} </mat-checkbox>
                               </div> 
                               <!-- <input type="checkbox" formControlName="Selfdeclare" name="selfdec" value="selfdeclared" (change)="onCheckboxChange($event)" id="selfdec" value="self" />
                               <label for="selfdec">This OBF is without LOI / PO </label><br>   -->
@@ -213,7 +213,7 @@
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                   <div class="doc_icon">
-                                    <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                    <img src="assets/images/tick.png" style="margin-right: 15px;">
                                   </div>
                                   <div class="doc_cont" style="position: relative;" >
                                     {{ f.fileName }}
@@ -230,7 +230,7 @@
                                   <ngx-dropzone-label class="drop_lab_cs">
                                     <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                     <div class="doc_icon" >
-                                      <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                      <img src="assets/images/tick.png" style="margin-right: 15px;">
                                     </div>
                                     <div class="doc_cont" style="position: relative;" >
                                       {{ f._fname }}
@@ -245,12 +245,16 @@
                           </div>
                           <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                             <div fxFlex="auto " class="mat_upload_in_wr">
-                              <div class="mat_upload_tit">
+                               <!-- <div class="mat_upload_tit">
                                 <div class="cus_check">
                                 <mat-checkbox  class="example-margin" (change)="Supportcheckboxchange($event)" [checked]="checked_d" [(ngModel)]="checked_d">Supporting Document</mat-checkbox>
                               </div>
+                              </div> -->
+                              <div class="mat_upload_tit">
+                                Supporting Document
                               </div>
-                              <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked">
+                              <!-- <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked"> -->
+                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" >
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -266,7 +270,7 @@
                               <button [disabled]="!(supportfiles.length >0) || isSupport" (click)="uploadfiles(supportfiles,'support')" class="creat_bt" mat-flat-button>Upload</button>
                               
                             </div>
-                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="supportfiles.length > 0 || (editObfcoverbol && _obfservices.supportarray.length > 0)">
+                            <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="supportfiles.length > 0 || (SupportPoprogress.length > 0) || (editObfcoverbol && _obfservices.supportarray.length > 0)">
                               Uploaded Supporting Documents 
                              </div>
                           <div *ngIf="SupportPoprogress.length == 0">
@@ -285,13 +289,25 @@
                             </ngx-dropzone-preview>
                           </div>  
                           <div *ngIf="SupportPoprogress.length > 0">
-                            
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of SupportPoprogress" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,SupportPoprogress)" >
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                </div>
+                                <div class="doc_cont">
+                                  {{ f.name }}
+                                 <!-- <div>{{ f.type }}</div>  -->
+
+                                </div> 
+                              </ngx-dropzone-label>
+                            </ngx-dropzone-preview>
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of finalsupportarray" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,finalsupportarray)" >
+                              
+                              <ngx-dropzone-label class="drop_lab_cs">
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                <div class="doc_icon">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f.fileName }}
@@ -308,7 +324,7 @@
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
-                                  <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
+                                  <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
                                   {{ f._fname }}
@@ -350,7 +366,7 @@
                     
                   </mat-expansion-panel-header>
                   <div class="mat_exp_wrp">
-                    <div class="mat_exp_title">Enter details to create OBF </div>
+                    <div class="mat_exp_title">Enter details to create {{isppl?'PPL':'OBF'}} </div>
                     <div fxLayout="column" fxLayoutAlign=" none" class="mat_fld_box_wrp">
                       <div fxLayout="row" fxLayoutAlign="space-between center">
                         <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
@@ -926,7 +942,7 @@
                                 
                             </div>
                          
-                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous OBF </div>
+                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?'PPL':'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
                               <div class="mat_previe_box">
                                 <div class="prev_tit">

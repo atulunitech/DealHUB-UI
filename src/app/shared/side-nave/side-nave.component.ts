@@ -39,7 +39,7 @@ export class SideNaveComponent implements OnInit {
         active: true,
       },
       { 
-       name: 'Menu 1',
+       name: 'Resetpassword',
        Role:null,
        iconClass: 'user_login_icon.png',
        url:"javascript:void(0)",
@@ -81,6 +81,11 @@ export class SideNaveComponent implements OnInit {
    
    
   }
+
+  resetpassword()
+  {
+    this._commomservices.resetclicked.next(true);
+  }
  
   Logout()
   {
@@ -92,8 +97,10 @@ export class SideNaveComponent implements OnInit {
       if(res.result == "Success")
       {
         //alert("Token deleted");
-        localStorage.setItem("UserCode","");
+      //  localStorage.setItem("UserCode","");
         localStorage.setItem("Token","");
+        localStorage.setItem("RequestId","");
+        localStorage.setItem("userToken","");
         this.router.navigate(['/']);
       }
     });  
@@ -121,6 +128,12 @@ export class SideNaveComponent implements OnInit {
     if(this.menus[index].name=='Logout')
     {
         this.Logout();
+    }
+    
+    if(this.menus[index].name=='Resetpassword')
+    {
+     
+        this.resetpassword();
     }
 
   }

@@ -48,11 +48,17 @@
         
        <div class="search_con">
         <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
-         <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto">
+         <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
          <mat-autocomplete #auto="matAutocomplete" >
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)">
+          <!-- <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)"> -->
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" >
+            <div>
+              <mat-checkbox [checked]="false" (change)="toggleSelection($event,option)" (click)="$event.stopPropagation()">
             {{option}}
+          </mat-checkbox>
+          </div>
           </mat-option>
+          <button (click)="filterdatafinal()">filterrrrrrr</button>
         </mat-autocomplete>
         
        </div>
@@ -60,6 +66,7 @@
         <mat-icon>close</mat-icon>
       </button>
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+      
      </div>
      <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" 
      routerLink="/DealHUB/dashboard/Obf" >
@@ -274,7 +281,7 @@
               <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
                " *matCellDef="let row" >
                 <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
-                <button mat-flat-button class="creat_bt approv_bt"  *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell>
+                <button mat-flat-button class="creat_bt approv_bt" *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reviseppl(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -424,7 +431,7 @@
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
           <input placeholder="SAP IO ..." 
-          type="number"
+          type="text"
           formControlName="Sapio"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -433,6 +440,9 @@
         </mat-chip-list>
         <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
           SAP IO Number length must be <strong>8 digits</strong>
+        </mat-error>
+        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
+          Only numbers are allowed
         </mat-error>
                   </mat-form-field>
                   
@@ -543,4 +553,65 @@
       </mat-dialog-content>
       
       </ng-template>
+  </div>
+  <div>
+    <ng-template #resetDialog>
+      <form [formGroup]="loginvalid">
+      <mat-dialog-content class="mat-typography">
+        <div>
+          <p class="to_account">Sign in to your dealHUB account with 
+              the provided credential </p>
+         
+              <div>
+                <div>
+                  <div class="mt-cust-fd"  >
+                      <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label>Current Password</mat-label>
+                          <input matInput type="password" formControlName="CurrentPassword" autocomplete="off">
+                              <mat-error *ngIf="checkError('CurrentPassword', 'required')">Current Password is required</mat-error>
+                              <!-- <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error> -->
+                              <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
+                        </mat-form-field>
+                    </div>
+              </div>
+                  <div>
+                      <div class="mt-cust-fd"  >
+                          <mat-form-field appearance="fill" class="example-full-width">
+                              <mat-label>New Password</mat-label>
+                              <input matInput type="password" formControlName="NewPassword" autocomplete="off">
+                                  <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
+                                  <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
+                                  <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
+                            </mat-form-field>
+                        </div>
+                  </div>
+                  <div>
+                      <div class="mt-cust-fd"  >
+                          <mat-form-field appearance="fill" class="example-full-width">
+                              <mat-label>Confirm Password</mat-label>
+                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
+                                  <mat-error *ngIf="checkError('confirmpassword', 'required')">Confirm password is required</mat-error>
+                                  <mat-error *ngIf="loginvalid.hasError('notSame')">
+                                      Passwords do not match
+                                    </mat-error> 
+                            </mat-form-field>
+                        </div>
+                  </div>
+                  <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
+                   
+                      <div><button mat-flat-button class="cus_bt" color="primary" [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button></div>
+                  </div> -->
+      
+               
+           </div>
+          
+
+      </div>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
+      </mat-dialog-actions>
+    </form>
+    </ng-template>
   </div>
