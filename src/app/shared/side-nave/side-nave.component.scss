@@ -92,6 +92,25 @@
       }
     }
   }
+  &.acc_out_wr_open
+  {
+    .accordion
+    {
+      .active
+      {
+        .menu{
+          background-color: #e5eeff;
+          margin-left: 5px;
+          margin-right: 5px;
+          border-radius: 5px;
+          .m_icon
+          {
+            padding-left: 8px;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* Show submenu */

@@ -6,7 +6,7 @@
 </div>
 
 
-    <div  class="acc_out_wr">
+    <div  class="acc_out_wr" [ngClass]="this._commomservices.menu_status ? 'acc_out_wr_open' : 'acc_out_wr_close'">
         <ul class="accordion" >
             <li *ngFor="let menu of menus; let i = index" 
               [class.active]="menu.active">

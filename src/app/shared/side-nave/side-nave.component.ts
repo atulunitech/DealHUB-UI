@@ -124,7 +124,7 @@ export class SideNaveComponent implements OnInit {
     }
 
   }
-  constructor(private menuservice:SidenavService,private router: Router,private _commomservices:CommonService) { }
+  constructor(private menuservice:SidenavService,private router: Router,public _commomservices:CommonService) { }
   GetMenus()
   {
     this._menumodel._user_code=localStorage.getItem("UserCode");
