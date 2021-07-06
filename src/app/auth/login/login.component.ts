@@ -19,6 +19,7 @@ export class LoginModel
   _attempt:string;
   role_name:string;
   UserName:string;
+  _ClientId:string;
 }
 //endregion
 
@@ -49,20 +50,20 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+      this.key = "";
     //Password Secret key 
-    let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    localStorage.setItem("Token","");
-     this.key = "$!$030!m0l0l"+randomNumber.toString();
-    let plainTextBytes = this.stringtobytes(this.key);
-    this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
+    // let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    // localStorage.setItem("Token","");
+    //  this.key = "$!$030!m0l0l"+randomNumber.toString();
+    // let plainTextBytes = this.stringtobytes(this.key);
+    // this.midval =  btoa(String.fromCharCode(...new Uint8Array(plainTextBytes)));
     
 
 
     // sample comment
     this.loginvalid = new FormGroup({
      
-      userID : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      userID : new FormControl('', [Validators.required,Validators.email,this.NoInvalidCharacters]),
       Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
@@ -70,7 +71,7 @@ export class LoginComponent implements OnInit {
 
     this.ResetPasswordForm=new FormGroup({
 
-      ResetPasswordUserid:new FormControl('',[Validators.required])
+      ResetPasswordUserid:new FormControl('',[Validators.required,Validators.email])
     });
     if(this.ResetPass != true)
     {
@@ -87,11 +88,29 @@ export class LoginComponent implements OnInit {
     
      }
     }
+
+    this.getClientKey();
+  }
+   
+  getClientKey()
+  {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this.loginmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
   }
 
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[<>'"&]/;
-    if (control.value && format.test(control.value)) {
+    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
     return null;
@@ -148,7 +167,7 @@ export class LoginComponent implements OnInit {
   
       //below code is working fine, but commented to show changes in obf
        let encryptedpwd="";
-
+     // alert(this.key);
        encryptedpwd = this.setEncryption(this.key,this.loginvalid.get('Password').value);
 
        this.loginvalid.get('Password').setValue(encryptedpwd);
@@ -156,7 +175,7 @@ export class LoginComponent implements OnInit {
        console.log(this.loginvalid.get('Password').value);
   
       this.loginmodel._user_code=this.loginvalid.get('userID').value;
-      this.loginmodel._SecretKey = this.key;
+     // this.loginmodel._SecretKey = this.key;
       this.loginmodel._attempt = "1";
       this.loginmodel._password=this.loginvalid.get('Password').value;
       this.RememberMe = this.loginvalid.get('RememberMe').value;
@@ -186,6 +205,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("role_name",Result.user.role_name);
         localStorage.setItem("UserName",Result.user.UserName);
         localStorage.setItem("User_Id",Result.user.UserId);
+        localStorage.setItem("RequestId",Result.user.AntiforgeryKey);
         console.log(Result.user.UserName);
         
         

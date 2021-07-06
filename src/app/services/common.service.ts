@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core'
 import {HttpHeaders,HttpParams,HttpClient} from '@angular/common/http'
 import {Observable, observable, BehaviorSubject } from 'rxjs'
 import { environment } from 'src/environments/environment';
+import { GetObfMasterParameters } from '../dashboard/services/obfservices.service';
+import { AbstractControl } from '@angular/forms';
+import * as CryptoJS from 'crypto-js'; 
 
 export class notificationDetails
  {
@@ -12,12 +15,18 @@ export class notificationDetails
   tablename:string;
  }
 
+ export class getnotificationparams
+{
+  _user_code:string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
 
   private _loading = new BehaviorSubject<boolean>(false);
+  public resetclicked = new BehaviorSubject<boolean>(false);
   public readonly loading$ = this._loading.asObservable();
   menu_status: boolean = false;
   usercode:string ="";
@@ -30,6 +39,11 @@ export class CommonService {
 
   show() {
     this._loading.next(true);
+  }
+
+  getresetclickedevent():Observable<any>
+  {
+    return this.resetclicked.asObservable();
   }
 
   hide() {
@@ -47,13 +61,24 @@ notification()
 {
   this.notification_view = !this.notification_view;
 }
+// Get_System_Notification(usercode:string)
+//  {
+//   const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+//   params: new HttpParams().set('_user_code', usercode.toString())};
+//   return this.http.get<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
+//      httpOptions);  
+//  }
+
 Get_System_Notification(usercode:string)
  {
-  const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
-  params: new HttpParams().set('_user_code', usercode.toString())};
-  return this.http.get<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
-     httpOptions);  
+  let model:getnotificationparams = new getnotificationparams();
+  model._user_code = usercode;
+  // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),
+  // params: new HttpParams().set('_user_code', usercode.toString())};
+  return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Get_System_Notification",
+  model);  
  }
+
  notificationDetails:notificationDetails[];
  initializeNotification(data:any)
  {
@@ -70,9 +95,8 @@ Get_System_Notification(usercode:string)
   
     Update_System_Notification(model:any)
  {
-    const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
-     return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model ,
-        httpOptions);  
+   // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}) };  
+     return this.http.post<any>(environment.apiUrl+"Api/DashBoard/Update_System_Notification",model );  
  }
 
 deletetoken(usercode:any): Observable<any> {  
@@ -80,4 +104,27 @@ deletetoken(usercode:any): Observable<any> {
   return this.http.post<any>(environment.apiUrl+"Api/Auth/DeleteToken",usercode
      );  
 }
+
+NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+  var format = /[<>()'"/\*;={}`%+^!-]/;
+  if (control.value && format.test(control.value)) {
+    return { 'invalidcharacters': true };
+  }
+  return null;
+}
+
+setEncryption(keys, value){
+  var key = CryptoJS.enc.Utf8.parse(keys);
+  var iv = CryptoJS.enc.Utf8.parse(keys);
+  var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+  {
+      keySize: 256 / 32,
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+  });
+
+  return encrypted.toString();
+}
+
 }
