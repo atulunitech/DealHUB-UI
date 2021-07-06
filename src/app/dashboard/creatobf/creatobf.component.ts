@@ -1848,7 +1848,7 @@ downloadCoversheet(event)
      }
     this._obfservices.obfmodel._service_category = "";
     // this._obfservices.encryptfields();
-   this.obfmodelforencryption();
+  // this.obfmodelforencryption();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)
@@ -2432,7 +2432,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
 
       this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
-      this.obfmodelforencryption();
+    //  this.obfmodelforencryption();
       let val =  this.validateform();
       if(val)
     {
@@ -2570,7 +2570,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   {
     this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._sap_customer_code = this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
     this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
 
