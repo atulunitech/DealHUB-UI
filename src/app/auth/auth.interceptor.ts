@@ -19,7 +19,10 @@ export class AuthInterceptor implements HttpInterceptor {
       this.commonService.show();
         if (req.headers.get('No-Auth') == "True")
         {
-          this.commonService.hide();
+          setTimeout(() => {
+            this.commonService.hide();
+          }, 3500);
+          
             return next.handle(req.clone());
             
         }
@@ -36,7 +39,10 @@ export class AuthInterceptor implements HttpInterceptor {
                     //headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('Token'))
                     headers
                 });
-                this.commonService.hide();
+                setTimeout(() => {
+                  this.commonService.hide();
+                }, 3000);
+                
                 return next.handle(clonedreq).pipe(
                     tap(
                       //this._commomservices.resetclicked.next(false);
@@ -113,9 +119,15 @@ export class AuthInterceptor implements HttpInterceptor {
        
         return next.handle(req).pipe(
             finalize(() => {
+              
               this.dialog.closeAll();
-              this.commonService.hide();
+             
               this.commonService.resetclicked.next(false);
+            //  this.dialog.closeAll();
+            setTimeout(() => {
+              this.commonService.hide();
+            }, 3000);
+            
             })
           );
     }

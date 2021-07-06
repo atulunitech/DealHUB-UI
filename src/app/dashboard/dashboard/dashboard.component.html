@@ -11,10 +11,13 @@
       id="SearchDate"
       (change)="change($event)"  /> -->
   <div class="dash_date_wrp">
-    <div class="d_icon"><img src="assets/images/date_icon.JPG"></div>
+    <div class="d_icon ngx-daterangepicker-action" (click)="openDatepicker()" ><img class="ngx-daterangepicker-action" (click)="openDatepicker()" src="assets/images/date_icon.JPG"></div>
     <input type="text" matInput autocomplete="off"
     ngxDaterangepickerMd
     (datesUpdated)="datesUpdated($event)"
+    [closeOnAutoApply]="true"
+      [autoApply]="true"
+      [linkedCalendars]="true"
     [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
     [(ngModel)]="selected" placeholder="Start Date -- End Date"
     name="daterange"/>
@@ -174,7 +177,8 @@
             </ng-container>
             <ng-container matColumnDef="ApprovalStatus">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Approval Status</mat-header-cell>
-              <mat-cell *matCellDef="let row"  (click)="getapprovalstatus(row)">
+              <mat-cell *matCellDef="let row" >
+                <!-- (click)="getapprovalstatus(row)" -->
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
@@ -247,9 +251,9 @@
                    </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
-                <mat-header-cell style="min-width: auto;padding-left: 10px;
+                <mat-header-cell style="min-width: 120px;padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" style="min-width: auto;padding-left: 10px;
+              <mat-cell *matCellDef="let row" style="min-width: 120px;padding-left: 10px;
                "><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
@@ -272,12 +276,12 @@
             
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
-                <mat-header-cell style="min-width: 250px;padding-left: 10px;
+                <mat-header-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell style="min-width: 250px;padding-left: 10px;
+              <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
                " *matCellDef="let row" >
                 <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
-                <button mat-flat-button class="creat_bt approv_bt" (click)="reviseppl(row)">Revise PPL</button></mat-cell>
+                <button mat-flat-button class="creat_bt approv_bt" *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reviseppl(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

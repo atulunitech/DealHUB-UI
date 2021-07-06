@@ -194,7 +194,7 @@ export class CreatobfComponent implements OnInit {
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";
-
+  projecttype:string="";
   pokemonControl = new FormControl();
   Solutionservicesarray:Solutionservices[] =[];
   Subsecotarray:subsecorlist[] =[];
@@ -240,6 +240,7 @@ export class CreatobfComponent implements OnInit {
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
+  User_name:string="";
   SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -248,6 +249,7 @@ export class CreatobfComponent implements OnInit {
 
   ngOnInit(): void {
     //this._obfservices.createform();
+    this.User_name= localStorage.getItem("UserName"); 
     this.declarations = "This OBF is without LOI / PO";
     this.branchlist = [];
     this._obfservices.createform();
@@ -266,7 +268,7 @@ export class CreatobfComponent implements OnInit {
     this.detailstickdisabled = true;
     this.getcreateobfmasters();
     this.getsolutionmaster();
-    this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
+    this.today=this.datepipe.transform(this.today);
     this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
       status => this.SAPIOchiplist.errorState = status === 'INVALID'
     );
@@ -465,6 +467,8 @@ export class CreatobfComponent implements OnInit {
       {
         this.removeuploadfilesforinitiateppl();
       }
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
   }
 
   getverticalname(verticallist:verticallist[])
@@ -934,8 +938,17 @@ downloadLOIp(event)
 downloadCoversheet(event)
 {
   event.preventDefault();
-  let url = environment.apiUrl+this.coversheetpath;
+  if(this.coversheetpath != "")
+  {
+    let url = environment.apiUrl+this.coversheetpath;
+    window.open(url);
+  }
+ else{
+  let url = environment.apiUrl+this._obfservices.ObfCreateForm.get('coversheet').value;
   window.open(url);
+   
+ }
+  
 }
   
   message: string[] = [];
@@ -1163,7 +1176,7 @@ downloadCoversheet(event)
          this._obfservices.obfmodel._fname =  files[i].name;
          this._obfservices.obfmodel._fpath =  path;
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+    
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
   
@@ -1198,7 +1211,7 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+       
          console.log(this._obfservices.ObfCreateForm);
          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
          if(index > -1)
@@ -1764,11 +1777,12 @@ downloadCoversheet(event)
       {
         throw new Error();
       }
-      
+     
       console.log("check form values");
       console.log(this._obfservices.ObfCreateForm);
       this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
       //  console.log("MAin DATa: "+this.data);
   
       //  let x = this.data.slice(1);
@@ -1977,7 +1991,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");
@@ -2444,7 +2458,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+       this._mesgBox.showSucess("Documents uploaded Successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{

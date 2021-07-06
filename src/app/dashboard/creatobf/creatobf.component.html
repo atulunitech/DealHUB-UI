@@ -102,7 +102,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
@@ -120,7 +120,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
@@ -211,7 +211,7 @@
                               <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
-                                  <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
+                                  <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
                                   <div class="doc_icon">
                                     <img src="assets/images/tick.png" style="margin-right: 15px;">
                                   </div>
@@ -228,7 +228,7 @@
                                 <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
                                   
                                   <ngx-dropzone-label class="drop_lab_cs">
-                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                    <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                     <div class="doc_icon" >
                                       <img src="assets/images/tick.png" style="margin-right: 15px;">
                                     </div>
@@ -322,7 +322,7 @@
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
-                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;"></div>
+                                <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
                                 <div class="doc_icon" >
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
@@ -374,7 +374,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select solution category *</mat-label>
-                    <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" >
+                    <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" disableOptionCentering>
                       <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="reinitiatefordisable" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
                         {{Solution.Solutioncategory}}
@@ -391,7 +391,7 @@
                             <div class="mt-cust-fd" fxFlex="1 1 100%">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Select type of service/solution category *</mat-label>
-                                <mat-select [formControl]="servicesControl"  [errorStateMatcher]="matcher" multiple  >
+                                <mat-select [formControl]="servicesControl"  [errorStateMatcher]="matcher" multiple disableOptionCentering >
                                   <!-- <mat-option>-- None --</mat-option> -->
                                   <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
                                                 >
@@ -561,7 +561,7 @@
                           </div>
                         </div>
                         </div>
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
                           <div fxLayout="row" fxLayoutAlign="start" fxFlex="100">
                             
                             <div class="mat_fld_box_in" fxFlex="23.2770" >
@@ -593,7 +593,7 @@
                            </div>
                         </div>
                       </div>  -->
-                      <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div class="mat_exp_fot" fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 10px;">
                         <div class="mat_fot_drf">
                           <!-- <button mat-flat-button class="creat_bt mat_fot_bt" [disabled]="_obfservices.ObfCreateForm.invalid || this.isEditObf" (click)="Saveasdraft('details')">SAVE AS DRAFT</button> -->
                           <!-- <button mat-flat-button class="creat_bt mat_fot_bt" *ngIf="!isEditObf" [disabled]="!uploadnotdisabled"  (click)="Saveasdraft('details')">SAVE AS DRAFT</button> -->
@@ -643,44 +643,46 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
-                        SAP IO Number
+                        Customer Name
                       </div>
                       <div class="prev_dis">
-                        <div class="sap_io_wr" >
-                          {{this.SAPIONum }}  
-                          <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
-                          <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
-                          <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
-                          </div>
-                          
-                        
+                        {{_obfservices.obfmodel._customer_name}}
                       </div>
-                   </div>
+                    </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
-                        SAP Customer Code
+                        Project Type
                       </div>
                       <div class="prev_dis">
-                        
-                        {{this._obfservices.obfmodel._sap_customer_code}}
+                        {{projecttype}}
                       </div>
                    </div>
+                  
                    <div class="mat_previe_box">
                     <div class="prev_tit">
                       Created On
                     </div>
                     <div class="prev_dis">
-                      {{this.today }}
+                      {{this.today | date}}
                     </div>
                  </div>
                  <div class="mat_previe_box">
                   <div class="prev_tit">
-                    Project Primary Location / State
+                    Created BY
                   </div>
                   <div class="prev_dis">
-                    {{_obfservices.obfmodel._dh_location}}
+                    {{User_name}}
                   </div>
                </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                  Vertical 
+                </div>
+                <div class="prev_dis">
+                  {{_obfservices.ObfCreateForm.get('Vertical').value}}
+                </div>
+             </div>
+                
                <div class="mat_previe_box">
                 <div class="prev_tit">
                   Sector
@@ -700,28 +702,22 @@
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
-              Vertical 
+              Project Primary Location / State
             </div>
             <div class="prev_dis">
-              {{_obfservices.ObfCreateForm.get('Vertical').value}}
+              {{_obfservices.obfmodel._dh_location}}
             </div>
          </div>
-           <div class="mat_previe_box">
+           <!-- <div class="mat_previe_box">
             <div class="prev_tit">
               Vertical Head
             </div>
             <div class="prev_dis">
               {{_obfservices.ObfCreateForm.get('Verticalhead').value}}
             </div>
-          </div>
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              Customer Name
-            </div>
-            <div class="prev_dis">
-              {{_obfservices.obfmodel._customer_name}}
-            </div>
-          </div>
+          </div> -->
+      
+         
         
       
                       </div>
@@ -745,6 +741,14 @@
                      </div>
                      <div class="mat_previe_box">
                       <div class="prev_tit">
+                        Capex <br>₹ Cr 
+                      </div>
+                      <div class="prev_dis">
+                        {{_obfservices.obfmodel._capex}}
+                      </div>
+                   </div>
+                     <div class="mat_previe_box">
+                      <div class="prev_tit">
                         Total Margin 
                       </div>
                       <div class="prev_dis">
@@ -753,20 +757,21 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
+                      Payment Terms
+                    </div>
+                    <div class="prev_dis">
+                      {{_obfservices.obfmodel._payment_terms}} Days
+                    </div>
+                  </div>
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
                       Total Project Life 
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfmodel._total_project_life}}
                     </div>
                  </div>
-                 <div class="mat_previe_box">
-                  <div class="prev_tit">
-                    Capex <br>₹ Cr 
-                  </div>
-                  <div class="prev_dis">
-                    {{_obfservices.obfmodel._capex}}
-                  </div>
-               </div>
+               
                <div class="mat_previe_box">
                 <div class="prev_tit">
                   EBT % 
@@ -777,7 +782,7 @@
              </div>
              <div class="mat_previe_box">
               <div class="prev_tit">
-                IRR % Surplus Cash
+                IRR %  <br> (Surplus Cash)
               </div>
               <div class="prev_dis">
                 {{_obfservices.obfmodel._irr_surplus_cash}} %
@@ -785,20 +790,13 @@
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
-              IRR % Borrowed <br>Fund
+              IRR %  <br> (Borrowed Fund)
             </div>
             <div class="prev_dis">
               {{_obfservices.obfmodel._irr_borrowed_fund}} %
             </div>
           </div>
-          <div class="mat_previe_box">
-            <div class="prev_tit">
-              Payment Terms
-            </div>
-            <div class="prev_dis">
-              {{_obfservices.obfmodel._payment_terms}} Days
-            </div>
-          </div>
+        
           
                       </div>
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp">
@@ -837,6 +835,30 @@
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
                    </div> 
+                   <div class="mat_previe_box">
+                    <div class="prev_tit">
+                      SAP IO Number
+                    </div>
+                    <div class="prev_dis">
+                      <div class="sap_io_wr" >
+                        {{this.SAPIONum }}  
+                        <!-- {{(SAPNumMore) ? (this.SAPIONum) : (this.SAPIONum) | slice:0:50 }}   -->
+                        <!-- <a href="javascript:;" *ngIf="!SAPNumMore" (click)="SAPNumMore=true"> More...</a>
+                        <a href="javascript:;" *ngIf="SAPNumMore" (click)="SAPNumMore=false">less...</a> -->
+                        </div>
+                        
+                      
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                    SAP Customer Code
+                  </div>
+                  <div class="prev_dis">
+                    
+                    {{this._obfservices.obfmodel._sap_customer_code}}
+                  </div>
+               </div>
                        </div>
                        <div fxFlex="auto " class="mat_view_cont">
                         <div class="mat_previe_box">
@@ -855,18 +877,17 @@
                         Payment Terms Description
                       </div>
                       <div class="prev_dis">
-                        {{(paymentRead) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
-                        <a href="javascript:;" *ngIf="!paymentRead" (click)="paymentRead=true">More...</a>
-                        <a href="javascript:;" *ngIf="paymentRead" (click)="paymentRead=false">less...</a>
+                        {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
+                    
                        </div>
                    </div>
-                   <div class="mat_previe_box">
+                   <!-- <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Project Date
+                      Project Type
                     </div>
-                    <div class="prev_dis">{{this.today }}
+                    <div class="prev_dis">{{ projecttype}}
                      </div>
-                 </div>
+                 </div> -->
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
@@ -941,12 +962,28 @@
                            </div>
                            <div class="mat_previe_box">
                             <div class="prev_tit">
+                              Capex ₹ Cr 
+                            </div>
+                            <div class="prev_dis">
+                              {{_obfservices.editObfObject._capex}}
+                            </div>
+                         </div>
+                           <div class="mat_previe_box">
+                            <div class="prev_tit">
                               Total Margin
                             </div>
                             <div class="prev_dis">
                               {{_obfservices.editObfObject._total_margin}}
                             </div>
                          </div>
+                         <div class="mat_previe_box">
+                          <div class="prev_tit">
+                            Payment Terms  
+                          </div>
+                          <div class="prev_dis">
+                            {{_obfservices.editObfObject._payment_terms}} Days
+                          </div>
+                       </div>
                          <div class="mat_previe_box">
                           <div class="prev_tit">
                             Total Project Life
@@ -957,44 +994,31 @@
                        </div>
                        <div class="mat_previe_box">
                         <div class="prev_tit">
-                          IRR % Surplus Cash
+                          EBT % 
+                        </div>
+                        <div class="prev_dis">
+                          {{_obfservices.editObfObject._ebt}}
+                        </div>
+                     </div>
+                       <div class="mat_previe_box">
+                        <div class="prev_tit">
+                          IRR % <br/>(Surplus Cash)
                         </div>
                         <div class="prev_dis">
                           {{_obfservices.editObfObject._irr_surplus_cash}}
                         </div>
                      </div>
-                     <div class="mat_previe_box">
-                      <div class="prev_tit">
-                        EBT % 
-                      </div>
-                      <div class="prev_dis">
-                        {{_obfservices.editObfObject._ebt}}
-                      </div>
-                   </div>
-                   <div class="mat_previe_box">
-                    <div class="prev_tit">
-                      Capex ₹ Cr 
-                    </div>
-                    <div class="prev_dis">
-                      {{_obfservices.editObfObject._capex}}
-                    </div>
-                 </div>
+                    
+                 
                  <div class="mat_previe_box">
                   <div class="prev_tit">
-                    IRR % Borrowed Fund  
+                    IRR % <br> (Borrowed Fund)  
                   </div>
                   <div class="prev_dis">
                     {{_obfservices.editObfObject._irr_borrowed_fund}}
                   </div>
                </div>
-               <div class="mat_previe_box">
-                <div class="prev_tit">
-                  Payment Terms  
-                </div>
-                <div class="prev_dis">
-                  {{_obfservices.editObfObject._payment_terms}} Days
-                </div>
-             </div>
+              
                 
                      
                              

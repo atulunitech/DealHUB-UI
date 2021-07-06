@@ -159,9 +159,9 @@ export class DashboardComponent implements OnInit {
   enddate:any;
   dateselected:boolean=false;
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
-  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
+  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
-  open() {
+  openDatepicker() {
     this.picker.open();
   }
   searchwords: string="";
@@ -169,13 +169,13 @@ export class DashboardComponent implements OnInit {
   statusfiltercontrol = new FormControl();
   searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'Project_Name'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
-   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
-   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
-   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
-   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
-   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
-   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
-   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
+   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
+   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
+   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
+   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
+   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
 
    
    
@@ -193,7 +193,7 @@ export class DashboardComponent implements OnInit {
   dashboardData:any[]=[];
   statusfilter:any[]=[];
   filterdata:any[]=[];
-  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -230,6 +230,14 @@ export class DashboardComponent implements OnInit {
    autocompletearr:any[] = [];
    searchControl = new FormControl();
    filteredOptions: Observable<string[]>;
+
+   @ViewChild(MatSort) sort: MatSort;
+ 
+   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+      this.paginator = mp;
+     
+      }
+  
 
    statusfiltermethod(evt)
    {
@@ -1282,6 +1290,7 @@ downloaddetailFinalAgg(row)
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
   this.addColumn(0)
+  //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -1322,6 +1331,7 @@ downloaddetailFinalAgg(row)
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -1339,7 +1349,7 @@ downloaddetailFinalAgg(row)
            this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-
+          
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
@@ -1348,6 +1358,7 @@ downloaddetailFinalAgg(row)
           //Submitted section
          
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' )
           {
@@ -1364,7 +1375,7 @@ downloaddetailFinalAgg(row)
             this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-        
+         
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -1372,6 +1383,7 @@ downloaddetailFinalAgg(row)
       {
         //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' )
           {
@@ -1388,12 +1400,14 @@ downloaddetailFinalAgg(row)
             this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
+      
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
       else if(selection==3 )
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='OBF' &&  obj.shortcurrentstatus=='approved')
@@ -1411,7 +1425,7 @@ downloaddetailFinalAgg(row)
           this.getdatafromsearchandfiltereddata();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+       
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
@@ -1420,6 +1434,7 @@ downloaddetailFinalAgg(row)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
+      
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved')
@@ -1440,8 +1455,7 @@ downloaddetailFinalAgg(row)
             this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-
-        
+      
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }
@@ -1468,6 +1482,7 @@ downloaddetailFinalAgg(row)
         this.filterdatafinal();
         }
       this.listData=new MatTableDataSource(this.filterdata); 
+     
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
@@ -1493,6 +1508,7 @@ downloaddetailFinalAgg(row)
             this.filterdatafinal();
            }
          this.listData=new MatTableDataSource(this.filterdata);
+       
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
@@ -1518,7 +1534,7 @@ downloaddetailFinalAgg(row)
          this.filterdatafinal();
         }
         this.listData=new MatTableDataSource(this.filterdata);
-
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
@@ -1543,7 +1559,7 @@ downloaddetailFinalAgg(row)
          this.filterdatafinal();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+     
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
         
@@ -1569,6 +1585,7 @@ downloaddetailFinalAgg(row)
             this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
       }
