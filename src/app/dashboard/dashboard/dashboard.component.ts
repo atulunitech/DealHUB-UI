@@ -566,9 +566,9 @@ export class DashboardComponent implements OnInit {
     this.Dashboardvalid = new FormGroup({
      
     });
-    if(sessionStorage.getItem("privilege_name")!= null)
+    if(localStorage.getItem("privilege_name")!= null)
     {
-      this.privilege_name=sessionStorage.getItem("privilege_name");
+      this.privilege_name=localStorage.getItem("privilege_name");
 
     }
     this.CallDashBoardService();

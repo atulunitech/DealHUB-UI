@@ -62,8 +62,8 @@ export class LoginComponent implements OnInit {
 
     // sample comment
     this.loginvalid = new FormGroup({
-     
-      userID : new FormControl('', [Validators.required,Validators.email,this.NoInvalidCharacters]),
+      // Validators.email,
+      userID : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
@@ -200,7 +200,7 @@ export class LoginComponent implements OnInit {
 
         }
         localStorage.setItem("UserCode",Result.user.UserCode);
-        sessionStorage.setItem("privilege_name",Result.user.privilege_name);
+        localStorage.setItem("privilege_name",Result.user.privilege_name);
         localStorage.setItem("userToken",Result.user.Api_Key);
         localStorage.setItem("role_name",Result.user.role_name);
         localStorage.setItem("UserName",Result.user.UserName);
