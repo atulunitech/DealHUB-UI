@@ -2584,10 +2584,10 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   {
     this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._sap_customer_code = this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
     this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
-
+ 
   }
 
   randomIntFromInterval(min, max) { // min and max included 
