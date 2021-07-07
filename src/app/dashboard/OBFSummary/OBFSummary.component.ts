@@ -24,6 +24,7 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -127,6 +128,7 @@ class filesdetail
       }
       
   ngOnInit(): void {
+    this._obfservices.createnewobfsummarymodel();
     if(localStorage.getItem("privilege_name")!= null)
     {
       this.privilege_name=localStorage.getItem("privilege_name");
@@ -272,7 +274,8 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-   
+   if(this._obfservices.obfsummarymodel.servicelist != undefined)
+   {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
@@ -299,6 +302,8 @@ class filesdetail
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
+   }
+   
   }
   
   GetDetailTimelineHistory(dh_id,dh_header_id)
@@ -1256,7 +1261,11 @@ class filesdetail
   onversionchange(evt,dh_id,dh_header_id)
   {
     // this.SaveCommentdetail=[];
-  
+    //evt.preventDefault();
+    if (evt.isUserInput) {
+
+    alert("dh_id="+ dh_id + "+" +"dh_header_id ="+ dh_header_id)
+
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1267,7 +1276,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-
+      //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
@@ -1408,7 +1417,7 @@ class filesdetail
       alert(error.message);
     }
     );
-  
+    }
   }
   showuploadbutton:boolean=true;
   
