@@ -658,6 +658,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -1483,9 +1484,10 @@ class filesdetail
   }
   Closefrompage()
   {
+
     if(this.role_name=='VSH')
     {
-      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "") 
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1507,7 +1509,7 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
         this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
       }
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1520,7 +1522,7 @@ class filesdetail
     }
     else if(this.role_name=='CFO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1533,7 +1535,7 @@ class filesdetail
     }
     else if(this.role_name=='CEO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1544,8 +1546,17 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
       }
     }
+    
     else{
-      this.router.navigate(['/DealHUB/dashboard']);
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else{
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      
     }
     }
   
