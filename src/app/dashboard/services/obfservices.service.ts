@@ -333,7 +333,10 @@ export class OBFServices {
    // this.previousobfmodel = new previousobf();
     this.servicesarray = [];
   }
-
+  createnewobfsummarymodel()
+  {
+    this.obfsummarymodel=new obfsummary();
+  }
    createform()
    {
     this.ObfCreateForm = new FormGroup({
@@ -383,7 +386,7 @@ export class OBFServices {
   //   return this.http.get<any>(environment.apiUrl+"Api/Manage_OBF/GetMasterOBF",  
   //      httpOptions);  
   // }
-
+   
   GetCreateOBFMasters(usercode: string): Observable<any> {  
     //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'}),params: new HttpParams().set('userid', usercode) };  
     let model:GetObfMasterParameters = new GetObfMasterParameters();

@@ -66,8 +66,8 @@ export class LoginComponent implements OnInit {
 
     // sample comment
     this.loginvalid = new FormGroup({
-     
-      userID : new FormControl('', [Validators.required,Validators.email,this.NoInvalidCharacters]),
+      // Validators.email,
+      userID : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       Password : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       RememberMe:new FormControl("")
     });
