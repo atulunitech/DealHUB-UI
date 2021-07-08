@@ -311,7 +311,8 @@ class filesdetail
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
      var loginresult =Result;
-      this.dashboardData= JSON.parse(Result);
+      // this.dashboardData= JSON.parse(Result);
+      this.dashboardData= Result;
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },

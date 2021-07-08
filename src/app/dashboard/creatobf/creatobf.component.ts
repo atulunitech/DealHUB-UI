@@ -977,7 +977,7 @@ downloadCoversheet(event)
     
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
-    var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
+    var format = /[`!@#$%^*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
      // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
@@ -1492,7 +1492,7 @@ downloadCoversheet(event)
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
-              this._mesgBox.showError("Project type does not matched with the previous version of OBF");
+              this._mesgBox.showError("Project type does not matched with the previous version of "+(this.initiateppl?"OBF":"PPL"));
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -2490,7 +2490,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-       this._mesgBox.showSucess("Documents uploaded Successfully");
+       this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" created successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2656,7 +2656,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     // } else if (val >= 100000) {
     //   val = <number><unknown>(val / 100000).toFixed(2);
     // }
-    if(val > 999.99)
+    if(val > 9999)
     val = <number><unknown>(val / 10000000).toFixed(2);
     return val;
   }
