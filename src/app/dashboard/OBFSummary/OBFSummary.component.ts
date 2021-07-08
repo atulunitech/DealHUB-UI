@@ -1264,7 +1264,7 @@ class filesdetail
     //evt.preventDefault();
     if (evt.isUserInput) {
 
-    alert("dh_id="+ dh_id + "+" +"dh_header_id ="+ dh_header_id)
+   
 
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
