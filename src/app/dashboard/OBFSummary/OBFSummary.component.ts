@@ -149,7 +149,7 @@ class filesdetail
      );
 
      
-     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+   
     
    
   }
@@ -262,7 +262,7 @@ class filesdetail
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
       this.getSAPCode();
-
+      this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
     },
     (error)=>{
       alert(error.message);
@@ -311,7 +311,7 @@ class filesdetail
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
      var loginresult =Result;
-      this.dashboardData= JSON.parse(Result);
+      this.dashboardData= (Result);
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
