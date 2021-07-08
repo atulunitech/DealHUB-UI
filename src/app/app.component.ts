@@ -88,6 +88,19 @@ export class AppComponent {
         }
       }
     });
+
+    // window.addEventListener('storage', (event) => {
+    //   if (event.storageArea == localStorage) {
+    //     let token = localStorage.getItem('Token');
+    //     if(token == undefined || token == "") { // you can update this as per your key
+    //         // DO LOGOUT FROM THIS TAB AS WELL
+    //         alert("logout");
+    //         this.router.navigate(['/']); // If you are using router
+    //         // OR
+    //         //window.location.href = '<home page URL>';
+    //     }
+    //   }
+    // }, false);
   }
 
   

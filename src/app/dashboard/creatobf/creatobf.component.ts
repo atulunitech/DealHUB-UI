@@ -248,6 +248,7 @@ export class CreatobfComponent implements OnInit {
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
+    //this.converttocrore(this.extractonlydgits("1,00,000.65"));
     //this._obfservices.createform();
     this.User_name= localStorage.getItem("UserName"); 
     this.declarations = "This OBF is without LOI / PO";
@@ -294,7 +295,7 @@ export class CreatobfComponent implements OnInit {
         this.geteditobfdata(params['dh_id'],params['dh_header_id']);
       }
   });
-  this.getClientKey();
+  //this.getClientKey();
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
@@ -377,8 +378,14 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         if(this.initiateppl)
+         {
+
+         }else
+         {
          this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+          this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+         }
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -1507,7 +1514,7 @@ downloadCoversheet(event)
       else{
         if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
-            if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name.trim())
+            if(ws.E4.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_project_name.trim().toUpperCase())
             {
               this._mesgBox.showError("Project name does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1526,7 +1533,7 @@ downloadCoversheet(event)
     else{
       if(this.reinitiateobf && this.isppl)
           {
-            if(ws.E5.w.toString().trim() != this._obfservices.editObfObject._customer_name.toString().trim())
+            if(ws.E5.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._customer_name.toString().trim().toUpperCase())
             {
               this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1549,7 +1556,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
       if(this.reinitiateobf)
         {
-          if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+          if(this._obfservices.editObfObject._opportunity_id.toString().trim().toUpperCase() != ws.E6.w.toString().trim().toUpperCase())
           {
             this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
             this.coversheetfiles = [];
@@ -1565,7 +1572,7 @@ downloadCoversheet(event)
     }
     else{
       let branchname:string = ws.E7.w;
-      let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim() == branchname.toString().trim().toUpperCase());
+      let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
       if(indexbranch == -1)
       {
         this._mesgBox.showError("Branch location is not correct, kindly check");
@@ -1575,7 +1582,7 @@ downloadCoversheet(event)
       }
       if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
-            if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location.toString().trim())
+            if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
             {
               this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1594,13 +1601,14 @@ downloadCoversheet(event)
       else{
       this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
       var result = this.verticallist.filter(obj => {
-        return obj.viewValue === (ws.E8 == undefined?"":ws.E8.w);
+        return obj.viewValue.toString().trim().toUpperCase() === (ws.E8 == undefined?"":ws.E8.w.toString().trim().toUpperCase());
       // return obj.viewValue === "E-Commerce";
      });
      if(!(result.length > 0))
      {
        this._mesgBox.showError("Vertical field is not correct, please check.");
        this.coversheetfiles = [];
+       this.iscoversheet = !this.iscoversheet;
            return false; 
      }
       let verticalid = parseInt(result[0].value.toString());
@@ -1674,7 +1682,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
       this._obfservices.obfmodel._dh_desc = ws.D12.w;
     }
-      if(ws.D13 == undefined || ws.D13.w == "#N/A" )
+      if(ws.D13 == undefined || ws.D13.w == "#N/A")
       {
         count +=1;
       }
@@ -1692,13 +1700,21 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
       this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
     }
-      if(ws.H13 == undefined || ws.H13.w == "#N/A" )
+      if(ws.H13 == undefined || ws.H13.w == "#N/A")
       {
         count +=1
       }
       else{
+        if(this.checkifdigitexist(ws.H13.w.toString().trim()))
+        {
+          this._mesgBox.showError("Total margin is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
       this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
-      this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+      // this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+      this._obfservices.obfmodel._total_margin = parseFloat(this.extractonlydgits(ws.H13.w.toString().trim()));
     }
       if(ws.D14 == undefined || ws.D14.w == "#N/A")
       {
@@ -1720,8 +1736,16 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        if(this.checkifdigitexist(ws.D15.w.toString().trim()))
+        {
+          this._mesgBox.showError("Capex is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
         this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
-      this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+      // this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+      this._obfservices.obfmodel._capex = parseFloat(this.extractonlydgits(ws.D15.w.toString().trim()));
       }
       
       this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
@@ -1731,8 +1755,16 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        if(this.checkifdigitexist(ws.H15.w.toString().trim()))
+        {
+          this._mesgBox.showError("Payment terms is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
         this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
-        this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+       // this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+       this._obfservices.obfmodel._payment_terms = parseFloat(this.extractonlydgits(ws.H15.w.toString().trim()));
       }
   
       if(ws.D16 == undefined || ws.D16.w == "#N/A")
@@ -1764,7 +1796,7 @@ downloadCoversheet(event)
 
       if(this.editorcreateobfstring.trim() == "Revise PPL")
        {
-        if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim() == this._obfservices.editObfObject._payment_terms.toString().trim()) 
+        if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim().toUpperCase() == this._obfservices.editObfObject._payment_terms.toString().trim().toUpperCase()) 
        {
         this._mesgBox.showError("Details are same as of previous PPL");
         this.coversheetfiles = [];
@@ -1862,7 +1894,7 @@ downloadCoversheet(event)
      }
     this._obfservices.obfmodel._service_category = "";
     // this._obfservices.encryptfields();
-  // this.obfmodelforencryption();
+   this.obfmodelforencryption();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)
@@ -2446,7 +2478,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
 
       this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
-    //  this.obfmodelforencryption();
+      this.obfmodelforencryption();
       let val =  this.validateform();
       if(val)
     {
@@ -2597,4 +2629,35 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
    return randnum.toString().trim();
   }
 
+  checkifdigitexist(val:string)
+  {
+      let res = val.replace(/[^0-9]/g, '');
+      //alert(res);
+      if(res == '')
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+  }
+
+  extractonlydgits(val:string)
+  {
+      let res = val.replace(/[^0-9.]/g, '');
+      return res;
+  }
+
+   converttocrore(value) {
+    let val = Math.abs(value)
+    // if (val >= 10000000) {
+    //   val = <number><unknown>(val / 10000000).toFixed(2);
+    // } else if (val >= 100000) {
+    //   val = <number><unknown>(val / 100000).toFixed(2);
+    // }
+    if(val > 999.99)
+    val = <number><unknown>(val / 10000000).toFixed(2);
+    return val;
+  }
 }

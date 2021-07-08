@@ -127,9 +127,9 @@ class filesdetail
       }
       
   ngOnInit(): void {
-    if(sessionStorage.getItem("privilege_name")!= null)
+    if(localStorage.getItem("privilege_name")!= null)
     {
-      this.privilege_name=sessionStorage.getItem("privilege_name");
+      this.privilege_name=localStorage.getItem("privilege_name");
 
     }
     this.role_name=localStorage.getItem("role_name");

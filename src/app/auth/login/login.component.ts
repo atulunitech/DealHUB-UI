@@ -50,6 +50,10 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // if(localStorage.getItem("Token") != "")
+    // {
+    //   this.router.navigate(['/DealHUB/dashboard']);
+    // }
       this.key = "";
     //Password Secret key 
     // let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
@@ -200,7 +204,7 @@ export class LoginComponent implements OnInit {
 
         }
         localStorage.setItem("UserCode",Result.user.UserCode);
-        sessionStorage.setItem("privilege_name",Result.user.privilege_name);
+        localStorage.setItem("privilege_name",Result.user.privilege_name);
         localStorage.setItem("userToken",Result.user.Api_Key);
         localStorage.setItem("role_name",Result.user.role_name);
         localStorage.setItem("UserName",Result.user.UserName);

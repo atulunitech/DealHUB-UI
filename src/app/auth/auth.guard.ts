@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
     {
       if(childRoute.url[0] != undefined && childRoute.url[0].path == "Obf")
       {
-        if(sessionStorage.getItem("privilege_name") == "OBF Initiator" || (sessionStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
+        if(localStorage.getItem("privilege_name") == "OBF Initiator" || (localStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
         {
         return true;
          }
