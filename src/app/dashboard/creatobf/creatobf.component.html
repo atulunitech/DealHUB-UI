@@ -254,7 +254,7 @@
                                 Supporting Document
                               </div>
                               <!-- <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked"> -->
-                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" >
+                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.msg" >
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -919,7 +919,7 @@
                           <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
                             <div class="dwn_con_wr">
                               <img  src="assets/images/dwn-load-file.png">
-                              <span><a [href]="sanitize(this._obfservices.ObfCreateForm.get('coversheet').value)" target="_blank" >OBF Sheet</a></span>
+                              <span><a [href]="sanitize(this._obfservices.ObfCreateForm.get('coversheet').value)" target="_blank" >{{isppl?"PPL Sheet":"OBF Sheet"}}</a></span>
                             </div>
                             <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
@@ -942,7 +942,7 @@
                                 
                             </div>
                          
-                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?'PPL':'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
+                            <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?(initiateppl?'OBF':'PPL'):'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
                               <div class="mat_previe_box">
                                 <div class="prev_tit">

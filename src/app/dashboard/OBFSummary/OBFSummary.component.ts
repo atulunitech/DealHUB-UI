@@ -24,6 +24,7 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -117,6 +118,9 @@ class filesdetail
   ServiceMore:boolean=false;
   SAPNumMore:boolean=false;
   disablesavebutton:boolean=true;
+  disableLOIPO:boolean=false;
+  disableSupporting:boolean=false;
+  disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -127,6 +131,7 @@ class filesdetail
       }
       
   ngOnInit(): void {
+    this._obfservices.createnewobfsummarymodel();
     if(localStorage.getItem("privilege_name")!= null)
     {
       this.privilege_name=localStorage.getItem("privilege_name");
@@ -147,7 +152,7 @@ class filesdetail
      );
 
      
-     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+   
     
    
   }
@@ -260,7 +265,44 @@ class filesdetail
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
       this.getSAPCode();
+      this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
 
+      if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined || this._obfservices.obfsummarymodel.AttachmentDetails.length!=0 )
+      {
+        
+        let indexsupp=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+        if(indexsupp >-1)
+        {
+          this.disableSupporting=false;
+        }
+        else{
+         
+          this.disableSupporting=true;
+         
+        }
+        let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+        if(indexofLOI > -1)
+        {
+           this.disableLOIPO=false;
+        }
+        else{
+          this.disableLOIPO=true;
+          
+        }
+        let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+        if(indexofFinal > -1)
+        { this.disablefinalagg=false;
+          }
+        else{
+          this.disablefinalagg=true;
+          
+        }
+      }
+      else{
+        this.disableLOIPO=true;
+        this.disableSupporting=true;
+        this.disablefinalagg=true;
+      }
     },
     (error)=>{
       alert(error.message);
@@ -272,7 +314,8 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-   
+   if(this._obfservices.obfsummarymodel.servicelist != undefined)
+   {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
@@ -299,6 +342,8 @@ class filesdetail
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
+   }
+   
   }
   
   GetDetailTimelineHistory(dh_id,dh_header_id)
@@ -306,7 +351,8 @@ class filesdetail
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
      var loginresult =Result;
-      this.dashboardData= JSON.parse(Result);
+      // this.dashboardData= JSON.parse(Result);
+      this.dashboardData= Result;
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
@@ -653,6 +699,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -1256,7 +1303,11 @@ class filesdetail
   onversionchange(evt,dh_id,dh_header_id)
   {
     // this.SaveCommentdetail=[];
-  
+    //evt.preventDefault();
+    if (evt.isUserInput) {
+
+   
+
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1267,7 +1318,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-
+      //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
@@ -1408,7 +1459,7 @@ class filesdetail
       alert(error.message);
     }
     );
-  
+    }
   }
   showuploadbutton:boolean=true;
   
@@ -1474,9 +1525,10 @@ class filesdetail
   }
   Closefrompage()
   {
+
     if(this.role_name=='VSH')
     {
-      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "") 
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1498,7 +1550,7 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
         this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
       }
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1511,7 +1563,7 @@ class filesdetail
     }
     else if(this.role_name=='CFO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1524,7 +1576,7 @@ class filesdetail
     }
     else if(this.role_name=='CEO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1535,8 +1587,17 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
       }
     }
+    
     else{
-      this.router.navigate(['/DealHUB/dashboard']);
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else{
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      
     }
     }
   

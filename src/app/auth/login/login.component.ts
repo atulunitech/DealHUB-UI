@@ -50,6 +50,10 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // if(localStorage.getItem("Token") != "")
+    // {
+    //   this.router.navigate(['/DealHUB/dashboard']);
+    // }
       this.key = "";
     //Password Secret key 
     // let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
@@ -229,6 +233,7 @@ export class LoginComponent implements OnInit {
           //this._mesgBox.showError("Please Enter Correct Login ID Or Password");
           this.loginmodel._attempt =  (parseInt(this.loginmodel._attempt) +1).toString();
           this._mesgBox.showError(res);
+          this.getClientKey();
         }
         if(error.status !=0)
         {
