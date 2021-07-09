@@ -118,6 +118,9 @@ class filesdetail
   ServiceMore:boolean=false;
   SAPNumMore:boolean=false;
   disablesavebutton:boolean=true;
+  disableLOIPO:boolean=false;
+  disableSupporting:boolean=false;
+  disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
@@ -149,7 +152,7 @@ class filesdetail
      );
 
      
-     this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
+   
     
    
   }
@@ -262,7 +265,44 @@ class filesdetail
       this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       this.getserviceslist();
       this.getSAPCode();
+      this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
 
+      if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined || this._obfservices.obfsummarymodel.AttachmentDetails.length!=0 )
+      {
+        
+        let indexsupp=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+        if(indexsupp >-1)
+        {
+          this.disableSupporting=false;
+        }
+        else{
+         
+          this.disableSupporting=true;
+         
+        }
+        let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+        if(indexofLOI > -1)
+        {
+           this.disableLOIPO=false;
+        }
+        else{
+          this.disableLOIPO=true;
+          
+        }
+        let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+        if(indexofFinal > -1)
+        { this.disablefinalagg=false;
+          }
+        else{
+          this.disablefinalagg=true;
+          
+        }
+      }
+      else{
+        this.disableLOIPO=true;
+        this.disableSupporting=true;
+        this.disablefinalagg=true;
+      }
     },
     (error)=>{
       alert(error.message);
@@ -659,6 +699,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -1484,9 +1525,10 @@ class filesdetail
   }
   Closefrompage()
   {
+
     if(this.role_name=='VSH')
     {
-      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "") 
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1508,7 +1550,7 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
         this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
       }
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1521,7 +1563,7 @@ class filesdetail
     }
     else if(this.role_name=='CFO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1534,7 +1576,7 @@ class filesdetail
     }
     else if(this.role_name=='CEO')
     {
-      if(this.SaveCommentdetail.length==1)
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
       {
         
         this.router.navigate(['/DealHUB/dashboard']);
@@ -1545,8 +1587,17 @@ class filesdetail
         this.router.navigate(['/DealHUB/dashboard']);
       }
     }
+    
     else{
-      this.router.navigate(['/DealHUB/dashboard']);
+      if(this.SaveCommentdetail.length==1 || this.obfsummaryform.get("comments").value != "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else{
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+      
     }
     }
   
