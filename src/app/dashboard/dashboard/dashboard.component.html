@@ -93,7 +93,7 @@
            </div>
         </div>
       </div>
-      <div  class="con_fil_box approved"  (click)="addColumn(1)"  [ngClass]="{'active': highlight==='tab2'}" >
+      <div  class="con_fil_box approved"  [ngClass]="{'active': highlight==='tab2'}" >
         <div class="box_shead" (click)="addColumn(1)"><img src="assets/images/approved.png"></div>
         <div class="fil_hed_tit"   (click)="addColumn(1)" >
           {{((this.privilege_name) == 'OBF Initiator'||(this.privilege_name) == 'PPL Initiator' )? ('Submitted') : ('Approved')}}
@@ -114,7 +114,7 @@
          
         </div>
       </div>
-      <div  class="con_fil_box rejected"  (click)="addColumn(2)"    [ngClass]="{'active': highlight==='tab3'}">
+      <div  class="con_fil_box rejected"    [ngClass]="{'active': highlight==='tab3'}">
         <div class="box_shead" (click)="addColumn(2)"><img src="assets/images/rejected.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(2)" >
           Rejected
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="con_fil_box app_obf" (click)="addColumn(3)"  [ngClass]="{'active': highlight==='tab4'}">
+      <div class="con_fil_box app_obf"   [ngClass]="{'active': highlight==='tab4'}">
         <div class="box_shead"><img src="assets/images/approved_obf.png"></div>
         <div class="fil_hed_tit"  >
           approved obf
@@ -176,9 +176,9 @@
               
             </ng-container>
             <ng-container matColumnDef="ApprovalStatus">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Approval Status</mat-header-cell>
-              <mat-cell *matCellDef="let row" >
-                <!-- (click)="getapprovalstatus(row)" -->
+              <mat-header-cell *matHeaderCellDef mat-sort-header >Approval Status</mat-header-cell>
+              <mat-cell *matCellDef="let row"  (click)="getapprovalstatus(row)">
+                <!--  -->
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
@@ -465,91 +465,107 @@
     <ng-template #callAPIDialog>
     <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
-     
-     <div  fxLayout="row" fxLayoutAlign="space-between start" *ngFor="let details of this.approvalstatusdetail.versiondetail"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
-          <div class="mat_previe_box">
+        <div>
+          <span>
+            <label *ngFor="let details of this.approvalstatusdetail.Approvaldetail">
+              {{details.role_name}}
+            </label>
+          </span>
+        </div>
+        <mat-accordion>
+          <mat-expansion-panel   (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+            <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
+              <mat-panel-title>
+                <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+                  <div class="mat_previe_box">
+                    <div class="prev_tit">
+                     Version
+                    </div>
+                    <div class="prev_dis">
+                     {{details.version_name}}
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                   Code
+                  </div>
+                  <div class="prev_dis">
+                   {{details.dh_code}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                 Date
+                </div>
+                <div class="prev_dis">
+                 {{details.datecreated}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+               Project Name
+              </div>
+              <div class="prev_dis">
+               {{details.dh_project_name}}
+              </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                opportunity Id
+              </div>
+              <div class="prev_dis">
+               {{details.opportunity_id}}
+              </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                Vertical Name
+              </div>
+              <div class="prev_dis">
+               {{details.vertical_name}}
+              </div>
+             </div>
+                </div>
+              </mat-panel-title>
+
+            </mat-expansion-panel-header>
+            <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of filterdataforcomment">
+              <div class="mat_previe_box">
+                <div class="prev_tit">
+                User Name
+                </div>
+                <div class="prev_dis">
+                 {{timeline.username}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+              Timeline
+              </div>
+              <div class="prev_dis">
+               {{timeline.TimeLine}}
+              </div>
+           </div>
+           <div class="mat_previe_box">
             <div class="prev_tit">
-             Current Version
+            Status
             </div>
             <div class="prev_dis">
-             {{details.version_name}}
+             {{timeline.currentstatus}}
             </div>
          </div>
          <div class="mat_previe_box">
           <div class="prev_tit">
-           Code
+          Comments
           </div>
           <div class="prev_dis">
-           {{details.dh_code}}
+           {{timeline.comments}}
           </div>
-       </div>
-       <div class="mat_previe_box">
-        <div class="prev_tit">
-         Date
         </div>
-        <div class="prev_dis">
-         {{details.datecreated}}
-        </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-       Project Name
-      </div>
-      <div class="prev_dis">
-       {{details.dh_project_name}}
-      </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-        opportunity Id
-      </div>
-      <div class="prev_dis">
-       {{details.opportunity_id}}
-      </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-        Vertical Name
-      </div>
-      <div class="prev_dis">
-       {{details.vertical_name}}
-      </div>
-     </div>
-    </div>
-    <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of this.approvalstatusdetail.TimeLine">
-      <div class="mat_previe_box">
-        <div class="prev_tit">
-        User Name
-        </div>
-        <div class="prev_dis">
-         {{timeline.username}}
-        </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-      Timeline
-      </div>
-      <div class="prev_dis">
-       {{timeline.TimeLine}}
-      </div>
-   </div>
-   <div class="mat_previe_box">
-    <div class="prev_tit">
-    Status
-    </div>
-    <div class="prev_dis">
-     {{timeline.currentstatus}}
-    </div>
- </div>
- <div class="mat_previe_box">
-  <div class="prev_tit">
-  Comments
-  </div>
-  <div class="prev_dis">
-   {{timeline.comments}}
-  </div>
-</div>
-    </div>
+            </div>
+          </mat-expansion-panel>
+  </mat-accordion>
+  <br/>
       </mat-dialog-content>
       
       </ng-template>
