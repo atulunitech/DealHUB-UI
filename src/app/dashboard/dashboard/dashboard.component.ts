@@ -118,11 +118,17 @@ class TimeLine
   tablename: string;
 
 }
+class Approvaldetail
+{
+  role_name:string;
+  tablename:string;
+}
  
 class approvalstatusdetail
 {
   versiondetail:versiondetail[];
   TimeLine:TimeLine[];
+  Approvaldetail:Approvaldetail[];
 }
 export class searchfilter{
   value:string;
@@ -1142,10 +1148,11 @@ getapprovalstatus(element)
    panelClass: 'custom-modalbox',
       backdropClass: 'popupBackdropClass',
 })
-this._dashboardservice.GetDashboardProgress(this.dh_id.toString()).subscribe((Result)=>{
+this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header_id.toString()).subscribe((Result)=>{
   var jsondata=JSON.parse(Result);
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
    this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
+   this.approvalstatusdetail.Approvaldetail=jsondata.latestprogress;
 });
 }
 
@@ -1928,12 +1935,12 @@ PPLclick(selection)
   this.selectedcolumn = parseInt(selection);
   // alert(this.autocompletearr.length);
   //this.picker.clear();
-if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
+ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
     {
       //Draft Section.
-      
+      this.filterdata=[];
       this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL')
@@ -1960,7 +1967,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
         //Submitted section
        
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
         {
@@ -1984,7 +1991,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if(selection==2)
     {
       //Rejected
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
         {
@@ -2009,6 +2016,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
     {
+      this.filterdata=[];
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
@@ -2033,16 +2041,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if (selection==1)
     {
        //Approved section
-       this.listData=new MatTableDataSource(this.dashboardData); 
-       this.filterdata=this.dashboardData.filter(obj=>
+       this.filterdata=[];
+      
+       this.filterdata=this.dashboardData.filter(obj=>{
+        if(obj.shortcurrentstatus=='approved' && obj.phase_code=='PPL')
         {
-          if( obj.shortcurrentstatus=='approved' && obj.phase_code=='PPL')
-          {
-            return obj;
-          }
+          return obj;
         }
-       );
-       
+       // obj.shortcurrentstatus=='draft'
+       } );
        if(this.dateselected)
          {
            this.datefilter();
@@ -2059,7 +2066,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if(selection==2)
     {
     
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if( obj.shortcurrentstatus=='Rejected'&& obj.phase_code=='PPL')
@@ -2085,7 +2092,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
    
   }
   this.listData.sort = this.sort;
-this.listData.paginator = this.paginator;
+  this.listData.paginator = this.paginator;
 }
 
 editSubmit()
@@ -2361,5 +2368,10 @@ getattachment(dh_id,dh_header_id)
     this.countparam.approvedpplcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'PPL').length;
    
    }
+  }
+  filterdataforcomment:any[]=[];
+  GetComment(dh_id,dh_header_id)
+  {
+    this.filterdataforcomment =this.approvalstatusdetail.TimeLine.filter(x=>x.dh_header_id==dh_header_id && x.dh_id==dh_id);
   }
 }

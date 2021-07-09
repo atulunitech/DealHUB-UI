@@ -60,11 +60,14 @@ export class DashboardService {
   modeldata);  
  }
  
- GetDashboardProgress(dh_id: string): Observable<any> 
+ GetDashboardProgress(dh_id: string,dh_header_id:string): Observable<any> 
  {
-  const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}),  params: new HttpParams().set('dh_id', dh_id.toString())};  
-  return this.http.get<any>(environment.apiUrl + '/Api/DashBoard/GetDashboardProgress',  
-     httpOptions);  
+  let modeldata:GetOBFSummaryDataVersionWiseParameters  = new GetOBFSummaryDataVersionWiseParameters();
+  modeldata.dh_id=parseInt(dh_id);
+  modeldata.dh_header_id=parseInt(dh_header_id);
+  //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}),  params: new HttpParams().set('dh_id', dh_id.toString())};  
+  return this.http.post<any>(environment.apiUrl + '/Api/DashBoard/GetDashboardProgress',  
+  modeldata);  
 
  }
 }

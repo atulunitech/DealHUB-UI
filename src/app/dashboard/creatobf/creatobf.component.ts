@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { element } from 'protractor';
+import { element, error } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
 import { loginservices } from 'src/app/auth/login/LoginServices';
@@ -1688,8 +1688,17 @@ downloadCoversheet(event)
       }
       else
       {
+        let val = this.converttocrore(this.extractonlydgits(ws.D13.w.toString().trim()),"Total revenue");
+       // alert(parseInt(val.toString()));
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
         this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
-      this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+      // this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+        this._obfservices.obfmodel._total_revenue = val;
       }
       
       if(ws.F13 == undefined || ws.F13.w == "#N/A")
@@ -1697,8 +1706,16 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Total cost");
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
       this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
-      this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+      // this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+      this._obfservices.obfmodel._total_cost = val;
     }
       if(ws.H13 == undefined || ws.H13.w == "#N/A")
       {
@@ -1725,8 +1742,7 @@ downloadCoversheet(event)
         this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
       this._obfservices.obfmodel._total_project_life = ws.D14.w;
       }
-      
-      
+     
       this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
       this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
       this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
@@ -1743,9 +1759,19 @@ downloadCoversheet(event)
             this.iscoversheet = !this.iscoversheet;
             return false;
         }
+
+        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Capex");
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
+
         this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
       // this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
-      this._obfservices.obfmodel._capex = parseFloat(this.extractonlydgits(ws.D15.w.toString().trim()));
+      // this._obfservices.obfmodel._capex = parseFloat(this.extractonlydgits(ws.D15.w.toString().trim()));
+         this._obfservices.obfmodel._capex = val;
       }
       
       this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
@@ -2649,15 +2675,47 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       return res;
   }
 
-   converttocrore(value) {
+   converttocrore(value,type) {
+     try{
+       if(value == "")
+       throw new Error();
     let val = Math.abs(value)
     // if (val >= 10000000) {
     //   val = <number><unknown>(val / 10000000).toFixed(2);
     // } else if (val >= 100000) {
     //   val = <number><unknown>(val / 100000).toFixed(2);
     // }
-    if(val > 9999)
-    val = <number><unknown>(val / 10000000).toFixed(2);
+    if(val < 999)
+    { 
+    }
+    else if(val > 999 && val < 5000)
+    {
+      if(confirm(type+" is considered to be "+val+" crore, do you wish to continue??"))
+      {
+      }
+      else
+      {
+        val = -1;
+      }
+    }
+    else if(val > 5000)
+    {
+      if(confirm(type+" is considered to be "+val+" crore, do you wish to continue??"))
+      {
+      // val = <number><unknown>(val / 10000000).toFixed(2);
+      val = <number><unknown>(val / 10000000);
+      }
+      else
+      {
+       val = -1;
+      }
+    }
     return val;
+  }
+    catch(Error)
+      {
+        this._mesgBox.showError(type+ " is not valid, Kindly check again");
+        return -2; 
+      }
   }
 }
