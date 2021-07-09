@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
+import { loginservices } from 'src/app/auth/login/LoginServices';
 
 
 interface Serviceslist {
@@ -164,9 +165,11 @@ export interface Solutiongroup {
 export class CreatobfComponent implements OnInit {
 
   sectorlist:sectors[] = [];
+  branchlist:verticallist[]=[];
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
+  declarations:string = "";
     coversheetpath:string="";
     loipopath:string="";
     supportdocpath:string="";
@@ -191,7 +194,7 @@ export class CreatobfComponent implements OnInit {
   subsector:string="";
   visiblesubsector:string="";
   visiblesector:string="";
-
+  projecttype:string="";
   pokemonControl = new FormControl();
   Solutionservicesarray:Solutionservices[] =[];
   Subsecotarray:subsecorlist[] =[];
@@ -202,7 +205,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute,private _loginservice:loginservices) 
   { 
     // this._obfservices.createform();
     // this._obfservices.createnewobfmodelandeditobfmodel();
@@ -230,13 +233,14 @@ export class CreatobfComponent implements OnInit {
   isppl:boolean = false;
   initiateppl:boolean = false;
   reinitiatefordisable:boolean = false;
-
+  key:string="";
   editorcreateobfstring:string ="Create OBF";
   Coversheetprogress: any[] = [];
   LoiPoprogress: any[] = [];
   SupportPoprogress: any[] = [];
   isEditObf:boolean = false;
   uploadnotdisabled:boolean = false;
+  User_name:string="";
   SAPNumMore:boolean=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -244,7 +248,11 @@ export class CreatobfComponent implements OnInit {
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
 
   ngOnInit(): void {
+    //this.converttocrore(this.extractonlydgits("1,00,000.65"));
     //this._obfservices.createform();
+    this.User_name= localStorage.getItem("UserName"); 
+    this.declarations = "This OBF is without LOI / PO";
+    this.branchlist = [];
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
@@ -261,7 +269,7 @@ export class CreatobfComponent implements OnInit {
     this.detailstickdisabled = true;
     this.getcreateobfmasters();
     this.getsolutionmaster();
-    this.today=this.datepipe.transform(this.today, 'yyyy/MM/dd');
+    this.today=this.datepipe.transform(this.today);
     this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
       status => this.SAPIOchiplist.errorState = status === 'INVALID'
     );
@@ -287,11 +295,28 @@ export class CreatobfComponent implements OnInit {
         this.geteditobfdata(params['dh_id'],params['dh_header_id']);
       }
   });
+  //this.getClientKey();
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
    editObfSupportbol:boolean = false;
-
+  
+   getClientKey()
+      {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this._obfservices.obfmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
+     }
+  
   geteditobfdata(dh_id,dh_header_id)
   {
    let editobf:editobfarguement = new editobfarguement();
@@ -325,6 +350,7 @@ export class CreatobfComponent implements OnInit {
 
   removeuploadfilesforinitiateppl()
   {
+    this._obfservices.obfmodel.Attachments= [];
     this._obfservices.coversheetarray = [];
     this._obfservices.loipoarray= [];
     this._obfservices.supportarray = [];
@@ -336,7 +362,12 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
     this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
     this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+    this.loiopdisabled = false;  
+    this.supportchecked = true;
+    this.checked_d = false;
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+    this.supportchecked = true;
+    this.checked_d = false;
   }
   
  
@@ -347,8 +378,14 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         if(this.initiateppl)
+         {
+
+         }else
+         {
          this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
-      this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+          this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+         }
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -402,28 +439,43 @@ export class CreatobfComponent implements OnInit {
        console.log(this._obfservices.ObfCreateForm);
        console.log("check object after onload of editobf");
        console.log(this._obfservices.obfmodel);
-      //  this.reinitiatefordisable = this.reinitiateobf;
        if(this.editorcreateobfstring.trim() == "Re-initiate OBF")
        {
-         this.reinitiatefordisable = false; 
+        this.reinitiatefordisable = false; 
        }
        else
        {
-         this.reinitiatefordisable = this.reinitiateobf;
-       }
+       this.reinitiatefordisable = this.reinitiateobf;
+      }
        if(this.reinitiatefordisable)
        {
-         this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+        this._obfservices.ObfCreateForm.controls['otherservices'].disable();
+      this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
+      this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      if(this._obfservices.obfmodel._sap_customer_code != null && this._obfservices.obfmodel._sap_customer_code != "")
+      {
+      this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
+      }
        }
       //   console.log("get vaertdsdsdbdsdbshdsjhdsdksjkdsjkdgjksdgksgdksgdksgdks");
       //  console.log(this._obfservices.ObfCreateForm.get("Vertical").value);
       //  console.log(this._obfservices.ObfCreateForm.controls["Vertical"])
       //  this._obfservices.ObfCreateForm.controls["Vertical"].setValue("alpha");
       //  console.log(this._obfservices.ObfCreateForm.value);
+      if(this.isppl)
+      {
+        this.declarations="This PPL is without LOI / PO"; 
+      }
       if(this.initiateppl)
       {
         this.removeuploadfilesforinitiateppl();
       }
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
   }
 
   getverticalname(verticallist:verticallist[])
@@ -440,7 +492,13 @@ export class CreatobfComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
+    
+    let index  = this._obfservices.obfmodel.sapio.findIndex(obj =>obj._Cust_SAP_IO_Number == parseInt(value.trim()));
+    if(index > -1)
+    {
+      this._mesgBox.showError("SAP IO number already exists");
+        return;
+    }
     // Add our fruit
     if ((value || '').trim()) {
       this._obfservices.ObfCreateForm.get("Sapio").setValue(value);
@@ -520,6 +578,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        this.verticallist =res.vertical;
        this.Verticalheadlist = res.verticalhead;
        this.domainlist = res.domains;
+       this.branchlist = res.branch;
        if(this.isEditObf)
        {
          this.editobfinitialization();
@@ -890,8 +949,17 @@ downloadLOIp(event)
 downloadCoversheet(event)
 {
   event.preventDefault();
-  let url = environment.apiUrl+this.coversheetpath;
+  if(this.coversheetpath != "")
+  {
+    let url = environment.apiUrl+this.coversheetpath;
+    window.open(url);
+  }
+ else{
+  let url = environment.apiUrl+this._obfservices.ObfCreateForm.get('coversheet').value;
   window.open(url);
+   
+ }
+  
 }
   
   message: string[] = [];
@@ -913,7 +981,7 @@ downloadCoversheet(event)
     
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
-    var format = /[`!@#$%^&*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
+    var format = /[`!@#$%^*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
      // console.log("file size of "+element.name+" is "+ this.bytesToSize(element.size));
@@ -1038,6 +1106,7 @@ downloadCoversheet(event)
 
 	}
   SaveAttachmentParameter:SaveAttachmentParameter;
+  finalsupportarray:any[]=[];
   uploadfiles(files:File[],types)
   {
     let val = true;
@@ -1080,9 +1149,9 @@ downloadCoversheet(event)
     }
       
       path="";
-    this._dashboardservice.uploadImage(files[i]).subscribe(
+    this._dashboardservice.uploadImage(files[i],types).subscribe(
       event => {
-
+       // files.splice(i,1);
         if(event.type === HttpEventType.UploadProgress)
         {
           console.log('Upload Progress: '+Math.round(event.loaded/event.total * 100) +"%");
@@ -1118,7 +1187,7 @@ downloadCoversheet(event)
          this._obfservices.obfmodel._fname =  files[i].name;
          this._obfservices.obfmodel._fpath =  path;
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+    
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
   
@@ -1130,9 +1199,19 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fname= files[i].name; 
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = this._obfservices.ObfCreateForm.get("Loipodropdown").value;
-         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
+        // this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
          this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
+         if(this.isEditObf)
+         {
+          let desc = this._obfservices.loipoarray[0] !=undefined?this._obfservices.loipoarray[0]._description:"";
+          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == desc);
+          if(index > -1)
+           {
+            this._obfservices.obfmodel.Attachments.splice(index,1);
+           }
+         }
+         this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(types == "support")
         {
@@ -1143,10 +1222,16 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-         console.log("check dataskjdklsjdjskldjskljdklsjdkljskldjskldjklsd");
+       
          console.log(this._obfservices.ObfCreateForm);
+         let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
+         if(index > -1)
+         {}
+         else{
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
-        
+        }
+        this.finalsupportarray.push(this.SupportPoprogress[i]);
+        files.splice(i,1);
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        
@@ -1337,6 +1422,12 @@ downloadCoversheet(event)
 
   removeprogresscoversheet()
   {
+    // console.log(this._obfservices.obfmodel);
+    // //let filepath = this._obfservices.obfmodel._fpath;
+    // let filepath =  this.coversheetpath;
+    // this._obfservices.deletefile(this._obfservices.obfmodel._fpath).subscribe(res =>{
+    //    alert("hello world");
+    // });
     this.coversheetfiles =[];
     this.Coversheetprogress = [];
     this._obfservices.obfmodel._fname = "";
@@ -1401,11 +1492,11 @@ downloadCoversheet(event)
         if(index > -1)
         {
           domain = this.domainlist[index].value.toString().trim();
-          if(this.initiateppl)
+          if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
-            if(domain != this._obfservices.editObfObject._projecttype)
+            if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
-              this._mesgBox.showError("Project type does not matched with the previous version of OBF");
+              this._mesgBox.showError("Project type does not matched with the previous version of "+(this.initiateppl?"OBF":"PPL"));
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1425,9 +1516,9 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
-        if(this.initiateppl)
+        if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
-            if(ws.E4.w.toString().trim() != this._obfservices.editObfObject._dh_project_name)
+            if(ws.E4.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_project_name.trim().toUpperCase())
             {
               this._mesgBox.showError("Project name does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1444,6 +1535,16 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
+      if(this.reinitiateobf && this.isppl)
+          {
+            if(ws.E5.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._customer_name.toString().trim().toUpperCase())
+            {
+              this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+            }
+          }
       this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
       this._obfservices.obfmodel._customer_name = ws.E5.w;
     }
@@ -1459,7 +1560,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Opportunityid: ws.E6.w});
       if(this.reinitiateobf)
         {
-          if(this._obfservices.editObfObject._opportunity_id != ws.E6.w)
+          if(this._obfservices.editObfObject._opportunity_id.toString().trim().toUpperCase() != ws.E6.w.toString().trim().toUpperCase())
           {
             this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
             this.coversheetfiles = [];
@@ -1474,9 +1575,18 @@ downloadCoversheet(event)
       count +=1;
     }
     else{
-      if(this.initiateppl)
+      let branchname:string = ws.E7.w;
+      let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
+      if(indexbranch == -1)
+      {
+        this._mesgBox.showError("Branch location is not correct, kindly check");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+      }
+      if(this.initiateppl || (this.reinitiateobf && this.isppl))
           {
-            if(ws.E7.w.toString().trim() != this._obfservices.editObfObject._dh_location)
+            if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
             {
               this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
               this.coversheetfiles = [];
@@ -1495,21 +1605,32 @@ downloadCoversheet(event)
       else{
       this._obfservices.ObfCreateForm.patchValue({Vertical: ws.E8.w});
       var result = this.verticallist.filter(obj => {
-        return obj.viewValue === (ws.E8 == undefined?"":ws.E8.w);
+        return obj.viewValue.toString().trim().toUpperCase() === (ws.E8 == undefined?"":ws.E8.w.toString().trim().toUpperCase());
       // return obj.viewValue === "E-Commerce";
      });
      if(!(result.length > 0))
      {
        this._mesgBox.showError("Vertical field is not correct, please check.");
        this.coversheetfiles = [];
+       this.iscoversheet = !this.iscoversheet;
            return false; 
      }
       let verticalid = parseInt(result[0].value.toString());
-      if(verticalid == 6 || verticalid == 8)
+      if(verticalid == 8)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
           this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
+        }
+      }
+      if(verticalid == 6)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1565,14 +1686,23 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Projectbrief: ws.D12.w});
       this._obfservices.obfmodel._dh_desc = ws.D12.w;
     }
-      if(ws.D13 == undefined || ws.D13.w == "#N/A" )
+      if(ws.D13 == undefined || ws.D13.w == "#N/A")
       {
         count +=1;
       }
       else
       {
+        let val = this.converttocrore(this.extractonlydgits(ws.D13.w.toString().trim()),"Total revenue");
+       // alert(parseInt(val.toString()));
+        if(parseInt(val.toString()) == -1)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
         this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
-      this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+      // this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
+        this._obfservices.obfmodel._total_revenue = val;
       }
       
       if(ws.F13 == undefined || ws.F13.w == "#N/A")
@@ -1580,16 +1710,32 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Total cost");
+        if(parseInt(val.toString()) == -1)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
       this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
-      this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+      // this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
+      this._obfservices.obfmodel._total_cost = val;
     }
-      if(ws.H13 == undefined || ws.H13.w == "#N/A" )
+      if(ws.H13 == undefined || ws.H13.w == "#N/A")
       {
         count +=1
       }
       else{
+        if(this.checkifdigitexist(ws.H13.w.toString().trim()))
+        {
+          this._mesgBox.showError("Total margin is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
       this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
-      this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+      // this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
+      this._obfservices.obfmodel._total_margin = parseFloat(this.extractonlydgits(ws.H13.w.toString().trim()));
     }
       if(ws.D14 == undefined || ws.D14.w == "#N/A")
       {
@@ -1611,8 +1757,26 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        if(this.checkifdigitexist(ws.D15.w.toString().trim()))
+        {
+          this._mesgBox.showError("Capex is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
+
+        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Capex");
+        if(parseInt(val.toString()) == -1)
+        {
+          this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
+
         this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
-      this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+      // this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
+      // this._obfservices.obfmodel._capex = parseFloat(this.extractonlydgits(ws.D15.w.toString().trim()));
+         this._obfservices.obfmodel._capex = val;
       }
       
       this._obfservices.ObfCreateForm.patchValue({IRRborrowedfund: ws.F15 == undefined?"":ws.F15.w});
@@ -1622,8 +1786,16 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
+        if(this.checkifdigitexist(ws.H15.w.toString().trim()))
+        {
+          this._mesgBox.showError("Payment terms is not in correct format");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+        }
         this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
-        this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+       // this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
+       this._obfservices.obfmodel._payment_terms = parseFloat(this.extractonlydgits(ws.H15.w.toString().trim()));
       }
   
       if(ws.D16 == undefined || ws.D16.w == "#N/A")
@@ -1652,16 +1824,28 @@ downloadCoversheet(event)
         this._obfservices.ObfCreateForm.patchValue({Loipo: ws.D18.w});
         this._obfservices.obfmodel._loi_po_details = ws.D18.w;
       }
+
+      if(this.editorcreateobfstring.trim() == "Revise PPL")
+       {
+        if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim().toUpperCase() == this._obfservices.editObfObject._payment_terms.toString().trim().toUpperCase()) 
+       {
+        this._mesgBox.showError("Details are same as of previous PPL");
+        this.coversheetfiles = [];
+        this.iscoversheet = !this.iscoversheet;
+        return false;
+       } 
+      }
      
       if(count > 0)
       {
         throw new Error();
       }
-      
+     
       console.log("check form values");
       console.log(this._obfservices.ObfCreateForm);
       this.data = (XLSX.utils.sheet_to_json(ws, { header: 1 }));
-  
+      var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
+      this.projecttype =  tempprojectType[0].viewValue;
       //  console.log("MAin DATa: "+this.data);
   
       //  let x = this.data.slice(1);
@@ -1740,6 +1924,8 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._mode = "insert";
      }
     this._obfservices.obfmodel._service_category = "";
+    // this._obfservices.encryptfields();
+   this.obfmodelforencryption();
     if(type == "details")
     {
       if(this._obfservices.obfmodel._dh_id === 0 || this._obfservices.obfmodel._dh_id != 0)
@@ -1868,7 +2054,7 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");
@@ -2323,7 +2509,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       this._obfservices.obfsumbitmodel._is_submitted = this._obfservices.obfmodel._is_submitted;
 
       this._obfservices.obfmodel._SubmitOBFParameters.push(this._obfservices.obfsumbitmodel);
-        
+      this.obfmodelforencryption();
       let val =  this.validateform();
       if(val)
     {
@@ -2335,7 +2521,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+       this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" created successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2346,7 +2532,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       (error:HttpErrorResponse)=>{
         this._mesgBox.showError(error.message);
         //alert(error.message);
-      })
+      });
     }
       }
     else
@@ -2457,4 +2643,74 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
    // alert("customer code :"+this._obfservices.obfmodel._sap_customer_code );
   }
 
+  obfmodelforencryption()
+  {
+    this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
+ 
+  }
+
+  randomIntFromInterval(min, max) { // min and max included 
+    let randnum =  Math.floor(Math.random() * (max - min + 1) + min);
+    //let len = randnum.toString().length;
+   // return randnum.toString().trim() + (len + 1).toString().trim();
+   return randnum.toString().trim();
+  }
+
+  checkifdigitexist(val:string)
+  {
+      let res = val.replace(/[^0-9]/g, '');
+      //alert(res);
+      if(res == '')
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+  }
+
+  extractonlydgits(val:string)
+  {
+      let res = val.replace(/[^0-9.]/g, '');
+      return res;
+  }
+
+   converttocrore(value,type) {
+    let val = Math.abs(value)
+    // if (val >= 10000000) {
+    //   val = <number><unknown>(val / 10000000).toFixed(2);
+    // } else if (val >= 100000) {
+    //   val = <number><unknown>(val / 100000).toFixed(2);
+    // }
+    if(val < 999)
+    { 
+    }
+    else if(val > 999 && val < 5000)
+    {
+      if(confirm(type+" is considered to be in crore, do you wish to continue??"))
+      {
+      }
+      else
+      {
+        val = -1;
+      }
+    }
+    else if(val > 5000)
+    {
+      if(confirm(type+" is considered to be in crore, do you wish to continue??"))
+      {
+       val = <number><unknown>(val / 10000000).toFixed(2);
+      }
+      else
+      {
+       val = -1;
+      }
+    }
+    return val;
+  }
 }

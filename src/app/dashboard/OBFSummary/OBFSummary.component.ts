@@ -24,6 +24,7 @@ import { MaterialModule } from '../../shared/materialmodule/materialmodule.modul
 import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -127,9 +128,10 @@ class filesdetail
       }
       
   ngOnInit(): void {
-    if(sessionStorage.getItem("privilege_name")!= null)
+    this._obfservices.createnewobfsummarymodel();
+    if(localStorage.getItem("privilege_name")!= null)
     {
-      this.privilege_name=sessionStorage.getItem("privilege_name");
+      this.privilege_name=localStorage.getItem("privilege_name");
 
     }
     this.role_name=localStorage.getItem("role_name");
@@ -183,6 +185,7 @@ class filesdetail
         this.cfomessgae=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo_updatedby;
        
        }
+      
        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
        {
         this.MarginException=true;
@@ -197,6 +200,12 @@ class filesdetail
          this.CFOMess=true;
          this.disableCEOcontrol=true;
          this.CEOmessage=this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_ceo_updatedby;
+        }
+       
+        if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+        {
+         this.MarginException=true;
+         //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
         }
       }
       if(this.role_name=='PH')
@@ -265,7 +274,8 @@ class filesdetail
   {
     this.service="";
     var finalservicecat="";
-   
+   if(this._obfservices.obfsummarymodel.servicelist != undefined)
+   {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
       var tempservicecat="";
@@ -292,6 +302,8 @@ class filesdetail
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
+   }
+   
   }
   
   GetDetailTimelineHistory(dh_id,dh_header_id)
@@ -299,7 +311,8 @@ class filesdetail
     
     this._obfservices.GetDetailTimelineHistory(dh_id,dh_header_id).subscribe(Result=>{
      var loginresult =Result;
-      this.dashboardData= JSON.parse(Result);
+      // this.dashboardData= JSON.parse(Result);
+      this.dashboardData= Result;
       this.listData = new MatTableDataSource(this.dashboardData);
       
     },
@@ -374,7 +387,7 @@ class filesdetail
     {
      if(this._obfservices.obfsummarymodel.AttachmentDetails.length != 0)
     {
-      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO");
+      let index=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
       if(index > -1)
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
@@ -441,6 +454,7 @@ class filesdetail
   today:any=new Date();
   commentVisiable:boolean=false;
   SaveCommentdetail:CommentDetails[] = [];
+  versionName:string='';
   SaveComment()
   {
     if(!this.obfsummaryform.controls.comments.errors)
@@ -458,6 +472,7 @@ class filesdetail
       SaveComment.role_name= this.role_name;
       SaveComment.Status="Pending";
       SaveComment.Version_name=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
+  
       SaveComment.commented_on=  this.today;
       SaveComment.dh_comment=comment;
       SaveComment.role_code=this.role_name;
@@ -468,6 +483,7 @@ class filesdetail
         this.componentRef.directiveRef.scrollToBottom();
        },1000
        );
+       this.versionName=this._obfservices.obfsummarymodel.uploadDetails[0]. Version_name;
 
        //this.componentRef.directiveRef.scrollToBottom(500);
     }
@@ -624,6 +640,7 @@ class filesdetail
           else
           {
             this._mesgBox.showError("Please Submit Comment");
+            return false;
           }
           
             } 
@@ -646,6 +663,25 @@ class filesdetail
           
             } 
       }
+    }
+    if(this.role_name=='VSH')
+    {
+      
+      if(this.SaveCommentdetail.length == 0)
+      {
+      if(this.obfsummaryform.get("comments").value == "")
+    {
+      this.obfsummaryform.controls["comments"].markAsTouched();
+        return false;
+      
+    }
+    
+    else
+    {
+      this._mesgBox.showError("Please Submit Comment");
+      return false;
+    }
+  }
     }
 
     this._obfservices._approveRejectModel.isapproved=1;
@@ -863,7 +899,7 @@ class filesdetail
         
         // this.files = this.supportfiles;
        }
-     
+    // this.Attachments=[];
 		// this.files.push(...event.addedFiles);
   }
   catch(e)
@@ -1116,7 +1152,7 @@ class filesdetail
     }
     
     path="";
-    this._dashboardservice.uploadImage(files[i]).subscribe(
+    this._dashboardservice.uploadImage(files[i],"All").subscribe(
       event => {
        
         if(event.type === HttpEventType.UploadProgress)
@@ -1212,6 +1248,7 @@ class filesdetail
     );
     }
     this.disablesavebutton=false;
+    this.uploadDocfiles=[];
   }
   removeFile(files:filesdetail[],event)
   {
@@ -1224,7 +1261,12 @@ class filesdetail
   }
   onversionchange(evt,dh_id,dh_header_id)
   {
-  
+    // this.SaveCommentdetail=[];
+    //evt.preventDefault();
+    if (evt.isUserInput) {
+
+   
+
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       
       var jsondata=JSON.parse(data);
@@ -1235,7 +1277,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-
+      //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
       var tempdh_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
      var tempdh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
@@ -1276,7 +1318,7 @@ class filesdetail
       else{
         this.disableCFOcontrol=false;
         this.obfsummaryform.controls["ExceptionCFO"].setValue(false);
-    }
+      }
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
       {
        this.MarginException=true;
@@ -1314,7 +1356,11 @@ class filesdetail
         this.disableCEOcontrol=false;
         this.obfsummaryform.controls["ExceptionCEO"].setValue(false);
        }
-       
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested==1)
+       {
+        this.MarginException=true;
+        //this._mesgBox.showUpdate("Margin Exception Requested by VSH.");
+       }
        
      }
      if(this.role_name=='PH')
@@ -1348,15 +1394,31 @@ class filesdetail
         }
      }
     
+     if(this.SaveCommentdetail.length !=0)
+     {
+       var comment =this.obfsummaryform.get("comments").value;
+       if(this._obfservices.obfsummarymodel.uploadDetails[0].Version_name==this.versionName)
+       {
+        this.commentVisiable=true;
+       }
+       else{
+        this.commentVisiable=false;
+       }
+     }
+     this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
       this.getserviceslist();
       this.getSAPCode();
-      this.GetDetailTimelineHistory(tempdh_id,tempdh_header_id);
+      
+      // this.obfsummaryform.controls["comments"].setValue('');
+
+      // this.SaveCommentdetail=[];
+      
     },
     (error)=>{
       alert(error.message);
     }
     );
-    
+    }
   }
   showuploadbutton:boolean=true;
   
@@ -1408,7 +1470,7 @@ class filesdetail
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
     var format = /[<>'"&@$#*^%!()]/;
 
-    if (control.value && format.test(control.value)) {
+    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
      
       return { 'invalidservices': true };
 
@@ -1420,4 +1482,72 @@ class filesdetail
     this.dialog.closeAll();
    // this.SaveAttachment();
   }
+  Closefrompage()
+  {
+    if(this.role_name=='VSH')
+    {
+      if(this.obfsummaryform.get("MarginException").value==true ||  this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='PH')
+    {
+      if(this.obfsummaryform.get("ExceptionCFO").value==true && this.cfomessgae == "")
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if (this.obfsummaryform.get("ExceptionCEO").value==true && this.CEOmessage == ""){
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CFO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else if(this.role_name=='CEO')
+    {
+      if(this.SaveCommentdetail.length==1)
+      {
+        
+        this.router.navigate(['/DealHUB/dashboard']);
+        this._mesgBox.showUpdate("Details are not saved as you have not taken final action.");
+      }
+      else
+      {
+        this.router.navigate(['/DealHUB/dashboard']);
+      }
+    }
+    else{
+      this.router.navigate(['/DealHUB/dashboard']);
+    }
+    }
+  
   }

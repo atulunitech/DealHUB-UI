@@ -63,7 +63,7 @@
             {
                 .mat-expanded
                 {
-                    background-color: rgb(229, 238, 255);
+                    background-color: #F2F2F2;
                 }
               
                
@@ -127,7 +127,7 @@
                     {
                         opacity: 0.83;
                         border-radius: 4px;
-                        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                      //  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
                         background-color: #fafafa;
                         padding: 10px 10px 10px 10px;
                         .mar_exc
@@ -216,7 +216,7 @@
                                 .ng-star-inserted
                                 {
                                     opacity: 9;
-                                    background-color: #fc625d;
+                                    background-color: #FF352C;
                                 }
                                 .drop_lab_cs
                                 {
@@ -391,7 +391,8 @@
                     }
                     &.prm_mat_fld_box_wrp
                     {
-                        background-color: #e5eeff;
+                        // background-color: #e5eeff;
+                        background-color: #F2F2F2;
                         @include margin(initial,-25px,0px,-25px);
                         @include padding(18px,24px,18px,24px);
                         &.color_none_fld
@@ -742,9 +743,9 @@
     }
     .dh_comment
     {
-        @include font-size(0.90);
+        @include font-size(0.85);
         @include font-weight(normal);
-        @include padding(1px,initial,5px,initial);
+        @include padding(5px,initial,6px,initial);
     }
     .Status{
         font-style: italic;
@@ -888,7 +889,7 @@
                                 .ng-star-inserted
                                 {
                                     opacity: 9;
-                                    background-color: #fc625d;
+                                    background-color: #FF352C;
                                     top: 20px;
                                     @include margin(2px,2px,initial,initial); 
                                 }

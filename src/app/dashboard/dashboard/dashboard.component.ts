@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import {Router} from "@angular/router"
-import {FormBuilder,FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
@@ -24,11 +24,31 @@ import { Observable } from 'rxjs/internal/Observable';
 import { CommonService } from 'src/app/services/common.service';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { map } from 'rxjs/internal/operators/map';
+import { element } from 'protractor';
+import { TypeScriptEmitter } from '@angular/compiler';
+import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
+import { loginservices } from 'src/app/auth/login/LoginServices';
 
 //region Model
 export class DashBoardModel
 {
   _user_code:string;
+}
+
+class count
+{
+  draftscount:number;
+  draftsobfcount:number;
+  draftpplcount:number;
+  submittedcount:number;
+  submittedobfcount:number;
+  submittedpplcount:number;
+  rejectedcount:number;
+  rejectedobfcount:number;
+  rejectedpplcount:number;
+  approvedobfcount:number;
+  approvedpplcount:number;
+
 }
 
 class Serviceslist{
@@ -108,6 +128,14 @@ export class searchfilter{
   value:string;
   viewValue:string;
 }
+export class ResetErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
+    const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
+
+    return invalidCtrl || invalidParent;
+  }
+}
 // class searchvalues
 // {
 
@@ -119,29 +147,35 @@ export class searchfilter{
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  countparam:count = null;
+  loginmodel:LoginModel=new LoginModel();
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
+  matcherreset = new ResetErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
+  startdate:any;
+  enddate:any;
+  dateselected:boolean=false;
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
-  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'rtl';
+  @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
-  open() {
+  openDatepicker() {
     this.picker.open();
   }
   searchwords: string="";
   searchfiltercontrol = new FormControl();
   statusfiltercontrol = new FormControl();
-  searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'ProjectName'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
+  searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'Project_Name'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
-   DraftColumn: string[] = ['ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
-   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
-   PendingReviewercolumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
-   RejectedScreenColumn: string[] = ['ApprovalStatus', 'CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
-   ApprovedOBf: string[] = ['ApprovalStatus','CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
-   ApprovedPPL: string[] = ['ApprovalStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
-   ReviewerApproved:string[]=['ApprovalStatus','CurrentStatus','ProjectName', 'Code', 'Opp_Id', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
+   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
+   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
+   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
+   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
+   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
    
    
    // dataSource = ELEMENT_DATA;
@@ -158,7 +192,7 @@ export class DashboardComponent implements OnInit {
   dashboardData:any[]=[];
   statusfilter:any[]=[];
   filterdata:any[]=[];
-  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -171,9 +205,11 @@ export class DashboardComponent implements OnInit {
   highlight : any;
   public Dashboardvalid: FormGroup;
   servicesControl = new FormControl('', Validators.required);
-   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+  @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+  @ViewChild('resetDialog') resetDialog: TemplateRef<any>;
   uploadDocfiles:File[]=[];
   uploaddocprocess:any[]=[];
+  key:string = "";
   // selected: {startDate: Moment, endDate: Moment};
   // alwaysShowCalendars: boolean;
   // locale: LocaleConfig = {
@@ -184,7 +220,8 @@ export class DashboardComponent implements OnInit {
   //   applyLabel: 'Ok',
   // };
   loading$ = this.commonService.loading$;
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService) { 
+  public loginvalid: FormGroup;
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }
@@ -192,6 +229,14 @@ export class DashboardComponent implements OnInit {
    autocompletearr:any[] = [];
    searchControl = new FormControl();
    filteredOptions: Observable<string[]>;
+
+   @ViewChild(MatSort) sort: MatSort;
+ 
+   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
+      this.paginator = mp;
+     
+      }
+  
 
    statusfiltermethod(evt)
    {
@@ -201,7 +246,25 @@ export class DashboardComponent implements OnInit {
     
   datefilter = this.filterdata.filter(o => o.currentstatus_search == evt.source.value);
   this.listData=new MatTableDataSource(datefilter);
+  this.listData.sort = this.sort;
+ this.listData.paginator = this.paginator;
     }
+   }
+   bindfilterobject:any[]=[];
+   bindfilterobjectoninit()
+   {
+     let keyarray = ["Opp_Id","Project_Name","customer_name","dh_location","Vertical_name","sap_customer_code","sector_name","subsector_name","solutioncategory_name"];
+     keyarray.forEach(val =>{
+      let res = this.returncolumnvalue(val.toString()); 
+      res = res.filter((item, i, ar) => ar.indexOf(item) === i);
+      res.forEach(valnew =>{
+        let obj = {key:val,value:valnew};
+        this.bindfilterobject.push(obj);
+      });
+     });
+     //this.bindfilterobject = this.bindfilterobject.filter((item, i, ar) => ar.indexOf(item) === i);
+     console.log("get filtered object");
+     console.log(this.bindfilterobject);
    }
   selectfilter(evt)
   {
@@ -248,6 +311,7 @@ export class DashboardComponent implements OnInit {
          }
          finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
          console.log("The below Final Array");
+         console.log(this.keys);
          this.autocompletearr = finalrray;
          console.log(finalrray);
       }
@@ -317,7 +381,7 @@ export class DashboardComponent implements OnInit {
     let unique = arr.filter((item, i, ar) => ar.indexOf(item) === i);
     return unique;
   }
-
+  //filtercheckboxbool:boolean=false;
   cardsearcharray:any[] = [];
   searchtextchange(value)
   {
@@ -326,6 +390,7 @@ export class DashboardComponent implements OnInit {
     this.cardsearcharray = res;
     this.listData=new MatTableDataSource(this.dashboardData); 
     this.listData=new MatTableDataSource(this.filterdata); 
+   // this.searchControl.setValue("Hello wolrd");
     for(let i=0;i< res.length;i++)
     {
       this.listData.filter = res[i].trim().toLowerCase();
@@ -333,6 +398,148 @@ export class DashboardComponent implements OnInit {
      // this.cardsearcharray = this.listData.filteredData;
     }
   }  
+
+  
+   multisearcharray:any[]=[];
+  // texttoshow:any[]=[];
+  toggleSelection(event,option)
+  {
+    if(event.checked)
+    {
+      this.multisearcharray.push(option)
+    }
+    else
+    {
+      let index = this.multisearcharray.findIndex(obj => obj == option);
+      if(index > -1)
+      {
+        this.multisearcharray.splice(index,1);
+      }
+    }
+   
+    //   this.multisearcharray.forEach(element=>{
+    //      let res = element.split(',');
+    //      res.forEach(element => {
+    //        this.texttoshow.push(element);
+    //      });
+    //   });
+    //   let texttoshow="";
+    //   this.texttoshow = this.texttoshow.filter((item, i, ar) => ar.indexOf(item) === i);
+    //   this.texttoshow.forEach(x =>{
+    //    texttoshow += x +",";
+    //   });
+    //   texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+    // this.searchControl.setValue(texttoshow);
+    
+  }
+
+  
+  filterdatafinal()
+  {
+    this.getcountonfilter();
+    let showdatatotextbox:any[]=[];
+  let  checkdataarray:any[] = [];
+    this.multisearcharray.forEach(val=>{
+      let res = val.split(',');
+      this.cardsearcharray = res;
+      this.listData=new MatTableDataSource(this.dashboardData); 
+      this.listData=new MatTableDataSource(this.filterdata); 
+      //this.searchControl.setValue("Hello wolrd");
+      for(let i=0;i< res.length;i++)
+      {
+        showdatatotextbox.push(res[i].trim());
+        this.listData.filter = res[i].trim().toLowerCase();
+        this.listData = new MatTableDataSource(this.listData.filteredData);
+       //this.cardsearcharray = this.listData.filteredData;
+       if(i == res.length - 1 && this.listData.filteredData.length > 0)
+       {
+       checkdataarray.push(this.listData.filteredData);
+      }
+      } 
+    });
+    let texttoshow="";
+    showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
+    showdatatotextbox.forEach(x =>{
+     texttoshow += x +",";
+    });
+    texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+    this.searchControl.setValue(texttoshow);
+    console.log("check data of both");
+    //console.log(this.checkdataarray);
+    let finallistdataarray:any[] = [];
+    if(checkdataarray.length > 0)
+    {
+      checkdataarray.forEach(newarr =>{
+            newarr.forEach(element => {
+                 let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
+                 if(index > -1)
+                 {}
+                 else
+                 {
+                   finallistdataarray.push(element);
+                 }
+            });
+
+      });
+    }
+    console.log(finallistdataarray);
+    this.listData=new MatTableDataSource(finallistdataarray); 
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
+    this.filterdata = this.listData.filteredData;
+   // this.getcounts(finallistdataarray);
+  }
+
+   getcountonfilter()
+   {
+    let showdatatotextbox:any[]=[];
+    let  checkdataarray:any[] = [];
+      this.multisearcharray.forEach(val=>{
+        let res = val.split(',');
+        this.cardsearcharray = res;
+        this.listData=new MatTableDataSource(this.dashboardData); 
+       // this.listData=new MatTableDataSource(this.filterdata); 
+        //this.searchControl.setValue("Hello wolrd");
+        for(let i=0;i< res.length;i++)
+        {
+          showdatatotextbox.push(res[i].trim());
+          this.listData.filter = res[i].trim().toLowerCase();
+          this.listData = new MatTableDataSource(this.listData.filteredData);
+         //this.cardsearcharray = this.listData.filteredData;
+         if(i == res.length - 1 && this.listData.filteredData.length > 0)
+         {
+         checkdataarray.push(this.listData.filteredData);
+        }
+        } 
+      });
+      // let texttoshow="";
+      // showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
+      // showdatatotextbox.forEach(x =>{
+      //  texttoshow += x +",";
+      // });
+      // texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+      // this.searchControl.setValue(texttoshow);
+      // console.log("check data of both");
+      //console.log(this.checkdataarray);
+      let finallistdataarray:any[] = [];
+      if(checkdataarray.length > 0)
+      {
+        checkdataarray.forEach(newarr =>{
+              newarr.forEach(element => {
+                   let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
+                   if(index > -1)
+                   {}
+                   else
+                   {
+                     finallistdataarray.push(element);
+                   }
+              });
+  
+        });
+      }
+      console.log(finallistdataarray);
+      this.getcounts(finallistdataarray);
+   }
 
   getdatafromsearchandfiltereddata()
   {
@@ -347,6 +554,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dateselected = false;
+    this.bindfilterobject = [];
+    this.startdate= null;
+    this.enddate=null;
     this.cardsearcharray = [];
     this.autocompletearr = [];
     this.dscdsbld = false;
@@ -354,9 +565,9 @@ export class DashboardComponent implements OnInit {
     this.Dashboardvalid = new FormGroup({
      
     });
-    if(sessionStorage.getItem("privilege_name")!= null)
+    if(localStorage.getItem("privilege_name")!= null)
     {
-      this.privilege_name=sessionStorage.getItem("privilege_name");
+      this.privilege_name=localStorage.getItem("privilege_name");
 
     }
     this.CallDashBoardService();
@@ -367,20 +578,85 @@ export class DashboardComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value))
     );
+    this.commonService.getresetclickedevent().subscribe(res =>{
+      //alert(res);
+      if(res == true)
+      this.ResetModel();
+
+    });
+    this.loginvalid = new FormGroup({
+     
+      CurrentPassword : new FormControl('', [Validators.required,this.commonService.NoInvalidCharacters]),
+      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
+      confirmpassword : new FormControl('')
+    }, { validators: this.checkPasswords });
+
+    
+  }
+  
+  getClientKey()
+      {
+    this._loginservice.getClientKey().subscribe(result =>{
+     // let res = JSON.parse(result);
+     console.log(result);
+      let Rkey = atob(result.Secretkey);
+      Rkey = Rkey.substring(0,Rkey.length - 4);
+      this.key = Rkey;
+      this.loginmodel._ClientId = result.ClientID;
+     // alert(this.key);
+    },
+      (error:HttpErrorResponse)=>{
+        this._mesgBox.showError(error.message);
+      });
+     }
+  public checkError = (controlName: string, errorName: string) => {
+    return this.loginvalid.controls[controlName].hasError(errorName);
+  }
+  ResetPassword()
+  {
+    let encryptedpwd="";
+    let encryptedcurrentpwd="";
+         //alert(this.key);
+          encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
+          encryptedcurrentpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('CurrentPassword').value);
+          this.loginvalid.get('NewPassword').setValue(encryptedpwd);
+          this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
+          //this.loginmodel._SecretKey = this.key;
+    this.loginmodel._user_code=localStorage.getItem("UserCode");
+    this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
+    this.loginmodel._CurrentPassword = encryptedcurrentpwd;
+    
+     
+    this._loginservice.ResetPasswordDashboard(this.loginmodel).subscribe(Result=>{
+     // alert("Password Changed Successfully.");
+     this._mesgBox.showSucess("Password Changed Successfully.");
+     this.router.navigateByUrl('/login');
+     
+    });
+  }
+
+  checkPasswords(group: FormGroup) { // here we have the 'passwords' group
+    const password = group.get('NewPassword').value;
+    const confirmPassword = group.get('confirmpassword').value;
+  
+    return password === confirmPassword ? null : { notSame: true }     
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    // return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    return this.autocompletearr.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   onSearchClear(){
     this.cardsearcharray = [];
+   // this.filtercheckboxbool=false;
+    this.multisearcharray = [];
     this.addColumn(this.selectedcolumn);
     this.searchControl.setValue("");
   }
-
+  
   getcreateobfmasters()
   {
     this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
@@ -402,15 +678,30 @@ export class DashboardComponent implements OnInit {
    //alert(error.message);
  });
   }
-
+  getmsg(row)
+  {
+    if(row.ppl_init == 1)
+    {
+      var mes='PPL is already initiated'
+      return mes;
+    }
+    else
+    {
+      
+     
+    }
+  }
+  //MsgOnButton:string="";
   checkdisable(row)
   {
     if(row.ppl_init == 1)
     {
+     // this.MsgOnButton="PPL is already initiated";
       return true;
     }
     else
     {
+      //this.MsgOnButton="";
       return false;
     }
   }
@@ -452,6 +743,11 @@ export class DashboardComponent implements OnInit {
     console.log(row);
   }
 
+  reviseppl(row)
+  {
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Revise PPL",reinitiate:"Y",isppl:"Y" } });
+  }
+
   getsolutionmaster()
 {
 this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
@@ -471,16 +767,30 @@ datesUpdated(event)
 {
   let datefilter:any = [];
   console.log(event);
+  this.dateselected = true;
   console.log(new Date(event.startDate._d));
 console.log(new Date(event.endDate._d));
-datefilter = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
-this.listData=new MatTableDataSource(datefilter);
+this.startdate = new Date(event.startDate._d);
+this.enddate=new Date(event.endDate._d);
+datefilter = this.dashboardData.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+this.getcounts(datefilter);
+//this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(event.startDate._d) && new Date(o.Created_On) <= new Date(event.endDate._d));
+//this.listData=new MatTableDataSource(this.filterdata);
+this.addColumn(this.selectedcolumn);
 
+}
+
+datefilter()
+{
+  this.filterdata = this.filterdata.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
+this.listData=new MatTableDataSource(this.filterdata);
+this.listData.sort = this.sort;
+this.listData.paginator = this.paginator;
 }
 
   ngAfterViewInit() {
     this.listData.sort = this.sort;
-    this.listData.paginator = this.paginator
+    this.listData.paginator = this.paginator;
 }
 
 Solutionservicesarray:Solutionservices[] =[];
@@ -730,6 +1040,32 @@ onchange(evt,solutioncategory)
     console.log(this._obfservices.obfmodel);
   }
 
+  ResetModel() {
+    this.getClientKey();
+    this.loginvalid.controls.CurrentPassword.setValue("");
+    this.loginvalid.controls.NewPassword.setValue("");
+    this.loginvalid.controls.confirmpassword.setValue("");
+    this.loginvalid.controls["NewPassword"].markAsPristine();
+    this.loginvalid.controls["CurrentPassword"].markAsPristine();
+    this.loginvalid.controls["confirmpassword"].markAsPristine();
+    this.loginvalid.controls["NewPassword"].markAsUntouched();
+    this.loginvalid.controls["confirmpassword"].markAsUntouched();
+    this.loginvalid.controls["CurrentPassword"].markAsUntouched();
+    let dialogRef = this.dialog.open(this.resetDialog, {
+        //  width: '880px',
+         // data: { name: this.name, animal: this.animal }
+         panelClass: 'custom-modalbox',
+        backdropClass: 'popupBackdropClass',
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        // this.animal = result;
+    });
+  }
+
+
+
 openModal(templateRef,row) {
   console.log(row);
   this._obfservices.createform();
@@ -763,7 +1099,14 @@ openModal(templateRef,row) {
       this._obfservices.ObfCreateForm.controls['otherservices'].disable();
       this._obfservices.ObfCreateForm.controls['othersolutions'].disable();
       this._obfservices.ObfCreateForm.controls['otherintegratedsolutions'].disable();
+      if(this._obfservices.obfmodel._sap_customer_code != null && this._obfservices.obfmodel._sap_customer_code != "")
+      {
       this._obfservices.ObfCreateForm.controls["Sapcustomercode"].disable();
+      }
+      else
+      {
+        this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
+      }
       console.log("checkmodel after model click");
       console.log(this._obfservices.ObfCreateForm);
    },
@@ -801,7 +1144,7 @@ getapprovalstatus(element)
 this._dashboardservice.GetDashboardProgress(this.dh_id.toString()).subscribe((Result)=>{
   var jsondata=JSON.parse(Result);
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
-   this.approvalstatusdetail.TimeLine=jsondata.versiondetail;
+   this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
 });
 }
 
@@ -881,6 +1224,7 @@ downloaddetailFinalAgg(row)
     return JSON.stringify(issueId);
    
 }
+
   CallDashBoardService()
   {
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
@@ -890,8 +1234,10 @@ downloaddetailFinalAgg(row)
       console.log(Result);
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
+      this.getcounts(this.dashboardData);
        this.BindGridDetails();
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
+       this.bindfilterobjectoninit();
     },
     (error:HttpErrorResponse)=>{
     
@@ -919,7 +1265,7 @@ downloaddetailFinalAgg(row)
         ? columns
         : [...columns, column]
     }, [])
-    
+
   // Describe the columns for <mat-table>.
   this.columns = columns.map(column => {
     return { 
@@ -943,6 +1289,7 @@ downloaddetailFinalAgg(row)
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
   this.addColumn(0)
+  //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
   //     return ele != 'actions' && data[ele].toLowerCase().indexOf(filter) != -1;
@@ -959,9 +1306,23 @@ downloaddetailFinalAgg(row)
   // }
   filterValue:string;
   addColumn(selection) {
+    this.statusfiltercontrol.setValue("");
     this.selectedcolumn = parseInt(selection);
+    this.searchwords = "";
+    // if(this.dateselected)
+    //      {
+    //        this.datefilter();
+    //        this.getcounts(this.filterdata);
+    //      }
+    // if(this.cardsearcharray.length > 0)
+    //       {
+    //        // this.getdatafromsearchandfiltereddata();
+    //        this.filterdatafinal();
+    //        this.getcounts(this.filterdata);
+    //       }
     // alert(this.autocompletearr.length);
-    this.picker.clear();
+   // this.picker.clear();
+  // alert(this.dateselected);
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -969,6 +1330,7 @@ downloaddetailFinalAgg(row)
         //Draft Section.
         
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -976,12 +1338,17 @@ downloaddetailFinalAgg(row)
           }
          // obj.shortcurrentstatus=='draft'
          } );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
            if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-
+          
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
@@ -990,18 +1357,24 @@ downloaddetailFinalAgg(row)
           //Submitted section
          
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' )
           {
             return obj;
           }}
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
-        
+         
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -1009,23 +1382,31 @@ downloaddetailFinalAgg(row)
       {
         //Rejected
         this.listData=new MatTableDataSource(this.dashboardData); 
+        
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' )
           {
             return obj;
           }}
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
+      
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
       else if(selection==3 )
       {
         this.listData=new MatTableDataSource(this.dashboardData); 
+       
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='OBF' &&  obj.shortcurrentstatus=='approved')
@@ -1034,12 +1415,16 @@ downloaddetailFinalAgg(row)
             }
           }
          );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
          {
           this.getdatafromsearchandfiltereddata();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+       
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
         
@@ -1048,6 +1433,7 @@ downloaddetailFinalAgg(row)
       {
        //approved PPl
         this.listData=new MatTableDataSource(this.dashboardData); 
+      
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.phase_code=='PPL' && obj.shortcurrentstatus=='approved')
@@ -1056,14 +1442,19 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-
-        
+      
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
       }
@@ -1080,11 +1471,17 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
         {
-         this.getdatafromsearchandfiltereddata();
+        // this.getdatafromsearchandfiltereddata();
+        this.filterdatafinal();
         }
       this.listData=new MatTableDataSource(this.filterdata); 
+     
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
@@ -1094,18 +1491,23 @@ downloaddetailFinalAgg(row)
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
-            if( obj.shortcurrentstatus=='cApproved')
+            if( obj.shortcurrentstatus=='approved')
             {
               return obj;
             }
           }
          );
-         
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
          this.listData=new MatTableDataSource(this.filterdata);
+       
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
@@ -1121,12 +1523,17 @@ downloaddetailFinalAgg(row)
             }
           }
         );
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
         {
-         this.getdatafromsearchandfiltereddata();
+         //this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
         }
         this.listData=new MatTableDataSource(this.filterdata);
-
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
@@ -1141,12 +1548,17 @@ downloaddetailFinalAgg(row)
             }
           }
          );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
          if(this.cardsearcharray.length > 0)
          {
-          this.getdatafromsearchandfiltereddata();
+         // this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
          }
         this.listData=new MatTableDataSource(this.filterdata);
-
+     
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
         
@@ -1165,17 +1577,24 @@ downloaddetailFinalAgg(row)
           this.filterdata=this.dashboardData.filter(obj=>(obj.phase_code=='OBF' && obj.shortcurrentstatus=='approved'));
           }
           });
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
         if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+            //this.getdatafromsearchandfiltereddata();
+            this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
-        
+       
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
       }
     }
-   
+   // this.getcounts(this.filterdata);
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
   }
  
 
@@ -1298,7 +1717,7 @@ downloaddetailFinalAgg(row)
        
         this.uploaddocprocess[i] = { value: 0, fileName: files[i].name };
         this.path="";
-        this._dashboardservice.uploadImage(files[i]).subscribe(
+        this._dashboardservice.uploadImage(files[i],"All").subscribe(
           event => {
             if(event.type === HttpEventType.UploadProgress)
             {
@@ -1346,7 +1765,7 @@ downloaddetailFinalAgg(row)
   OBfcilck(selection)
   { this.selectedcolumn = parseInt(selection);
     // alert(this.autocompletearr.length);
-    this.picker.clear();
+    //this.picker.clear();
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -1361,9 +1780,14 @@ downloaddetailFinalAgg(row)
           }
          // obj.shortcurrentstatus=='draft'
          } );
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
            if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1381,9 +1805,14 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
-        if(this.cardsearcharray.length > 0)
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
           this.listData=new MatTableDataSource(this.filterdata);
         
@@ -1400,9 +1829,14 @@ downloaddetailFinalAgg(row)
             return obj;
           }}
         );
-        if(this.cardsearcharray.length > 0)
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
         this.listData=new MatTableDataSource(this.filterdata);
         this.displayedColumns=this.RejectedScreenColumn;
@@ -1421,10 +1855,15 @@ downloaddetailFinalAgg(row)
             }
           }
         );
-        if(this.cardsearcharray.length > 0)
-        {
-         this.getdatafromsearchandfiltereddata();
-        }
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
       this.listData=new MatTableDataSource(this.filterdata); 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
@@ -1442,9 +1881,14 @@ downloaddetailFinalAgg(row)
           }
          );
          
-         if(this.cardsearcharray.length > 0)
+         if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
            {
-            this.getdatafromsearchandfiltereddata();
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
            }
          this.listData=new MatTableDataSource(this.filterdata);
          this.displayedColumns=this.ReviewerApproved;
@@ -1462,10 +1906,15 @@ downloaddetailFinalAgg(row)
             }
           }
         );
-        if(this.cardsearcharray.length > 0)
-        {
-         this.getdatafromsearchandfiltereddata();
-        }
+        if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
 
         this.displayedColumns=this.ReviewerApproved;
@@ -1473,12 +1922,14 @@ downloaddetailFinalAgg(row)
       }
      
     }
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
   }
 PPLclick(selection)
 {
   this.selectedcolumn = parseInt(selection);
   // alert(this.autocompletearr.length);
-  this.picker.clear();
+  //this.picker.clear();
 if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
@@ -1493,9 +1944,14 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
         }
        // obj.shortcurrentstatus=='draft'
        } );
+       if(this.dateselected)
+       {
+         this.datefilter();
+       }
          if(this.cardsearcharray.length > 0)
          {
-          this.getdatafromsearchandfiltereddata();
+         // this.getdatafromsearchandfiltereddata();
+         this.filterdatafinal();
          }
         this.listData=new MatTableDataSource(this.filterdata);
 
@@ -1513,10 +1969,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           return obj;
         }}
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
         this.listData=new MatTableDataSource(this.filterdata);
       
         this.displayedColumns=this.SubmittedScreenColumn;
@@ -1532,10 +1993,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           return obj;
         }}
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
       this.listData=new MatTableDataSource(this.filterdata);
       this.displayedColumns=this.RejectedScreenColumn;
       this.on_Highlight(3);
@@ -1553,10 +2019,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           }
         }
       );
-      if(this.cardsearcharray.length > 0)
-      {
-       this.getdatafromsearchandfiltereddata();
-      }
+      if(this.dateselected)
+         {
+           this.datefilter();
+         }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
     this.listData=new MatTableDataSource(this.filterdata); 
     this.displayedColumns=this.PendingReviewercolumn;
     this.on_Highlight(1);
@@ -1574,10 +2045,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
         }
        );
        
-       if(this.cardsearcharray.length > 0)
+       if(this.dateselected)
          {
-          this.getdatafromsearchandfiltereddata();
+           this.datefilter();
          }
+           if(this.cardsearcharray.length > 0)
+           {
+           // this.getdatafromsearchandfiltereddata();
+           this.filterdatafinal();
+           }
        this.listData=new MatTableDataSource(this.filterdata);
        this.displayedColumns=this.ReviewerApproved;
        this.on_Highlight(2);
@@ -1594,10 +2070,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
           }
         }
       );
-      if(this.cardsearcharray.length > 0)
+      if(this.dateselected)
       {
-       this.getdatafromsearchandfiltereddata();
+        this.datefilter();
       }
+        if(this.cardsearcharray.length > 0)
+        {
+        // this.getdatafromsearchandfiltereddata();
+        this.filterdatafinal();
+        }
       this.listData=new MatTableDataSource(this.filterdata);
 
       this.displayedColumns=this.ReviewerApproved;
@@ -1605,6 +2086,8 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     }
    
   }
+  this.listData.sort = this.sort;
+this.listData.paginator = this.paginator;
 }
 
 editSubmit()
@@ -1853,4 +2336,32 @@ getattachment(dh_id,dh_header_id)
     
   })
 }
+
+  getcounts(data)
+  {
+   if(this.privilege_name == "OBF Initiator" || this.privilege_name == "PPL Initiator")
+   {
+    this.countparam = new count();
+    //draft
+    this.countparam.draftscount = data.filter(obj => obj.shortcurrentstatus == 'draft').length;
+    this.countparam.draftsobfcount = data.filter(obj => obj.shortcurrentstatus == 'draft' && obj.phase_code == 'OBF').length;
+    this.countparam.draftpplcount = data.filter(obj => obj.shortcurrentstatus == 'draft' && obj.phase_code == 'PPL').length;
+
+    //submitted
+    this.countparam.submittedcount = data.filter(obj => obj.shortcurrentstatus == 'submitted').length;
+    this.countparam.submittedobfcount = data.filter(obj => obj.shortcurrentstatus == 'submitted' && obj.phase_code == 'OBF').length;
+    this.countparam.submittedpplcount = data.filter(obj => obj.shortcurrentstatus == 'submitted' && obj.phase_code == 'PPL').length;
+
+    //rejected
+    this.countparam.rejectedcount = data.filter(obj => obj.shortcurrentstatus == 'rejected').length;
+    this.countparam.rejectedobfcount = data.filter(obj => obj.shortcurrentstatus == 'rejected' && obj.phase_code == 'OBF').length;
+    this.countparam.rejectedpplcount = data.filter(obj => obj.shortcurrentstatus == 'rejected' && obj.phase_code == 'PPL').length;
+
+    //approved obf
+    this.countparam.approvedobfcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'OBF').length;
+    //approved ppl
+    this.countparam.approvedpplcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'PPL').length;
+   
+   }
+  }
 }

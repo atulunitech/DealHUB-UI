@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs';
+import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate,CanActivateChild {
-  constructor(private router:Router)
+  constructor(private router:Router,private _mesgBox: MessageBoxComponent)
   {}
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
    //alert(childRoute.url[0].path);
@@ -19,12 +20,17 @@ export class AuthGuard implements CanActivate,CanActivateChild {
     {
       if(childRoute.url[0] != undefined && childRoute.url[0].path == "Obf")
       {
-        if(sessionStorage.getItem("privilege_name") == "OBF Initiator" || (sessionStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
+        if(localStorage.getItem("privilege_name") == "OBF Initiator" || (localStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
         {
         return true;
          }
         else
         {
+         // localStorage.setItem("UserCode","");
+                            localStorage.setItem("Token","");
+                            localStorage.setItem("RequestId","");
+                            localStorage.setItem("userToken","");
+          this._mesgBox.showError("Unauthorized access authgaurd");
           this.router.navigateByUrl('/login'); 
         return false;
       }

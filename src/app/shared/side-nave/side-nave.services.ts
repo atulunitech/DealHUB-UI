@@ -18,8 +18,8 @@ export class SidenavService {
 
     
     GetMenus(MenuDetails: any): Observable<any> {  
-	     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
+	     //const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
 	    return this.http.post<any>(this.url,  
-	   MenuDetails, httpOptions);  
+	   MenuDetails);  
 	   }
 }

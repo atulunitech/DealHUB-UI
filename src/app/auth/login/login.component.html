@@ -5,11 +5,14 @@
         <div>
             <div class="mt-cust-fd"  >
                 <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Login ID</mat-label>
+                    <mat-label>Email ID</mat-label>
                     <input matInput  formControlName="userID">
                     <mat-error *ngIf="checkError('userID', 'required')">Login ID is required</mat-error>
                     <mat-error *ngIf="loginvalid.controls.userID.errors?.invalidservices">
                         Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
+                      <mat-error *ngIf="loginvalid.controls.userID.errors?.email">
+                        Email ID is not valid
                       </mat-error>
                   </mat-form-field>
               </div>
@@ -48,23 +51,26 @@
             <div>
                 <div class="mt-cust-fd"  >
                     <mat-form-field appearance="fill" class="example-full-width">
-                        <mat-label>Login ID</mat-label>
+                        <mat-label>Email ID</mat-label>
                         <input matInput  formControlName="ResetPasswordUserid" >
                         <mat-error *ngIf="checkResetError('ResetPasswordUserid', 'required')">Login ID is required</mat-error>
+                        <mat-error *ngIf="ResetPasswordForm.controls.ResetPasswordUserid.errors?.email">
+                            Email ID is not valid
+                          </mat-error>
                       </mat-form-field>
                   </div>
             </div>
             
             <div fxLayout="row" fxLayoutAlign="space-between center" >
                 <div class="lost_pass re_login" (click)="relogin()">Login</div>
-                <div><button mat-flat-button class="cus_bt" color="primary" (click)="GetEmail()">Reset Password</button></div>
+                <div><button mat-flat-button class="cus_bt" [disabled]="ResetPasswordForm.invalid" color="primary" (click)="GetEmail()">Reset Password</button></div>
             </div>
            
         </form>
     </div>
 
 
-<div class="copy_rgh">
+<div class="copy_rgh" style="visibility: hidden;">
     Copyright © 2020. <br>
 All rights reserved Mahindra Logistics Ltd.
 </div>
