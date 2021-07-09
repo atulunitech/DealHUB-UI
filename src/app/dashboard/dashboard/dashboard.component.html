@@ -438,7 +438,7 @@
           [matChipInputAddOnBlur]="addOnBlur"
           (matChipInputTokenEnd)="add($event)">
         </mat-chip-list>
-        <mat-error *ngIf="_obfservices.ObfCreateForm.get('Sapio').invalid">
+        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.Sionumberinvalid">
           SAP IO Number length must be <strong>8 digits</strong>
         </mat-error>
         <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
