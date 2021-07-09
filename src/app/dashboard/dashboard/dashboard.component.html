@@ -557,13 +557,19 @@
   <div>
     <ng-template #resetDialog>
       <form [formGroup]="loginvalid">
-      <mat-dialog-content class="mat-typography">
-        <div>
-          <p class="to_account">Sign in to your dealHUB account with 
-              the provided credential </p>
+        <!-- <div class="pop_title_wrp"><div class="pop_head_titl edit_titl">&nbsp;</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div> -->
+      <mat-dialog-content class="mat-typography chan_pass_con">
+        <div class="chang_pass_box_popup">
+          <div class="pass_logo_title">
+            <a mat-dialog-close href="javascript:void(0)" class="close"></a>
+            <img src="../../../assets/images/change_pass.png">
+            <h3>Change Password</h3>
+            <p>You are almost there now, enter your new password and 
+              confirm it. </p>
+          </div>
          
-              <div>
-                <div>
+              <div class="chang_pass_form">
+                
                   <div class="mt-cust-fd"  >
                       <mat-form-field appearance="fill" class="example-full-width">
                           <mat-label>Current Password</mat-label>
@@ -573,8 +579,8 @@
                               <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                         </mat-form-field>
                     </div>
-              </div>
-                  <div>
+              
+                  
                       <div class="mt-cust-fd"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>New Password</mat-label>
@@ -584,8 +590,8 @@
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                             </mat-form-field>
                         </div>
-                  </div>
-                  <div>
+                  
+                  
                       <div class="mt-cust-fd"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>Confirm Password</mat-label>
@@ -596,7 +602,7 @@
                                     </mat-error> 
                             </mat-form-field>
                         </div>
-                  </div>
+                  
                   <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
                    
                       <div><button mat-flat-button class="cus_bt" color="primary" [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button></div>
