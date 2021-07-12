@@ -977,6 +977,10 @@ downloadCoversheet(event)
     
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+     if(this.isEditObf)
+     {
+       this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+     }
     var format = /[`!@#$%^*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
@@ -1503,7 +1507,11 @@ downloadCoversheet(event)
         }
         else
         {
-          count +=1;
+          //count +=1;
+          this._mesgBox.showError("Project type is not correct");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
         }
       
      }

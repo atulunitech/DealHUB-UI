@@ -682,6 +682,7 @@ export class OBFServices {
 
       emptyexcelformvaluesforreuploadcoversheet()
       {
+        this.ObfCreateForm.patchValue({Projecttype: ""});
         this.ObfCreateForm.patchValue({Projectname: ""});
         this.ObfCreateForm.patchValue({Customername: ""});
         this.ObfCreateForm.patchValue({Opportunityid: ""});
