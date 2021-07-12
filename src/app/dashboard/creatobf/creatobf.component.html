@@ -943,7 +943,8 @@
                             </div>
                          
                             <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?(initiateppl?'OBF':'PPL'):'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
-                            <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
+                            <div  *ngIf="this.editorcreateobfstring.trim() == 'Edit PPL'"   class="mat_exp_title">Previous OBF (v{{_obfservices.editObfObject._version_name}}) </div>
+                            <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf || (this.editorcreateobfstring.trim() == 'Edit PPL')"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
                               <div class="mat_previe_box">
                                 <div class="prev_tit">
                                   Total Revenue <br>₹ Cr 
