@@ -1,0 +1,67 @@
+@import '../../../assets/scss/mixins';
+@import '../../../assets/scss/variables';
+
+.filter_cont {
+    @include padding(15px,50px,15px,50px);
+}
+.com_title
+{
+    display: inline-block;
+    text-transform: capitalize;
+    margin-bottom: 18px;
+    @include font-size(1.4);
+    @include font-weight(semi-bold);
+    color:$thm-title-color;
+}
+.master_box
+{
+    margin-top: 0px;
+    margin-bottom: 50px;
+    .master_title
+    {
+        color: #342e59;
+        font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 7px;
+    }
+    .master_title_view
+        {
+            .master_views
+            {
+                width: 190px;
+                height: 165px;
+                background-color: #fff;
+                border-radius: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: unset;
+                padding-bottom: 10px;
+                padding-top: 0px;
+                &.vs_hi
+                {
+                    visibility: hidden;
+                }
+                .master_view_in
+                {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    flex-direction: column;
+                    img{
+                        width: 120px;
+                    }
+                    span{
+                        color: #342e59;
+                        font-size: 0.97rem;
+                        font-weight: 500;
+                    }
+                    
+                }
+                &:hover
+                    {
+                        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.16);
+                        cursor: pointer;
+                    }
+            }
+        }
+}
