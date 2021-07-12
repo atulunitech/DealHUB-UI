@@ -259,8 +259,8 @@
     @include padding(0,15px,0,15px);
     @include font-weight(medium);
     @include margin(0,7px,0,0);
-   background-color: transparent;
-   color: #2258bf;
+   background-color: transparent !important;
+   color: #2258bf !important;
    font-style: italic;
    text-decoration: underline;
    ::ng-deep.mat-button-wrapper
