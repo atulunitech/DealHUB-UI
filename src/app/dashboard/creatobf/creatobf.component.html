@@ -42,9 +42,8 @@
                                     <li> In excel workbook should be in specified standard template.</li>
                                     <li> Workbook name should be “OBF Coversheet”.</li>
                                     <li> All mandatory fields should have values.</li>
-                                    <li> Verticals can be Auto and Engineering, E-Commerce, Consumer, 
-                                      Auto Outbound, Bulk, MLL Network, Mahindra and Mahindra, 
-                                      Enterprise Mobility.</li>
+                                    <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
+                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
                                       <li> Please check before submitting for all entered values.</li>
@@ -147,7 +146,7 @@
                             <div class="mat_upload_tit">
                               LOI/PO/Agreement or Self Declaration 
                             </div>
-                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="loiopdisabled">
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -254,7 +253,7 @@
                                 Supporting Document
                               </div>
                               <!-- <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked"> -->
-                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.msg" >
+                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.msg,.JPG" >
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
