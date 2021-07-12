@@ -10,8 +10,8 @@
         <ul class="accordion" >
             <li *ngFor="let menu of menus; let i = index" 
               [class.active]="menu.active">
-              <a [href]="menu.url" class="menu" title="{{ menu.name }} ({{ menu.Role }})" (click)="toggle(i)">
-                <div class="m_icon" title="{{ menu.name }} ({{ menu.Role }})"><img  src="assets/images/{{menu.iconClass}}"></div>
+              <a [routerLink]="menu.url" class="menu" title="{{ menu.name }} " (click)="toggle(i)">
+                <div class="m_icon" title="{{ menu.name }} "><img  src="assets/images/{{menu.iconClass}}"></div>
                <div class="us_disc"> {{ menu.name }}
                  <div class="sn_roll">{{ menu.Role }}</div>
                </div>

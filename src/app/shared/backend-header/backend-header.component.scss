@@ -50,6 +50,47 @@
 
 /* Icon 2 */
 
+.uer_dt
+{
+  display: flex;align-items: center;
+  .uer_dt_in
+  {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;line-height: initial;
+    position: relative;
+    &::after
+    {
+      content: "";
+    position: absolute;
+    right: 0;
+    top: 15%;
+    border: 1px solid #909090;
+    height: 70%;
+    opacity: 0.25;
+    }
+    p
+    {
+      color: #342e59;
+      margin: 0px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .user_dt_img
+    {
+      background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+      img{
+        width: 18px;
+      }
+    }
+  }
+}
+
 .logo_wrp
 {
     display: inline-block;
