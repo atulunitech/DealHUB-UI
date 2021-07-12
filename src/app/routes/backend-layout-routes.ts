@@ -10,7 +10,7 @@ export const BACKEND_LAYOUT: Routes = [
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardModule)
     },
     {
-        path: 'product',
-        loadChildren: () => import('../product/product.module').then(m => m.ProductModule)
+        path: 'master',
+        loadChildren: () => import('../master/master.module').then(m => m.MasterModule)
     }
 ]

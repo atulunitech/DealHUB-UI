@@ -252,6 +252,21 @@
     @include padding(0,25px,0,25px);
     @include font-weight(medium);
     @include margin(0,7px,0,0);
+   
+}
+.view_bt
+{
+    @include padding(0,15px,0,15px);
+    @include font-weight(medium);
+    @include margin(0,7px,0,0);
+   background-color: transparent !important;
+   color: #2258bf !important;
+   font-style: italic;
+   text-decoration: underline;
+   ::ng-deep.mat-button-wrapper
+   {
+       text-decoration: underline;
+   }
 }
 .reject_bt
 {
@@ -363,7 +378,9 @@
                     }
                     &.cdk-column-Code
             {
-                min-width: 90px
+                min-width: 175px;
+                display: flex;
+                justify-content: space-between;
             }
             &.cdk-column-Total_Cost
             {
@@ -437,7 +454,7 @@
                     }
             &.cdk-column-Code
             {
-                min-width: 90px
+                min-width: 175px
             }
             &.cdk-column-Total_Cost
             {
@@ -530,6 +547,23 @@
 .dwon_ic_con
 {
     cursor: pointer;
+    img
+    {
+       @include heightwidth(15px,initial);
+    }
+}
+.dwon_ic_con_new
+{
+    background-color: #2258bf;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 35px;
+    text-align: center;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2px;
     img
     {
        @include heightwidth(15px,initial);
