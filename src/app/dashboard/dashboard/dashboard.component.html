@@ -601,7 +601,7 @@
         <div class="chang_pass_box_popup">
           <div class="pass_logo_title">
             <a mat-dialog-close href="javascript:void(0)" class="close"></a>
-            <img src="../../../assets/images/change_pass.png">
+            <img src="/assets/images/change_pass.png">
             <h3>Change Password</h3>
             <p>You are almost there now, enter your new password and 
               confirm it. </p>
@@ -609,32 +609,35 @@
          
               <div class="chang_pass_form">
                 
-                  <div class="mt-cust-fd"  >
+                  <div class="mt-cust-fd-bg-color "  >
                       <mat-form-field appearance="fill" class="example-full-width">
                           <mat-label>Current Password</mat-label>
-                          <input matInput type="password" formControlName="CurrentPassword" autocomplete="off">
+                          <input matInput [type]="hide ? 'password' : 'text'"  formControlName="CurrentPassword" autocomplete="off">
                               <mat-error *ngIf="checkError('CurrentPassword', 'required')">Current Password is required</mat-error>
+                              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                               <!-- <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error> -->
                               <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                         </mat-form-field>
                     </div>
               
                   
-                      <div class="mt-cust-fd"  >
+                      <div class="mt-cust-fd-bg-color"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>New Password</mat-label>
-                              <input matInput type="password" formControlName="NewPassword" autocomplete="off">
+                              <input matInput [type]="hide1 ? 'password' : 'text'"  formControlName="NewPassword" autocomplete="off">
                                   <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
+                                  <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                             </mat-form-field>
                         </div>
                   
                   
-                      <div class="mt-cust-fd"  >
+                      <div class="mt-cust-fd-bg-color"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>Confirm Password</mat-label>
-                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
+                              <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
+                              <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                   <mat-error *ngIf="checkError('confirmpassword', 'required')">Confirm password is required</mat-error>
                                   <mat-error *ngIf="loginvalid.hasError('notSame')">
                                       Passwords do not match
