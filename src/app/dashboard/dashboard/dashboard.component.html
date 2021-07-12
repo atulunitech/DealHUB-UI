@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="con_fil_box app_obf"   [ngClass]="{'active': highlight==='tab4'}">
+      <div class="con_fil_box app_obf"  (click)="addColumn(3)"  [ngClass]="{'active': highlight==='tab4'}">
         <div class="box_shead"><img src="assets/images/approved_obf.png"></div>
         <div class="fil_hed_tit"  >
           approved obf
@@ -191,17 +191,24 @@
            
   
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+              <div *ngIf="column.columnDef == 'Code'">
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }}
+                  <div class="dwon_ic_con"  matTooltip="Download OBF Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download_icon.png"></div>
+                  <div class="dwon_ic_con"  matTooltip="Download Final Aggreement" #tooltip="matTooltip"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
+                </mat-cell>
+              </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }}</mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Revenue'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}"  *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}"  *matCellDef="let row" >₹ {{ column.cell(row) }}</mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Gross_Margin'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}%</mat-header-cell>
-                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}%</mat-cell>
+                <mat-cell  *matCellDef="let row">{{ column.cell(row) }}%</mat-cell>
               </div>
                 <div *ngIf="column.columnDef == 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
@@ -209,35 +216,23 @@
               </div>
               <div *ngIf="column.columnDef != 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}</mat-cell>
+                <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>
               </div>
               
             </ng-container>
            
-            <ng-container matColumnDef="FinalAgg">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Final Agreement</mat-header-cell>
-              <mat-cell *matCellDef="let row" >
-                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-                <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
-                <!-- <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" style="margin-left: 10px;" src="assets/images/upload_icon.png"></div> -->
-            </mat-cell>
-          </ng-container>
-              <ng-container matColumnDef="DetailedOBF">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Detailed OBF</mat-header-cell>
-                <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-                  <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-                  <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
-              </mat-cell>
-            </ng-container>
+           
               <ng-container  matColumnDef="ActionDraft"  stickyEnd>
                 <mat-header-cell class="headr-mat" style="min-width: 120px;padding-left: 10px;
                  "  *matHeaderCellDef mat-sort-header>
                   
                   Action
                 </mat-header-cell>
-              
+               
                   <mat-cell *matCellDef="let row" style="min-width: 120px;padding-left: 10px;
-                   " ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+                   " >
+                   <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
+                   <button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
                </ng-container>
                
                <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd >
@@ -245,8 +240,9 @@
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               
                   <mat-cell style="min-width: 120px;padding-left: 10px;
-                   " *matCellDef="let row" >
-                    <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
+                   " *matCellDef="let row" > 
+                     <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
+                      <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
                     
                    </mat-cell>
                </ng-container>
@@ -254,13 +250,18 @@
                 <mat-header-cell style="min-width: 120px;padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell *matCellDef="let row" style="min-width: 120px;padding-left: 10px;
-               "><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
+               ">
+                <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
+               <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
+              </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
                 <mat-header-cell style="min-width: 162px;padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell style="min-width: 162px;padding-left: 10px;
-               " *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+               " *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
+               <button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell style="padding-left: 10px;
@@ -268,6 +269,7 @@
                  <mat-cell style="padding-left: 10px; 
                   " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : 'auto'}" *matCellDef="let row" 
                   [matTooltip]="getmsg(row)" #tooltip="matTooltip" >
+                  <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
               </mat-cell>
@@ -280,9 +282,19 @@
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
                " *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
                 <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
                 <button mat-flat-button class="creat_bt approv_bt" *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reviseppl(row)">Revise PPL</button></mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+               </ng-container>
+               <ng-container  matColumnDef="ActionView" stickyEnd>
+                <mat-header-cell style="min-width: 162px;padding-left: 10px;
+                 " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="min-width: 162px;padding-left: 10px;
+               " *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt edit_bt"  (click)="getOBFSummaryPage(row)">View</button>
+              
+              </mat-cell>
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

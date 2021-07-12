@@ -175,13 +175,14 @@ export class DashboardComponent implements OnInit {
   statusfiltercontrol = new FormControl();
   searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'Project_Name'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
-   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
-   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
-   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
-   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
-   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
-   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
-   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionDraft'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionSubmitted'];
+   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionPendingforapproval'];
+   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionReinitialize'];
+   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionApprovedOBF'];
+   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionApprovedPPL'];
+   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionView'];
+  //  'DetailedOBF','FinalAgg',
 
    
    
@@ -2127,7 +2128,7 @@ editSubmit()
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("SAP Details Saved Successfully");
         this.dialog.closeAll();
       //  this.router.navigate(['/DealHUB/dashboard']);
       }
