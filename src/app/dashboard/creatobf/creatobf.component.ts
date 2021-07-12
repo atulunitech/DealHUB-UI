@@ -21,6 +21,7 @@ import { element, error } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
 import { loginservices } from 'src/app/auth/login/LoginServices';
+import { ThrowStmt } from '@angular/compiler';
 
 
 interface Serviceslist {
@@ -474,8 +475,40 @@ export class CreatobfComponent implements OnInit {
       {
         this.removeuploadfilesforinitiateppl();
       }
+
+      if(this.editorcreateobfstring.trim() == "Edit PPL")
+       {
+        this.getpreviousversion();
+       }
       var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
       this.projecttype =  tempprojectType[0].viewValue;
+  }
+
+  getpreviousversion()
+  {
+    let editobf:editobfarguement = new editobfarguement();
+    editobf.dh_id = this._obfservices.editObfObject._dh_id;
+    editobf.dh_header_id = this._obfservices.editObfObject._dh_header_id;
+    editobf.user_code = localStorage.getItem("UserCode");
+    this._obfservices.getpreviousversion(editobf).subscribe(res =>{
+      let result = JSON.parse(res);
+      console.log("get previous data");
+      console.log(result);
+      this._obfservices.editObfObject._total_cost = result._total_cost;
+      this._obfservices.editObfObject._capex = result._capex;
+      this._obfservices.editObfObject._irr_borrowed_fund = result._irr_borrowed_fund;
+      this._obfservices.editObfObject._irr_surplus_cash = result._irr_surplus_cash;
+      this._obfservices.editObfObject._payment_terms = result._payment_terms;
+      this._obfservices.editObfObject._total_margin = result._total_margin;
+      this._obfservices.editObfObject._total_project_life = result._total_project_life;
+      this._obfservices.editObfObject._total_revenue = result._total_revenue;
+      this._obfservices.editObfObject._version_name = result._version_name;
+
+    },
+    error=>{
+
+    }
+    )
   }
 
   getverticalname(verticallist:verticallist[])
@@ -977,6 +1010,7 @@ downloadCoversheet(event)
     
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+     
     var format = /[`!@#$%^*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
@@ -1477,6 +1511,10 @@ downloadCoversheet(event)
         console.log(ws);
       // console.log(ws.A1.h);
       try{
+        if(this.isEditObf)
+        {
+          this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+        }
         let count:number = 0;
         if(ws.H3 == undefined || ws.H3.w == "#N/A" )
         {
@@ -1503,7 +1541,11 @@ downloadCoversheet(event)
         }
         else
         {
-          count +=1;
+          //count +=1;
+          this._mesgBox.showError("Project type is not correct");
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
         }
       
      }
@@ -1760,7 +1802,7 @@ downloadCoversheet(event)
             return false;
         }
 
-        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Capex");
+        let val = this.converttocrore(this.extractonlydgits(ws.D15.w.toString().trim()),"Capex");
         if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
         {
           this.coversheetfiles = [];

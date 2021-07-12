@@ -463,7 +463,7 @@
                       <div class="mat_previe_box">
                         
                         <div class="prev_dis">
-                       {{this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' ?'OBF Sheet': 'PPL Sheet' }}   
+                       {{this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' ?'Download OBF Sheet': 'Download PPL Sheet' }}   
                         </div>
                         <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
                           <div (click)="downloadCoversheet($event)" class="up_pdf_com">
@@ -649,7 +649,7 @@
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
       
-      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
+      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG">
         <ngx-dropzone-label class="matUp_lable">
           <div><img src="assets/images/Group Upload.png"></div>
           <div class="drap_titl">
