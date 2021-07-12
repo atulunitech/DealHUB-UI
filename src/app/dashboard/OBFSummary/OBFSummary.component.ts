@@ -685,7 +685,7 @@ class filesdetail
           
             } 
       }
-      else if( this.obfsummaryform.get("ExceptionCEO").value==true)
+      else if( this.obfsummaryform.get("ExceptionCEO").value==true && this.CEOmessage == '')
       {
             if(this.SaveCommentdetail.length == 0)
             {
@@ -707,22 +707,25 @@ class filesdetail
     }
     if(this.role_name=='VSH')
     {
-      
-      if(this.SaveCommentdetail.length == 0)
+      if(this.obfsummaryform.get("MarginException").value==true)
       {
-      if(this.obfsummaryform.get("comments").value == "")
-    {
-      this.obfsummaryform.controls["comments"].markAsTouched();
-        return false;
+        if(this.SaveCommentdetail.length == 0)
+        {
+        if(this.obfsummaryform.get("comments").value == "")
+      {
+        this.obfsummaryform.controls["comments"].markAsTouched();
+          return false;
+        
+      }
       
-    }
-    
-    else
-    {
-      this._mesgBox.showError("Please Submit Comment");
-      return false;
-    }
-  }
+      else
+      {
+        this._mesgBox.showError("Please Submit Comment");
+        return false;
+      }
+         }
+      }
+     
     }
 
     this._obfservices._approveRejectModel.isapproved=1;
