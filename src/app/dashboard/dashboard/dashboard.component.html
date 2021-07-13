@@ -183,7 +183,7 @@
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
                 <div class="pie-wrapper pie-wrapper--solid progress-88">
-    <span class="label">10<span class="smaller">%</span></span>
+    <span class="label">{{row.progresspercentage}}<span class="smaller">%</span></span>
   </div>
 </div>
             </mat-cell>
@@ -202,7 +202,7 @@
               </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span>jskldj fj</span></mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span></span></mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Revenue'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
@@ -602,7 +602,7 @@
         <div class="chang_pass_box_popup">
           <div class="pass_logo_title">
             <a mat-dialog-close href="javascript:void(0)" class="close"></a>
-            <img src="/assets/images/change_pass.png">
+            <img src="assets/images/change_pass.png">
             <h3>Change Password</h3>
             <p>You are almost there now, enter your new password and 
               confirm it. </p>
