@@ -332,6 +332,7 @@ export class OBFServices {
     this.editObfObject = new editObf();
    // this.previousobfmodel = new previousobf();
     this.servicesarray = [];
+    this.loipoarray = [];
   }
   createnewobfsummarymodel()
   {
@@ -653,7 +654,7 @@ export class OBFServices {
           Loiposheet:this.loipoarray[0] != undefined ?this.loipoarray[0]._fpath:"",
           Supportpath:this.supportarray != undefined?this.supportarray:"",
           Loipodropdown:this.loipoarray[0] !=undefined?this.loipoarray[0]._description:null,
-          Selfdeclare:loiuploaded,
+          Selfdeclare:this.loipoarray[0] != undefined?null:loiuploaded,
           Projectname:this.editObfObject._dh_project_name,
           Solutioncategory:this.editObfObject._solution_category_id.toString() == "0"?"":this.editObfObject._solution_category_id.toString(),
           Opportunityid: this.editObfObject._opportunity_id,

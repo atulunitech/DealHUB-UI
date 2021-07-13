@@ -6,7 +6,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
-import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
+import {​​​​​​​​ MatDialog, throwMatDialogContentAlreadyAttachedError }​​​​​​​​ from'@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { TemplateRef } from '@angular/core';
@@ -410,9 +410,18 @@ export class CreatobfComponent implements OnInit {
       console.log(this._obfservices.ObfCreateForm);
       if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
       {
+        if(this._obfservices.loipoarray.length > 0)
+        {
+          this.loiopdisabled = false;
+          this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
+        this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+        }
+        else
+        {
         this.loiopdisabled = true;
         this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+       }
       }
       this.uploadnotdisabled = true;
       // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
@@ -1261,7 +1270,16 @@ downloadCoversheet(event)
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         this.finalsupportarray.push(this.SupportPoprogress[i]);
-        files.splice(i,1);
+
+        // let newindex = files.findIndex(obj => obj.name == files[i].name);
+        // if(newindex > -1)
+        // {
+        //   files.splice(i,1);
+        // }
+        if(i == (files.length - 1))
+        {
+          this.supportfiles = [];
+        }
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        
@@ -1281,6 +1299,7 @@ downloadCoversheet(event)
     else if(types == "support")
     {
       this.SupportPoprogress[i].value = 0;
+      this.supportfiles = [];
     }
         
         const msg = 'Could not upload the file: ' + files[i].name;
@@ -1526,11 +1545,11 @@ downloadCoversheet(event)
         if(index > -1)
         {
           domain = this.domainlist[index].value.toString().trim();
-          if(this.initiateppl || (this.reinitiateobf && this.isppl))
+          if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
-              this._mesgBox.showError("Project type does not matched with the previous version of "+(this.initiateppl?"OBF":"PPL"));
+              this._mesgBox.showError("Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1554,11 +1573,11 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
-        if(this.initiateppl || (this.reinitiateobf && this.isppl))
+        if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E4.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_project_name.trim().toUpperCase())
             {
-              this._mesgBox.showError("Project name does not matched with the previous version of OBF");
+              this._mesgBox.showError("Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -1622,11 +1641,11 @@ downloadCoversheet(event)
               this.iscoversheet = !this.iscoversheet;
               return false;
       }
-      if(this.initiateppl || (this.reinitiateobf && this.isppl))
+      if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
             {
-              this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
+              this._mesgBox.showError("Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
               this.coversheetfiles = [];
               this.iscoversheet = !this.iscoversheet;
               return false;
@@ -2173,7 +2192,7 @@ downloadCoversheet(event)
      
     }
     else{
-      this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
+      this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       this.loiopdisabled = false;
       this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
