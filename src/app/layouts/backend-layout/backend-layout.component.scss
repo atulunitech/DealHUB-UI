@@ -6,7 +6,7 @@
     overflow: hidden;
     border-right: solid 1px rgba(0, 0, 0, 0.09);
     @include position(fixed,0,0,0,0);
-    @include heightwidth(70px,100%);
+    @include heightwidth(65px,100%);
     @include transition(all 0.3s);
     background-color: $thm-bg;
     &.open
@@ -16,7 +16,7 @@
 }
 .page
 {
-    width: calc(100% - 70px);
+    width: calc(100% - 65px);
     min-height: 100vh;
     border-right: solid 1px rgba(0, 0, 0, 0.09);
     @include padding (initial,initial,20px,initial);

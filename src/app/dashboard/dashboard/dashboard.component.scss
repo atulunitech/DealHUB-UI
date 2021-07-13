@@ -249,14 +249,14 @@
 }
 .edit_bt
 {
-    @include padding(0,25px,0,25px);
+    @include padding(0,25px !important,0,25px !important);
     @include font-weight(medium);
     @include margin(0,7px,0,0);
    
 }
 .view_bt
 {
-    @include padding(0,15px,0,15px);
+    @include padding(0,10px !important,0,10px !important);
     @include font-weight(medium);
     @include margin(0,7px,0,0);
    background-color: transparent !important;
@@ -495,7 +495,10 @@
             &.mat-table-sticky
             {
                min-width: 250px;
-                
+            //    ::ng-deep .mat-sort-header-arrow
+            //    {
+            //        display: none;
+            //    }
             }
         }
         }
@@ -556,17 +559,16 @@
 {
     background-color: #2258bf;
     cursor: pointer;
-    border-radius: 50%;
-    width: 35px;
-    text-align: center;
+    border-radius: 20px;
+    width: 28px;
     display: flex;
-    height: 32px;
+    height: 28px;
     justify-content: center;
     align-items: center;
-    margin-left: 2px;
+    margin-left: 5px;
     img
     {
-       @include heightwidth(15px,initial);
+       @include heightwidth(12px,initial);
     }
 }
 

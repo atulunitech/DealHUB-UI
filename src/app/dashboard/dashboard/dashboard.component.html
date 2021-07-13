@@ -202,7 +202,7 @@
               </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span>jskldj fj</span></mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Revenue'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
@@ -262,10 +262,11 @@
               </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
-                <mat-header-cell style="min-width: 190px;padding-left: 10px;
-                 " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell style="min-width: 190px;padding-left: 10px;
-               " *matCellDef="let row" >
+                <mat-header-cell style="padding-left: 10px;
+                 " style="padding-left: 10px;
+                 " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="padding-left: 10px;
+               " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" >
                 
                <button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button>
                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
@@ -273,14 +274,14 @@
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell style="padding-left: 10px;
-                 " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                 " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px; 
-                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : '190px'}" *matCellDef="let row" 
+                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" 
                   [matTooltip]="getmsg(row)" #tooltip="matTooltip" >
                   
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
-                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
+                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
               </mat-cell>
              
            
