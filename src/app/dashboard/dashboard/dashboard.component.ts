@@ -153,6 +153,9 @@ export class ResetErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  hide = true;
+  hide1 = true;
+  hide2 = true;
   countparam:count = null;
   loginmodel:LoginModel=new LoginModel();
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
