@@ -192,8 +192,8 @@
   
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
               <div *ngIf="column.columnDef == 'Code'">
-                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }}
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new"  matTooltip="Download OBF Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
                   <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
@@ -502,7 +502,7 @@
                 <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                   <div class="mat_previe_box">
                     <div class="prev_tit">
-                     Version
+                     {{ details.is_latest_version==1? 'Current Version':'Version' }} 
                     </div>
                     <div class="prev_dis">
                      {{details.version_name}}

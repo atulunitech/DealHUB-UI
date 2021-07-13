@@ -100,7 +100,7 @@ class versiondetail
   opportunity_id: string;
   vertical_name:string;
   tablename:string;
-
+  is_latest_version:number;
 }
 class TimeLine
 {
