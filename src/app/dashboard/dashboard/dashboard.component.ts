@@ -28,6 +28,7 @@ import { element } from 'protractor';
 import { TypeScriptEmitter } from '@angular/compiler';
 import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
 import { loginservices } from 'src/app/auth/login/LoginServices';
+import { DatePipe } from '@angular/common';
 
 //region Model
 export class DashBoardModel
@@ -232,7 +233,7 @@ export class DashboardComponent implements OnInit {
   // };
   loading$ = this.commonService.loading$;
   public loginvalid: FormGroup;
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices) { 
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }

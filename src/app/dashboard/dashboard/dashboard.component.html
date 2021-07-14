@@ -512,7 +512,7 @@
               <mat-panel-title>
                 <div class="mat_previe_box">
                   <div class="prev_tit">
-                   Version
+                  {{details.is_latest_version==1?'Current Version':'Version'}} 
                   </div>
                   <div class="prev_dis">
                    {{details.version_name}}
@@ -531,7 +531,7 @@
                Date
               </div>
               <div class="prev_dis">
-               {{details.datecreated}}
+               {{details.datecreated | date}}
               </div>
            </div>
            <div class="mat_previe_box">
@@ -632,7 +632,7 @@
                   {{timeline.username}}
                 </td>
                 <td>
-                  {{timeline.TimeLine}}
+                  {{timeline.TimeLine| date}}
                 </td>
                 <td>
                   {{timeline.currentstatus}}
