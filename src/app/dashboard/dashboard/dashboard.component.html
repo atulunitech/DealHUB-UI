@@ -202,7 +202,7 @@
               </div>
               <div *ngIf="column.columnDef == 'Opp_Id'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} <span title="{{ column.cell(row) }}" (click)="copyText(column.cell(row))" > <img src="../../../assets/images/copay_icon.png"> </span></mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} <span title="{{ column.cell(row) }}" (click)="copyText(column.cell(row))" > <img src="assets/images/copay_icon.png"> </span></mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
@@ -495,7 +495,7 @@
       <mat-dialog-content class="mat-typography">
         <div class="edit_box_popup">
           <div id="flowBoxes" >
-            <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="/assets/images/tick_icon.png"></div>
+            <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="assets/images/tick_icon.png"></div>
             
     </div>
           <!-- <div>
