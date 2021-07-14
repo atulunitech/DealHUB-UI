@@ -93,6 +93,13 @@ export class AuthInterceptor implements HttpInterceptor {
                             this._mesgBox.showError(error.error.Record.MESSAGE);
                           }
 
+                          if(error.status === 500)
+                          {
+                            //alert("400 error occured");
+                            //alert(error.message);
+                            this._mesgBox.showError("Technical Error");
+                          }
+
                           // if(error.status === 429)
                           // {
                           //   this._mesgBox.showError(error.message);

@@ -81,7 +81,8 @@ export class AppComponent {
        localStorage.setItem("Token","");
        localStorage.setItem("RequestId","");
        localStorage.setItem("userToken","");
-        this.router.navigate(['/']);
+       // this.router.navigate(['/']);
+       this.router.navigateByUrl('/login');
       }
     });  
   }

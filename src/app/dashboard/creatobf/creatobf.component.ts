@@ -1034,9 +1034,13 @@ downloadCoversheet(event)
         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
        }
       // if( this.bytesToSize(element.size) > 4)
-      if( element.size > 4194304)
+      // if( element.size > 4194304)
+      // {
+      //   throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+      // }
+      if( element.size > 31457280)
       {
-        throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+        throw new Error("The file size of "+element.name+" is greater than 30 Mb, Kindly re-upload files with size less than 4 Mb" );
       }
 
     });
