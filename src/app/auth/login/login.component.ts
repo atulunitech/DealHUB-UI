@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
    
   getClientKey()
   {
-    this._loginservice.getClientKey().subscribe(result =>{
+    this._loginservice.getClientKey().subscribe((result:any) =>{
      // let res = JSON.parse(result);
      console.log(result);
       let Rkey = atob(result.Secretkey);
