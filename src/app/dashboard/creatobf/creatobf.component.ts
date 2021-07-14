@@ -1540,6 +1540,8 @@ downloadCoversheet(event)
           this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
         }
         let count:number = 0;
+        let validcount:number = 0;
+        let validmsg:string = "";
         if(ws.H3 == undefined || ws.H3.w == "#N/A" )
         {
         count +=1;
@@ -1554,10 +1556,12 @@ downloadCoversheet(event)
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
-              this._mesgBox.showError("Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg += "Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
           this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
@@ -1566,10 +1570,12 @@ downloadCoversheet(event)
         else
         {
           //count +=1;
-          this._mesgBox.showError("Project type is not correct");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+          // this._mesgBox.showError("Project type is not correct");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg += "Project type is not correct ,";
+          validcount += 1;
         }
       
      }
@@ -1582,10 +1588,12 @@ downloadCoversheet(event)
           {
             if(ws.E4.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_project_name.trim().toUpperCase())
             {
-              this._mesgBox.showError("Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg += "Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
@@ -1601,10 +1609,12 @@ downloadCoversheet(event)
           {
             if(ws.E5.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._customer_name.toString().trim().toUpperCase())
             {
-              this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg +="Customer name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
@@ -1624,10 +1634,12 @@ downloadCoversheet(event)
         {
           if(this._obfservices.editObfObject._opportunity_id.toString().trim().toUpperCase() != ws.E6.w.toString().trim().toUpperCase())
           {
-            this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+            // this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
+            // this.coversheetfiles = [];
+            // this.iscoversheet = !this.iscoversheet;
+            // return false;
+            validmsg +="Opportunity ID not matched with previous version of OBF,";
+            validcount +=1;
           }
         }
       this._obfservices.obfmodel._opportunity_id = ws.E6.w;
@@ -1641,19 +1653,23 @@ downloadCoversheet(event)
       let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
       if(indexbranch == -1)
       {
-        this._mesgBox.showError("Branch location is not correct, kindly check");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+        // this._mesgBox.showError("Branch location is not correct, kindly check");
+        //       this.coversheetfiles = [];
+        //       this.iscoversheet = !this.iscoversheet;
+        //       return false;
+        validmsg +="Branch location is not correct, kindly check ,";
+        validcount +=1;
       }
       if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
             {
-              this._mesgBox.showError("Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg +="Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       
@@ -1672,40 +1688,48 @@ downloadCoversheet(event)
      });
      if(!(result.length > 0))
      {
-       this._mesgBox.showError("Vertical field is not correct, please check.");
-       this.coversheetfiles = [];
-       this.iscoversheet = !this.iscoversheet;
-           return false; 
+      //  this._mesgBox.showError("Vertical field is not correct, please check.");
+      //  this.coversheetfiles = [];
+      //  this.iscoversheet = !this.iscoversheet;
+      //      return false; 
+      validmsg +="Vertical field is not correct, please check ,";
+      validcount +=1;
      }
       let verticalid = parseInt(result[0].value.toString());
       if(verticalid == 8)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+          // this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for MLL Network,";
+          validcount +=1;
         }
       }
       if(verticalid == 6)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+          // this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for Enterprise Mobility,";
+          validcount +=1;
         }
       }
       if(this.reinitiateobf)
         {
           if(this._obfservices.editObfObject._vertical_id != verticalid)
           {
-            this._mesgBox.showError("Vertical different with previous OBF version");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+            // this._mesgBox.showError("Vertical different with previous OBF version");
+            // this.coversheetfiles = [];
+            // this.iscoversheet = !this.iscoversheet;
+            // return false;
+            validmsg +="Vertical different with previous OBF version ,";
+            validcount +=1;
           }
         }
      //let verticalid = 2;
@@ -1790,10 +1814,12 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.H13.w.toString().trim()))
         {
-          this._mesgBox.showError("Total margin is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Total margin is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Total margin is not in correct format ,";
+          validcount +=1;
         }
       this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
       // this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
@@ -1820,10 +1846,12 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.D15.w.toString().trim()))
         {
-          this._mesgBox.showError("Capex is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Capex is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Capex is not in correct format ,";
+          validcount +=1;
         }
 
         let val = this.converttocrore(this.extractonlydgits(ws.D15.w.toString().trim()),"Capex");
@@ -1849,10 +1877,12 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.H15.w.toString().trim()))
         {
-          this._mesgBox.showError("Payment terms is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Payment terms is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Payment terms is not in correct format ,";
+          validcount +=1;
         }
         this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
        // this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
@@ -1890,16 +1920,27 @@ downloadCoversheet(event)
        {
         if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim().toUpperCase() == this._obfservices.editObfObject._payment_terms.toString().trim().toUpperCase()) 
        {
-        this._mesgBox.showError("Details are same as of previous PPL");
-        this.coversheetfiles = [];
-        this.iscoversheet = !this.iscoversheet;
-        return false;
+        // this._mesgBox.showError("Details are same as of previous PPL");
+        // this.coversheetfiles = [];
+        // this.iscoversheet = !this.iscoversheet;
+        // return false;
+         validmsg +="Details are same as of previous PPL ,";
+         validcount +=1;
        } 
       }
      
       if(count > 0)
       {
         throw new Error();
+      }
+
+      if(validcount > 0)
+      {
+        validmsg = validmsg.substring(0,validmsg.length - 1);
+        this._mesgBox.showErrorforfile(validmsg);
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
       }
      
       console.log("check form values");
