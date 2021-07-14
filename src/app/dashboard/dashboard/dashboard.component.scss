@@ -875,7 +875,645 @@
                 }
               }
         }
+        
     }
+    .custom-modalbox-as
+        {
+            .mat-dialog-content{
+                background-color: #fff;
+                padding-top: 0px;
+                padding: 0 0px;
+                .edit_box_popup
+                {
+                    min-width: 900px;
+                    padding-top: 0px;
+                    .cust-accor-as
+{
+    
+    ::ng-deep .mat-accordion
+    {
+        .mat-expansion-panel-body
+        {
+            background-color: #fff;
+            @include padding(0px,inherit,0px,inherit);
+            table{
+                width: 100%;
+                padding: 0,10px,0,10px;
+                border-collapse: collapse;
+                tr{
+                    th{
+                        background-color: #eaeaea;
+                        padding: 8px;
+                        text-align: left;
+                        &:first-child{
+                            padding-left: 40px;
+                        }
+                        &:last-child{
+                            padding-right: 40px;
+                        }
+                        
+                    }
+                td{
+                    padding: 8px;
+                    text-align: left;
+                    &:first-child{
+                        padding-left: 40px;
+                    }
+                    &:last-child{
+                        padding-right: 40px;
+                    }
+                }
+            }
+            }
+            .mat_exp_wrp
+            {
+                @include padding(inherit,24px,0px,24px);
+                .mat_previe_box
+                {
+                    max-width: 300px;
+                    @include heightwidth(auto,initial);
+                    @include padding(inherit,24px,20px,24px);
+                    .prev_tit
+                    {
+                        opacity: 0.6;
+                        line-height: initial;
+                        color: $thm-text-color;
+                        @include font-size(0.9);
+                    }
+                    .prev_dis
+                    {
+                        line-height: initial;
+                        color: $thm-text-color;
+                        @include font-size(0.9);
+                        @include font-weight(semi-bold);
+                        
+                            a {color: $thm-text-color;text-decoration: none;    font-weight: 400;
+                                font-style: italic;
+                            }
+                            &:focus{
+                                color: $thm-text-color;
+                                text-decoration: none;
+                                font-weight: 400;
+                                font-style: italic;                            
+                            }
+                        
+                    }
+                }
+                .mat_exp_fot
+                {
+                    border-top: solid 1px rgba(0, 0, 0, 0.09);
+                    @include padding(5px,initial,initial,initial);
+                    .mat_fot_drf
+                    {
+                        @include padding(inherit,15px,inherit,15px);
+                        .mat_fot_bt
+                        {
+                            background-color: transparent;
+                            color: $thm-tex-col-dar;
+                            @include font-weight(semi-bold);
+                            @include font-size(0.9);
+                            &[disabled][disabled]
+                            {
+                                color: #ccc;
+                            }
+                        }
+                    }
+                }
+                
+                .mat_exp_title
+                {
+                    color: $thm-text-color;
+                    @include font-size(0.90);
+                    @include font-weight(semi-bold);
+                    @include padding(0,0,15px,0);
+                }
+                .mat_fld_box_wrp
+                {
+                    @include margin(inherit,-15px,inherit,-15px);
+                    @include padding(0px,0px,0px,0px);
+                    &.con_dwn_wrp
+                    {
+                        @include margin(inherit,0px,10px,0px);
+                        .mat_upload_box
+                        {
+                            cursor: pointer;
+                        @include margin(inherit,10px,inherit,10px);
+                        @include padding(0px,10px,10px,10px);
+                        @include border-radius(2px);
+                        .mat_upload_in_wr
+                        {
+                            .dro_wrp
+                            {
+                                position: relative !important; 
+                                padding: 19px !important;
+                                margin: 0 !important;
+                                display: inline-block !important;
+                                width: 100% !important;
+                                max-width: 100% !important;
+                                margin-top: 10px !important;
+                                margin-bottom: 10px !important;
+                                padding-right: 40px !important;
+                                min-height: auto !important;
+                                min-width: 100% !important;
+                                height: auto !important;
+                                background: #fff !important;
+                                .ng-star-inserted
+                                {
+                                    opacity: 9;
+                                    background-color: #FF352C;
+                                    top: 20px;
+                                    @include margin(2px,2px,initial,initial); 
+                                }
+                                .drop_lab_cs
+                                {
+                                    @include flexbox();
+                                    align-items: center;
+                                    .doc_icon
+                                    {
+                                        img
+                                        {
+                                            @include heightwidth(22px,initial);
+                                        }
+                                    }
+                                    .doc_cont
+                                    {
+                                        line-height: initial;
+                                        background-color: transparent;
+                                        @include font-weight(semi-bold);
+                                        @include font-size(0.8);
+
+                                        div
+                                        {
+                                            margin-bottom: 2px;
+                                            @include font-size(0.75);
+                                            @include font-weight(normal);
+                                        }
+                                    }
+                                }
+                            }
+                            .bt_uplad_con
+                            {
+                                text-align: right;
+                                align-items: center;
+                                justify-content: flex-end;
+                                background: #D9E6FF;
+                                border: 2px dashed #2258bf;
+                                border-bottom: none;
+                                border-top: 0px;
+                                @include position(relative);
+                                @include margin(-61px,initial,initial,initial);
+                                @include padding(10px,15px,10px,10px);
+                                @include flexbox();
+                                .creat_bt
+                                {
+                                    @include border-radius(4px);
+                                }
+                                .cr_corner
+                                {
+                                    @include position(absolute,initial,initial,-9px,0);
+                                    &::after
+                            {
+                                content: "";
+                                position: absolute;
+                                top: -9px;
+                                right: -6px;
+                                border-top: 80px solid transparent;
+                                border-left: 80px solid #eaeaea;
+                                width: 0;
+                            }
+                                }
+                            }
+                           .mat_upload_tit
+                           {
+                               .info_view
+                               {
+                                background-color: #2258bf;
+                                color: white;
+                                padding: 2px;
+                                border-radius: 30px;
+                                font-size: 10px;
+                                text-transform: lowercase;
+                                margin-left: 3px;
+                                line-height: initial;
+                                width: 18px;
+                                height: 18px;
+                                display: inline-block;
+                                text-align: center;
+                                padding-left: 0px;
+                                padding-right: 0px;
+                                font-weight: bold;
+                                cursor: pointer;
+                                position: relative;
+                                &:hover 
+                                {
+                                    .hov_info
+                                    {
+                                        display: block;
+                                    }
+                                }
+                                .hov_info
+                                {
+                                    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+                                    display: none;
+                                    position: absolute;
+                                    width: 600px;
+                                    height: auto;
+                                    background-color: #fff;
+                                    left: 19px;
+                                    top: 21px;
+                                    z-index: 99;
+                                    padding: 20px;
+                                    text-transform: initial;
+                                    .infopop_title
+                                    {
+                                        color: #000;
+                                        margin-bottom: 15px;
+                                        font-weight: 700;
+                                        font-size: 1.2rem;
+                                        text-align: left;
+                                        text-transform: initial;
+
+                                    }
+                                    .infopop_discrip
+                                    {
+                                        font-size: 1rem;
+                                        color: #000;
+                                        font-weight: 500;
+                                        list-style-type: decimal;
+                                        display: inherit;
+                                        text-align: left;
+                                        margin: 14px;
+    li{
+        padding-bottom: 6px;
+    }
+                                    }
+                                }
+                               }
+                               .cus_check
+                               {
+                                   @include font-size(0.85);
+                                   margin-top: -4px;
+    position: relative;
+    top: 4px;
+                               }
+                            text-transform: uppercase;
+                            @include font-size(0.85);
+                            @include font-weight(semi-bold);
+                            @include padding(0px,0px,10px,0px);
+                           }
+                           .mat_up_con
+                           {
+                            border: 2px dashed #2258bf;
+                            background-color: #e5eeff;
+                            position: relative;
+                            justify-content: start;
+                            align-items: baseline;
+                            
+                            .matUp_lable
+                            {
+                                text-align: left;
+                                @include flexbox();
+                                @include margin(0,0,0,0);
+                                @include padding(18px,initial,initial,18px);
+                                img{margin-right: 7px}
+                                .drap_titl
+                                {
+                                    line-height: initial;
+                                    @include font-weight(semi-bold);
+                                    @include font-size(1);
+                                    color: $thm-text-color;
+                                    
+                                    .in_titl
+                                    {
+                                        @include font-weight(normal);
+                                        @include font-size(0.9);
+                                    }
+                                }
+                            }
+                            
+                           }
+                          
+                        }
+                        }
+                        .mat_dwn_lod_con
+                    {
+                        cursor: pointer;
+                        @include margin(inherit,10px,inherit,10px);
+                        @include padding(15px,20px,15px,20px);
+                        @include border-radius(2px);
+                        background-color: $thm-prm-bg;
+                        color: $thm-bg;
+                        .dwn_con_wr
+                        {
+                            align-items: center;
+                            @include flexbox();
+                            span
+                            {
+                                line-height: initial;
+                                @include font-size(0.8);
+                                a{text-decoration: none;color: $thm-bg;}
+                            }
+                            img
+                            {
+                                @include heightwidth(18px,initial);
+                                @include padding(initial,5px,initial,initial);
+                            }
+                        }
+                        
+                    }
+                    }
+                    
+                    .mat_view_cont
+                    {
+                       .mat_previe_box
+                       {
+                           max-width: initial;
+                       }
+                    }
+                    .mat_view_comment
+                    {
+                        max-width: 25%;
+                        .mat_previe_box
+                       {
+                           max-width: initial;
+                           .prev_dis
+                           {
+                               @include margin(initial,initial,5px,initial);
+                           }
+                           .mat_comment_box
+                           {
+                            border: solid 1px rgba(0, 0, 0, 0.09);
+                            background-color: #e5eeff;
+                            color: #6e6e6e;
+                            line-height: initial;
+                            @include padding(10px,10px,10px,10px);
+                            @include font-size(0.7);
+                            @include font-weight(semi-bold);
+                           }
+                       }
+                      
+                    }
+                    .mat_fld_box_in
+                    {
+                        @include heightwidth(50px,initial);
+                        @include margin(inherit,10px,inherit,10px);
+                        &.cust_width
+                        {
+                            @include heightwidth(150px,initial);
+                        }
+                    }
+                    &.prm_mat_fld_box_wrp
+                    {
+                        background-color: $thm-prm-bg;
+                        @include margin(initial,-25px,15px,-25px);
+                        @include padding(10px,24px,10px,24px);
+                        &.prm_mat_fld_box_wrp_prv
+                        {
+                            background-color: #f1f1f1;
+                            .prev_dis
+                            {
+                                color:#000;
+                            }
+                            .prev_tit
+                            {
+                                color: #000;
+                                opacity: 0.8;
+                            }
+                        }
+                        .prev_dis
+                        {
+                            color: $thm-bg;
+                           
+                        }
+                        .prev_tit
+                        {
+                            opacity: 9;
+                            color: $thm-bg;
+                            min-height: 37px;
+                            font-weight: 300;
+                            line-height: 15px;
+                        }
+                        .mat_previe_box
+                        {
+                            max-width: 164px;
+                            @include padding(initial,12px,initial,12px);
+                            flex: 1;
+                        }
+                    }
+                }
+            }
+        }
+        .mat-expansion-panel
+        {
+            box-shadow: none;
+            @include border-radius(0px);
+            @include margin(5px,initial,5px,initial);
+            
+            .mat-content
+            {
+                .mat-expansion-panel-header-title
+                {
+                    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: flex-start space-between;
+    align-items: flex-start;
+                    // color:$thm-title-color;
+                    // @include font-weight(bold);
+                    // @include font-size(1);
+                    .mat_previe_box
+                {
+                    max-width: 300px;
+                    @include heightwidth(auto,initial);
+                    @include padding(inherit,24px,0px,24px);
+                    .prev_tit
+                    {
+                        opacity: 0.6;
+                        line-height: initial;
+                        color: $thm-text-color;
+                        @include font-size(0.9);
+                    }
+                    .prev_dis
+                    {
+                        line-height: initial;
+                        color: $thm-text-color;
+                        @include font-size(0.9);
+                        @include font-weight(semi-bold);
+                    }
+                }
+                    .is_done
+                    {
+                        img
+                        {
+                            width: 20px;
+                        }
+                        &.is_done_not
+                        {
+                            img{opacity: 0.5;}
+                        }
+                    }
+                }
+            }
+            .mat-expansion-panel-header
+            {
+                border: solid 1px rgba(0, 0, 0, 0.09);
+                &.mat-expanded
+            {
+                background-color:#e5eeff;
+            }
+                &:hover
+            {
+                background-color: #e5eeff ;
+                
+            }
+           
+            }
+            .mat-expansion-indicator
+            {
+                &::after
+                {
+                    @include padding(4px,4px,4px,4px);
+                    color: $thm-text-color;
+                }
+            }
+        }
+    }
+}
+                }
+                .chang_pass_box_popup
+                {
+                    min-width: 524px;
+                    background-color: #fff;
+                    margin-left: -23px;
+                    margin-right: -23px;
+                    padding: 23px;
+                    margin-top: -15px;
+                    padding-bottom: 0px;
+                    padding-top: 0px;
+                    .chang_pass_form
+                    {
+                        width: 360px;
+                        margin: 0 auto;
+                    }
+                    .pass_logo_title
+                    {
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        align-items: center;
+                        position: relative;
+                        .close {
+                            position: absolute;
+                            right: -16px;
+                            top: -2px;
+                            width: 32px;
+                            height: 18px;
+                            outline: none;
+                            &::after
+                            {
+                                position: absolute;
+                                left: 15px;
+                                content: ' ';
+                                height: 18px;
+                                width: 2px;
+                                background-color: #000;
+                                transform: rotate(-45deg);
+                            }
+                            &::before
+                            {
+                                position: absolute;
+                                left: 15px;
+                                content: ' ';
+                                height: 18px;
+                                width: 2px;
+                                background-color: #000;
+                                transform: rotate(45deg);
+                            }
+                          }
+                        h3{
+                            color: #0e2c65;
+                            font-weight: 800;
+                            font-size: 1.5rem;
+                            margin: 0 0 5px 0;
+                        }
+                        p
+                        {
+                            width: 350px;
+                            text-align: center;
+                            line-height: initial;
+                            margin: 0 0 10px 0;
+                            font-size: 0.95rem;
+                            font-weight: 500;
+                            color: #141414;
+                        }
+                        img{
+                            width: 90px;
+                        }
+                    }
+                }
+            }
+           
+            .mat-dialog-actions
+            {
+                .mat_fot_bt
+                {
+                    background-color: transparent;
+                    color: $thm-tex-col-dar;
+                    @include font-weight(semi-bold);
+                    @include font-size(0.9);
+                    &[disabled][disabled]
+                    {
+                        color: #ccc;
+                    }
+                }
+            }
+.pop_title_wrp
+{
+position: relative;
+.pop_head_titl
+{
+    font-size: 0.90rem;
+margin-top: -24px;
+padding-top: 14px;
+padding-bottom: 14px;
+    font-weight: 500;
+    &.edit_titl
+    {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-top: -20px;
+    }
+}
+.close {
+    position: absolute;
+    right: -4px;
+    top: 14px;
+    width: 32px;
+    height: 18px;
+    outline: none;
+    &::after
+    {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 18px;
+        width: 2px;
+        background-color: #000;
+        transform: rotate(-45deg);
+    }
+    &::before
+    {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 18px;
+        width: 2px;
+        background-color: #000;
+        transform: rotate(45deg);
+    }
+  }
+}
+        }
 }
 /*e*/
 ::ng-deep .cdk-overlay-pane
@@ -903,3 +1541,76 @@
 //     min-width: 275px !important;
 //     left: auto !important;
 // }
+
+#flowBoxes {
+    margin:auto;
+    padding:0 50px 0 23px;
+    display: flex;
+    margin-bottom: 16px;
+    div {
+        display: inline-block;
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 35px;
+    border: 2px solid #e8e8e8;
+    margin-right: 0px;
+    background-color: white;
+    font-weight: 500;
+    flex: 1;
+    &:last-child
+    {
+        background-color: #345d9d;
+        color: #fff;
+        img{
+            display: none;
+        }
+        &.right
+        {
+            &::after
+            {
+                background-color: #345d9d;
+    border-top: 2px solid #345d9d;
+    border-right: 2px solid #345d9d;
+    top: 1px;
+    right: -2px;
+    height: 26px;
+    width: 25px;
+            }
+        }
+    }
+    img{
+        position: absolute;
+    right: 0;
+    z-index: 999;
+    top: 10px;
+    width: 14px;
+    }
+        &.right
+        {
+            &::after
+            {
+                content: "";
+                border-top: 2px solid #e8e8e8;
+                border-right: 2px solid #e8e8e8;
+                width: 28px;
+                height: 28px;
+                position: absolute;
+                right: -7px;
+                top: 1px;
+                background-color: white;
+                z-index: 150;
+    
+    -webkit-transform: translate(10px,4px) rotate(45deg);
+       -moz-transform: translate(10px,4px) rotate(45deg);
+        -ms-transform: translate(10px,4px) rotate(45deg);
+         -o-transform: translate(10px,4px) rotate(20deg); 
+            transform: translate(10px,4px) rotate(45deg);
+            }
+        }
+       
+    }
+    
+}
+
+

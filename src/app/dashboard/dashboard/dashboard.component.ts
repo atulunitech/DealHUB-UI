@@ -1149,7 +1149,7 @@ getapprovalstatus(element)
     // height:'600px',
     // disableClose: true,
    // data: { campaignId: this.params.id }
-   panelClass: 'custom-modalbox',
+   panelClass: 'custom-modalbox-as',
       backdropClass: 'popupBackdropClass',
 })
 this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header_id.toString()).subscribe((Result)=>{

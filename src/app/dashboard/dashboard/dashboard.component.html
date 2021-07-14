@@ -487,20 +487,75 @@
    </div>
   <div>
     <ng-template #callAPIDialog>
-    <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
+    <div class="pop_title_wrp"><div class="pop_head_titl" style="font-size: 1rem;">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
-        <div>
+        <div class="edit_box_popup">
+          <div id="flowBoxes" >
+            <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="/assets/images/tick_icon.png"></div>
+            
+    </div>
+          <!-- <div>
           <span>
             <label *ngFor="let details of this.approvalstatusdetail.Approvaldetail">
               {{details.role_name}}
             </label>
           </span>
-        </div>
+        </div> -->
+        <div class="cust-accor-as">
         <mat-accordion>
           <mat-expansion-panel   (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
             <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
               <mat-panel-title>
-                <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+                <div class="mat_previe_box">
+                  <div class="prev_tit">
+                   Version
+                  </div>
+                  <div class="prev_dis">
+                   {{details.version_name}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                 Code
+                </div>
+                <div class="prev_dis">
+                 {{details.dh_code}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+               Date
+              </div>
+              <div class="prev_dis">
+               {{details.datecreated}}
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+             Project Name
+            </div>
+            <div class="prev_dis">
+             {{details.dh_project_name}}
+            </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              opportunity Id
+            </div>
+            <div class="prev_dis">
+             {{details.opportunity_id}}
+            </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Vertical Name
+            </div>
+            <div class="prev_dis">
+             {{details.vertical_name}}
+            </div>
+           </div>
+               
+                <!-- <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">
                   <div class="mat_previe_box">
                     <div class="prev_tit">
                      Version
@@ -549,11 +604,41 @@
                {{details.vertical_name}}
               </div>
              </div>
-                </div>
+                </div> -->
               </mat-panel-title>
 
             </mat-expansion-panel-header>
-            <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of filterdataforcomment">
+            <table>
+              <tr>
+                <th>
+                  User Name
+                </th>
+                <th>
+                  Timeline
+                </th>
+                <th>
+                  Status
+                </th>
+                <th>
+                  Comments
+                </th>
+              </tr>
+              <tr *ngFor="let timeline of filterdataforcomment">
+                <td>
+                  {{timeline.username}}
+                </td>
+                <td>
+                  {{timeline.TimeLine}}
+                </td>
+                <td>
+                  {{timeline.currentstatus}}
+                </td>
+                <td>
+                  {{timeline.comments}}
+                </td>
+              </tr>
+            </table>
+            <!-- <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of filterdataforcomment">
               <div class="mat_previe_box">
                 <div class="prev_tit">
                 User Name
@@ -586,10 +671,11 @@
            {{timeline.comments}}
           </div>
         </div>
-            </div>
+            </div> -->
           </mat-expansion-panel>
   </mat-accordion>
-  <br/>
+</div>
+</div>
       </mat-dialog-content>
       
       </ng-template>
