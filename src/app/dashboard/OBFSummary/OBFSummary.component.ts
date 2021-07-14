@@ -728,7 +728,18 @@ class filesdetail
       }
      
     }
-
+    if(this.obfsummaryform.get("comments").value == "")
+    {
+      this.obfsummaryform.controls["comments"].markAsTouched();
+    //  this.noComment = true;
+      return false;
+      //return this.obfsummaryform.controls["comments"].hasError("required");
+    }
+    else
+    {
+      this._mesgBox.showError("Please Submit Comment");
+      return false;
+    }
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -769,6 +780,7 @@ class filesdetail
   else
   {
     this._mesgBox.showError("Please Submit Comment");
+    return false;
   }
   
    } 
