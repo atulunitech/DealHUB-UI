@@ -200,6 +200,10 @@
                 </div>
                 </mat-cell>
               </div>
+              <div *ngIf="column.columnDef == 'Opp_Id'">
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} <span> Copy </span></mat-cell>
+              </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span></span></mat-cell>
