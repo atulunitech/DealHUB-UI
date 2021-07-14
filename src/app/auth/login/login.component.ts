@@ -108,7 +108,8 @@ export class LoginComponent implements OnInit {
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
+        this._mesgBox.showError("Something went wrong");
       });
   }
 
