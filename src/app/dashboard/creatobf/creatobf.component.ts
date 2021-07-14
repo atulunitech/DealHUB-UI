@@ -2000,7 +2000,8 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Successfully saved as draft");
+       // this._mesgBox.showSucess("Successfully saved as draft");
+        this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" saved as draft successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2110,7 +2111,8 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Details Saved Successfully");
+        this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" Saved successfully");
+       // this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");

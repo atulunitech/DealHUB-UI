@@ -497,7 +497,7 @@
           </span>
         </div>
         <mat-accordion>
-          <mat-expansion-panel   (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+          <mat-expansion-panel  (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
             <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
               <mat-panel-title>
                 <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">

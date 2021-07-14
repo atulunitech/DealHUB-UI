@@ -359,7 +359,8 @@
                 <mat-expansion-panel   [expanded]="step === 1" (afterExpand)="removeandaddvalidation('details')" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      2/3 Enter Details <span class="is_done" [class.is_done_not]="detailstickdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
+                      {{isppl?'2/3 PPL Details ':'2/3 Enter Details '}}
+                       <span class="is_done" [class.is_done_not]="detailstickdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
                         margin-left: 55px;"></span>
                     </mat-panel-title>
                     
