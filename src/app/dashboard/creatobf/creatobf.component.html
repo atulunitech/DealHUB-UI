@@ -876,18 +876,21 @@
                       <div class="prev_tit">
                         Payment Terms Description
                       </div>
-                      <div class="prev_dis">
+                      <!-- <div class="prev_dis">
                         {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                     
+                       </div> -->
+                       <div class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length > 20)">
+                            
+                        {{(PaymentreadMore) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
+                        <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
+                      </div>
+                      <div *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
+                        {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                        </div>
                    </div>
-                   <!-- <div class="mat_previe_box">
-                    <div class="prev_tit">
-                      Project Type
-                    </div>
-                    <div class="prev_dis">{{ projecttype}}
-                     </div>
-                 </div> -->
+                  
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">

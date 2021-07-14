@@ -76,6 +76,7 @@ class filesdetail
     readMore = false;
     BrifreadMore=false;
     paymentRead=false;
+    PaymentreadMore=false;
     comments = new FormControl('', Validators.required);
     step=0;
     service:string;
@@ -874,10 +875,10 @@ class filesdetail
         
         }
        // if( this.bytesToSize(element.size) > 4)
-       if( element.size > 4194304)
-       {
-        this._mesgBox.showUpdate("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
-       }
+       if( element.size > 31457280)
+      {
+        throw new Error("The file size of "+element.name+" is greater than 30 Mb, Kindly re-upload files with size less than 4 Mb" );
+      }
  
      });
     this.progress = 0;
@@ -1465,7 +1466,7 @@ class filesdetail
     }
   }
   showuploadbutton:boolean=true;
-  
+ 
   getOBFPPLDetails()
   {
      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')

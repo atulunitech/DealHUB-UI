@@ -243,6 +243,7 @@ export class CreatobfComponent implements OnInit {
   uploadnotdisabled:boolean = false;
   User_name:string="";
   SAPNumMore:boolean=false;
+  PaymentreadMore=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
