@@ -926,7 +926,7 @@
                             </div>
                             <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting">
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
@@ -934,7 +934,7 @@
                               </div>
                               <div class="dwn_con_wr"><img (click)="downloaddocument($event)"  src="assets/images/dwn_fil_icon.png"></div>
                               </div>
-                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO">
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
                                   <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>

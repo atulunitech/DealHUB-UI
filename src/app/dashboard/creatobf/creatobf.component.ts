@@ -919,6 +919,7 @@ downloaddocument(event)
   if(this._obfservices.ObfCreateForm.get("Supportpath").value == null || this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
+    this.disableSupporting=true;
   }
   if(this._obfservices.obfmodel.Attachments.length != 0)
   {
@@ -957,15 +958,21 @@ downloaddocument(event)
   }
   else{
     this._mesgBox.showError("No Supporting Documents to Download");
+    
   }
 
   
 }
+disableLOIPO:boolean=false;
+disableSupporting:boolean=false;
+//disablefinalagg:boolean=false;
+
 downloadLOIp(event)
 {
   event.preventDefault();
   if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null || this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
+    this.disableLOIPO=true;
     this._mesgBox.showError("No LOI/PO to Download");
   }
   else{
