@@ -53,6 +53,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
             confirmpassword : new FormControl('')
           }, { validators: this.checkPasswords });
           this.getClientKey();
+          this.loginvalid.controls.NewPassword.setValue("");
+    this.loginvalid.controls.confirmpassword.setValue("");
+          this.loginvalid.controls["NewPassword"].markAsPristine();
+          this.loginvalid.controls["confirmpassword"].markAsPristine();
+          this.loginvalid.controls["NewPassword"].markAsUntouched();
+    this.loginvalid.controls["confirmpassword"].markAsUntouched();
       }
       getClientKey()
       {
