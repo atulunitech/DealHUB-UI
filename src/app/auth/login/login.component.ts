@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit {
    
   getClientKey()
   {
-    this._loginservice.getClientKey().subscribe(result =>{
+    this._loginservice.getClientKey().subscribe((result:any) =>{
      // let res = JSON.parse(result);
      console.log(result);
       let Rkey = atob(result.Secretkey);
@@ -108,7 +108,8 @@ export class LoginComponent implements OnInit {
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
+        this._mesgBox.showError("Something went wrong");
       });
   }
 

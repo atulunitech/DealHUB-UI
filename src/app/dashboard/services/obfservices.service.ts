@@ -332,6 +332,7 @@ export class OBFServices {
     this.editObfObject = new editObf();
    // this.previousobfmodel = new previousobf();
     this.servicesarray = [];
+    this.loipoarray = [];
   }
   createnewobfsummarymodel()
   {
@@ -499,6 +500,12 @@ export class OBFServices {
        
   }
 
+  getpreviousversion(editobf:editobfarguement): Observable<any> {  
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/getpreviousversion",editobf);  
+       
+  }
+
   initializeobf(data:any)
   {
     console.log(data);
@@ -647,7 +654,7 @@ export class OBFServices {
           Loiposheet:this.loipoarray[0] != undefined ?this.loipoarray[0]._fpath:"",
           Supportpath:this.supportarray != undefined?this.supportarray:"",
           Loipodropdown:this.loipoarray[0] !=undefined?this.loipoarray[0]._description:null,
-          Selfdeclare:loiuploaded,
+          Selfdeclare:this.loipoarray[0] != undefined?null:loiuploaded,
           Projectname:this.editObfObject._dh_project_name,
           Solutioncategory:this.editObfObject._solution_category_id.toString() == "0"?"":this.editObfObject._solution_category_id.toString(),
           Opportunityid: this.editObfObject._opportunity_id,
@@ -682,6 +689,7 @@ export class OBFServices {
 
       emptyexcelformvaluesforreuploadcoversheet()
       {
+        this.ObfCreateForm.patchValue({Projecttype: ""});
         this.ObfCreateForm.patchValue({Projectname: ""});
         this.ObfCreateForm.patchValue({Customername: ""});
         this.ObfCreateForm.patchValue({Opportunityid: ""});

@@ -432,8 +432,8 @@
                               </div>
                             </div>
                           </perfect-scrollbar>
-                          <div class="comm_input_con">
-                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' ) &&  this.shortcurrentstatus !='rejected'">
+                          <div class="comm_input_con" *ngIf="((this.privilege_name != 'OBF Initiator' && this.privilege_name != 'PPL Initiator') || this.shortcurrentstatus =='Submitted')">
+                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                               
                                 <div class="mt-cust-fd comm-cust-fd">
                                   <mat-form-field appearance="fill" class="example-full-width">
@@ -463,7 +463,7 @@
                       <div class="mat_previe_box">
                         
                         <div class="prev_dis">
-                          OBF Sheet
+                       {{this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' ?'OBF Sheet': 'PPL Sheet' }}   
                         </div>
                         <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
                           <div (click)="downloadCoversheet($event)" class="up_pdf_com">
@@ -487,7 +487,7 @@
                         Supporting Documents
                       </div>
                       <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                        <div (click)="downloadsuppodocument($event)" class="up_pdf_com">
+                        <div (click)="downloadsuppodocument($event)" class="up_pdf_com" [class.disabledsd]="disableSupporting">
                            Download
                            <span>
                              <img src="assets/images/dwon-file-icon.png">
@@ -507,7 +507,7 @@
                       LOI/PO/Agreement
                     </div>
                     <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                      <div class="up_pdf_com" (click)="downloadLOIp($event)">
+                      <div class="up_pdf_com" (click)="downloadLOIp($event)" [class.disabledLOI]="disableLOIPO">
                          Download
                          <span>
                            <img src="assets/images/dwon-file-icon.png">
@@ -527,7 +527,7 @@
                     Final Agreement
                   </div>
                   <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                    <div class="up_pdf_com" (click)="downloadFinal($event)">
+                    <div class="up_pdf_com" (click)="downloadFinal($event)"  [class.disabledFinal]="disablefinalagg">
                        Download
                        <span>
                          <img src="assets/images/dwon-file-icon.png">

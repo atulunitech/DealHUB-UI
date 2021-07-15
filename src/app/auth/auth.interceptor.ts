@@ -93,6 +93,13 @@ export class AuthInterceptor implements HttpInterceptor {
                             this._mesgBox.showError(error.error.Record.MESSAGE);
                           }
 
+                          if(error.status === 500)
+                          {
+                            //alert("400 error occured");
+                            //alert(error.message);
+                            this._mesgBox.showError("Technical Error");
+                          }
+
                           // if(error.status === 429)
                           // {
                           //   this._mesgBox.showError(error.message);
@@ -109,7 +116,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");
-              this._mesgBox.showError("Unauthorized access local storage");
+             // this._mesgBox.showError("Unauthorized access local storage");
               this.router.navigateByUrl('/login');
                 // this.router.navigateByUrl('/login');
             }

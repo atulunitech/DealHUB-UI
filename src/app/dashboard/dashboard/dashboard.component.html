@@ -432,11 +432,14 @@
           </mat-chip>
           <input placeholder="SAP IO ..." 
           type="text"
+          matInput
           formControlName="Sapio"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="add($event)">
+          (matChipInputTokenEnd)="add($event)"
+          autocomplete="off"
+          >
         </mat-chip-list>
         <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.Sionumberinvalid">
           SAP IO Number length must be <strong>8 digits</strong>

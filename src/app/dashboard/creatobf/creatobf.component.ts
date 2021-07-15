@@ -6,7 +6,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
 import {​​​​​​​​ MatTableModule ,MatTableDataSource}​​​​​​​​ from'@angular/material/table';
-import {​​​​​​​​ MatDialog }​​​​​​​​ from'@angular/material/dialog';
+import {​​​​​​​​ MatDialog, throwMatDialogContentAlreadyAttachedError }​​​​​​​​ from'@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { TemplateRef } from '@angular/core';
@@ -17,10 +17,11 @@ import { DatePipe } from '@angular/common';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { element } from 'protractor';
+import { element, error } from 'protractor';
 import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
 import { loginservices } from 'src/app/auth/login/LoginServices';
+import { ThrowStmt } from '@angular/compiler';
 
 
 interface Serviceslist {
@@ -409,9 +410,18 @@ export class CreatobfComponent implements OnInit {
       console.log(this._obfservices.ObfCreateForm);
       if(this._obfservices.editObfObject._is_loi_po_uploaded == "N")
       {
+        if(this._obfservices.loipoarray.length > 0)
+        {
+          this.loiopdisabled = false;
+          this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
+        this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+        }
+        else
+        {
         this.loiopdisabled = true;
         this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
+       }
       }
       this.uploadnotdisabled = true;
       // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
@@ -474,8 +484,40 @@ export class CreatobfComponent implements OnInit {
       {
         this.removeuploadfilesforinitiateppl();
       }
+
+      if(this.editorcreateobfstring.trim() == "Edit PPL")
+       {
+        this.getpreviousversion();
+       }
       var tempprojectType=this.domainlist.filter(x=>x.value==this._obfservices.obfmodel._projecttype);
       this.projecttype =  tempprojectType[0].viewValue;
+  }
+
+  getpreviousversion()
+  {
+    let editobf:editobfarguement = new editobfarguement();
+    editobf.dh_id = this._obfservices.editObfObject._dh_id;
+    editobf.dh_header_id = this._obfservices.editObfObject._dh_header_id;
+    editobf.user_code = localStorage.getItem("UserCode");
+    this._obfservices.getpreviousversion(editobf).subscribe(res =>{
+      let result = JSON.parse(res);
+      console.log("get previous data");
+      console.log(result);
+      this._obfservices.editObfObject._total_cost = result._total_cost;
+      this._obfservices.editObfObject._capex = result._capex;
+      this._obfservices.editObfObject._irr_borrowed_fund = result._irr_borrowed_fund;
+      this._obfservices.editObfObject._irr_surplus_cash = result._irr_surplus_cash;
+      this._obfservices.editObfObject._payment_terms = result._payment_terms;
+      this._obfservices.editObfObject._total_margin = result._total_margin;
+      this._obfservices.editObfObject._total_project_life = result._total_project_life;
+      this._obfservices.editObfObject._total_revenue = result._total_revenue;
+      this._obfservices.editObfObject._version_name = result._version_name;
+
+    },
+    error=>{
+
+    }
+    )
   }
 
   getverticalname(verticallist:verticallist[])
@@ -981,6 +1023,7 @@ downloadCoversheet(event)
     
     try{
     // var format = /[`!@#$%^&*()+\=\[\]{};':"\\|,<>\/?~]/;
+     
     var format = /[`!@#$%^*+\=\[\]{};':"\\|,<>\/?~]/;   //removed () from validation 
    
     event.addedFiles.forEach(element => {
@@ -995,9 +1038,13 @@ downloadCoversheet(event)
         throw new Error(element.name+" :name contains special characters,Kindly rename and upload again");
        }
       // if( this.bytesToSize(element.size) > 4)
-      if( element.size > 4194304)
+      // if( element.size > 4194304)
+      // {
+      //   throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+      // }
+      if( element.size > 31457280)
       {
-        throw new Error("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
+        throw new Error("The file size of "+element.name+" is greater than 30 Mb, Kindly re-upload files with size less than 4 Mb" );
       }
 
     });
@@ -1231,7 +1278,16 @@ downloadCoversheet(event)
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         this.finalsupportarray.push(this.SupportPoprogress[i]);
-        files.splice(i,1);
+
+        // let newindex = files.findIndex(obj => obj.name == files[i].name);
+        // if(newindex > -1)
+        // {
+        //   files.splice(i,1);
+        // }
+        if(i == (files.length - 1))
+        {
+          this.supportfiles = [];
+        }
         }
         //alert(this._obfservices.ObfCreateForm.valid);
        
@@ -1251,6 +1307,7 @@ downloadCoversheet(event)
     else if(types == "support")
     {
       this.SupportPoprogress[i].value = 0;
+      this.supportfiles = [];
     }
         
         const msg = 'Could not upload the file: ' + files[i].name;
@@ -1481,7 +1538,13 @@ downloadCoversheet(event)
         console.log(ws);
       // console.log(ws.A1.h);
       try{
+        if(this.isEditObf)
+        {
+          this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
+        }
         let count:number = 0;
+        let validcount:number = 0;
+        let validmsg:string = "";
         if(ws.H3 == undefined || ws.H3.w == "#N/A" )
         {
         count +=1;
@@ -1492,14 +1555,16 @@ downloadCoversheet(event)
         if(index > -1)
         {
           domain = this.domainlist[index].value.toString().trim();
-          if(this.initiateppl || (this.reinitiateobf && this.isppl))
+          if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(domain != this._obfservices.editObfObject._projecttype.toString().trim())
             {
-              this._mesgBox.showError("Project type does not matched with the previous version of "+(this.initiateppl?"OBF":"PPL"));
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg += "Project type does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
           this._obfservices.ObfCreateForm.patchValue({Projecttype: domain});
@@ -1507,7 +1572,13 @@ downloadCoversheet(event)
         }
         else
         {
-          count +=1;
+          //count +=1;
+          // this._mesgBox.showError("Project type is not correct");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg += "Project type is not correct ,";
+          validcount += 1;
         }
       
      }
@@ -1516,14 +1587,16 @@ downloadCoversheet(event)
         count +=1;
       }
       else{
-        if(this.initiateppl || (this.reinitiateobf && this.isppl))
+        if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E4.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_project_name.trim().toUpperCase())
             {
-              this._mesgBox.showError("Project name does not matched with the previous version of OBF");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg += "Project name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       this._obfservices.ObfCreateForm.patchValue({Projectname: ws.E4.w});
@@ -1539,10 +1612,12 @@ downloadCoversheet(event)
           {
             if(ws.E5.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._customer_name.toString().trim().toUpperCase())
             {
-              this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Customer name does not matched with the previous version of OBF");
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg +="Customer name does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       this._obfservices.ObfCreateForm.patchValue({Customername: ws.E5.w});
@@ -1562,10 +1637,12 @@ downloadCoversheet(event)
         {
           if(this._obfservices.editObfObject._opportunity_id.toString().trim().toUpperCase() != ws.E6.w.toString().trim().toUpperCase())
           {
-            this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+            // this._mesgBox.showError("Opportunity ID not matched with previous version of OBF");
+            // this.coversheetfiles = [];
+            // this.iscoversheet = !this.iscoversheet;
+            // return false;
+            validmsg +="Opportunity ID not matched with previous version of OBF,";
+            validcount +=1;
           }
         }
       this._obfservices.obfmodel._opportunity_id = ws.E6.w;
@@ -1579,19 +1656,23 @@ downloadCoversheet(event)
       let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
       if(indexbranch == -1)
       {
-        this._mesgBox.showError("Branch location is not correct, kindly check");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+        // this._mesgBox.showError("Branch location is not correct, kindly check");
+        //       this.coversheetfiles = [];
+        //       this.iscoversheet = !this.iscoversheet;
+        //       return false;
+        validmsg +="Branch location is not correct, kindly check ,";
+        validcount +=1;
       }
-      if(this.initiateppl || (this.reinitiateobf && this.isppl))
+      if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
             {
-              this._mesgBox.showError("Project location / state does not matched with the previous version of OBF");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+              // this._mesgBox.showError("Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL"));
+              // this.coversheetfiles = [];
+              // this.iscoversheet = !this.iscoversheet;
+              // return false;
+              validmsg +="Project location / state does not matched with the previous version of "+((this.initiateppl || (this.editorcreateobfstring.trim() == 'Edit PPL'))?"OBF":"PPL")+",";
+              validcount +=1;
             }
           }
       
@@ -1610,40 +1691,48 @@ downloadCoversheet(event)
      });
      if(!(result.length > 0))
      {
-       this._mesgBox.showError("Vertical field is not correct, please check.");
-       this.coversheetfiles = [];
-       this.iscoversheet = !this.iscoversheet;
-           return false; 
+      //  this._mesgBox.showError("Vertical field is not correct, please check.");
+      //  this.coversheetfiles = [];
+      //  this.iscoversheet = !this.iscoversheet;
+      //      return false; 
+      validmsg +="Vertical field is not correct, please check ,";
+      validcount +=1;
      }
       let verticalid = parseInt(result[0].value.toString());
       if(verticalid == 8)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+          // this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for MLL Network,";
+          validcount +=1;
         }
       }
       if(verticalid == 6)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
         {
-          this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
-              this.coversheetfiles = [];
-              this.iscoversheet = !this.iscoversheet;
-              return false;
+          // this._mesgBox.showError("Project type can be only `Transportation` for Enterprise Mobility");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for Enterprise Mobility,";
+          validcount +=1;
         }
       }
       if(this.reinitiateobf)
         {
           if(this._obfservices.editObfObject._vertical_id != verticalid)
           {
-            this._mesgBox.showError("Vertical different with previous OBF version");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+            // this._mesgBox.showError("Vertical different with previous OBF version");
+            // this.coversheetfiles = [];
+            // this.iscoversheet = !this.iscoversheet;
+            // return false;
+            validmsg +="Vertical different with previous OBF version ,";
+            validcount +=1;
           }
         }
      //let verticalid = 2;
@@ -1694,7 +1783,7 @@ downloadCoversheet(event)
       {
         let val = this.converttocrore(this.extractonlydgits(ws.D13.w.toString().trim()),"Total revenue");
        // alert(parseInt(val.toString()));
-        if(parseInt(val.toString()) == -1)
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
         {
           this.coversheetfiles = [];
             this.iscoversheet = !this.iscoversheet;
@@ -1711,7 +1800,7 @@ downloadCoversheet(event)
       }
       else{
         let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Total cost");
-        if(parseInt(val.toString()) == -1)
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
         {
           this.coversheetfiles = [];
             this.iscoversheet = !this.iscoversheet;
@@ -1728,10 +1817,12 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.H13.w.toString().trim()))
         {
-          this._mesgBox.showError("Total margin is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Total margin is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Total margin is not in correct format ,";
+          validcount +=1;
         }
       this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
       // this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
@@ -1746,8 +1837,7 @@ downloadCoversheet(event)
         this._obfservices.ObfCreateForm.patchValue({Totalprojectlife: ws.D14.w});
       this._obfservices.obfmodel._total_project_life = ws.D14.w;
       }
-      
-      
+     
       this._obfservices.ObfCreateForm.patchValue({IRRsurpluscash: ws.F14 == undefined?"":ws.F14.w});
       this._obfservices.obfmodel._irr_surplus_cash = parseFloat(ws.F14 == undefined ?0:ws.F14.w.toString().replace('%',""));
       this._obfservices.ObfCreateForm.patchValue({EBT: ws.H14 == undefined?"":ws.H14.w});
@@ -1759,14 +1849,16 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.D15.w.toString().trim()))
         {
-          this._mesgBox.showError("Capex is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Capex is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Capex is not in correct format ,";
+          validcount +=1;
         }
 
-        let val = this.converttocrore(this.extractonlydgits(ws.F13.w.toString().trim()),"Capex");
-        if(parseInt(val.toString()) == -1)
+        let val = this.converttocrore(this.extractonlydgits(ws.D15.w.toString().trim()),"Capex");
+        if(parseInt(val.toString()) == -1 || parseInt(val.toString()) == -2)
         {
           this.coversheetfiles = [];
             this.iscoversheet = !this.iscoversheet;
@@ -1788,10 +1880,12 @@ downloadCoversheet(event)
       else{
         if(this.checkifdigitexist(ws.H15.w.toString().trim()))
         {
-          this._mesgBox.showError("Payment terms is not in correct format");
-            this.coversheetfiles = [];
-            this.iscoversheet = !this.iscoversheet;
-            return false;
+          // this._mesgBox.showError("Payment terms is not in correct format");
+          //   this.coversheetfiles = [];
+          //   this.iscoversheet = !this.iscoversheet;
+          //   return false;
+          validmsg +="Payment terms is not in correct format ,";
+          validcount +=1;
         }
         this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
        // this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
@@ -1829,16 +1923,27 @@ downloadCoversheet(event)
        {
         if(this._obfservices.obfmodel._total_revenue.toString().trim() == this._obfservices.editObfObject._total_revenue.toString().trim() && this._obfservices.obfmodel._total_cost.toString().trim() == this._obfservices.editObfObject._total_cost.toString().trim() && this._obfservices.obfmodel._total_margin.toString().trim() == this._obfservices.editObfObject._total_margin.toString().trim() && this._obfservices.obfmodel._irr_surplus_cash.toString().trim() == this._obfservices.editObfObject._irr_surplus_cash.toString().trim() && this._obfservices.obfmodel._ebt.toString().trim() == this._obfservices.editObfObject._ebt.toString().trim() && this._obfservices.obfmodel._capex.toString().trim() == this._obfservices.editObfObject._capex.toString().trim() && this._obfservices.obfmodel._irr_borrowed_fund.toString().trim() == this._obfservices.editObfObject._irr_borrowed_fund.toString().trim() && this._obfservices.obfmodel._payment_terms.toString().trim().toUpperCase() == this._obfservices.editObfObject._payment_terms.toString().trim().toUpperCase()) 
        {
-        this._mesgBox.showError("Details are same as of previous PPL");
-        this.coversheetfiles = [];
-        this.iscoversheet = !this.iscoversheet;
-        return false;
+        // this._mesgBox.showError("Details are same as of previous PPL");
+        // this.coversheetfiles = [];
+        // this.iscoversheet = !this.iscoversheet;
+        // return false;
+         validmsg +="Details are same as of previous PPL ,";
+         validcount +=1;
        } 
       }
      
       if(count > 0)
       {
         throw new Error();
+      }
+
+      if(validcount > 0)
+      {
+        validmsg = validmsg.substring(0,validmsg.length - 1);
+        this._mesgBox.showErrorforfile(validmsg);
+              this.coversheetfiles = [];
+              this.iscoversheet = !this.iscoversheet;
+              return false;
       }
      
       console.log("check form values");
@@ -2136,7 +2241,7 @@ downloadCoversheet(event)
      
     }
     else{
-      this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required)
+      this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       this.loiopdisabled = false;
       this._obfservices.obfmodel._is_loi_po_uploaded = "Y";
@@ -2681,6 +2786,9 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
   }
 
    converttocrore(value,type) {
+     try{
+       if(value == "")
+       throw new Error();
     let val = Math.abs(value)
     // if (val >= 10000000) {
     //   val = <number><unknown>(val / 10000000).toFixed(2);
@@ -2692,7 +2800,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     }
     else if(val > 999 && val < 5000)
     {
-      if(confirm(type+" is considered to be in crore, do you wish to continue??"))
+      if(confirm(type+" is considered to be "+val+" crore, do you wish to continue??"))
       {
       }
       else
@@ -2702,9 +2810,10 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     }
     else if(val > 5000)
     {
-      if(confirm(type+" is considered to be in crore, do you wish to continue??"))
+      if(confirm(type+" is considered to be "+val+" crore, do you wish to continue??"))
       {
-       val = <number><unknown>(val / 10000000).toFixed(2);
+      // val = <number><unknown>(val / 10000000).toFixed(2);
+      val = <number><unknown>(val / 10000000);
       }
       else
       {
@@ -2712,5 +2821,11 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       }
     }
     return val;
+  }
+    catch(Error)
+      {
+        this._mesgBox.showError(type+ " is not valid, Kindly check again");
+        return -2; 
+      }
   }
 }

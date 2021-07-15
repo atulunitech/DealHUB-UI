@@ -56,5 +56,18 @@ export class MessageBoxComponent implements OnInit {
     });
   }
 
+  showErrorforfile(content) {
+    let sb =this._snackBar.open(content,'X', {
+      duration: 15000,
+      verticalPosition: 'top',
+      horizontalPosition:'right',
+      panelClass:"custom_error_sneak_bar"
+    });
+
+    sb.onAction().subscribe(() => {
+      sb.dismiss();
+    });
+  }
+
 
 }
