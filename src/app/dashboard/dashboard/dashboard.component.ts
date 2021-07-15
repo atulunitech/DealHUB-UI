@@ -2395,5 +2395,6 @@ getattachment(dh_id,dh_header_id)
       selBox.select();
       document.execCommand('copy');
       document.body.removeChild(selBox);
+      this._mesgBox.showUpdate('Copy');
     }
 }
