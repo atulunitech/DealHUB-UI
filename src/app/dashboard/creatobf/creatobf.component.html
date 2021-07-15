@@ -42,9 +42,8 @@
                                     <li> In excel workbook should be in specified standard template.</li>
                                     <li> Workbook name should be “OBF Coversheet”.</li>
                                     <li> All mandatory fields should have values.</li>
-                                    <li> Verticals can be Auto and Engineering, E-Commerce, Consumer, 
-                                      Auto Outbound, Bulk, MLL Network, Mahindra and Mahindra, 
-                                      Enterprise Mobility.</li>
+                                    <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
+                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
                                       <li> Please check before submitting for all entered values.</li>
@@ -147,7 +146,7 @@
                             <div class="mat_upload_tit">
                               LOI/PO/Agreement or Self Declaration 
                             </div>
-                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="loiopdisabled">
+                            <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'loipo')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG" [disabled]="loiopdisabled">
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -254,7 +253,7 @@
                                 Supporting Document
                               </div>
                               <!-- <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv" [disabled]="supportchecked"> -->
-                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.msg" >
+                                <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'support')" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.msg,.JPG" >
                               <ngx-dropzone-label class="matUp_lable">
                                 <div><img src="assets/images/Group Upload.png"></div>
                                 <div class="drap_titl">
@@ -360,7 +359,8 @@
                 <mat-expansion-panel   [expanded]="step === 1" (afterExpand)="removeandaddvalidation('details')" (opened)="setStep(1)">
                   <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="50px">
                     <mat-panel-title>
-                      2/3 Enter Details <span class="is_done" [class.is_done_not]="detailstickdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
+                      {{isppl?'2/3 PPL Details ':'2/3 Enter Details '}}
+                       <span class="is_done" [class.is_done_not]="detailstickdisabled"><img src="assets/images/active_tick.png" style="display: inline-block;
                         margin-left: 55px;"></span>
                     </mat-panel-title>
                     
@@ -876,18 +876,21 @@
                       <div class="prev_tit">
                         Payment Terms Description
                       </div>
-                      <div class="prev_dis">
+                      <!-- <div class="prev_dis">
                         {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                     
+                       </div> -->
+                       <div class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length > 20)">
+                            
+                        {{(PaymentreadMore) ? (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) : (_obfservices.ObfCreateForm.get('Payment_Terms_description').value) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
+                        <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
+                      </div>
+                      <div *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
+                        {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                        </div>
                    </div>
-                   <!-- <div class="mat_previe_box">
-                    <div class="prev_tit">
-                      Project Type
-                    </div>
-                    <div class="prev_dis">{{ projecttype}}
-                     </div>
-                 </div> -->
+                  
                    
                    <div class="mat_previe_box">
                     <div class="prev_tit">
@@ -923,7 +926,7 @@
                             </div>
                             <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting">
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
@@ -931,7 +934,7 @@
                               </div>
                               <div class="dwn_con_wr"><img (click)="downloaddocument($event)"  src="assets/images/dwn_fil_icon.png"></div>
                               </div>
-                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" >
+                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO">
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
                                   <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>

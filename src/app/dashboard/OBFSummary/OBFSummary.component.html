@@ -271,12 +271,12 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div *ngIf="(this.service.length > 20)">
+                          <div *ngIf="(this.service.length > 35)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 20)">
+                           <div *ngIf="(this.service.length < 35)">
                             {{(this.service)}}  
                            </div>
                         </div>
@@ -333,8 +333,18 @@
                       <div class="prev_tit">
                         Payment Terms Description
                       </div>
-                      <div class="prev_dis">
+                      <!-- <div class="prev_dis">
                         {{_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc}}
+
+                         </div> -->
+                         <div class="prev_dis"  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc.length > 20)">
+                            
+                          {{(readMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc) : (_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc) | slice:0:50 }}  
+                          <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
+                          <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
+                        </div>
+                        <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc.length < 20)">
+                          {{(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc)}}  
                          </div>
                    </div>
                  
@@ -432,25 +442,28 @@
                               </div>
                             </div>
                           </perfect-scrollbar>
-                          <div class="comm_input_con" *ngIf="((this.privilege_name != 'OBF Initiator' && this.privilege_name != 'PPL Initiator') || this.shortcurrentstatus =='Submitted')">
-                            <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
-                              
-                                <div class="mt-cust-fd comm-cust-fd">
-                                  <mat-form-field appearance="fill" class="example-full-width">
-                                    <mat-label>Enter Comments </mat-label>
-                                      <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
-                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
-                                        Comment is <strong>required</strong>
-                                      </mat-error>
-                                      <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
-                                        Black-Listed characters `<>'"&` are not allowed
-                                      </mat-error>
-                                    </mat-form-field>
-                                </div>
-                             <button mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
-                             
+                          <div *ngIf="showuploadbutton">
+                            <div class="comm_input_con" *ngIf="((this.privilege_name != 'OBF Initiator' && this.privilege_name != 'PPL Initiator') || this.shortcurrentstatus =='Submitted')">
+                              <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
+                                
+                                  <div class="mt-cust-fd comm-cust-fd">
+                                    <mat-form-field appearance="fill" class="example-full-width">
+                                      <mat-label>Enter Comments </mat-label>
+                                        <input  type="text" matInput formControlName="comments" style="margin-left: 0px;"/>
+                                        <mat-error *ngIf="obfsummaryform.controls.comments.errors?.required ">
+                                          Comment is <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error *ngIf="obfsummaryform.controls.comments.errors?.invalidservices">
+                                          Black-Listed characters `<>'"&` are not allowed
+                                        </mat-error>
+                                      </mat-form-field>
+                                  </div>
+                               <button mat-flat-button class="creat_bt cus_bt_comm" (click)="SaveComment()">Submit</button>
+                               
+                              </div>
                             </div>
                           </div>
+                         
                         </div>
                    
                     
@@ -463,7 +476,7 @@
                       <div class="mat_previe_box">
                         
                         <div class="prev_dis">
-                       {{this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' ?'OBF Sheet': 'PPL Sheet' }}   
+                       {{this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' ?'Download OBF Sheet': 'Download PPL Sheet' }}   
                         </div>
                         <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
                           <div (click)="downloadCoversheet($event)" class="up_pdf_com">
@@ -493,12 +506,15 @@
                              <img src="assets/images/dwon-file-icon.png">
                            </span>
                         </div>
-                        <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator')  &&  this.shortcurrentstatus !='rejected'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
-                          Upload
-                          <span>
-                            <img src="assets/images/up-file-icon.png">
-                          </span>
-                       </div>
+                        
+                          <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator')  && showuploadbutton && this.shortcurrentstatus !='rejected'  && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1 " (click)="OpenDocDownload('button','Supporting')" >
+                            Upload
+                            <span>
+                              <img src="assets/images/up-file-icon.png">
+                            </span>
+                         </div>
+                       
+                        
                       </div>
                    </div>
                    <div class="mat_previe_box">
@@ -513,12 +529,14 @@
                            <img src="assets/images/dwon-file-icon.png">
                          </span>
                       </div>
-                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )   &&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
+                      
+                      <div class="up_pdf_com dw_pdf_com"  *ngIf="(this.privilege_name == 'OBF Initiator'  || (this.privilege_name) == 'PPL Initiator'  )  &&  showuploadbutton  &&  this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','loipo')"  >
                         Upload
                         <span>
                           <img src="assets/images/up-file-icon.png">
                         </span>
-                     </div>
+                     
+                    </div>
                     </div>
                  </div>
                  <div class="mat_previe_box">
@@ -533,12 +551,15 @@
                          <img src="assets/images/dwon-file-icon.png">
                        </span>
                     </div>
-                    <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' )  && this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
-                      Upload
-                      <span>
-                        <img src="assets/images/up-file-icon.png">
-                      </span>
-                   </div>
+                   
+                      <div class="up_pdf_com dw_pdf_com" *ngIf="(this.privilege_name == 'OBF Initiator' || (this.privilege_name) == 'PPL Initiator' )  &&  showuploadbutton &&this.shortcurrentstatus !='rejected' && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1" (click)="OpenDocDownload('button','FinalAgg')" >
+                        Upload
+                        <span>
+                          <img src="assets/images/up-file-icon.png">
+                        </span>
+                     </div>
+                    
+                  
                   </div>
                </div>
                     
@@ -649,7 +670,7 @@
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
       
-      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv">
+      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG">
         <ngx-dropzone-label class="matUp_lable">
           <div><img src="assets/images/Group Upload.png"></div>
           <div class="drap_titl">

@@ -28,6 +28,7 @@ import { element } from 'protractor';
 import { TypeScriptEmitter } from '@angular/compiler';
 import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
 import { loginservices } from 'src/app/auth/login/LoginServices';
+import { DatePipe } from '@angular/common';
 
 //region Model
 export class DashBoardModel
@@ -100,7 +101,7 @@ class versiondetail
   opportunity_id: string;
   vertical_name:string;
   tablename:string;
-
+  is_latest_version:number;
 }
 class TimeLine
 {
@@ -118,11 +119,17 @@ class TimeLine
   tablename: string;
 
 }
+class Approvaldetail
+{
+  role_name:string;
+  tablename:string;
+}
  
 class approvalstatusdetail
 {
   versiondetail:versiondetail[];
   TimeLine:TimeLine[];
+  Approvaldetail:Approvaldetail[];
 }
 export class searchfilter{
   value:string;
@@ -150,6 +157,9 @@ export class ResetErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  hide = true;
+  hide1 = true;
+  hide2 = true;
   countparam:count = null;
   loginmodel:LoginModel=new LoginModel();
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
@@ -172,13 +182,14 @@ export class DashboardComponent implements OnInit {
   statusfiltercontrol = new FormControl();
   searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'Project_Name'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
 
-   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','ActionDraft'];
-   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionSubmitted'];
-   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionPendingforapproval'];
-   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionReinitialize'];
-   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedOBF'];
-   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg','ActionApprovedPPL'];
-   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','DetailedOBF','FinalAgg'];
+   DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionDraft'];
+   SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionSubmitted'];
+   PendingReviewercolumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionPendingforapproval'];
+   RejectedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionReinitialize'];
+   ApprovedOBf: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type', 'Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionApprovedOBF'];
+   ApprovedPPL: string[] = ['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionApprovedPPL'];
+   ReviewerApproved:string[]=['ApprovalStatus','Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionView'];
+  //  'DetailedOBF','FinalAgg',
    
    
    // dataSource = ELEMENT_DATA;
@@ -224,7 +235,7 @@ export class DashboardComponent implements OnInit {
   // };
   loading$ = this.commonService.loading$;
   public loginvalid: FormGroup;
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices) { 
+  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
   }
@@ -1141,13 +1152,14 @@ getapprovalstatus(element)
     // height:'600px',
     // disableClose: true,
    // data: { campaignId: this.params.id }
-   panelClass: 'custom-modalbox',
+   panelClass: 'custom-modalbox-as',
       backdropClass: 'popupBackdropClass',
 })
-this._dashboardservice.GetDashboardProgress(this.dh_id.toString()).subscribe((Result)=>{
+this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header_id.toString()).subscribe((Result)=>{
   var jsondata=JSON.parse(Result);
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
    this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
+   this.approvalstatusdetail.Approvaldetail=jsondata.latestprogress;
 });
 }
 
@@ -1933,12 +1945,12 @@ PPLclick(selection)
   this.selectedcolumn = parseInt(selection);
   // alert(this.autocompletearr.length);
   //this.picker.clear();
-if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
+ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
     {
       //Draft Section.
-      
+      this.filterdata=[];
       this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='draft' && obj.phase_code=='PPL')
@@ -1965,7 +1977,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
         //Submitted section
        
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
         {
@@ -1989,7 +2001,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if(selection==2)
     {
       //Rejected
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
         {
@@ -2014,6 +2026,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
   {
     if(selection==0)
     {
+      this.filterdata=[];
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
@@ -2038,16 +2051,15 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if (selection==1)
     {
        //Approved section
-       this.listData=new MatTableDataSource(this.dashboardData); 
-       this.filterdata=this.dashboardData.filter(obj=>
+       this.filterdata=[];
+      
+       this.filterdata=this.dashboardData.filter(obj=>{
+        if(obj.shortcurrentstatus=='approved' && obj.phase_code=='PPL')
         {
-          if( obj.shortcurrentstatus=='approved' && obj.phase_code=='PPL')
-          {
-            return obj;
-          }
+          return obj;
         }
-       );
-       
+       // obj.shortcurrentstatus=='draft'
+       } );
        if(this.dateselected)
          {
            this.datefilter();
@@ -2064,7 +2076,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     else if(selection==2)
     {
     
-      this.listData=new MatTableDataSource(this.dashboardData); 
+     // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if( obj.shortcurrentstatus=='Rejected'&& obj.phase_code=='PPL')
@@ -2090,7 +2102,7 @@ if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
    
   }
   this.listData.sort = this.sort;
-this.listData.paginator = this.paginator;
+  this.listData.paginator = this.paginator;
 }
 
 editSubmit()
@@ -2125,7 +2137,7 @@ editSubmit()
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Documents uploaded Successfully");
+        this._mesgBox.showSucess("SAP Details Saved Successfully");
         this.dialog.closeAll();
       //  this.router.navigate(['/DealHUB/dashboard']);
       }
@@ -2367,4 +2379,23 @@ getattachment(dh_id,dh_header_id)
    
    }
   }
+  filterdataforcomment:any[]=[];
+  GetComment(dh_id,dh_header_id)
+  {
+    this.filterdataforcomment =this.approvalstatusdetail.TimeLine.filter(x=>x.dh_header_id==dh_header_id && x.dh_id==dh_id);
+  }
+
+  copyText(val: any){
+    let selBox = document.createElement('textarea');
+      selBox.style.position = 'fixed';
+      selBox.style.left = '0';
+      selBox.style.top = '0';
+      selBox.style.opacity = '0';
+      selBox.value = val;
+      document.body.appendChild(selBox);
+      selBox.focus();
+      selBox.select();
+      document.execCommand('copy');
+      document.body.removeChild(selBox);
+    }
 }

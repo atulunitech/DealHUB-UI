@@ -32,23 +32,30 @@ export class SideNaveComponent implements OnInit {
     //this.GetMenus();
     this.menus = [
       { 
-        name: localStorage.getItem("UserName"),
-        Role:localStorage.getItem("role_name"),
-        iconClass: 'user_icon.png',
-        url:"javascript:void(0)",
+        name: "Dashboard",
+        Role:null,
+        iconClass: 'dashboard_icon.png',
+        url:"/DealHUB/dashboard",
         active: true,
+      },
+      { 
+        name: "Masters",
+        Role:null,
+        iconClass: 'masters.png',
+        url:"/DealHUB/master",
+        active: false,
       },
       { 
        name: 'Resetpassword',
        Role:null,
-       iconClass: 'user_login_icon.png',
-       url:"javascript:void(0)",
+       iconClass: 'change_pass_icon.png',
+       url:"/DealHUB/dashboard",
        active: false,
      },
      { 
        name: 'Logout',
        Role:null,
-       iconClass: 'log_out_icon.png',
+       iconClass: 'log_out_icon_new.png',
        url: "javascript:void(0)",
        active: false,
      }
@@ -137,7 +144,7 @@ export class SideNaveComponent implements OnInit {
     }
 
   }
-  constructor(private menuservice:SidenavService,private router: Router,private _commomservices:CommonService) { }
+  constructor(private menuservice:SidenavService,private router: Router,public _commomservices:CommonService) { }
   GetMenus()
   {
     this._menumodel._user_code=localStorage.getItem("UserCode");

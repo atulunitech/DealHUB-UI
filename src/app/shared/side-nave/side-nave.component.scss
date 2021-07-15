@@ -16,6 +16,7 @@
   .accordion {
     @include heightwidth(100%, initial);
     li {
+      margin-bottom: 7px;
       i {
         @include position(absolute, 0.8rem, initial, initial, 26px);
         @include transition(all 0.4s ease);
@@ -32,7 +33,7 @@
         @include border-radius(50px);
         img
         {
-          @include heightwidth(18px,auto);
+          @include heightwidth(16px,auto);
         }
         
        
@@ -44,9 +45,8 @@
     line-height: initial;
         text-decoration: none;
         @include position(relative);
-        @include padding(10px, 15px, 10px, 0px);
-        @include font-weight(400);
-        color: $thm-tex-col-dar;
+        @include padding(5px, 15px, 5px, 0px);
+        color: #342e59;
         @include transition(all 0.4s ease);
         span
           {
@@ -61,8 +61,8 @@
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+            font-weight: 500;
             @include font-size(0.90);
-            @include font-weight(semi-bold);
             @include position(relative,0px,inherit,inherit,initial);
             .sn_roll
             {
@@ -88,6 +88,28 @@
         .m_icon
         {
           background-color: #e5eeff;
+        }
+      }
+    }
+  }
+  &.acc_out_wr_open
+  {
+    .accordion
+    {
+      .active
+      {
+        .menu{
+          background-color: #e5eeff;
+          margin-left: 5px;
+          margin-right: 5px;
+          border-radius: 50px;
+          .us_disc{
+          font-weight: 600;
+        }
+          .m_icon
+          {
+            padding-left: 8px;
+          }
         }
       }
     }

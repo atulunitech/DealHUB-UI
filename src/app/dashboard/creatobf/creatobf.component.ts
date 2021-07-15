@@ -243,6 +243,7 @@ export class CreatobfComponent implements OnInit {
   uploadnotdisabled:boolean = false;
   User_name:string="";
   SAPNumMore:boolean=false;
+  PaymentreadMore=false;
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
@@ -918,6 +919,7 @@ downloaddocument(event)
   if(this._obfservices.ObfCreateForm.get("Supportpath").value == null || this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
+    this.disableSupporting=true;
   }
   if(this._obfservices.obfmodel.Attachments.length != 0)
   {
@@ -956,16 +958,21 @@ downloaddocument(event)
   }
   else{
     this._mesgBox.showError("No Supporting Documents to Download");
+    
   }
 
   
 }
+disableLOIPO:boolean=false;
+disableSupporting:boolean=false;
+//disablefinalagg:boolean=false;
+
 downloadLOIp(event)
 {
   event.preventDefault();
   if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null || this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
-    this._mesgBox.showError("No Loi/po to Download");
+    this.disableLOIPO=true;
   }
   else if (this._obfservices.obfmodel.Attachments.length == 0)
   {
@@ -2049,7 +2056,8 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Successfully saved as draft");
+       // this._mesgBox.showSucess("Successfully saved as draft");
+        this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" saved as draft successfully");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -2159,7 +2167,8 @@ downloadCoversheet(event)
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         //alert("Documents uploaded Successfully");
-        this._mesgBox.showSucess("Details Saved Successfully");
+        this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" Saved successfully");
+       // this._mesgBox.showSucess("Details Saved Successfully");
       }
       else{
         //alert("Technical error while uploading documents");

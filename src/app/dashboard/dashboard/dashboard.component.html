@@ -93,7 +93,7 @@
            </div>
         </div>
       </div>
-      <div  class="con_fil_box approved"  (click)="addColumn(1)"  [ngClass]="{'active': highlight==='tab2'}" >
+      <div  class="con_fil_box approved"  [ngClass]="{'active': highlight==='tab2'}" >
         <div class="box_shead" (click)="addColumn(1)"><img src="assets/images/approved.png"></div>
         <div class="fil_hed_tit"   (click)="addColumn(1)" >
           {{((this.privilege_name) == 'OBF Initiator'||(this.privilege_name) == 'PPL Initiator' )? ('Submitted') : ('Approved')}}
@@ -114,7 +114,7 @@
          
         </div>
       </div>
-      <div  class="con_fil_box rejected"  (click)="addColumn(2)"    [ngClass]="{'active': highlight==='tab3'}">
+      <div  class="con_fil_box rejected"    [ngClass]="{'active': highlight==='tab3'}">
         <div class="box_shead" (click)="addColumn(2)"><img src="assets/images/rejected.png"></div>
         <div class="fil_hed_tit"  (click)="addColumn(2)" >
           Rejected
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div class="con_fil_box app_obf" (click)="addColumn(3)"  [ngClass]="{'active': highlight==='tab4'}">
+      <div class="con_fil_box app_obf"  (click)="addColumn(3)"  [ngClass]="{'active': highlight==='tab4'}">
         <div class="box_shead"><img src="assets/images/approved_obf.png"></div>
         <div class="fil_hed_tit"  >
           approved obf
@@ -176,14 +176,14 @@
               
             </ng-container>
             <ng-container matColumnDef="ApprovalStatus">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Approval Status</mat-header-cell>
-              <mat-cell *matCellDef="let row" >
-                <!-- (click)="getapprovalstatus(row)" -->
+              <mat-header-cell *matHeaderCellDef mat-sort-header >Approval Status</mat-header-cell>
+              <mat-cell *matCellDef="let row"  (click)="getapprovalstatus(row)">
+                <!--  -->
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
                 <div class="pie-wrapper pie-wrapper--solid progress-88">
-    <span class="label">10<span class="smaller">%</span></span>
+    <span class="label"><span class="smaller">{{row.progresspercentage}}%</span></span>
   </div>
 </div>
             </mat-cell>
@@ -191,17 +191,30 @@
            
   
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+              <div *ngIf="column.columnDef == 'Code'">
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
+                  <div style="display: flex;">
+                  <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
+                </div>
+                </mat-cell>
+              </div>
+              <div *ngIf="column.columnDef == 'Opp_Id'">
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} <span title="{{ column.cell(row) }}" (click)="copyText(column.cell(row))" > <img src="assets/images/copay_icon.png"> </span></mat-cell>
+              </div>
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span></span></mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Revenue'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}"  *matCellDef="let row" (click)="getOBFSummaryPage(row)">₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}"  *matCellDef="let row" >₹ {{ column.cell(row) }}</mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Gross_Margin'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}%</mat-header-cell>
-                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}%</mat-cell>
+                <mat-cell  *matCellDef="let row">{{ column.cell(row) }}%</mat-cell>
               </div>
                 <div *ngIf="column.columnDef == 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
@@ -209,80 +222,95 @@
               </div>
               <div *ngIf="column.columnDef != 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-                <mat-cell  *matCellDef="let row" (click)="getOBFSummaryPage(row)">{{ column.cell(row) }}</mat-cell>
+                <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>
               </div>
               
             </ng-container>
            
-            <ng-container matColumnDef="FinalAgg">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Final Agreement</mat-header-cell>
-              <mat-cell *matCellDef="let row" >
-                <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-                <div class="dwon_ic_con"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download_icon.png"></div>
-                <!-- <div class="dwon_ic_con" *ngIf="this.privilege_name == 'OBF Initiator'" ><img  (click)="UploadFinalAggrement(row)" style="margin-left: 10px;" src="assets/images/upload_icon.png"></div> -->
-            </mat-cell>
-          </ng-container>
-              <ng-container matColumnDef="DetailedOBF">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Detailed OBF</mat-header-cell>
-                <mat-cell *matCellDef="let row"  (click)="downloaddetailobf(row)">
-                  <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: black;"></mat-icon> -->
-                  <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div>
-              </mat-cell>
-            </ng-container>
+           
               <ng-container  matColumnDef="ActionDraft"  stickyEnd>
-                <mat-header-cell class="headr-mat" style="min-width: 120px;padding-left: 10px;
+                <mat-header-cell class="headr-mat" style="min-width: 190px;padding-left: 10px;
                  "  *matHeaderCellDef mat-sort-header>
                   
                   Action
                 </mat-header-cell>
-              
-                  <mat-cell *matCellDef="let row" style="min-width: 120px;padding-left: 10px;
-                   " ><button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button></mat-cell>
+               
+                  <mat-cell *matCellDef="let row" style="min-width: 190px;padding-left: 10px;
+                   " >
+                  
+                   <button mat-flat-button class="creat_bt edit_bt" (click)="editobf(row)">Edit</button>
+                   <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
+                  </mat-cell>
                </ng-container>
                
                <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd >
-                <mat-header-cell style="min-width: 120px;padding-left: 10px;
+                <mat-header-cell style="min-width: 190px;padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               
-                  <mat-cell style="min-width: 120px;padding-left: 10px;
-                   " *matCellDef="let row" >
-                    <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>&nbsp;
+                  <mat-cell style="min-width: 190px;padding-left: 10px;
+                   " *matCellDef="let row" > 
+                     
+                      <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)" >Edit</button>
+                      <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
                     
                    </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
-                <mat-header-cell style="min-width: 120px;padding-left: 10px;
+                <mat-header-cell style="min-width: 190px;padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell *matCellDef="let row" style="min-width: 120px;padding-left: 10px;
-               "><button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button></mat-cell>
+              <mat-cell *matCellDef="let row" style="min-width: 190px;padding-left: 10px;
+               ">
+                
+               <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
+               <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
+              </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
-                <mat-header-cell style="min-width: 162px;padding-left: 10px;
-                 " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell style="min-width: 162px;padding-left: 10px;
-               " *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button></mat-cell>
+                <mat-header-cell style="padding-left: 10px;
+                 " style="padding-left: 10px;
+                 " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="padding-left: 10px;
+               " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" >
+                
+               <button mat-flat-button class="creat_bt edit_bt" *ngIf="this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator'"  (click)="reinitiateobf(row)">Re-initiate</button>
+               <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
+              </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
                 <mat-header-cell style="padding-left: 10px;
-                 " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : 'auto'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                 " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px; 
-                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '240px' : 'auto'}" *matCellDef="let row" 
+                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" 
                   [matTooltip]="getmsg(row)" #tooltip="matTooltip" >
+                  
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
                 <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
+                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
               </mat-cell>
              
            
             
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
-                <mat-header-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
+                <mat-header-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '190px'}" style="padding-left: 10px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-              <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '120px'}" style="padding-left: 10px;
+              <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '250px' : '190px'}" style="padding-left: 10px;
                " *matCellDef="let row" >
+                
                 <button mat-flat-button (click)="openModal(mytemplate,row)" class="creat_bt edit_bt">Edit</button>
-                <button mat-flat-button class="creat_bt approv_bt" *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reviseppl(row)">Revise PPL</button></mat-cell>
+                <button mat-flat-button class="creat_bt approv_bt" *ngIf="this.privilege_name == 'PPL Initiator'" (click)="reviseppl(row)">Revise PPL</button>
+                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
+              </mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+               </ng-container>
+               <ng-container  matColumnDef="ActionView" stickyEnd>
+                <mat-header-cell style="min-width: 190px;padding-left: 10px;
+                 " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell style="min-width: 190px;padding-left: 10px;
+               " *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
+              
+              </mat-cell>
                </ng-container>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
@@ -466,93 +494,195 @@
    </div>
   <div>
     <ng-template #callAPIDialog>
-    <div class="pop_title_wrp"><div class="pop_head_titl">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
+    <div class="pop_title_wrp"><div class="pop_head_titl" style="font-size: 1rem;">Approval Status</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
       <mat-dialog-content class="mat-typography">
-     
-     <div  fxLayout="row" fxLayoutAlign="space-between start" *ngFor="let details of this.approvalstatusdetail.versiondetail"  class="mat_fld_box_wrp prm_mat_fld_box_wrp">
-          <div class="mat_previe_box">
+        <div class="edit_box_popup">
+          <div id="flowBoxes" >
+            <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="assets/images/tick_icon.png"></div>
+            
+    </div>
+          <!-- <div>
+          <span>
+            <label *ngFor="let details of this.approvalstatusdetail.Approvaldetail">
+              {{details.role_name}}
+            </label>
+          </span>
+        </div> -->
+        <div class="cust-accor-as">
+        <mat-accordion>
+          <mat-expansion-panel  (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+            <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="60px">
+              <mat-panel-title>
+                <div class="mat_previe_box">
+                  <div class="prev_tit">
+                  {{details.is_latest_version==1?'Current Version':'Version'}} 
+                  </div>
+                  <div class="prev_dis">
+                   {{details.version_name}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                 Code
+                </div>
+                <div class="prev_dis">
+                 {{details.dh_code}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+               Date
+              </div>
+              <div class="prev_dis">
+               {{details.datecreated | date}}
+              </div>
+           </div>
+           <div class="mat_previe_box">
             <div class="prev_tit">
-             Current Version
+             Project Name
             </div>
             <div class="prev_dis">
-             {{details.version_name}}
+             {{details.dh_project_name}}
+            </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              opportunity Id
+            </div>
+            <div class="prev_dis">
+             {{details.opportunity_id}}
+            </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+              Vertical Name
+            </div>
+            <div class="prev_dis">
+             {{details.vertical_name}}
+            </div>
+           </div>
+               
+                <!-- <div  fxLayout="row" fxLayoutAlign="space-between start" class="mat_fld_box_wrp prm_mat_fld_box_wrp">
+                  <div class="mat_previe_box">
+                    <div class="prev_tit">
+                     {{ details.is_latest_version==1? 'Current Version':'Version' }} 
+                    </div>
+                    <div class="prev_dis">
+                     {{details.version_name}}
+                    </div>
+                 </div>
+                 <div class="mat_previe_box">
+                  <div class="prev_tit">
+                   Code
+                  </div>
+                  <div class="prev_dis">
+                   {{details.dh_code}}
+                  </div>
+               </div>
+               <div class="mat_previe_box">
+                <div class="prev_tit">
+                 Date
+                </div>
+                <div class="prev_dis">
+                 {{details.datecreated}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+               Project Name
+              </div>
+              <div class="prev_dis">
+               {{details.dh_project_name}}
+              </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                opportunity Id
+              </div>
+              <div class="prev_dis">
+               {{details.opportunity_id}}
+              </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+                Vertical Name
+              </div>
+              <div class="prev_dis">
+               {{details.vertical_name}}
+              </div>
+             </div>
+                </div> -->
+              </mat-panel-title>
+
+            </mat-expansion-panel-header>
+            <table>
+              <tr>
+                <th>
+                  User Name
+                </th>
+                <th>
+                  Timeline
+                </th>
+                <th>
+                  Status
+                </th>
+                <th>
+                  Comments
+                </th>
+              </tr>
+              <tr *ngFor="let timeline of filterdataforcomment">
+                <td>
+                  {{timeline.username}}
+                </td>
+                <td>
+                  {{timeline.TimeLine |date}}
+                </td>
+                <td>
+                  {{timeline.currentstatus}}
+                </td>
+                <td>
+                  {{timeline.comments}}
+                </td>
+              </tr>
+            </table>
+            <!-- <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of filterdataforcomment">
+              <div class="mat_previe_box">
+                <div class="prev_tit">
+                User Name
+                </div>
+                <div class="prev_dis">
+                 {{timeline.username}}
+                </div>
+             </div>
+             <div class="mat_previe_box">
+              <div class="prev_tit">
+              Timeline
+              </div>
+              <div class="prev_dis">
+               {{timeline.TimeLine}}
+              </div>
+           </div>
+           <div class="mat_previe_box">
+            <div class="prev_tit">
+            Status
+            </div>
+            <div class="prev_dis">
+             {{timeline.currentstatus}}
             </div>
          </div>
          <div class="mat_previe_box">
           <div class="prev_tit">
-           Code
+          Comments
           </div>
           <div class="prev_dis">
-           {{details.dh_code}}
+           {{timeline.comments}}
           </div>
-       </div>
-       <div class="mat_previe_box">
-        <div class="prev_tit">
-         Date
         </div>
-        <div class="prev_dis">
-         {{details.datecreated}}
-        </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-       Project Name
-      </div>
-      <div class="prev_dis">
-       {{details.dh_project_name}}
-      </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-        opportunity Id
-      </div>
-      <div class="prev_dis">
-       {{details.opportunity_id}}
-      </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-        Vertical Name
-      </div>
-      <div class="prev_dis">
-       {{details.vertical_name}}
-      </div>
-     </div>
-    </div>
-    <div  fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp prm_mat_fld_box_wrp" *ngFor="let timeline of this.approvalstatusdetail.TimeLine">
-      <div class="mat_previe_box">
-        <div class="prev_tit">
-        User Name
-        </div>
-        <div class="prev_dis">
-         {{timeline.username}}
-        </div>
-     </div>
-     <div class="mat_previe_box">
-      <div class="prev_tit">
-      Timeline
-      </div>
-      <div class="prev_dis">
-       {{timeline.TimeLine}}
-      </div>
-   </div>
-   <div class="mat_previe_box">
-    <div class="prev_tit">
-    Status
-    </div>
-    <div class="prev_dis">
-     {{timeline.currentstatus}}
-    </div>
- </div>
- <div class="mat_previe_box">
-  <div class="prev_tit">
-  Comments
-  </div>
-  <div class="prev_dis">
-   {{timeline.comments}}
-  </div>
+            </div> -->
+          </mat-expansion-panel>
+  </mat-accordion>
 </div>
-    </div>
+</div>
       </mat-dialog-content>
       
       </ng-template>
@@ -560,46 +690,55 @@
   <div>
     <ng-template #resetDialog>
       <form [formGroup]="loginvalid">
-      <mat-dialog-content class="mat-typography">
-        <div>
-          <p class="to_account">Sign in to your dealHUB account with 
-              the provided credential </p>
+        <!-- <div class="pop_title_wrp"><div class="pop_head_titl edit_titl">&nbsp;</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div> -->
+      <mat-dialog-content class="mat-typography chan_pass_con">
+        <div class="chang_pass_box_popup">
+          <div class="pass_logo_title">
+            <a mat-dialog-close href="javascript:void(0)" class="close"></a>
+            <img src="assets/images/change_pass.png">
+            <h3>Change Password</h3>
+            <p>You are almost there now, enter your new password and 
+              confirm it. </p>
+          </div>
          
-              <div>
-                <div>
-                  <div class="mt-cust-fd"  >
+              <div class="chang_pass_form">
+                
+                  <div class="mt-cust-fd-bg-color "  >
                       <mat-form-field appearance="fill" class="example-full-width">
                           <mat-label>Current Password</mat-label>
-                          <input matInput type="password" formControlName="CurrentPassword" autocomplete="off">
+                          <input matInput [type]="hide ? 'password' : 'text'"  formControlName="CurrentPassword" autocomplete="off">
                               <mat-error *ngIf="checkError('CurrentPassword', 'required')">Current Password is required</mat-error>
+                              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                               <!-- <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error> -->
                               <mat-error *ngIf="loginvalid.controls.CurrentPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                         </mat-form-field>
                     </div>
-              </div>
-                  <div>
-                      <div class="mt-cust-fd"  >
+              
+                  
+                      <div class="mt-cust-fd-bg-color"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>New Password</mat-label>
-                              <input matInput type="password" formControlName="NewPassword" autocomplete="off">
+                              <input matInput [type]="hide1 ? 'password' : 'text'"  formControlName="NewPassword" autocomplete="off">
                                   <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
+                                  <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                             </mat-form-field>
                         </div>
-                  </div>
-                  <div>
-                      <div class="mt-cust-fd"  >
+                  
+                  
+                      <div class="mt-cust-fd-bg-color"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>Confirm Password</mat-label>
-                              <input matInput type="password" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
+                              <input matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmpassword" [errorStateMatcher]="matcherreset" autocomplete="off">
+                              <mat-icon matSuffix (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
                                   <mat-error *ngIf="checkError('confirmpassword', 'required')">Confirm password is required</mat-error>
                                   <mat-error *ngIf="loginvalid.hasError('notSame')">
                                       Passwords do not match
                                     </mat-error> 
                             </mat-form-field>
                         </div>
-                  </div>
+                  
                   <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
                    
                       <div><button mat-flat-button class="cus_bt" color="primary" [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button></div>
@@ -612,8 +751,10 @@
       </div>
       </mat-dialog-content>
       <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cancel</button>
-        <button mat-button [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
+        <div style="margin: 0 auto;width: 360px;padding-bottom: 20px;">
+        <button mat-flat-button mat-dialog-close>Cancel</button>
+        <button mat-flat-button class="creat_bt bt_sp" [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
+      </div>
       </mat-dialog-actions>
     </form>
     </ng-template>

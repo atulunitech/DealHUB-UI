@@ -5,9 +5,9 @@
 export const environment = {
   production: false,
  
-   apiUrl:'http://localhost:52229/' 
+  // apiUrl:'http://localhost:52229/' 
   //apiUrl: 'http://13.235.216.142/dealhubapidev/'
- //apiUrl: 'http://13.235.216.142/dealhubapiqa/'
+apiUrl: 'http://13.235.216.142/dealhubapiqa/'
  //apiUrl: 'http://13.235.216.142/dealhubapiuat/'
 };
 

@@ -76,6 +76,7 @@ class filesdetail
     readMore = false;
     BrifreadMore=false;
     paymentRead=false;
+    PaymentreadMore=false;
     comments = new FormControl('', Validators.required);
     step=0;
     service:string;
@@ -664,6 +665,7 @@ class filesdetail
 
   //Action Functions For Approve ,Rejected and OnHold function
   ApproveDeatils()
+
   {
     if(this.role_name=='PH')
     {
@@ -685,7 +687,7 @@ class filesdetail
           
             } 
       }
-      else if( this.obfsummaryform.get("ExceptionCEO").value==true)
+      else if( this.obfsummaryform.get("ExceptionCEO").value==true && this.CEOmessage == '')
       {
             if(this.SaveCommentdetail.length == 0)
             {
@@ -705,26 +707,45 @@ class filesdetail
             } 
       }
     }
-    if(this.role_name=='VSH')
+   if(this.role_name=='VSH')
     {
+      if(this.obfsummaryform.get("MarginException").value==true)
+      {
+        if(this.SaveCommentdetail.length == 0)
+        {
+        if(this.obfsummaryform.get("comments").value == "")
+      {
+        this.obfsummaryform.controls["comments"].markAsTouched();
+          return false;
+        
+      }
       
+      else
+      {
+        this._mesgBox.showError("Please Submit Comment");
+        return false;
+      }
+         }
+      }
+     
+    }
+    if(this.role_name !='VSH' && this.role_name !='PH')
+    {
       if(this.SaveCommentdetail.length == 0)
       {
-      if(this.obfsummaryform.get("comments").value == "")
-    {
-      this.obfsummaryform.controls["comments"].markAsTouched();
-        return false;
-      
+        if(this.obfsummaryform.get("comments").value == "")
+        {
+          
+        }
+        else
+        {
+          this._mesgBox.showError("Please Submit Comment");
+          return false;
+        }
+      }
     }
-    
-    else
-    {
-      this._mesgBox.showError("Please Submit Comment");
-      return false;
-    }
-  }
-    }
-
+  
+   
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -765,6 +786,7 @@ class filesdetail
   else
   {
     this._mesgBox.showError("Please Submit Comment");
+    return false;
   }
   
    } 
@@ -812,6 +834,7 @@ class filesdetail
   else
   {
     this._mesgBox.showError("Please Submit Comment");
+    return false;
   }
   
    } 
@@ -871,10 +894,10 @@ class filesdetail
         
         }
        // if( this.bytesToSize(element.size) > 4)
-       if( element.size > 4194304)
-       {
-        this._mesgBox.showUpdate("The file size of "+element.name+" is greater than 4 Mb, Kindly re-upload files with size less than 4 Mb" );
-       }
+       if( element.size > 31457280)
+      {
+        throw new Error("The file size of "+element.name+" is greater than 30 Mb, Kindly re-upload files with size less than 4 Mb" );
+      }
  
      });
     this.progress = 0;
@@ -1462,7 +1485,7 @@ class filesdetail
     }
   }
   showuploadbutton:boolean=true;
-  
+ 
   getOBFPPLDetails()
   {
      if(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL')
