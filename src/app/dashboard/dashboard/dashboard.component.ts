@@ -136,11 +136,14 @@ export class searchfilter{
   viewValue:string;
 }
 export class ResetErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
-    const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
+  // isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  //   const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
+  //   const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
 
-    return invalidCtrl || invalidParent;
+  //   return invalidCtrl || invalidParent;
+  // }
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return (control && control.parent.get('NewPassword').value !== control.parent.get('confirmpassword').value && control.dirty)
   }
 }
 // class searchvalues
