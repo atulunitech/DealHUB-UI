@@ -442,7 +442,7 @@
                               </div>
                             </div>
                           </perfect-scrollbar>
-                          <div *ngIf="showuploadbutton">
+                          <div *ngIf="showuploadbutton && this.shortcurrentstatus =='Submitted'">
                             <div class="comm_input_con" *ngIf="((this.privilege_name != 'OBF Initiator' && this.privilege_name != 'PPL Initiator') || this.shortcurrentstatus =='Submitted')">
                               <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                                 
