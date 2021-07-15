@@ -735,10 +735,7 @@ class filesdetail
       {
         if(this.obfsummaryform.get("comments").value == "")
         {
-          this.obfsummaryform.controls["comments"].markAsTouched();
-        //  this.noComment = true;
-          return false;
-          //return this.obfsummaryform.controls["comments"].hasError("required");
+          
         }
         else
         {
