@@ -271,12 +271,12 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div *ngIf="(this.service.length > 35)">
+                          <div *ngIf="(this.service.length > 60)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 35)">
+                           <div *ngIf="(this.service.length < 60)">
                             {{(this.service)}}  
                            </div>
                         </div>
