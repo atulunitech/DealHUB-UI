@@ -7,6 +7,7 @@ import {MessageBoxComponent} from '../../shared/MessageBox/MessageBox.Component'
 import { Action } from 'rxjs/internal/scheduler/Action';
 import * as CryptoJS from 'crypto-js'; 
 import { Token } from '@angular/compiler/src/ml_parser/lexer';
+import { MatDialog } from '@angular/material/dialog';
 
 //region model
 export class LoginModel
@@ -46,10 +47,11 @@ export class LoginComponent implements OnInit {
   disablebutton:boolean=false;
 
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent) { }
+    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent,public dialog:MatDialog) { }
 
 
   ngOnInit(): void {
+    this.dialog.closeAll();
     // if(localStorage.getItem("Token") != "")
     // {
     //   this.router.navigate(['/DealHUB/dashboard']);
