@@ -234,7 +234,7 @@
            
            
               <ng-container  matColumnDef="ActionDraft"  stickyEnd>
-                <mat-header-cell class="headr-mat" style="min-width: 190px;padding-left: 10px;
+                <mat-header-cell class="headr-mat" style="min-width: 190px;padding-left: 28px;
                  "  *matHeaderCellDef mat-sort-header>
                   
                   Action
@@ -249,7 +249,7 @@
                </ng-container>
                
                <ng-container  matColumnDef="ActionPendingforapproval" stickyEnd >
-                <mat-header-cell style="min-width: 190px;padding-left: 10px;
+                <mat-header-cell style="min-width: 190px;padding-left: 28px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               
                   <mat-cell style="min-width: 190px;padding-left: 10px;
@@ -261,7 +261,7 @@
                    </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionSubmitted" stickyEnd>
-                <mat-header-cell style="min-width: 190px;padding-left: 10px;
+                <mat-header-cell style="min-width: 190px;padding-left: 28px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell *matCellDef="let row" style="min-width: 190px;padding-left: 10px;
                ">
@@ -271,8 +271,7 @@
               </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionReinitialize" stickyEnd>
-                <mat-header-cell style="padding-left: 10px;
-                 " style="padding-left: 10px;
+                <mat-header-cell  style="padding-left: 28px;
                  " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '225px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell style="padding-left: 10px;
                " [ngStyle]="{'min-width': (this.privilege_name == 'OBF Initiator' || this.privilege_name == 'PPL Initiator') ? '225px' : '190px'}" *matCellDef="let row" >
@@ -282,7 +281,7 @@
               </mat-cell>
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedOBF" stickyEnd>
-                <mat-header-cell style="padding-left: 10px;
+                <mat-header-cell style="padding-left: 28px;
                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px; 
                   " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" 
@@ -297,7 +296,7 @@
             
                </ng-container>
                <ng-container  matColumnDef="ActionApprovedPPL" stickyEnd>
-                <mat-header-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '300px' : '190px'}" style="padding-left: 10px;
+                <mat-header-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '300px' : '190px'}" style="padding-left: 28px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '300px' : '190px'}" style="padding-left: 10px;
                " *matCellDef="let row" >
@@ -309,7 +308,7 @@
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
                <ng-container  matColumnDef="ActionView" stickyEnd>
-                <mat-header-cell style="min-width: 190px;padding-left: 10px;
+                <mat-header-cell style="min-width: 190px;padding-left: 28px;
                  " *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
               <mat-cell style="min-width: 190px;padding-left: 10px;
                " *matCellDef="let row" >
