@@ -2379,7 +2379,7 @@ getattachment(dh_id,dh_header_id)
     this.filterdataforcomment =this.approvalstatusdetail.TimeLine.filter(x=>x.dh_header_id==dh_header_id && x.dh_id==dh_id);
   }
 
-  copyText(val: any){
+  copyText(val: any, copied: HTMLElement){
     let selBox = document.createElement('textarea');
       selBox.style.position = 'fixed';
       selBox.style.left = '0';
@@ -2391,5 +2391,11 @@ getattachment(dh_id,dh_header_id)
       selBox.select();
       document.execCommand('copy');
       document.body.removeChild(selBox);
+      copied.classList.add('copied');
+
+    setTimeout(()=> {
+      copied.classList.remove('copied');
+    }, 700)
     }
+    
 }
