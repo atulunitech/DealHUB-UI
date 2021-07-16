@@ -268,36 +268,40 @@ class filesdetail
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
 
-      if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined || this._obfservices.obfsummarymodel.AttachmentDetails.length!=0 )
+      if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
+      
       {
-        
-        let indexsupp=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
-        if(indexsupp >-1)
+        if( this._obfservices.obfsummarymodel.AttachmentDetails.length!=0 )
         {
-          this.disableSupporting=false;
-        }
-        else{
-         
-          this.disableSupporting=true;
-         
-        }
-        let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
-        if(indexofLOI > -1)
-        {
-           this.disableLOIPO=false;
-        }
-        else{
-          this.disableLOIPO=true;
-          
-        }
-        let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
-        if(indexofFinal > -1)
-        { this.disablefinalagg=false;
+          let indexsupp=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="support");
+          if(indexsupp >-1)
+          {
+            this.disableSupporting=false;
           }
-        else{
-          this.disablefinalagg=true;
-          
+          else{
+           
+            this.disableSupporting=true;
+           
+          }
+          let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+          if(indexofLOI > -1)
+          {
+             this.disableLOIPO=false;
+          }
+          else{
+            this.disableLOIPO=true;
+            
+          }
+          let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
+          if(indexofFinal > -1)
+          { this.disablefinalagg=false;
+            }
+          else{
+            this.disablefinalagg=true;
+            
+          }
         }
+        
       }
       else{
         this.disableLOIPO=true;
@@ -590,6 +594,7 @@ class filesdetail
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               this.filelist.push(savefile);
             }
+            this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
         }
       }
     }
@@ -613,6 +618,7 @@ class filesdetail
             savefile.filename=this._obfservices.obfsummarymodel.AttachmentDetails[i].filename;
             savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
             savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+           
             this.filelist.push(savefile);
           }
       }

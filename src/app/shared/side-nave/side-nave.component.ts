@@ -137,7 +137,7 @@ export class SideNaveComponent implements OnInit {
         this.Logout();
     }
     
-    if(this.menus[index].name=='Resetpassword')
+    if(this.menus[index].name=='Change Password')
     {
      
         this.resetpassword();
