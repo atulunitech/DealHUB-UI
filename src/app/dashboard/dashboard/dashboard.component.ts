@@ -1055,6 +1055,9 @@ onchange(evt,solutioncategory)
   }
 
   ResetModel() {
+    this.hide = true;
+    this.hide1 = true;
+    this.hide2 = true;
     this.getClientKey();
     this.loginvalid.controls.CurrentPassword.setValue("");
     this.loginvalid.controls.NewPassword.setValue("");

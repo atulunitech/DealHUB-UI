@@ -62,7 +62,7 @@ export class AppComponent {
   //   });  
   // }
   
-    this.bnIdle.startWatching(300).subscribe((isTimedOut: boolean) => {
+    this.bnIdle.startWatching(900).subscribe((isTimedOut: boolean) => {
       if (isTimedOut) {
         if(localStorage.getItem("rememberCurrentUser") != "true")
         {
@@ -81,6 +81,7 @@ export class AppComponent {
        localStorage.setItem("Token","");
        localStorage.setItem("RequestId","");
        localStorage.setItem("userToken","");
+       this.dialog.closeAll();
        // this.router.navigate(['/']);
        this.router.navigateByUrl('/login');
       }
