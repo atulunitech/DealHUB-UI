@@ -46,7 +46,7 @@ export class SideNaveComponent implements OnInit {
         active: false,
       },
       { 
-       name: 'Resetpassword',
+       name: 'Change Password',
        Role:null,
        iconClass: 'change_pass_icon.png',
        url:"/DealHUB/dashboard",

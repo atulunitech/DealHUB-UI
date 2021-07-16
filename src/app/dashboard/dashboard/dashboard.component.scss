@@ -422,10 +422,34 @@
             {
                 min-width: 160px;
                 padding-left: 12px;
-                span{
+                .copy{
+                    &.copied
+                    {
+                        span{
+                            display: inline-block;
+    top: -25px;
+    /* transition-delay: 1s; */
+    padding-top: 4px;
+    padding-bottom: 4px;
+    line-height: initial;
+                        }
+                    }
+                    span{
+                        content: "";
+                        position: absolute;
+                        width: 55px;
+                        height: auto;
+                        background-color: rgba(0, 0, 0, 0.05);
+                        display: none;
+                        top: -26px;
+                        left: -27px;
+                        text-align: center;
+                        font-size: 12px;
+                    }
                     display: flex;
                     margin-left: 5px;
                     cursor: pointer;
+                    position: relative;
                     img{
                         width: 16px;
                     }

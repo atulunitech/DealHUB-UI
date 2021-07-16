@@ -423,6 +423,31 @@
                                     flex: 1;
                                     justify-content: space-between;
                                     max-width: 70%;
+                                    
+                                    &.disabledLOI
+                                    {
+                                        background-color: #d0cfcf;
+                                        pointer-events: none;
+                                        span{
+                                            background-color: #d0cfcf;
+                                        }
+                                    }
+                                    &.disabledFinal
+                                    {
+                                        background-color: #d0cfcf;
+                                        pointer-events: none;
+                                        span{
+                                            background-color: #d0cfcf;
+                                        }
+                                    }
+                                    &.disabledsd
+                                    {
+                                        background-color: #d0cfcf;
+                                        pointer-events: none;
+                                        span{
+                                            background-color: #d0cfcf;
+                                        }
+                                    }
                                     span{
                                         vertical-align: initial;
                                         display: flex;
