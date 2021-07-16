@@ -372,6 +372,16 @@
                         @include border-radius(2px);
                         background-color: $thm-prm-bg;
                         color: $thm-bg;
+                        &.disabledLOIPO
+                        {
+                            background-color: #d0cfcf;
+                            pointer-events: none;
+                        }
+                        &.disabledsupporting
+                        {
+                            background-color: #d0cfcf;
+                            pointer-events: none;
+                        }
                         .dwn_con_wr
                         {
                             align-items: center;

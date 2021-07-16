@@ -919,7 +919,7 @@ downloaddocument(event)
   if(this._obfservices.ObfCreateForm.get("Supportpath").value == null || this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
-    this.disableSupporting=true;
+    //this.disableSupporting=true;
   }
   if(this._obfservices.obfmodel.Attachments.length != 0)
   {
@@ -958,13 +958,13 @@ downloaddocument(event)
   }
   else{
     this._mesgBox.showError("No Supporting Documents to Download");
-    
+
   }
 
   
 }
-disableLOIPO:boolean=false;
-disableSupporting:boolean=false;
+disableLOIPO:boolean=true;
+disableSupporting:boolean=true;
 //disablefinalagg:boolean=false;
 
 downloadLOIp(event)
@@ -972,7 +972,7 @@ downloadLOIp(event)
   event.preventDefault();
   if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null || this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
-    this.disableLOIPO=true;
+   
   }
   else if (this._obfservices.obfmodel.Attachments.length == 0)
   {
@@ -1244,7 +1244,7 @@ downloadCoversheet(event)
     
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
-  
+          
         }
         else if(types == "loipo")
         {
@@ -1265,6 +1265,7 @@ downloadCoversheet(event)
             this._obfservices.obfmodel.Attachments.splice(index,1);
            }
          }
+         this.disableLOIPO=false;
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(types == "support")
@@ -1276,7 +1277,7 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-       
+         this.disableSupporting=false;
          console.log(this._obfservices.ObfCreateForm);
          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
          if(index > -1)

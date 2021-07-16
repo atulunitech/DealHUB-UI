@@ -271,12 +271,12 @@
                           Type of Service/Solution Category
                         </div>
                         <div class="prev_dis">
-                          <div *ngIf="(this.service.length > 35)">
+                          <div *ngIf="(this.service.length > 60)">
                             {{(ServiceMore) ? (this.service) : (this.service) | slice:0:50 }}  
                               <a href="javascript:;" *ngIf="!ServiceMore" (click)="ServiceMore=true"> More...</a>
                               <a href="javascript:;" *ngIf="ServiceMore" (click)="ServiceMore=false">less...</a>
                            </div>
-                           <div *ngIf="(this.service.length < 35)">
+                           <div *ngIf="(this.service.length < 60)">
                             {{(this.service)}}  
                            </div>
                         </div>
@@ -442,7 +442,7 @@
                               </div>
                             </div>
                           </perfect-scrollbar>
-                          <div *ngIf="showuploadbutton">
+                          <div *ngIf="showuploadbutton && this.shortcurrentstatus =='Submitted'">
                             <div class="comm_input_con" *ngIf="((this.privilege_name != 'OBF Initiator' && this.privilege_name != 'PPL Initiator') || this.shortcurrentstatus =='Submitted')">
                               <div class="comm_inpu_typ"  *ngIf="(!commentVisiable && _obfservices.obfsummarymodel.uploadDetails[0].is_latest_version == 1)  && !(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='OBF' && this.privilege_name == 'PPL Initiator' )">
                                 
@@ -523,7 +523,7 @@
                       LOI/PO/Agreement
                     </div>
                     <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                      <div class="up_pdf_com" (click)="downloadLOIp($event)" [class.disabledLOI]="disableLOIPO">
+                      <div class="up_pdf_com" (click)="downloadLOIp($event)"  [class.disabledLOI]="disableLOIPO">
                          Download
                          <span>
                            <img src="assets/images/dwon-file-icon.png">
