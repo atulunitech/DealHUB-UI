@@ -380,6 +380,7 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         this.disableSupporting=false;
          if(this.initiateppl)
          {
 
@@ -388,6 +389,7 @@ export class CreatobfComponent implements OnInit {
          this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
           this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
          }
+
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -414,12 +416,14 @@ export class CreatobfComponent implements OnInit {
         if(this._obfservices.loipoarray.length > 0)
         {
           this.loiopdisabled = false;
+          this.disableLOIPO=false;
           this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
         this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
         }
         else
         {
         this.loiopdisabled = true;
+        this.disableLOIPO=true;
         this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
        }
