@@ -317,7 +317,6 @@
       &.ng-dirty {
         &.mat-focused {
           .mat-form-field-wrapper {
-            padding-bottom: 1.94375em;
             .mat-form-field-flex {
               border: solid 1px #2c62c8;
               background-color: #f8fbff;
@@ -325,7 +324,6 @@
           }
         }
         .mat-form-field-wrapper {
-          padding-bottom: 1.94375em;
           .mat-form-field-flex {
             background-color: #f8fbff;
             border: solid 1px rgba(0, 0, 0, 0.14);
@@ -337,7 +335,6 @@
       &.ng-valid {
         &.mat-focused {
           .mat-form-field-wrapper {
-            padding-bottom: 1.94375em;
             .mat-form-field-flex {
               border: solid 1px #2c62c8;
               background-color: #f8fbff;
@@ -390,7 +387,29 @@
         }
         
       }
+      &.ng-touched {
+        animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        transform: translate3d(0, 0, 0);
+        &.mat-focused {
+          .mat-form-field-wrapper {
+            padding-bottom: 1.94375em;
+            .mat-form-field-flex {
+              border: solid 1px red;
+              background-color: #f8fbff;
+            }
+          }
+        }
   
+        .mat-form-field-wrapper {
+          padding-bottom: 1.94375em;
+          .mat-form-field-flex {
+            background-color: #f8fbff;
+            border: solid 1px red;
+            border-radius: 4px;
+          }
+        }
+      }
+
       &.mat-form-field-invalid {
         animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
         transform: translate3d(0, 0, 0);
@@ -1090,6 +1109,8 @@ $label-font-size-redo: $default-size * 4;
   }
 }
 
+
+
 @mixin draw-progress--solid($progress, $color, $bg-color) {
   background: linear-gradient(to right, $color 50%, $bg-color 50%);
   
@@ -1104,6 +1125,13 @@ $label-font-size-redo: $default-size * 4;
   }
 }
 
+@mixin transitiona {
+  @for $i from 1 through 4 {
+    &.class_new-#{$i} {
+      background-color:blue;
+    }
+  }
+}
 // -- selectors
 
 
@@ -1237,18 +1265,22 @@ $label-font-size-redo: $default-size * 4;
     background: transparent;
     visibility: hidden;
   }
+  @for $P from 100 through 1 {
+    &.progress-#{$P} {
+      @include draw-progress--solid($P , #3498db, $bg-color);
+    }
+ }
+  // &.progress-65 {
+  //   @include draw-progress--solid(50, #3498db, $bg-color);
+  // }
   
-  &.progress-65 {
-    @include draw-progress--solid(65, #e67e22, $bg-color);
-  }
+  // &.progress-25 {
+  //   @include draw-progress--solid(25, #3498db, $bg-color);
+  // }
   
-  &.progress-25 {
-    @include draw-progress--solid(25, #9b59b6, $bg-color);
-  }
-  
-  &.progress-88 {
-    @include draw-progress--solid(88, #3498db, $bg-color);
-  }
+  // &.progress-88 {
+  //   @include draw-progress--solid(88, #3498db, $bg-color);
+  // }
 }
 
 // end
