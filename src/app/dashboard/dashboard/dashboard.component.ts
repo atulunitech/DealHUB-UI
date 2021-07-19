@@ -736,15 +736,20 @@ export class DashboardComponent implements OnInit {
 
   editobf(row)
   {
+    let prms = "";
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
     if(this.privilege_name=='OBF Initiator')
     {
-      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" } });
+      prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit OBF" });
+      prms = this.commonService.encrypt(prms);
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { result:prms } });
     }
     else if(this.privilege_name=='PPL Initiator')
     {
-      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit PPL",isppl:"Y" } });
+      prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Edit PPL",isppl:"Y" });
+      prms = this.commonService.encrypt(prms);
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { result:prms }});
     }
    
     console.log(row);
@@ -753,27 +758,39 @@ export class DashboardComponent implements OnInit {
   initiateppl(row)
   {
     console.log(row);
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Initiate PPL",reinitiate:"Y",isppl:"Y",initiateppl:"Y" } });
+    let prms ="";
+    prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Initiate PPL",reinitiate:"Y",isppl:"Y",initiateppl:"Y" });
+    prms = this.commonService.encrypt(prms);
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { result:prms } });
   }
 
   reinitiateobf(row)
   {
+    let prms ="";
     //alert("dsjhdjkshdjks");
     // this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id]);
     if(this.privilege_name == "OBF Initiator")
     {
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate OBF",reinitiate:"Y" } });
+     
+    prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate OBF",reinitiate:"Y" });
+    prms = this.commonService.encrypt(prms);
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams:{ result:prms }});
     }
     else if(this.privilege_name == "PPL Initiator")
     {
-      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate PPL",reinitiate:"Y",isppl:"Y" } });
+      prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Re-initiate PPL",reinitiate:"Y",isppl:"Y" });
+      prms = this.commonService.encrypt(prms);
+      this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { result:prms } });
     }
     console.log(row);
   }
 
   reviseppl(row)
   {
-    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams: { dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Revise PPL",reinitiate:"Y",isppl:"Y" } });
+    let prms ="";
+    prms = JSON.stringify({ dh_id: row.dh_id,dh_header_id:row.dh_header_id,editobf:"Revise PPL",reinitiate:"Y",isppl:"Y" });
+    prms = this.commonService.encrypt(prms);
+    this.router.navigate(['/DealHUB/dashboard/Obf'],{ queryParams:{ result:prms }});
   }
 
   getsolutionmaster()

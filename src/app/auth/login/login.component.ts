@@ -277,8 +277,9 @@ export class LoginComponent implements OnInit {
       this.loginmodel._user_code = this.setEncryption(this.key,this.loginmodel._user_code);
       //this._loginservice.usercode = this.ResetPasswordForm.get('ResetPasswordUserid').value;
       localStorage.setItem("ResetUC",this.ResetPasswordForm.get('ResetPasswordUserid').value);
-      this.loginmodel._password=this.loginvalid.get('Password').value;
-      this.loginmodel._password = this.setEncryption(this.key,this.loginmodel._password);
+      // this.loginmodel._password=this.loginvalid.get('Password').value;
+      // this.loginmodel._password = this.setEncryption(this.key,this.loginmodel._password);
+      this.loginmodel._password = "";
       this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
         this._mesgBox.showSucess("Email send.");
        

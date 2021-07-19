@@ -22,6 +22,7 @@ import * as JSZip from 'jszip';
 import { environment } from 'src/environments/environment';
 import { loginservices } from 'src/app/auth/login/LoginServices';
 import { ThrowStmt } from '@angular/compiler';
+import { CommonService } from 'src/app/services/common.service';
 
 
 interface Serviceslist {
@@ -206,7 +207,7 @@ export class CreatobfComponent implements OnInit {
   Solutiongroup: Solutiongroup[] =[];
 
   constructor(private _dashboardservice:DashboardService,private sanitizer:DomSanitizer,
-    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute,private _loginservice:loginservices) 
+    public _obfservices:OBFServices,private dialog:MatDialog,private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route: ActivatedRoute,private _loginservice:loginservices,public _commonservices:CommonService) 
   { 
     // this._obfservices.createform();
     // this._obfservices.createnewobfmodelandeditobfmodel();
@@ -276,26 +277,48 @@ export class CreatobfComponent implements OnInit {
       status => this.SAPIOchiplist.errorState = status === 'INVALID'
     );
     this.route.queryParams.subscribe(params => {
-      if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
+      if(params['result'] != undefined)
       {
-        this.editorcreateobfstring = params['editobf'];
-        if(params['isppl'] != undefined)
+        let resultparms = this._commonservices.decrypt(params['result'].toString().trim());
+        resultparms = JSON.parse(resultparms);
+        this.editorcreateobfstring = resultparms['editobf'];
+        if(resultparms['isppl'] != undefined)
         {
-          this.isppl = (params['isppl'] == "Y")?true:false; 
+          this.isppl = (resultparms['isppl'] == "Y")?true:false; 
          // alert("this ppl is :"+this.isppl);
         }
-        if(params['initiateppl'] != undefined)
+        if(resultparms['initiateppl'] != undefined)
         {
-          this.initiateppl = (params['initiateppl'] == "Y")?true:false; 
+          this.initiateppl = (resultparms['initiateppl'] == "Y")?true:false; 
           //alert("this ppl initiation is :"+this.isppl);
         }
-        if(params['reinitiate'] != undefined)
+        if(resultparms['reinitiate'] != undefined)
         {
-          this.reinitiateobf = (params['reinitiate'] == "Y")?true:false; 
+          this.reinitiateobf = (resultparms['reinitiate'] == "Y")?true:false; 
           //alert("reninitiate is called :" +this.reinitiateobf);
         }
-        this.geteditobfdata(params['dh_id'],params['dh_header_id']);
+        this.geteditobfdata(resultparms['dh_id'],resultparms['dh_header_id']);
       }
+      // if(params['dh_id'] != undefined && params['dh_header_id'] != undefined)
+      // {
+      //   this.editorcreateobfstring = params['editobf'];
+      //   if(params['isppl'] != undefined)
+      //   {
+      //     this.isppl = (params['isppl'] == "Y")?true:false; 
+      //    // alert("this ppl is :"+this.isppl);
+      //   }
+      //   if(params['initiateppl'] != undefined)
+      //   {
+      //     this.initiateppl = (params['initiateppl'] == "Y")?true:false; 
+      //     //alert("this ppl initiation is :"+this.isppl);
+      //   }
+      //   if(params['reinitiate'] != undefined)
+      //   {
+      //     this.reinitiateobf = (params['reinitiate'] == "Y")?true:false; 
+      //     //alert("reninitiate is called :" +this.reinitiateobf);
+      //   }
+      //   this.geteditobfdata(params['dh_id'],params['dh_header_id']);
+      // }
   });
   //this.getClientKey();
   }
@@ -2769,14 +2792,18 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
 
   obfmodelforencryption()
   {
-    this._obfservices.obfmodel._dh_id = <number>(<unknown>(this._obfservices.obfmodel._dh_id.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._dh_header_id = <number>(<unknown>(this._obfservices.obfmodel._dh_header_id.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): this._obfservices.obfmodel._sap_customer_code.toString()+""+this.randomIntFromInterval(1000,2000);
-    this._obfservices.obfmodel._total_margin = <number>(<unknown>(this._obfservices.obfmodel._total_margin.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._capex = <number>(<unknown>(this._obfservices.obfmodel._capex.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._total_revenue = <number>(<unknown>(this._obfservices.obfmodel._total_revenue.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._payment_terms = <number>(<unknown>(this._obfservices.obfmodel._payment_terms.toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._vertical_id = <number>(<unknown>(this._obfservices.obfmodel._vertical_id.toString()+""+this.randomIntFromInterval(1000,2000)));
+    console.log("check model beofre encvryption");
+    console.log(this._obfservices.obfmodel);
+    let randomadd  =  Math.floor(Math.random() * (2000 - 1000 + 1) + 1000);
+    // this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
+    this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
+    this._obfservices.obfmodel._dh_header_id = <number>(<unknown>((this._obfservices.obfmodel._dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): (parseInt(this._obfservices.obfmodel._sap_customer_code) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._total_margin = <number>(<unknown>((this._obfservices.obfmodel._total_margin + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._capex = <number>(<unknown>((this._obfservices.obfmodel._capex + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._total_revenue = <number>(<unknown>((this._obfservices.obfmodel._total_revenue + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._payment_terms = <number>(<unknown>((this._obfservices.obfmodel._payment_terms + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._vertical_id = <number>(<unknown>((this._obfservices.obfmodel._vertical_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
  
   }
 
