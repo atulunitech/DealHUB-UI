@@ -14,6 +14,7 @@
     <div class="d_icon ngx-daterangepicker-action" (click)="openDatepicker()" ><img class="ngx-daterangepicker-action" (click)="openDatepicker()" src="assets/images/date_icon.JPG"></div>
     <input type="text" matInput autocomplete="off"
     ngxDaterangepickerMd
+    readonly="true"
     (datesUpdated)="datesUpdated($event)"
     [closeOnAutoApply]="true"
       [autoApply]="true"

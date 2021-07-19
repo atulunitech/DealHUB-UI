@@ -1523,6 +1523,18 @@ downloadCoversheet(event)
               wb.SheetNames.forEach((element,index) =>{
                 wb.SheetNames[index] = element.toLowerCase();
               });
+          if(this.isppl)
+          {
+            if(!wb.SheetNames.includes("ppl coversheet"))
+          {
+            this._mesgBox.showError("Standard PPL Coversheet not found");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }  
+          }
+          else
+          {    
           if(!wb.SheetNames.includes("obf coversheet"))
           {
             this._mesgBox.showError("Standard OBF Coversheet not found");
@@ -1530,12 +1542,13 @@ downloadCoversheet(event)
             this.iscoversheet = !this.iscoversheet;
             return false;
           }
+        }
           for (var key in wb.Sheets) {
             if (Object.prototype.hasOwnProperty.call(wb.Sheets, key)) {
               this.renameKey(wb.Sheets,key,key.toLowerCase());
             }
         }
-        const wsname : string = "obf coversheet";
+        const wsname : string = this.isppl?"ppl coversheet":"obf coversheet";
         
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
         console.log("get values");
