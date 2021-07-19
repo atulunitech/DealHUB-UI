@@ -150,12 +150,7 @@ class filesdetail
       this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
-     );
-
-     
-   
-    
-   
+     );   
   }
   CEOmessage:string="";
   cfomessgae:string="";
