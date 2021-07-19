@@ -1,4 +1,5 @@
 import { TemplateRef, ViewChild } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule ,MatTableDataSource} from '@angular/material/table'
 import { MatPaginator } from '@angular/material/paginator';
@@ -6,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 import {Router} from "@angular/router"
-import {FormBuilder,FormGroup, FormControl, Validators, FormGroupDirective, NgForm} from '@angular/forms';
+import {FormBuilder,FormGroup, FormControl, Validators, FormGroupDirective, NgForm,FormArray} from '@angular/forms';
 import * as moment from 'moment';
 import { DaterangepickerDirective } from 'ngx-daterangepicker-material';
 import { editobfarguement, OBFServices, SAPIO } from '../services/obfservices.service';
@@ -14,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MyErrorStateMatcher, SaveServiceParameter, sectors, Solutiongroup, Solutionservices, subsectors } from '../creatobf/creatobf.component';
 import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { environment } from 'src/environments/environment.prod';
 import { CommonService } from 'src/app/services/common.service';
@@ -210,7 +211,12 @@ export class DashboardComponent implements OnInit {
   // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
+  @ViewChild('chipList1') chipList1: MatChipList;
+  public myForm1: FormGroup;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  data = {
+    names: ['11222212','22332233']
+  };
   _dashboardmodel:DashBoardModel=new DashBoardModel();
   privilege_name:string;
   Rejected:boolean=false;
@@ -236,9 +242,12 @@ export class DashboardComponent implements OnInit {
   // };
   loading$ = this.commonService.loading$;
   public loginvalid: FormGroup;
-  constructor(private _dashboardservice:DashboardService,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
+  constructor(private _dashboardservice:DashboardService,private fb: FormBuilder,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
+    this.myForm1 = this.fb.group({
+      names: this.fb.array(this.data.names, this.validateArrayNotEmpty)
+    });
   }
    keys:any[] = [];
    autocompletearr:any[] = [];
@@ -569,6 +578,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.myForm1
+    .get('names')
+    .statusChanges.subscribe(
+      status => (this.chipList1.errorState = status === 'INVALID')
+    );
     this.dateselected = false;
     this.bindfilterobject = [];
     this.startdate= null;
@@ -1015,7 +1029,38 @@ onchange(evt,solutioncategory)
       
     }
   }
+  initName(name: string): FormControl {
+    return this.fb.control(name);
+  }
+  validateArrayNotEmpty(c: FormControl) {
+    if (c.value && c.value.length === 0) {
+      return {
+        validateArrayNotEmpty: { valid: false }
+      };
+    }
+    return null;
+  }
 
+  add1(event: MatChipInputEvent, form: FormGroup): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add name
+    if ((value || '').trim()) {
+      const control = <FormArray>form.get('names');
+      control.push(this.initName(value.trim()));
+      console.log(control);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  remove1(form, index) {
+    console.log(form);
+    form.get('names').removeAt(index);
+  }
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;

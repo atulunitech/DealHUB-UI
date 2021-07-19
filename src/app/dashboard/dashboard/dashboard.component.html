@@ -328,7 +328,7 @@
       </mat-paginator>
       </div>
       <ng-template #mytemplate>
-        <form [formGroup]="_obfservices.ObfCreateForm">
+        
           <div class="pop_title_wrp"><div class="pop_head_titl edit_titl">Edit</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
           <mat-dialog-content class="mat-typography">
             <div class="edit_box_popup">
@@ -454,7 +454,7 @@
                 </mat-form-field>
                 </div>
                 <div class="mt-cust-fd" fxFlex="1 1 100%">
-                  <mat-form-field appearance="fill" class="example-full-width">
+                  <!-- <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Enter SAP IO Number</mat-label>
         <mat-chip-list #chipList >
           <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" style="background-color:#419bf9;" [selectable]="selectable"
@@ -479,8 +479,25 @@
         <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
           Only numbers are allowed
         </mat-error>
+                  </mat-form-field> -->
+                  <form [formGroup]="myForm1">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Enter SAP IO Number</mat-label>
+                    <mat-chip-list #chipList1 formArrayName="names">
+                      <mat-chip *ngFor="let name of myForm1.get('names')['controls']; let i=index;" [selectable]="selectable"
+                        [removable]="removable" (removed)="remove1(myForm1, i)">
+                        {{name.value}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input placeholder="Names"
+                        [matChipInputFor]="chipList1"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add1($event, myForm1)">
+                    </mat-chip-list>
+                    <mat-error>Atleast 1 sap io number need to be added</mat-error>
                   </mat-form-field>
-                  
+                </form>
                 </div>
               </div>
             </div>
@@ -493,7 +510,7 @@
   <button mat-button mat-flat-button class="creat_bt cu_width"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="editSubmit()">Submit</button>
 </mat-dialog-actions>
         
-      </form>
+     
    </ng-template>
    </div>
   <div>
