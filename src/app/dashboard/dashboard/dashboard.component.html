@@ -14,6 +14,7 @@
     <div class="d_icon ngx-daterangepicker-action" (click)="openDatepicker()" ><img class="ngx-daterangepicker-action" (click)="openDatepicker()" src="assets/images/date_icon.JPG"></div>
     <input type="text" matInput autocomplete="off"
     ngxDaterangepickerMd
+    readonly="true"
     (datesUpdated)="datesUpdated($event)"
     [closeOnAutoApply]="true"
       [autoApply]="true"
@@ -205,7 +206,7 @@
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
                   <div class="copy" #copied  (click)="copyText(column.cell(row), copied)" >
                     <span>Copied</span>
-                   <img src="../../../assets/images/copay_icon.png"> 
+                   <img src="assets/images/copay_icon.png"> 
                   
                   </div></mat-cell>
               </div>
@@ -327,191 +328,178 @@
         >
       </mat-paginator>
       </div>
-      <ng-template #mytemplate>
-        
-          <div class="pop_title_wrp"><div class="pop_head_titl edit_titl">Edit</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
-          <mat-dialog-content class="mat-typography">
-            <div class="edit_box_popup">
-              <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
-                <div class="mt-cust-fd" fxFlex="1 1 100%">
-                  <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Select solution category</mat-label>
-        <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" disableOptionCentering>
-          <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="dscdsbld" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
+      
+   </div>
+   </form>
+   <div>
+    <ng-template #mytemplate>
+      <form [formGroup]="_obfservices.ObfCreateForm">
+        <div class="pop_title_wrp"><div class="pop_head_titl edit_titl">Edit</div> <a mat-dialog-close href="javascript:void(0)" class="close"></a></div>
+        <mat-dialog-content class="mat-typography">
+          <div class="edit_box_popup">
+            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
+              <div class="mt-cust-fd" fxFlex="1 1 100%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select solution category</mat-label>
+      <mat-select  formControlName="Solutioncategory"  [errorStateMatcher]="matcher" disableOptionCentering>
+        <mat-option *ngFor="let Solution of Solutiongroup" [disabled]="dscdsbld" [value]="Solution.value"  (onSelectionChange)="onchange($event,Solution.Solutioncategory)">
 
-            {{Solution.Solutioncategory}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
-          Solution Category is <strong>required</strong>
-        </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="mt-cust-fd" fxFlex="1 1 100%">
+          {{Solution.Solutioncategory}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Solutioncategory.errors?.required">
+        Solution Category is <strong>required</strong>
+      </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="mt-cust-fd" fxFlex="1 1 100%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select type of service/solution category</mat-label>
+                  <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple disableOptionCentering>
+                    <!-- <mat-option>-- None --</mat-option> -->
+                    <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
+                                  >
+                      <mat-option *ngFor="let list of group.Serviceslist" [disabled]="true" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
+                        {{list.viewValue}} 
+                      </mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+                  <mat-error *ngIf="servicesControl.hasError('required')">
+                    Services is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
+              <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Select type of service/solution category</mat-label>
-                    <mat-select [formControl]="servicesControl" [errorStateMatcher]="matcher" multiple disableOptionCentering>
-                      <!-- <mat-option>-- None --</mat-option> -->
-                      <mat-optgroup *ngFor="let group of Solutionservicesarray" [label]="group.Solutioncategory"
-                                    >
-                        <mat-option *ngFor="let list of group.Serviceslist" [disabled]="true" (onSelectionChange)="onotherservicesoptionchange($event,list.viewValue,group.Solutioncategory,group.value)" [value]="list.value">
-                          {{list.viewValue}} 
-                        </mat-option>
-                      </mat-optgroup>
-                    </mat-select>
-                    <mat-error *ngIf="servicesControl.hasError('required')">
-                      Services is <strong>required</strong>
+                    <mat-label>Other Services</mat-label>
+                    <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
+                      Services:Other is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.invalidservices">
+                      Special characters are not allowed
                     </mat-error>
                   </mat-form-field>
                 </div>
               </div>
-              <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
-                <div class="mat_fld_box_in" fxFlex="1 1 100%">
-                  <div class="mt-cust-fd">
-                    <mat-form-field appearance="fill" class="example-full-width">
-                      <mat-label>Other Services</mat-label>
-                      <input matInput formControlName="otherservices" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
-                        Services:Other is <strong>required</strong>
+              
+              <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Other Solutions</mat-label>
+                    <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
+                      Solution:Other is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.invalidservices">
+                      Special characters are not allowed
+                    </mat-error>
+                    </mat-form-field>
+                </div>
+              </div>
+              <div class="mat_fld_box_in" fxFlex="1 1 100%">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Other Integrated Solutions</mat-label>
+                      <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
+                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
+                        Integrated Solution:Other is <strong>required</strong>
                       </mat-error>
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.invalidservices">
+                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.invalidservices">
                         Special characters are not allowed
                       </mat-error>
                     </mat-form-field>
-                  </div>
-                </div>
-                
-                <div class="mat_fld_box_in" fxFlex="1 1 100%">
-                  <div class="mt-cust-fd">
-                    <mat-form-field appearance="fill" class="example-full-width">
-                      <mat-label>Other Solutions</mat-label>
-                      <input matInput formControlName="othersolutions" style="margin-left: 10px;" (change)="otherssave($event,'solution')" [errorStateMatcher]="matcher" required/>
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.required">
-                        Solution:Other is <strong>required</strong>
-                      </mat-error>
-                      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.othersolutions.errors?.invalidservices">
-                        Special characters are not allowed
-                      </mat-error>
-                      </mat-form-field>
-                  </div>
-                </div>
-                <div class="mat_fld_box_in" fxFlex="1 1 100%">
-                  <div class="mt-cust-fd">
-                    <mat-form-field appearance="fill" class="example-full-width">
-                      <mat-label>Other Integrated Solutions</mat-label>
-                        <input matInput formControlName="otherintegratedsolutions" style="margin-left: 10px;" (change)="otherssave($event,'integratedsolution')" [errorStateMatcher]="matcher" required/>
-                        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.required">
-                          Integrated Solution:Other is <strong>required</strong>
-                        </mat-error>
-                        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherintegratedsolutions.errors?.invalidservices">
-                          Special characters are not allowed
-                        </mat-error>
-                      </mat-form-field>
-                  </div>
-                </div>
-              </div>
-              <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
-                <div class="mt-cust-fd" fxFlex="1 1 100%">
-                  <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Select Sector</mat-label>
-                    <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector" disableOptionCentering>
-                      <mat-option *ngFor="let Sector of sectorlist" disabled [value]="Sector.value"  >
-                        {{Sector.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sector.errors?.required">
-                      Sector is <strong>required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="mt-cust-fd" fxFlex="1 1 100%">
-                  <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Select Sub Sector</mat-label>
-                    <mat-select (selectionChange)="onsubsectorchange($event)"  [errorStateMatcher]="matcher" formControlName="Subsector" disableOptionCentering>
-                      <mat-option *ngFor="let Subsector of subsectorlisdisplay" disabled [value]="Subsector.value"  >
-                        {{Subsector.viewValue}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Subsector.errors?.required">
-                      Subsector is <strong>required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between start" >
-                <div class="mt-cust-fd" fxFlex="1 1 30%">
-                  <mat-form-field appearance="fill" class="example-full-width">
-                               
-                    <mat-label>Enter SAP Customer Code</mat-label>
-                    <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
-                    <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
-                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
-                      Special characters are not allowed
-                    </mat-error>
-                    <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
-                      SAP Customer Code length must be <strong>8 digits</strong>
-                    </mat-error>
-                </mat-form-field>
-                </div>
-                <div class="mt-cust-fd" fxFlex="1 1 100%">
-                  <!-- <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Enter SAP IO Number</mat-label>
-        <mat-chip-list #chipList >
-          <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" style="background-color:#419bf9;" [selectable]="selectable"
-                   [removable]="removable" (removed)="remove(sapio)">
-            {{sapio._Cust_SAP_IO_Number}}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <input placeholder="SAP IO ..." 
-          type="text"
-          matInput
-          formControlName="Sapio"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="add($event)"
-          autocomplete="off"
-          >
-        </mat-chip-list>
-        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.Sionumberinvalid">
-          SAP IO Number length must be <strong>8 digits</strong>
-        </mat-error>
-        <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
-          Only numbers are allowed
-        </mat-error>
-                  </mat-form-field> -->
-                  <form [formGroup]="myForm1">
-                  <mat-form-field appearance="fill" class="example-full-width">
-                    <mat-label>Enter SAP IO Number</mat-label>
-                    <mat-chip-list #chipList1 formArrayName="names">
-                      <mat-chip *ngFor="let name of myForm1.get('names')['controls']; let i=index;" [selectable]="selectable"
-                        [removable]="removable" (removed)="remove1(myForm1, i)">
-                        {{name.value}}
-                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                      </mat-chip>
-                      <input placeholder="Names"
-                        [matChipInputFor]="chipList1"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                        [matChipInputAddOnBlur]="addOnBlur"
-                        (matChipInputTokenEnd)="add1($event, myForm1)">
-                    </mat-chip-list>
-                    <mat-error>Atleast 1 sap io number need to be added</mat-error>
-                  </mat-form-field>
-                </form>
                 </div>
               </div>
             </div>
-            
-          </mat-dialog-content>
-          <mat-dialog-actions align="end">
-  <!-- <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
-  <button mat-flat-button class="creat_bt mat_fot_bt" mat-dialog-close>Cancel</button>
-  <button mat-button mat-flat-button class="creat_bt cu_width"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="editSubmit()">Submit</button>
+            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between center" >
+              <div class="mt-cust-fd" fxFlex="1 1 100%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Sector</mat-label>
+                  <mat-select (selectionChange)="onsectorchange($event)" [errorStateMatcher]="matcher" formControlName="Sector" disableOptionCentering>
+                    <mat-option *ngFor="let Sector of sectorlist" disabled [value]="Sector.value"  >
+                      {{Sector.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sector.errors?.required">
+                    Sector is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="mt-cust-fd" fxFlex="1 1 100%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Sub Sector</mat-label>
+                  <mat-select (selectionChange)="onsubsectorchange($event)"  [errorStateMatcher]="matcher" formControlName="Subsector" disableOptionCentering>
+                    <mat-option *ngFor="let Subsector of subsectorlisdisplay" disabled [value]="Subsector.value"  >
+                      {{Subsector.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Subsector.errors?.required">
+                    Subsector is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="space-between start" >
+              <div class="mt-cust-fd" fxFlex="1 1 30%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                             
+                  <mat-label>Enter SAP Customer Code</mat-label>
+                  <!-- <input matInput [(ngModel)]="_obfservices.obfmodel._sap_customer_code" [ngModelOptions]="{standalone: true}" placeholder="SAP Customer Code" /> -->
+                  <input matInput type="number" formControlName="Sapcustomercode" (change)="fetchcustomercode()" placeholder="SAP Customer Code" />
+                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.invalidservices">
+                    Special characters are not allowed
+                  </mat-error>
+                  <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapcustomercode.errors?.Sionumberinvalid">
+                    SAP Customer Code length must be <strong>8 digits</strong>
+                  </mat-error>
+              </mat-form-field>
+              </div>
+              <div class="mt-cust-fd" fxFlex="1 1 100%">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Enter SAP IO Number</mat-label>
+      <mat-chip-list #chipList >
+        <mat-chip *ngFor="let sapio of _obfservices.obfmodel.sapio" style="background-color:#419bf9;" [selectable]="selectable"
+                 [removable]="removable" (removed)="remove(sapio)">
+          {{sapio._Cust_SAP_IO_Number}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="SAP IO ..." 
+        type="text"
+        matInput
+        formControlName="Sapio"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)"
+        autocomplete="off"
+        >
+      </mat-chip-list>
+      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.Sionumberinvalid">
+        SAP IO Number length must be <strong>8 digits</strong>
+      </mat-error>
+      <mat-error *ngIf="_obfservices.ObfCreateForm.controls.Sapio.errors?.invalidnumber">
+        Only numbers are allowed
+      </mat-error>
+                </mat-form-field>
+                
+              </div>
+            </div>
+          </div>
+          
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+<!-- <button mat-button mat-dialog-close>Cancel</button>
+<button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+<button mat-flat-button class="creat_bt mat_fot_bt" mat-dialog-close>Cancel</button>
+<button mat-button mat-flat-button class="creat_bt cu_width"  [disabled]="_obfservices.ObfCreateForm.invalid" (click)="editSubmit()">Submit</button>
 </mat-dialog-actions>
-        
-     
-   </ng-template>
+      
+    </form>
+ </ng-template>
    </div>
   <div>
     <ng-template #callAPIDialog>

@@ -380,6 +380,7 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         this.disableSupporting=false;
          if(this.initiateppl)
          {
 
@@ -388,6 +389,7 @@ export class CreatobfComponent implements OnInit {
          this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
           this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
          }
+
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -414,15 +416,21 @@ export class CreatobfComponent implements OnInit {
         if(this._obfservices.loipoarray.length > 0)
         {
           this.loiopdisabled = false;
+          this.disableLOIPO=false;
           this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
         this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
         }
         else
         {
         this.loiopdisabled = true;
+        this.disableLOIPO=true;
         this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
        }
+      }
+      else
+      {
+        this.disableLOIPO=false;
       }
       this.uploadnotdisabled = true;
       // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
@@ -1524,6 +1532,18 @@ downloadCoversheet(event)
               wb.SheetNames.forEach((element,index) =>{
                 wb.SheetNames[index] = element.toLowerCase();
               });
+          if(this.isppl)
+          {
+            if(!wb.SheetNames.includes("ppl coversheet"))
+          {
+            this._mesgBox.showError("Standard PPL Coversheet not found");
+            this.coversheetfiles = [];
+            this.iscoversheet = !this.iscoversheet;
+            return false;
+          }  
+          }
+          else
+          {    
           if(!wb.SheetNames.includes("obf coversheet"))
           {
             this._mesgBox.showError("Standard OBF Coversheet not found");
@@ -1531,12 +1551,13 @@ downloadCoversheet(event)
             this.iscoversheet = !this.iscoversheet;
             return false;
           }
+        }
           for (var key in wb.Sheets) {
             if (Object.prototype.hasOwnProperty.call(wb.Sheets, key)) {
               this.renameKey(wb.Sheets,key,key.toLowerCase());
             }
         }
-        const wsname : string = "obf coversheet";
+        const wsname : string = this.isppl?"ppl coversheet":"obf coversheet";
         
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
         console.log("get values");

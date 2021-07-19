@@ -81,7 +81,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");
-                            this._mesgBox.showError("Unauthorized access 401");
+                            this._mesgBox.showError("Unauthorized access.");
                             this.router.navigateByUrl('/login');
                           }
 
