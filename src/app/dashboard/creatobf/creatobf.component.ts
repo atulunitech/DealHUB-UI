@@ -428,6 +428,10 @@ export class CreatobfComponent implements OnInit {
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
        }
       }
+      else
+      {
+        this.disableLOIPO=false;
+      }
       this.uploadnotdisabled = true;
       // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
       if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
