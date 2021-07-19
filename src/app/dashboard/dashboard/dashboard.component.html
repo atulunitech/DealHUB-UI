@@ -463,6 +463,7 @@
           type="text"
           matInput
           formControlName="Sapio"
+          [errorStateMatcher]="matcherSapio"
           [matChipInputFor]="chipList"
           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
           [matChipInputAddOnBlur]="addOnBlur"

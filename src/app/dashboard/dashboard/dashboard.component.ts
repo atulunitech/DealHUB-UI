@@ -146,6 +146,18 @@ export class ResetErrorStateMatcher implements ErrorStateMatcher {
     return (control && control.parent.get('NewPassword').value !== control.parent.get('confirmpassword').value && control.dirty)
   }
 }
+
+export class SapIoErrorStateMatcher implements ErrorStateMatcher {
+  // isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  //   const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
+  //   const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
+
+  //   return invalidCtrl || invalidParent;
+  // }
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return (control && control.parent.get('Sapio').value != 8 && control.dirty);
+  }
+}
 // class searchvalues
 // {
 
@@ -166,6 +178,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
   matcherreset = new ResetErrorStateMatcher();
+  matcherSapio = new SapIoErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
   startdate:any;
