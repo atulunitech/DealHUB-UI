@@ -724,13 +724,13 @@
                     </div>
               
                   
-                      <div class="mt-cust-fd-bg-color"  >
+                      <div [class.lrg_err] ="loginvalid.controls.NewPassword.errors?.pattern" class="mt-cust-fd-bg-color"  >
                           <mat-form-field appearance="fill" class="example-full-width">
                               <mat-label>New Password</mat-label>
                               <input matInput [type]="hide1 ? 'password' : 'text'"  formControlName="NewPassword" autocomplete="off">
                                   <mat-error *ngIf="checkError('NewPassword', 'required')">New Password is required</mat-error>
                                   <mat-icon matSuffix (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-                                  <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
+                                  <mat-error class="cus_err" *ngIf="loginvalid.controls.NewPassword.errors?.pattern">Password must be 8 characters in length, must contain atleast one lowercase & uppercase & numbers & special characters</mat-error>
                                   <mat-error *ngIf="loginvalid.controls.NewPassword.errors?.invalidcharacters">Invalid Characters are not allowed</mat-error>
                             </mat-form-field>
                         </div>
