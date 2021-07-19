@@ -146,6 +146,19 @@ export class ResetErrorStateMatcher implements ErrorStateMatcher {
     return (control && control.parent.get('NewPassword').value !== control.parent.get('confirmpassword').value && control.dirty)
   }
 }
+
+export class SapIoErrorStateMatcher implements ErrorStateMatcher {
+  // isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  //   const invalidCtrl = !!(control?.invalid && control.touched && control?.parent?.dirty);
+  //   const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
+
+  //   return invalidCtrl || invalidParent;
+  // }
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    let alpha = (control && control.parent.get('Sapio').value != 8 && control.touched);
+    return (control && control.parent.get('Sapio').value != 8 && control.touched);
+  }
+}
 // class searchvalues
 // {
 
@@ -166,6 +179,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(PerfectScrollbarDirective) directiveRef?: PerfectScrollbarDirective;
   matcher = new MyErrorStateMatcher();
   matcherreset = new ResetErrorStateMatcher();
+  matcherSapio = new SapIoErrorStateMatcher();
   Solutiongroup: Solutiongroup[] =[];
   dscdsbld:boolean = false;
   startdate:any;
@@ -606,7 +620,6 @@ export class DashboardComponent implements OnInit {
       confirmpassword : new FormControl('')
     }, { validators: this.checkPasswords });
 
-    
   }
   
   getClientKey()
@@ -1125,6 +1138,9 @@ openModal(templateRef,row) {
       {
         this._obfservices.ObfCreateForm.controls["Sapcustomercode"].enable();
       }
+      this._obfservices.ObfCreateForm.get('Sapio').statusChanges.subscribe(
+        status => this.SAPIOchiplist.errorState = status === 'INVALID'
+      );
       console.log("checkmodel after model click");
       console.log(this._obfservices.ObfCreateForm);
    },
