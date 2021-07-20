@@ -43,9 +43,11 @@
                                     <li> Workbook name should be “OBF Coversheet”.</li>
                                     <li> All mandatory fields should have values.</li>
                                     <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
-                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom.</li>
+                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom or Transport Solution Group.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
+                                      <li>Total Project Life to be entered in number of months.</li>
+                                      <li>For Verticals Enterprise Mobility, MLL Network and Transport Solution Group, Project type can only be Transportation.</li>
                                       <li> Please check before submitting for all entered values.</li>
                                   </ul>
                                 </div>
@@ -61,7 +63,7 @@
                                     <li> Workbook name should be "PPL Coversheet".</li>
                                     <li> All mandatory fields should have values.</li>
                                     <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
-                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom.</li>
+                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom or Transport Solution Group.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
                                       <li>Total Project Life to be entered in number of months.</li> 
@@ -776,7 +778,7 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Payment Terms
+                      Payment Terms (in Days)
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfmodel._payment_terms}} Days
@@ -784,7 +786,7 @@
                   </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Total Project Life 
+                      Total Project Life (in Months)
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfmodel._total_project_life}}

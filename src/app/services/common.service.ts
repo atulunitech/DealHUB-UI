@@ -26,6 +26,7 @@ export class notificationDetails
 export class CommonService {
 
   private _loading = new BehaviorSubject<boolean>(false);
+  qryparamssecretkey:string = "dealhubsecretkey$123";
   public resetclicked = new BehaviorSubject<boolean>(false);
   public readonly loading$ = this._loading.asObservable();
   menu_status: boolean = false;
@@ -125,6 +126,28 @@ setEncryption(keys, value){
   });
 
   return encrypted.toString();
+}
+
+setDecryption(keys, value){
+  var key = CryptoJS.enc.Utf8.parse(keys);
+  var iv = CryptoJS.enc.Utf8.parse(keys);
+  var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+  {
+      keySize: 256 / 32,
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+  }).toString(CryptoJS.enc.Utf8);
+
+  return decrypted;
+}
+
+encrypt(value : string) : string{
+  return CryptoJS.AES.encrypt(value, this.qryparamssecretkey.trim()).toString();
+}
+
+decrypt(textToDecrypt : string){
+  return CryptoJS.AES.decrypt(textToDecrypt, this.qryparamssecretkey.trim()).toString(CryptoJS.enc.Utf8);
 }
 
 }

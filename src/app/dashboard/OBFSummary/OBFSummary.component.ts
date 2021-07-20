@@ -70,6 +70,7 @@ class filesdetail
       ExceptionCFO:new  FormControl("",[Validators.required]),
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
+      
     });
    
  //   noComment:boolean=false;
@@ -77,7 +78,8 @@ class filesdetail
     BrifreadMore=false;
     paymentRead=false;
     PaymentreadMore=false;
-    comments = new FormControl('', Validators.required);
+   // comments = new FormControl('', Validators.required);
+    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters,Validators.email])
     step=0;
     service:string;
     privilege_name:string;
@@ -123,6 +125,7 @@ class filesdetail
   disableSupporting:boolean=false;
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+    @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
         public _dashboardservice:DashboardService,
@@ -150,12 +153,7 @@ class filesdetail
       this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
-     );
-
-     
-   
-    
-   
+     );   
   }
   CEOmessage:string="";
   cfomessgae:string="";
@@ -668,7 +666,9 @@ class filesdetail
   public checkError = (controlName: string, errorName: string) => {
     return this.obfsummaryform.controls[controlName].hasError(errorName);
   }
-
+  
+  
+  
   //Action Functions For Approve ,Rejected and OnHold function
   ApproveDeatils()
 
@@ -766,6 +766,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
+    sessionStorage.setItem("Action","Approve");
       if(jsondata[0].status =="success")
       {
         this._mesgBox.showSucess(jsondata[0].message);
@@ -812,6 +813,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       sessionStorage.setItem("Action","Reject");
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
@@ -864,6 +866,8 @@ class filesdetail
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
+       // sessionStorage.setItem
+        sessionStorage.setItem("Action","Hold");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{
@@ -1538,7 +1542,7 @@ class filesdetail
   }
   commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&@$#*^%!()]/;
+    var format = /[<>'"&$#*^%!()]/;
 
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
      
@@ -1629,5 +1633,20 @@ class filesdetail
       
     }
     }
-  
+    openShareBox()
+    {
+      const dialogRef = this.dialog.open(this.shareDialog, {
+        // width: '500px',
+        // height:'600px',
+        // disableClose: true,
+        panelClass: 'custom-modalbox',
+        backdropClass: 'popupBackdropClass',
+       // data: { campaignId: this.params.id }
+    })
+    }
+    sendDetails()
+    {
+
+    }
+    
   }

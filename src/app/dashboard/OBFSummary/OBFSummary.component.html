@@ -9,7 +9,9 @@
       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('Approved OBF Summary') : ('Approved PPL Summary')}}
      
     </div>
-   
+   <!-- <div>
+    <button mat-flat-button (click)="openShareBox()"> Share </button>
+   </div> -->
    
 </div>
 <div>
@@ -212,7 +214,7 @@
                    </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Payment Terms
+                      Payment Terms (in Days)
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfsummarymodel.uploadDetails[0].payment_terms}}  Days
@@ -220,7 +222,7 @@
                   </div>
                    <div class="mat_previe_box">
                     <div class="prev_tit">
-                      Total Project Life 
+                      Total Project Life (in Months)
                     </div>
                     <div class="prev_dis">
                       {{_obfservices.obfsummarymodel.uploadDetails[0].total_project_life}} 
@@ -778,4 +780,31 @@
     can be found in the LICENSE file at http://angular.io/license -->
     
   </ng-template>
+</div>
+<div>
+  <ng-template #shareDialog>
+   <mat-dialog-content>
+    <div>
+      
+
+      <mat-form-field appearance="fill" class="example-full-width">
+       
+        <input matInput  [formControl]="EmailAddress" placeholder="Enter E-mail ID to share" >
+        <mat-error *ngIf="EmailAddress.hasError('required')">Email ID is required</mat-error>
+        <mat-error *ngIf="EmailAddress.errors?.invalidservices">
+            Black-Listed characters `<>'"&` are not allowed
+          </mat-error>
+          <mat-error *ngIf="EmailAddress.errors?.email">
+            Email ID is not valid
+          </mat-error>
+      </mat-form-field>
+
+    </div>
+     </mat-dialog-content>
+     <mat-dialog-actions>
+      <button (click)="CloseDialog()"  class="creat_bt" mat-flat-button>Close</button>
+      <button (click)="sendDetails()"  class="creat_bt" mat-flat-button>Send Now</button>
+     </mat-dialog-actions>
+  </ng-template>
+
 </div>
