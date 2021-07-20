@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { BnNgIdleService } from 'bn-ng-idle';
 import { CommonService } from './services/common.service';
+import { MessageBoxComponent } from './shared/MessageBox/MessageBox.Component';
 import { MenuModel } from './shared/side-nave/side-nave.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { MenuModel } from './shared/side-nave/side-nave.component';
 export class AppComponent {
   title = 'DealHUB-UI';
 
-  constructor(private bnIdle: BnNgIdleService,private router:Router,private _commomservices:CommonService,public dialog:MatDialog) {
+  constructor(private bnIdle: BnNgIdleService,private router:Router,private _commomservices:CommonService,public dialog:MatDialog,private _mesgBox:MessageBoxComponent) {
  
   }
 
@@ -82,6 +83,7 @@ export class AppComponent {
        localStorage.setItem("RequestId","");
        localStorage.setItem("userToken","");
        this.dialog.closeAll();
+       this._mesgBox.showError("Your session has been expired, Kindly login again");
        // this.router.navigate(['/']);
        this.router.navigateByUrl('/login');
       }

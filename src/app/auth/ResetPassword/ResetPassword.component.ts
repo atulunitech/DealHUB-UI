@@ -59,6 +59,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
           this.loginvalid.controls["confirmpassword"].markAsPristine();
           this.loginvalid.controls["NewPassword"].markAsUntouched();
     this.loginvalid.controls["confirmpassword"].markAsUntouched();
+    //this.loginvalid.reset();
       }
       getClientKey()
       {
@@ -69,6 +70,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
       Rkey = Rkey.substring(0,Rkey.length - 4);
       this.key = Rkey;
       this.loginmodel._ClientId = result.ClientID;
+
+      this.loginvalid.controls.NewPassword.setValue("");
+      this.loginvalid.controls.confirmpassword.setValue("");
+            this.loginvalid.controls["NewPassword"].markAsPristine();
+            this.loginvalid.controls["confirmpassword"].markAsPristine();
+            this.loginvalid.controls["NewPassword"].markAsUntouched();
+      this.loginvalid.controls["confirmpassword"].markAsUntouched();
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{

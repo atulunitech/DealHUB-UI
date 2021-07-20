@@ -20,7 +20,8 @@ export class AuthGuard implements CanActivate,CanActivateChild {
     {
       if(childRoute.url[0] != undefined && childRoute.url[0].path == "Obf")
       {
-        if(localStorage.getItem("privilege_name") == "OBF Initiator" || (localStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
+        // if(localStorage.getItem("privilege_name") == "OBF Initiator" || (localStorage.getItem("privilege_name") == "PPL Initiator" && childRoute.queryParams.isppl == "Y"))
+        if(localStorage.getItem("privilege_name") == "OBF Initiator" || (localStorage.getItem("privilege_name") == "PPL Initiator"))
         {
         return true;
          }
@@ -30,7 +31,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
                             localStorage.setItem("Token","");
                             localStorage.setItem("RequestId","");
                             localStorage.setItem("userToken","");
-          this._mesgBox.showError("Unauthorized access");
+          this._mesgBox.showError("Unauthorized access.");
           this.router.navigateByUrl('/login'); 
         return false;
       }
