@@ -761,6 +761,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
+    sessionStorage.setItem("Action","Approve");
       if(jsondata[0].status =="success")
       {
         this._mesgBox.showSucess(jsondata[0].message);
@@ -807,6 +808,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       sessionStorage.setItem("Action","Reject");
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
@@ -859,6 +861,8 @@ class filesdetail
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
+       // sessionStorage.setItem
+        sessionStorage.setItem("Action","Approve");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{

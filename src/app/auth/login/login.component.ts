@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
       RememberMe:new FormControl("")
     });
     
+    sessionStorage.setItem("Action",null);
 
     this.ResetPasswordForm=new FormGroup({
 

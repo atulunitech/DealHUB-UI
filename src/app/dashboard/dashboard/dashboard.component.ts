@@ -594,6 +594,7 @@ export class DashboardComponent implements OnInit {
     this.Dashboardvalid = new FormGroup({
      
     });
+  
     if(localStorage.getItem("privilege_name")!= null)
     {
       this.privilege_name=localStorage.getItem("privilege_name");
@@ -620,6 +621,7 @@ export class DashboardComponent implements OnInit {
       confirmpassword : new FormControl('')
     }, { validators: this.checkPasswords });
 
+ 
   }
   
   getClientKey()
@@ -1323,7 +1325,37 @@ downloaddetailFinalAgg(row)
   this.listData = new MatTableDataSource(this.dashboardData);
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
-  this.addColumn(0)
+  if(sessionStorage.getItem("Action") != null)
+  {
+    var action=sessionStorage.getItem("Action");
+    if(action =='Approve')
+    {
+      this.addColumn(1);
+    }
+    else if(action =='Reject')
+    {
+      this.addColumn(2);
+    }
+    else if(action =='Submitted')
+    {
+      this.addColumn(1);
+    }
+    else if(action =='Draft')
+    {
+      this.addColumn(0);
+    }
+    else if(action =='null')
+    {
+      this.addColumn(0);
+    }
+    sessionStorage.setItem("Action",null);
+  
+  }
+  else
+  {
+    this.addColumn(0)
+  }
+  
   //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {

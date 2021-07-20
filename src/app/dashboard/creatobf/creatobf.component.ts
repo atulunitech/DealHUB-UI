@@ -2072,6 +2072,7 @@ downloadCoversheet(event)
         let res = JSON.parse(data);
         console.log(res);
         if(res[0].Result == "success"){
+          sessionStorage.setItem("Action","Draft");
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
@@ -2650,6 +2651,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         console.log("data arrived after insert");
         let res = JSON.parse(data);
         console.log(res);
+        sessionStorage.setItem("Action","Submitted");
         if(res[0].Result == "success"){
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
