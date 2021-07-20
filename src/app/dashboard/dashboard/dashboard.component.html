@@ -197,7 +197,7 @@
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
-                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
                 </div>
                 </mat-cell>
               </div>
@@ -507,9 +507,13 @@
       <mat-dialog-content class="mat-typography">
         <div class="edit_box_popup">
           <div id="flowBoxes" >
+          
             <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="assets/images/tick_icon.png"></div>
             
     </div>
+<!-- <div *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> 
+  {{details.is_stage_completed}}
+  </div> -->
           <!-- <div>
           <span>
             <label *ngFor="let details of this.approvalstatusdetail.Approvaldetail">

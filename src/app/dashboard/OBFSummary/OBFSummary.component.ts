@@ -862,7 +862,7 @@ class filesdetail
       {
         this._mesgBox.showSucess(res[0].message);
        // sessionStorage.setItem
-        sessionStorage.setItem("Action","Approve");
+        sessionStorage.setItem("Action","Hold");
         this.router.navigate(['/DealHUB/dashboard']);
       }
       else{

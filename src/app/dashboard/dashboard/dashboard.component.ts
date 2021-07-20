@@ -123,6 +123,7 @@ class TimeLine
 class Approvaldetail
 {
   role_name:string;
+  is_stage_completed:number;
   tablename:string;
 }
  
@@ -1373,9 +1374,14 @@ downloaddetailFinalAgg(row)
   if(sessionStorage.getItem("Action") != null)
   {
     var action=sessionStorage.getItem("Action");
+    
     if(action =='Approve')
     {
       this.addColumn(1);
+    }
+    else if(action =='Hold')
+    {
+      this.addColumn(0);
     }
     else if(action =='Reject')
     {
