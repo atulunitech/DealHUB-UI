@@ -70,6 +70,7 @@ class filesdetail
       ExceptionCFO:new  FormControl("",[Validators.required]),
       ExceptionCEO:new FormControl("",[Validators.required]),
       version:new FormControl("",[Validators.required]),
+      
     });
    
  //   noComment:boolean=false;
@@ -77,7 +78,8 @@ class filesdetail
     BrifreadMore=false;
     paymentRead=false;
     PaymentreadMore=false;
-    comments = new FormControl('', Validators.required);
+   // comments = new FormControl('', Validators.required);
+    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters,Validators.email])
     step=0;
     service:string;
     privilege_name:string;
@@ -123,6 +125,7 @@ class filesdetail
   disableSupporting:boolean=false;
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
+    @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
         public _dashboardservice:DashboardService,
@@ -663,7 +666,9 @@ class filesdetail
   public checkError = (controlName: string, errorName: string) => {
     return this.obfsummaryform.controls[controlName].hasError(errorName);
   }
-
+  
+  
+  
   //Action Functions For Approve ,Rejected and OnHold function
   ApproveDeatils()
 
@@ -1537,7 +1542,7 @@ class filesdetail
   }
   commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&@$#*^%!()]/;
+    var format = /[<>'"&$#*^%!()]/;
 
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
      
@@ -1628,5 +1633,20 @@ class filesdetail
       
     }
     }
-  
+    openShareBox()
+    {
+      const dialogRef = this.dialog.open(this.shareDialog, {
+        // width: '500px',
+        // height:'600px',
+        // disableClose: true,
+        panelClass: 'custom-modalbox',
+        backdropClass: 'popupBackdropClass',
+       // data: { campaignId: this.params.id }
+    })
+    }
+    sendDetails()
+    {
+
+    }
+    
   }
