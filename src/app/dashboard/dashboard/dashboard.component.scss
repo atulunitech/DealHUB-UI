@@ -4,7 +4,9 @@
 .filter_cont {
     @include padding(15px,50px,15px,50px);
 }
-
+.pointer{
+    cursor: pointer;
+}
 .Edit {
     width: 45px;
     height: 28px;

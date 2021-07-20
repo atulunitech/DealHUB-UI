@@ -2804,7 +2804,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._total_revenue = <number>(<unknown>((this._obfservices.obfmodel._total_revenue + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._payment_terms = <number>(<unknown>((this._obfservices.obfmodel._payment_terms + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._vertical_id = <number>(<unknown>((this._obfservices.obfmodel._vertical_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._projecttype = <number>(<unknown>((this._obfservices.obfmodel._projecttype + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+    this._obfservices.obfmodel._projecttype = <number>(<unknown>((parseInt(this._obfservices.obfmodel._projecttype.toString()) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._total_cost = <number>(<unknown>((this._obfservices.obfmodel._total_cost + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
   }
 
