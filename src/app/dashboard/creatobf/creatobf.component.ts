@@ -1760,6 +1760,18 @@ downloadCoversheet(event)
           validcount +=1;
         }
       }
+      if(verticalid == 10)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          // this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for TSG,";
+          validcount +=1;
+        }
+      }
       if(verticalid == 6)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
