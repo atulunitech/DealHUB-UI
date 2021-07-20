@@ -403,6 +403,7 @@ export class CreatobfComponent implements OnInit {
       {
         this.supportchecked = false;
          this.checked_d = true;
+         this.disableSupporting=false;
          if(this.initiateppl)
          {
 
@@ -411,6 +412,7 @@ export class CreatobfComponent implements OnInit {
          this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
           this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
          }
+
       }
       if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null)
       {
@@ -437,15 +439,21 @@ export class CreatobfComponent implements OnInit {
         if(this._obfservices.loipoarray.length > 0)
         {
           this.loiopdisabled = false;
+          this.disableLOIPO=false;
           this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
         this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
         }
         else
         {
         this.loiopdisabled = true;
+        this.disableLOIPO=true;
         this._obfservices.ObfCreateForm.get('Loiposheet').clearValidators();
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
        }
+      }
+      else
+      {
+        this.disableLOIPO=false;
       }
       this.uploadnotdisabled = true;
       // if(this._obfservices.obfmodel._solution_category_id == 0 || this._obfservices.obfmodel._Sector_Id == 0 || this._obfservices.obfmodel._SubSector_Id == 0 || this._obfservices.obfmodel.Services.length == 0)
@@ -942,7 +950,7 @@ downloaddocument(event)
   if(this._obfservices.ObfCreateForm.get("Supportpath").value == null || this._obfservices.ObfCreateForm.get("Supportpath").value == "")
   {
     this._mesgBox.showError("No Supporting Documents to Download");
-    this.disableSupporting=true;
+    //this.disableSupporting=true;
   }
   if(this._obfservices.obfmodel.Attachments.length != 0)
   {
@@ -981,13 +989,13 @@ downloaddocument(event)
   }
   else{
     this._mesgBox.showError("No Supporting Documents to Download");
-    
+
   }
 
   
 }
-disableLOIPO:boolean=false;
-disableSupporting:boolean=false;
+disableLOIPO:boolean=true;
+disableSupporting:boolean=true;
 //disablefinalagg:boolean=false;
 
 downloadLOIp(event)
@@ -995,7 +1003,7 @@ downloadLOIp(event)
   event.preventDefault();
   if(this._obfservices.ObfCreateForm.get("Loiposheet").value == null || this._obfservices.ObfCreateForm.get("Loiposheet").value == "")
   {
-    this.disableLOIPO=true;
+   
     this._mesgBox.showError("No LOI/PO to Download");
   }
   else{
@@ -1264,7 +1272,7 @@ downloadCoversheet(event)
     
          console.log(this._obfservices.ObfCreateForm);
          this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
-  
+          
         }
         else if(types == "loipo")
         {
@@ -1285,6 +1293,7 @@ downloadCoversheet(event)
             this._obfservices.obfmodel.Attachments.splice(index,1);
            }
          }
+         this.disableLOIPO=false;
          this._obfservices.obfmodel.Attachments.push(this.SaveAttachmentParameter);
         }
         else if(types == "support")
@@ -1296,7 +1305,7 @@ downloadCoversheet(event)
          this.SaveAttachmentParameter._fpath = path;
          this.SaveAttachmentParameter._description = "support";
          this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
-       
+         this.disableSupporting=false;
          console.log(this._obfservices.ObfCreateForm);
          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._fname == this.SaveAttachmentParameter._fname && obj._description == "support");
          if(index > -1)
@@ -2086,6 +2095,7 @@ downloadCoversheet(event)
         let res = JSON.parse(data);
         console.log(res);
         if(res[0].Result == "success"){
+          sessionStorage.setItem("Action","Draft");
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
         // alert("Documents uploaded Successfully");
@@ -2664,6 +2674,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         console.log("data arrived after insert");
         let res = JSON.parse(data);
         console.log(res);
+        sessionStorage.setItem("Action","Submitted");
         if(res[0].Result == "success"){
         this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
         this._obfservices.obfmodel._dh_id = res[0].dh_id;
