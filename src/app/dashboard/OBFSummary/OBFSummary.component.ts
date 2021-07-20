@@ -1646,7 +1646,23 @@ class filesdetail
     }
     sendDetails()
     {
+     var UserCode= localStorage.getItem("UserCode");
+     var _ToEmailId=this.EmailAddress.value;
 
+      this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
+        console.log(data);
+        var result=JSON.parse(data);
+        if(result[0].status=="Success")
+        {
+          this._mesgBox.showSucess(result[0].message); 
+        }
+        else
+        {
+          this._mesgBox.showError(result[0].message); 
+        }
+        this.dialog.closeAll();
+      })
+      
     }
     
   }

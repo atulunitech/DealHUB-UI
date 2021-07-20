@@ -9,9 +9,9 @@
       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('Approved OBF Summary') : ('Approved PPL Summary')}}
      
     </div>
-   <!-- <div>
+   <div *ngIf="this.role_name=='PH'">
     <button mat-flat-button (click)="openShareBox()"> Share </button>
-   </div> -->
+   </div>
    
 </div>
 <div>
@@ -785,8 +785,7 @@
   <ng-template #shareDialog>
    <mat-dialog-content>
     <div>
-      
-
+      Share
       <mat-form-field appearance="fill" class="example-full-width">
        
         <input matInput  [formControl]="EmailAddress" placeholder="Enter E-mail ID to share" >
