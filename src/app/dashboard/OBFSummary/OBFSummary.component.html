@@ -25,8 +25,8 @@
                     <mat-panel-title fxLayout="row" fxLayoutAlign="space-between center">
                       {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('OBF Summary') : ('PPL Summary')}}
                       <div>
-                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator') || this._obfservices.obfsummarymodel.PPl_details != undefined"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
-                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="margin-left: 5px;" (click)="openShareBox()" *ngIf="this.role_name=='PH'"> Share </button>
+                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="margin-right: 5px;"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator') || this._obfservices.obfsummarymodel.PPl_details != undefined"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
+                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click"  (click)="openShareBox()" *ngIf="this.role_name=='PH'"> Share </button>
                         
                       </div>
                     </mat-panel-title>
