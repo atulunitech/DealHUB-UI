@@ -25,7 +25,7 @@ import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
-
+// import * as fileSaver from 'file-saver';
  class SaveAttachmentParameter{
   _dh_id:number;
   _dh_header_id:number;
@@ -382,7 +382,10 @@ class filesdetail
     else
     {
       var url=environment.apiUrl + this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath;
-      window.open(url);
+      // let blob:any = new Blob([url], { type: 'text/json; charset=utf-8' });
+      // const tempurl = window.URL.createObjectURL(blob);
+      //fileSaver.saveAs(url);
+       window.open(url);
     }
           
   }
@@ -402,7 +405,7 @@ class filesdetail
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
-            
+           // fileSaver.saveAs(url);
           }
         }
       }
@@ -439,6 +442,7 @@ class filesdetail
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
+          //  fileSaver.saveAs(url);
           }
         }
       }

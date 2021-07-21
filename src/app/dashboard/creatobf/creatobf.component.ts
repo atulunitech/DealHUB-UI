@@ -165,7 +165,7 @@ export interface Solutiongroup {
   styleUrls: ['./creatobf.component.scss']
 })
 export class CreatobfComponent implements OnInit {
-
+  sectorlistreupload:sectors[] = [];
   sectorlist:sectors[] = [];
   branchlist:verticallist[]=[];
   subsectorlist:subsectors[] = [];
@@ -646,6 +646,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        console.log("Vertical head Master");
        console.log(res.verticalhead);
        this.sectorlist = res.verticalsectorwise;
+       this.sectorlistreupload= res.verticalsectorwise;
        console.log("Vertical wise sector");
        console.log(res.verticalsectorwise);
        this.subsectorlist = res.subsector;
@@ -1414,7 +1415,7 @@ downloadCoversheet(event)
     {
       this.supportfiles = [];
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
-      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+     // this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
     }
   }
@@ -1443,7 +1444,7 @@ downloadCoversheet(event)
     {
       this.supportfiles = [];
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
-      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+      //this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
     }
     // console.log(attachment);
@@ -1587,6 +1588,7 @@ downloadCoversheet(event)
         console.log(ws);
       // console.log(ws.A1.h);
       try{
+        this.sectorlist = this.sectorlistreupload;
         if(this.isEditObf)
         {
           this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
