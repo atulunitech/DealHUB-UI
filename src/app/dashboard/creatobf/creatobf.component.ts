@@ -1760,6 +1760,18 @@ downloadCoversheet(event)
           validcount +=1;
         }
       }
+      if(verticalid == 10)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          // this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for TSG,";
+          validcount +=1;
+        }
+      }
       if(verticalid == 6)
       {
         if(this._obfservices.obfmodel._projecttype != 3)
@@ -2809,7 +2821,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     // this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
     this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
     this._obfservices.obfmodel._dh_header_id = <number>(<unknown>((this._obfservices.obfmodel._dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): (parseInt(this._obfservices.obfmodel._sap_customer_code) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._sap_customer_code =(this._obfservices.obfmodel._sap_customer_code == undefined || this._obfservices.obfmodel._sap_customer_code == "")?this.randomIntFromInterval(1000,2000): (parseInt(this._obfservices.obfmodel._sap_customer_code) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000);
     this._obfservices.obfmodel._total_margin = <number>(<unknown>((this._obfservices.obfmodel._total_margin + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._capex = <number>(<unknown>((this._obfservices.obfmodel._capex + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._total_revenue = <number>(<unknown>((this._obfservices.obfmodel._total_revenue + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
