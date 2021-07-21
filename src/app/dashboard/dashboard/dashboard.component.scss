@@ -615,6 +615,11 @@
     {
        @include heightwidth(12px,initial);
     }
+    &.disablefinalagg
+    {
+        background-color: #C6C6C6;
+        pointer-events: none;
+    }
 }
 
 ::ng-deep .mat-paginator-page-size{

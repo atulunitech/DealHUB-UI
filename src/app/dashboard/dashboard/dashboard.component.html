@@ -525,7 +525,7 @@
         <mat-accordion>
           <mat-expansion-panel  (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
             <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="60px">
-              <mat-panel-title>
+              <mat-panel-title [class.frs_set_active]="details.is_latest_version==1">
                 <div class="mat_previe_box">
                   <div class="prev_tit">
                   {{details.is_latest_version==1?'Current Version':'Version'}} 
