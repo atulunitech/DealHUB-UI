@@ -1608,24 +1608,19 @@ padding-bottom: 14px;
     background-color: white;
     font-weight: 500;
     flex: 1;
-    &:last-child
+    &.right
     {
-        background-color: #345d9d;
-        color: #fff;
-        img{
-            display: none;
-        }
-        &.right
+        background-color: white;
+        
+        &.view_1
         {
-            &::after
+            background-color: white;
+            img{
+                display: block;
+            }
+            &:last-of-type
             {
-                background-color: #345d9d;
-    border-top: 2px solid #345d9d;
-    border-right: 2px solid #345d9d;
-    top: 1px;
-    right: -2px;
-    height: 26px;
-    width: 25px;
+                background-color: blue;
             }
         }
     }
@@ -1635,6 +1630,7 @@ padding-bottom: 14px;
     z-index: 999;
     top: 10px;
     width: 14px;
+    display: none;
     }
         &.right
         {
