@@ -236,12 +236,13 @@
               <div *ngIf="column.columnDef == 'Current_Status'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
-                  <div *ngIf="row.is_on_hold==1"  [matTooltip]="getHoldcomment(row)">
-                    <!-- <div>
-                    {{row.phase_code}} on Hold 
-                    Comment: {{row.onholdcomment}}
-                    </div> -->
-                   <img src="assets/images/copay_icon.png" > 
+                  <div class="onhold_st" *ngIf="row.is_on_hold==1"  >
+                    <div class="on_hold_view">
+                   <h4>{{row.phase_code}} on Hold </h4> 
+                   <p>Date: </p> 
+                   <p>Comment: {{row.onholdcomment}}</p> 
+                    </div>
+                   <div class="on_hold_info">i</div> 
                   </div>
                 </mat-cell>
               </div>

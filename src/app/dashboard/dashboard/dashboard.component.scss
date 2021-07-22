@@ -403,7 +403,72 @@
             &.cdk-column-Current_Status
             {
                 min-width: 115px;
-                max-width: 115px
+                max-width: 115px;overflow: initial;
+                .onhold_st
+                {
+                    position: relative;
+                    cursor: pointer;
+                    &:hover 
+                    {
+                        .on_hold_view
+                        {
+                            display: block;
+                        }
+                        
+                    }
+                    .on_hold_view
+                    {
+                        background-color: #2258bf;
+                        position: absolute;
+                        padding: 8px;
+                        border-radius: 4px;
+                        width: 160px;
+                        display: none;
+                        color: #fff;
+                        line-height: initial;
+                        font-size: 0.79rem;
+                        left: 28px;
+                        top: -18px;
+                        font-weight: 400;
+                        cursor: initial;
+                        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                        &::before
+                        {
+                            content: "";
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-top: 7px solid transparent;
+                            border-right: 7px solid #2258bf;
+                            border-bottom: 7px solid transparent;
+                            left: -7px;
+                            top: 21px;
+                        }
+                        h4{
+                            color: #ffd800;
+                            margin: 0px;
+                            line-height: initial;
+                            font-size: inherit;
+                            font-weight: 500;
+                        }
+                        p{
+                            margin: 0px;
+                        }
+                    }
+                    .on_hold_info
+                    {
+                        width: 20px;
+                        height: auto;
+                        background-color: #ffbe00;
+                        align-items: center;
+                        display: flex;
+                        justify-content: center;
+                        color: #fff;
+                        border-radius: 20px;
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                    }
+                }
             }
             &.cdk-column-Total_Revenue
             {
