@@ -252,7 +252,8 @@
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
                   <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0">
-                    <img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png">
+                    <img (click)="downloaddetailFinalAgg(row)" [src]="row.IsFinalAggUpload==0 ? 'assets/images/download_dis_icon.png' : 
+                    'assets/images/download-iconnew.png'" >
                     <!-- <div>
                      {{row.IsFinalAggUpload==0 ? 'No final aggreement document to download':'Test'}}
                     </div> -->
