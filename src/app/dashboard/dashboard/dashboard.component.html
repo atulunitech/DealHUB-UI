@@ -85,7 +85,7 @@
         </mat-chip-list>
          <mat-autocomplete #auto="matAutocomplete" >
           
-            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect(data)" [matTooltip]="data.value +' '+data.displayName" >
+            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
               {{ data.value }} -- {{ data.displayName }}
           </mat-option>
           <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->

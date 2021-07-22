@@ -1300,11 +1300,13 @@ onchange(evt,solutioncategory)
     console.log(this._obfservices.obfmodel);
   }
 
-  onValueSelect = (data: any) => {
+  onValueSelect = (evt,data: any) => {
+    if(evt.isUserInput){
     console.log(data)
     this.filtersToSearch = [...this.filtersToSearch, data];
     this.searchControl.setValue(null);
    this.filterBasedOnSearch();
+    }
   }
 
   filterBasedOnSearch = () => {
