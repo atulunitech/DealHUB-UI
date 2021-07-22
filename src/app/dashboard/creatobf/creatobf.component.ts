@@ -646,7 +646,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        console.log("Vertical head Master");
        console.log(res.verticalhead);
        this.sectorlist = res.verticalsectorwise;
-       this.sectorlistreupload= res.verticalsectorwise;
+       this.sectorlistreupload = res.verticalsectorwise;
        console.log("Vertical wise sector");
        console.log(res.verticalsectorwise);
        this.subsectorlist = res.subsector;
