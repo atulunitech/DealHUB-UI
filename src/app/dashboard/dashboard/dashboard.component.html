@@ -197,7 +197,7 @@
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
-                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new" title="Download Final Aggreement"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
                 </div>
                 </mat-cell>
               </div>
