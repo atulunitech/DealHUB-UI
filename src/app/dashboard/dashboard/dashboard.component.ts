@@ -246,6 +246,7 @@ export class DashboardComponent implements OnInit {
   uploadDocfiles:File[]=[];
   uploaddocprocess:any[]=[];
   key:string = "";
+ // currentversion=false;
   // selected: {startDate: Moment, endDate: Moment};
   // alwaysShowCalendars: boolean;
   // locale: LocaleConfig = {
@@ -1245,7 +1246,9 @@ this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
    this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
    this.approvalstatusdetail.Approvaldetail=jsondata.latestprogress;
+
 });
+ 
 }
 
 otherssave(event,type:string){
@@ -2521,4 +2524,18 @@ getattachment(dh_id,dh_header_id)
     }, 700)
     }
     
+    getHoldcomment(row)
+    {
+          if(row.phase_code =='OBF')
+        {
+          var mes="OBF ON Hold Comment : " + row.onholdcomment;
+          return mes;
+        }
+        else
+        {
+          var mes="PPL ON Hold Comment : " + row.onholdcomment;
+          return mes;
+        
+        }
+    }
 }

@@ -503,7 +503,7 @@
                         Supporting Documents
                       </div>
                       <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                        <div (click)="downloadsuppodocument($event)" class="up_pdf_com" [class.disabledsd]="disableSupporting">
+                        <div (click)="downloadsuppodocument($event)" class="up_pdf_com" [class.disabledsd]="disableSupporting" [matTooltip]="disableSupportingmsg">
                            Download
                            <span>
                              <img src="assets/images/dwon-file-icon.png">
@@ -526,7 +526,7 @@
                       LOI/PO/Agreement
                     </div>
                     <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                      <div class="up_pdf_com" (click)="downloadLOIp($event)"  [class.disabledLOI]="disableLOIPO">
+                      <div class="up_pdf_com" (click)="downloadLOIp($event)"  [class.disabledLOI]="disableLOIPO" [matTooltip]="disableLOIPOmsg">
                          Download
                          <span>
                            <img src="assets/images/dwon-file-icon.png">
@@ -548,7 +548,7 @@
                     Final Agreement
                   </div>
                   <div xLayout="row" fxLayoutAlign="space-between center"  class="prev_tit">
-                    <div class="up_pdf_com" (click)="downloadFinal($event)"  [class.disabledFinal]="disablefinalagg">
+                    <div class="up_pdf_com" (click)="downloadFinal($event)"  [class.disabledFinal]="disablefinalagg" [matTooltip]="disablefinalaggmsg">
                        Download
                        <span>
                          <img src="assets/images/dwon-file-icon.png">
@@ -794,9 +794,9 @@
         <mat-error *ngIf="EmailAddress.errors?.invalidservices">
             Black-Listed characters `<>'"&` are not allowed
           </mat-error>
-          <mat-error *ngIf="EmailAddress.errors?.email">
+          <!-- <mat-error *ngIf="EmailAddress.errors?.email">
             Email ID is not valid
-          </mat-error>
+          </mat-error> -->
       </mat-form-field>
 
     </div>

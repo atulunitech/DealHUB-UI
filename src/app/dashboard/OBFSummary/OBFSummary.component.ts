@@ -78,8 +78,8 @@ class filesdetail
     BrifreadMore=false;
     paymentRead=false;
     PaymentreadMore=false;
-   // comments = new FormControl('', Validators.required);
-    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters,Validators.email])
+   // comments = new FormControl('', Validators.required);,Validators.email
+    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters])
     step=0;
     service:string;
     privilege_name:string;
@@ -123,6 +123,11 @@ class filesdetail
   disablesavebutton:boolean=true;
   disableLOIPO:boolean=false;
   disableSupporting:boolean=false;
+
+  disableSupportingmsg:string="";
+  disableLOIPOmsg:string="";
+  disablefinalaggmsg:string="";
+  
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
@@ -275,10 +280,12 @@ class filesdetail
           if(indexsupp >-1)
           {
             this.disableSupporting=false;
+           
           }
           else{
            
             this.disableSupporting=true;
+            this.disableSupportingmsg="No Supporting Documents to Download";
            
           }
           let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
@@ -288,7 +295,7 @@ class filesdetail
           }
           else{
             this.disableLOIPO=true;
-            
+            this.disableLOIPOmsg="No LOI/PO Documents to Download";
           }
           let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
           if(indexofFinal > -1)
@@ -296,6 +303,7 @@ class filesdetail
             }
           else{
             this.disablefinalagg=true;
+            this.disablefinalaggmsg="No Final Agreement Documents to Download";
             
           }
         }
@@ -1652,20 +1660,23 @@ class filesdetail
     {
      var UserCode= localStorage.getItem("UserCode");
      var _ToEmailId=this.EmailAddress.value;
-
-      this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
-        console.log(data);
-        var result=JSON.parse(data);
-        if(result[0].status=="Success")
-        {
-          this._mesgBox.showSucess(result[0].message); 
-        }
-        else
-        {
-          this._mesgBox.showError(result[0].message); 
-        }
-        this.dialog.closeAll();
-      })
+      if(_ToEmailId != null)
+      {
+        this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
+          console.log(data);
+          var result=JSON.parse(data);
+          if(result[0].status=="Success")
+          {
+            this._mesgBox.showSucess(result[0].message); 
+          }
+          else
+          {
+            this._mesgBox.showError(result[0].message); 
+          }
+          this.dialog.closeAll();
+        })
+      }
+      
       
     }
     
