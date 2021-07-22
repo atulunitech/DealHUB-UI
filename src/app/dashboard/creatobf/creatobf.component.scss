@@ -256,16 +256,16 @@
                            {
                                .info_view
                                {
-                                background-color: #2258bf;
+                                // background-color: #2258bf;
                                 color: white;
-                                padding: 2px;
-                                border-radius: 30px;
+                                // padding: 2px;
+                                // border-radius: 30px;
                                 font-size: 10px;
                                 text-transform: lowercase;
                                 margin-left: 3px;
                                 line-height: initial;
-                                width: 18px;
-                                height: 18px;
+                                // width: 18px;
+                                // height: 18px;
                                 display: inline-block;
                                 text-align: center;
                                 padding-left: 0px;
@@ -273,6 +273,7 @@
                                 font-weight: bold;
                                 cursor: pointer;
                                 position: relative;
+                                top: 4px;
                                 &:hover 
                                 {
                                     .hov_info

@@ -35,7 +35,7 @@
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
                           <div fxFlex="auto " class="mat_upload_in_wr">
                             <div class="mat_upload_tit" *ngIf="!isppl" >
-                              Attach OBF SHEET <div class="info_view">i
+                              Attach OBF SHEET <div class="info_view"><img src="../../../assets/images/infoicon.png" style="width: 18px;">
                                 <div class="hov_info">
                                   <div class="infopop_title">OBF Sheet file instructions</div>
                                   <ul class="infopop_discrip">
@@ -55,7 +55,7 @@
                               </div>
                             </div>
                             <div class="mat_upload_tit" *ngIf="isppl" >
-                              Attach PPL SHEET <div class="info_view">i
+                              Attach PPL SHEET <div class="info_view"><img src="../../../assets/images/infoicon.png" style="width: 18px;">
                                 <div class="hov_info" style="width: 770px;    top: -70px;" >
                                   <div class="infopop_title">PPL Sheet file instructions</div>
                                   <ul class="infopop_discrip">
@@ -433,7 +433,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
-                                <input matInput formControlName="otherservices" [disabled]="reinitiatefordisable" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="otherservices" [disabled]="reinitiatefordisable" id="abc" #otherservices  (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                                   Services:Other is <strong>required</strong>
                                 </mat-error>
