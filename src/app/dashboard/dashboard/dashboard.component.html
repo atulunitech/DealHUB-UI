@@ -40,18 +40,19 @@
     <mat-form-field appearance="fill" class="example-full-width">
       <mat-label>Search Filter</mat-label>
       <mat-select [formControl]="searchfiltercontrol" multiple disableOptionCentering>
-        <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option>
+        <!-- <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option> -->
+        <mat-option *ngFor="let filter of searchKeys" (onSelectionChange)="selectfilter($event)" [value]="filter">{{filter.displayName}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   </div>
       <div class="serch_box_ms">
         
-       <div class="search_con">
+       <!-- <div class="search_con">
         <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
          <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
          <mat-autocomplete #auto="matAutocomplete" >
-          <!-- <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)"> -->
+          
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" >
             <div>
               <mat-checkbox [checked]="false" (change)="toggleSelection($event,option)" (click)="$event.stopPropagation()">
@@ -62,7 +63,36 @@
           <button (click)="filterdatafinal()">filterrrrrrr</button>
         </mat-autocomplete>
         
+       </div> -->
+       <div class="search_con">
+        <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
+        <mat-chip-list #chipListSearch >
+          <mat-chip *ngFor="let search of filtersToSearch" style="background-color:#afcaff;" [selectable]="selectable"
+                   [removable]="removable" (removed)="removesearch(search)">
+                   {{search.value}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+         <!-- <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" > -->
+         <input type="text" 
+         matInput placeholder="Search"
+        [formControl]="searchControl" 
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipListSearch"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="addSearch($event)" 
+        >
+        </mat-chip-list>
+         <mat-autocomplete #auto="matAutocomplete" >
+          
+            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect(data)" [matTooltip]="data.value +' '+data.displayName" >
+              {{ data.value }} -- {{ data.displayName }}
+          </mat-option>
+          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
+        </mat-autocomplete>
+        
        </div>
+
        <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
       </button>
@@ -83,14 +113,17 @@
          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? ('Draft') : ('Pending for approval')}}
         </div>
         <div class="fil_had_no" (click)=" addColumn(0) " >
-          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
+          <!-- {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}} -->
+          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this.countparam.draftscount) : (this.countparam.draftscount)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" (click)=" OBfcilck(0) ">
-            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
+            <!-- OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}}  -->
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.draftsobfcount) : (this.countparam.draftsobfcount)}} 
           </div>
           <div class="lst_ppl" (click)=" PPLclick(0) ">
-            PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
+            <!-- PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}}  -->
+            PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.draftpplcount) : (this.countparam.draftpplcount)}} 
            </div>
         </div>
       </div>
@@ -101,16 +134,19 @@
         </div>
        
         <div class="fil_had_no"  (click)="addColumn(1)" >
-       {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}}
+       <!-- {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}} -->
+       {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedcount) :(this.countparam.submittedcount)}}
         </div>
       
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf"  (click)=" OBfcilck(1) ">
-            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}} 
+            <!-- OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}}  -->
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedobfcount) : (this.countparam.submittedobfcount)}}
           </div>
         
           <div class="lst_ppl" (click)=" PPLclick(1) ">
-             PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}} 
+             <!-- PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}}  -->
+             PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedpplcount) : (this.countparam.submittedpplcount)}} 
           </div>
          
         </div>
@@ -121,14 +157,17 @@
           Rejected
         </div>
         <div class="fil_had_no" (click)="addColumn(2)" >
-          {{this._dashboardcountModel[0]._rejected}}
+          <!-- {{this._dashboardcountModel[0]._rejected}} -->
+          {{this.countparam.rejectedcount}}
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" (click)=" OBfcilck(2) ">
-            OBF: {{this._dashboardcountModel[0]._rejected_obf}}
+            <!-- OBF: {{this._dashboardcountModel[0]._rejected_obf}} -->
+            OBF: {{this.countparam.rejectedobfcount}}
           </div>
           <div class="lst_ppl" (click)=" PPLclick(2) ">
-            PPL: {{this._dashboardcountModel[0]._rejected_ppl}}
+            <!-- PPL: {{this._dashboardcountModel[0]._rejected_ppl}} -->
+            PPL: {{this.countparam.rejectedpplcount}}
           </div>
         </div>
       </div>
@@ -138,7 +177,8 @@
           approved obf
         </div>
         <div class="fil_had_no">
-         {{this._dashboardcountModel[0]._totalapprovedobf}}
+         <!-- {{this._dashboardcountModel[0]._totalapprovedobf}} -->
+         {{this.countparam.approvedobfcount}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -155,7 +195,8 @@
           approved ppl
         </div>
         <div class="fil_had_no">
-          {{this._dashboardcountModel[0]._totalapprovedppl}}
+          <!-- {{this._dashboardcountModel[0]._totalapprovedppl}} -->
+          {{this.countparam.approvedpplcount}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">

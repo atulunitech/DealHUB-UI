@@ -197,6 +197,29 @@ export class DashboardComponent implements OnInit {
   searchfiltercontrol = new FormControl();
   statusfiltercontrol = new FormControl();
   searchfilterarr: searchfilter[] = [{viewValue:'Opportunity ID',value:'Opp_Id'},{viewValue:'Project Name',value:'Project_Name'},{viewValue:'Customer Name',value:'customer_name'},{viewValue:'Location',value:'dh_location'},{viewValue:'Vertical',value:'Vertical_name'},{viewValue:'SAP Customer Code',value:'sap_customer_code'},{viewValue:'Sector',value:'sector_name'},{viewValue:'Sub Sector',value:'subsector_name'},{viewValue:'Solution Category',value:'solutioncategory_name'}];
+  
+  // POC data start
+  testData: any[] = []
+  nonFilteredSearchData: any = []
+  filteredSearchData: any = []
+  filtersToSearch: any = []
+  searchInput = ''
+  public searchKeysonfilter = [];
+  public searchKeys = [
+    {key: 'Project_Name', displayName: 'Project Name'}, 
+    {key: 'Opp_Id', displayName: 'Oppurtunity Id'}, 
+    {key: 'customer_name', displayName: 'Customer Name'}, 
+    {key: 'Project_Type', displayName: 'Project Type'}, 
+    {key: 'Vertical_Name', displayName: 'Vertical Name'}, 
+    {key: 'dh_location', displayName: 'Location'},
+    {key: 'sap_customer_code', displayName: 'SAP Customer Code'},
+    {key: 'sector_name', displayName: 'Sector Name'},
+    {key: 'subsector_name', displayName: 'Sub Sector Name'},
+  {key: 'solutioncategory_name', displayName: 'Solution Category Name'}]
+  private customizedKeySet = ['key', 'value']
+  tableFilteredData: any[] = []
+
+  // POC data ends
 
    DraftColumn: string[] = ['Project_Name', 'Code', 'Opp_Id', 'Project_Type','Vertical_Name','Total_Cost','Total_Revenue','Gross_Margin','ActionDraft'];
    SubmittedScreenColumn: string[] = ['ApprovalStatus', 'Current_Status','Project_Name', 'Code', 'Opp_Id','Project_Type','Vertical_Name', 'Total_Cost','Total_Revenue','Gross_Margin','ActionSubmitted'];
@@ -305,89 +328,139 @@ export class DashboardComponent implements OnInit {
      console.log("get filtered object");
      console.log(this.bindfilterobject);
    }
+  // selectfilter(evt)
+  // {
+  //   //this.keys = [];
+  //   let finalrray:any[] = [];
+  //   if(evt.isUserInput)
+  //   {
+  //     if(evt.source.selected)
+  //     {
+  //       this.keys.push(evt.source.value);
+  //       this.keys[evt.source.value] = new Array;
+        
+  //       let res = this.returncolumnvalue(evt.source.value.toString());
+  //       this.keys[evt.source.value].push(res);
+  //        //console.log(res);
+  //       // console.log( keys[evt.source.value]);
+        
+  //        for(let i = 0;i< this.keys.length;i++)
+  //        {
+  //         let newarr =  this.keys[i];
+  //         console.log(this.keys[newarr]);
+  //         let newres = this.keys[newarr];
+  //         if(i == 0)
+  //         {
+  //         finalrray = newres[0].slice();
+  //         //break;
+  //        }
+  //        else
+  //        {
+  //          let viewres = newres[0].slice();
+  //         for(let j = 0;j < viewres.length;j++)
+  //         {
+  //           finalrray[j] = finalrray[j]+","+viewres[j];
+  //         }
+  //       }
+  //        //  console.log();
+  //       //  if(this.keys.length > 2 && i == (this.keys.length -1))
+  //       //  {
+  //       //   let newarr =  this.keys[0];
+  //       //   console.log(this.keys[newarr]);
+  //       //   let newres = this.keys[newarr];
+  //       //   finalrray = newres;
+  //       //  }
+  //        }
+  //        finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
+  //        console.log("The below Final Array");
+  //        console.log(this.keys);
+  //        this.autocompletearr = finalrray;
+  //        console.log(finalrray);
+  //     }
+  //     else
+  //     {
+  //       let index = this.keys.findIndex(res=> res == evt.source.value);
+  //       if (index >-1) {
+  //         this.keys.splice(index, 1);
+          
+  //       }
+  //       for(let i = 0;i< this.keys.length;i++)
+  //        {
+  //         let newarr =  this.keys[i];
+  //         console.log(this.keys[newarr]);
+  //         let newres = this.keys[newarr];
+  //         if(i == 0)
+  //         {
+  //         finalrray = newres[0];
+  //         //break;
+  //        }
+  //        else
+  //        {
+  //          let viewres = newres[0];
+  //         for(let j = 0;j < viewres.length;j++)
+  //         {
+  //           finalrray[j] = finalrray[j]+","+viewres[j];
+  //         }
+  //       }
+  //        //  console.log();
+  //        }
+  //        finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
+  //        console.log("The below Final Array");
+  //        this.autocompletearr = finalrray;
+  //        console.log(finalrray);
+  //     }
+  //   }
+    
+  // }
+
   selectfilter(evt)
   {
     //this.keys = [];
-    let finalrray:any[] = [];
+   // let finalrray:any[] = [];
     if(evt.isUserInput)
     {
       if(evt.source.selected)
       {
-        this.keys.push(evt.source.value);
-        this.keys[evt.source.value] = new Array;
-        
-        let res = this.returncolumnvalue(evt.source.value.toString());
-        this.keys[evt.source.value].push(res);
-         //console.log(res);
-        // console.log( keys[evt.source.value]);
-        
-         for(let i = 0;i< this.keys.length;i++)
-         {
-          let newarr =  this.keys[i];
-          console.log(this.keys[newarr]);
-          let newres = this.keys[newarr];
-          if(i == 0)
-          {
-          finalrray = newres[0].slice();
-          //break;
-         }
-         else
-         {
-           let viewres = newres[0].slice();
-          for(let j = 0;j < viewres.length;j++)
-          {
-            finalrray[j] = finalrray[j]+","+viewres[j];
-          }
-        }
-         //  console.log();
-        //  if(this.keys.length > 2 && i == (this.keys.length -1))
-        //  {
-        //   let newarr =  this.keys[0];
-        //   console.log(this.keys[newarr]);
-        //   let newres = this.keys[newarr];
-        //   finalrray = newres;
-        //  }
-         }
-         finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
-         console.log("The below Final Array");
-         console.log(this.keys);
-         this.autocompletearr = finalrray;
-         console.log(finalrray);
+        this.searchKeysonfilter.push(evt.source.value);
+        this.getautocompletedataforsearchimp();
       }
       else
       {
-        let index = this.keys.findIndex(res=> res == evt.source.value);
+        let index = this.searchKeysonfilter.findIndex(res=> res == evt.source.value);
         if (index >-1) {
-          this.keys.splice(index, 1);
-          
+          this.searchKeysonfilter.splice(index, 1);
         }
-        for(let i = 0;i< this.keys.length;i++)
-         {
-          let newarr =  this.keys[i];
-          console.log(this.keys[newarr]);
-          let newres = this.keys[newarr];
-          if(i == 0)
-          {
-          finalrray = newres[0];
-          //break;
-         }
-         else
-         {
-           let viewres = newres[0];
-          for(let j = 0;j < viewres.length;j++)
-          {
-            finalrray[j] = finalrray[j]+","+viewres[j];
-          }
+        this.getautocompletedataforsearchimp();
+        if(this.searchKeysonfilter.length == 0)
+        {
+          this.getnonfilteredsearchdataimp(this.dashboardData);
         }
-         //  console.log();
-         }
-         finalrray = finalrray.filter((item, i, ar) => ar.indexOf(item) === i);
-         console.log("The below Final Array");
-         this.autocompletearr = finalrray;
-         console.log(finalrray);
       }
     }
     
+  }
+
+  getautocompletedataforsearchimp()
+  {
+  let sampleData: any[] = []
+        for(let data of this.testData){
+          for(let searchKey of this.searchKeysonfilter){
+           //this.nonFilteredData.push({[searchKey]: data[searchKey]})
+           if(data[searchKey.key])
+           sampleData.push({key: searchKey.key, value: data[searchKey.key], displayName: searchKey.displayName})
+          }   
+        }
+      
+        this.nonFilteredSearchData = sampleData.filter(
+          (s => (o: any) => 
+            (k => !s.has(k) && s.add(k))
+            (this.customizedKeySet.map(k => o[k]).join('|')))
+            (new Set)
+        )
+        //this.nonFilteredSearchData.filter((data: any) => data.value !== null || data.value !== "");
+        this.nonFilteredSearchData.sort((a: any, b: any) => {
+          return a.key > b.key ? 1 : -1
+        });
   }
 
   applyFilter() {
@@ -529,55 +602,106 @@ export class DashboardComponent implements OnInit {
    // this.getcounts(finallistdataarray);
   }
 
-   getcountonfilter()
-   {
-    let showdatatotextbox:any[]=[];
-    let  checkdataarray:any[] = [];
-      this.multisearcharray.forEach(val=>{
-        let res = val.split(',');
-        this.cardsearcharray = res;
-        this.listData=new MatTableDataSource(this.dashboardData); 
-       // this.listData=new MatTableDataSource(this.filterdata); 
-        //this.searchControl.setValue("Hello wolrd");
-        for(let i=0;i< res.length;i++)
-        {
-          showdatatotextbox.push(res[i].trim());
-          this.listData.filter = res[i].trim().toLowerCase();
-          this.listData = new MatTableDataSource(this.listData.filteredData);
-         //this.cardsearcharray = this.listData.filteredData;
-         if(i == res.length - 1 && this.listData.filteredData.length > 0)
-         {
-         checkdataarray.push(this.listData.filteredData);
-        }
-        } 
-      });
-      // let texttoshow="";
-      // showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
-      // showdatatotextbox.forEach(x =>{
-      //  texttoshow += x +",";
-      // });
-      // texttoshow =texttoshow.substring(0,texttoshow.length - 1);
-      // this.searchControl.setValue(texttoshow);
-      // console.log("check data of both");
-      //console.log(this.checkdataarray);
-      let finallistdataarray:any[] = [];
-      if(checkdataarray.length > 0)
-      {
-        checkdataarray.forEach(newarr =>{
-              newarr.forEach(element => {
-                   let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
-                   if(index > -1)
-                   {}
-                   else
-                   {
-                     finallistdataarray.push(element);
-                   }
-              });
+  //  getcountonfilter()
+  //  {
+  //   let showdatatotextbox:any[]=[];
+  //   let  checkdataarray:any[] = [];
+  //     this.multisearcharray.forEach(val=>{
+  //       let res = val.split(',');
+  //       this.cardsearcharray = res;
+  //       this.listData=new MatTableDataSource(this.dashboardData); 
+  //      // this.listData=new MatTableDataSource(this.filterdata); 
+  //       //this.searchControl.setValue("Hello wolrd");
+  //       for(let i=0;i< res.length;i++)
+  //       {
+  //         showdatatotextbox.push(res[i].trim());
+  //         this.listData.filter = res[i].trim().toLowerCase();
+  //         this.listData = new MatTableDataSource(this.listData.filteredData);
+  //        //this.cardsearcharray = this.listData.filteredData;
+  //        if(i == res.length - 1 && this.listData.filteredData.length > 0)
+  //        {
+  //        checkdataarray.push(this.listData.filteredData);
+  //       }
+  //       } 
+  //     });
+  //     // let texttoshow="";
+  //     // showdatatotextbox = showdatatotextbox.filter((item, i, ar) => ar.indexOf(item) === i);
+  //     // showdatatotextbox.forEach(x =>{
+  //     //  texttoshow += x +",";
+  //     // });
+  //     // texttoshow =texttoshow.substring(0,texttoshow.length - 1);
+  //     // this.searchControl.setValue(texttoshow);
+  //     // console.log("check data of both");
+  //     //console.log(this.checkdataarray);
+  //     let finallistdataarray:any[] = [];
+  //     if(checkdataarray.length > 0)
+  //     {
+  //       checkdataarray.forEach(newarr =>{
+  //             newarr.forEach(element => {
+  //                  let index = finallistdataarray.findIndex(obj => obj.dh_id == element.dh_id);
+  //                  if(index > -1)
+  //                  {}
+  //                  else
+  //                  {
+  //                    finallistdataarray.push(element);
+  //                  }
+  //             });
   
-        });
+  //       });
+  //     }
+  //     console.log(finallistdataarray);
+  //     this.getcounts(finallistdataarray);
+  //  }
+
+  getcountonfilter()
+   {
+    this.tableFilteredData = []
+    const counts: any = {};
+    this.filtersToSearch.forEach((x: any) => {
+       counts[x.key] = (counts[x.key] || 0) + 1; 
+    });
+    //console.log(counts)
+    //Getting count of duplicates with keys o/p: {dh_location: 2, opp_id: 1}
+     let countdatafilter:any[] = [];
+if(this.dateselected)
+{
+  countdatafilter = this.dashboardData.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
+}
+else
+{
+  countdatafilter = this.dashboardData; 
+}
+    for(let data of countdatafilter){
+      
+      //Creating same structure as counts but with 0 as default count value for keys
+      let checkData: any = {}
+      for(let datacount in counts){
+        checkData = {...checkData, [datacount]: 0}
       }
-      console.log(finallistdataarray);
-      this.getcounts(finallistdataarray);
+    
+      for(let searchFilter of this.filtersToSearch){
+        if(data[searchFilter.key] === 'sap_customer_code' ? data[searchFilter.key].includes(searchFilter.value) : data[searchFilter.key] === searchFilter.value){
+          //Incrementing checkdata value of specific key by 1
+          checkData = {...checkData, [searchFilter.key]: checkData[searchFilter.key] + 1}
+        }
+      }
+
+      //checking if atleast min 1 criteria is met
+      let checkIfAllCriteriasMet = true
+      for(let item in checkData){
+        if(checkData[item] < 1){
+          checkIfAllCriteriasMet = false
+          break
+        }
+      }
+
+      if(checkIfAllCriteriasMet){
+        if(!this.tableFilteredData.some(item => item.dh_id === data.dh_id))
+          this.tableFilteredData.push(data);
+         
+      }
+    }
+    this.getcounts(this.tableFilteredData);
    }
 
   getdatafromsearchandfiltereddata()
@@ -619,9 +743,9 @@ export class DashboardComponent implements OnInit {
     this.GetDatabaseCount();
     this.getcreateobfmasters();
     this.getsolutionmaster();
-    this.filteredOptions = this.searchControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
+    this.filteredSearchData = this.searchControl.valueChanges.pipe(
+      startWith(""),
+      map(value => value?this._filter(value): this.nonFilteredSearchData.slice())
     );
     this.commonService.getresetclickedevent().subscribe(res =>{
       //alert(res);
@@ -688,10 +812,16 @@ export class DashboardComponent implements OnInit {
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    // return this.autocompletearr.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
-    return this.autocompletearr.filter(option => option.toLowerCase().includes(filterValue));
+    let filterValue ="";
+    if((value != null || value != "") && typeof value === "string")
+    {
+     filterValue = value.toLowerCase();
+    return this.nonFilteredSearchData.filter((data: any) => data.value.toLowerCase().includes(filterValue));
+   }
+   else
+   {
+    return this.nonFilteredSearchData;
+   }
   }
 
   onSearchClear(){
@@ -1062,6 +1192,25 @@ onchange(evt,solutioncategory)
       
     }
   }
+
+  removesearch(value: any): void {
+    const index = this.filtersToSearch.indexOf(value);
+    this.searchControl.setValue('');
+    if(this.dateselected)
+         {
+           this.datefilter();
+         }
+    if (index >= 0) {
+      this.filtersToSearch.splice(index, 1);
+      // this._obfservices.ObfCreateForm.get("Sapio").setValue(io);
+      // this._obfservices.ObfCreateForm.get("Sapionumber").setValue("");
+      this.filterBasedOnSearch();
+    }
+    if(this.filtersToSearch.length == 0){  
+    this.addColumn(this.selectedcolumn);
+    }
+  }
+
   initName(name: string): FormControl {
     return this.fb.control(name);
   }
@@ -1094,6 +1243,24 @@ onchange(evt,solutioncategory)
     console.log(form);
     form.get('names').removeAt(index);
   }
+   
+  addSearch(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    
+    // Add our fruit
+    if ((value || '').trim()) {
+    // this.filtersToSearch.push(value);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    console.log("checking in chip");
+    console.log(this._obfservices.obfmodel);
+  }
+
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
@@ -1131,6 +1298,67 @@ onchange(evt,solutioncategory)
     }
     console.log("checking in chip");
     console.log(this._obfservices.obfmodel);
+  }
+
+  onValueSelect = (data: any) => {
+    console.log(data)
+    this.filtersToSearch = [...this.filtersToSearch, data];
+    this.searchControl.setValue(null);
+   this.filterBasedOnSearch();
+  }
+
+  filterBasedOnSearch = () => {
+    this.getcountonfilter();
+    this.tableFilteredData = []
+    const counts: any = {};
+    this.filtersToSearch.forEach((x: any) => {
+       counts[x.key] = (counts[x.key] || 0) + 1; 
+    });
+    //console.log(counts)
+    //Getting count of duplicates with keys o/p: {dh_location: 2, opp_id: 1}
+
+    for(let data of this.filterdata){
+      
+      //Creating same structure as counts but with 0 as default count value for keys
+      let checkData: any = {}
+      for(let datacount in counts){
+        checkData = {...checkData, [datacount]: 0}
+      }
+    
+      for(let searchFilter of this.filtersToSearch){
+        if(data[searchFilter.key] === 'sap_customer_code' ? data[searchFilter.key].includes(searchFilter.value) : data[searchFilter.key] === searchFilter.value){
+          //Incrementing checkdata value of specific key by 1
+          checkData = {...checkData, [searchFilter.key]: checkData[searchFilter.key] + 1}
+        }
+      }
+
+      //checking if atleast min 1 criteria is met
+      let checkIfAllCriteriasMet = true
+      for(let item in checkData){
+        if(checkData[item] < 1){
+          checkIfAllCriteriasMet = false
+          break
+        }
+      }
+
+      if(checkIfAllCriteriasMet){
+        if(!this.tableFilteredData.some(item => item.dh_id === data.dh_id))
+          this.tableFilteredData.push(data);
+         
+      }
+      this.listData=new MatTableDataSource(this.tableFilteredData);
+      //if(filterCount == this.filtersToSearch.length)
+      //  this.tableFilteredData.push(data)
+    }
+    // this.filterdata = this.tableFilteredData;
+    /*this.tableFilteredData = this.tableFilteredData.filter(
+      (s => (o: any) => 
+        (k => !s.has(k) && s.add(k))
+        (this.filtersToSearch.map((k: any) => o[k.key]).join('|')))
+        (new Set)
+    )*/
+
+   // this.cd.detectChanges()
   }
 
   ResetModel() {
@@ -1334,6 +1562,7 @@ downloaddetailFinalAgg(row)
       console.log(Result);
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
+      this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
        this.BindGridDetails();
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
@@ -1353,6 +1582,30 @@ downloaddetailFinalAgg(row)
     // this.BindGridDetails();
   }
  
+  getnonfilteredsearchdataimp(response)
+  {
+    this.testData = response
+      let sampleData: any[] = []
+      for(let data of response){
+        for(let searchKey of this.searchKeys){
+         //this.nonFilteredData.push({[searchKey]: data[searchKey]})
+         if(data[searchKey.key])
+         sampleData.push({key: searchKey.key, value: data[searchKey.key], displayName: searchKey.displayName})
+        }   
+      }
+    
+      this.nonFilteredSearchData = sampleData.filter(
+        (s => (o: any) => 
+          (k => !s.has(k) && s.add(k))
+          (this.customizedKeySet.map(k => o[k]).join('|')))
+          (new Set)
+      )
+      //this.nonFilteredSearchData.filter((data: any) => data.value !== null || data.value !== "");
+      this.nonFilteredSearchData.sort((a: any, b: any) => {
+        return a.key > b.key ? 1 : -1
+      });
+  }
+
   BindGridDetails()// code given by kirti kumar shifted to new function
   {
     
@@ -1477,12 +1730,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
-          this.listData=new MatTableDataSource(this.filterdata);
+         this.listData=new MatTableDataSource(this.filterdata);
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
+          if(this.filtersToSearch.length > 0){
+            this.filterBasedOnSearch();
+          }
           
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
@@ -1503,12 +1759,16 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        if(this.cardsearcharray.length > 0)
-           {
-            //this.getdatafromsearchandfiltereddata();
-            this.filterdatafinal();
-           }
-          this.listData=new MatTableDataSource(this.filterdata);
+         this.listData=new MatTableDataSource(this.filterdata);
+        // if(this.cardsearcharray.length > 0)
+        //    {
+        //     //this.getdatafromsearchandfiltereddata();
+        //     this.filterdatafinal();
+        //    }
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
+         // this.listData=new MatTableDataSource(this.filterdata);
          
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
@@ -1528,12 +1788,16 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        if(this.cardsearcharray.length > 0)
-           {
-            //this.getdatafromsearchandfiltereddata();
-            this.filterdatafinal();
-           }
-        this.listData=new MatTableDataSource(this.filterdata);
+         this.listData=new MatTableDataSource(this.filterdata);
+        // if(this.cardsearcharray.length > 0)
+        //    {
+        //     //this.getdatafromsearchandfiltereddata();
+        //     this.filterdatafinal();
+        //    }
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
+        
       
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
@@ -1554,11 +1818,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-         if(this.cardsearcharray.length > 0)
-         {
-          this.getdatafromsearchandfiltereddata();
-         }
+        //  if(this.cardsearcharray.length > 0)
+        //  {
+        //   this.getdatafromsearchandfiltereddata();
+        //  }
         this.listData=new MatTableDataSource(this.filterdata);
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
+        
        
         this.displayedColumns=this.ApprovedOBf;
         this.on_Highlight(4);
@@ -1583,12 +1851,16 @@ downloaddetailFinalAgg(row)
            this.datefilter();
          }
         
-        if(this.cardsearcharray.length > 0)
-           {
-            //this.getdatafromsearchandfiltereddata();
-            this.filterdatafinal();
-           }
+        // if(this.cardsearcharray.length > 0)
+        //    {
+        //     //this.getdatafromsearchandfiltereddata();
+        //     this.filterdatafinal();
+        //    }
         this.listData=new MatTableDataSource(this.filterdata);
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
+        
       
         this.displayedColumns=this.ApprovedPPL;
         this.on_Highlight(5);
@@ -1610,13 +1882,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        if(this.cardsearcharray.length > 0)
-        {
-        // this.getdatafromsearchandfiltereddata();
-        this.filterdatafinal();
-        }
+        // if(this.cardsearcharray.length > 0)
+        // {
+        // // this.getdatafromsearchandfiltereddata();
+        // this.filterdatafinal();
+        // }
       this.listData=new MatTableDataSource(this.filterdata); 
-     
+      if(this.filtersToSearch.length > 0){
+        this.filterBasedOnSearch();
+      }
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
@@ -1636,13 +1910,16 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-         if(this.cardsearcharray.length > 0)
-           {
-            //this.getdatafromsearchandfiltereddata();
-            this.filterdatafinal();
-           }
+        //  if(this.cardsearcharray.length > 0)
+        //    {
+        //     //this.getdatafromsearchandfiltereddata();
+        //     this.filterdatafinal();
+        //    }
+        
          this.listData=new MatTableDataSource(this.filterdata);
-       
+         if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
@@ -1662,13 +1939,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        if(this.cardsearcharray.length > 0)
-        {
-         //this.getdatafromsearchandfiltereddata();
-         this.filterdatafinal();
-        }
+        // if(this.cardsearcharray.length > 0)
+        // {
+        //  //this.getdatafromsearchandfiltereddata();
+        //  this.filterdatafinal();
+        // }
         this.listData=new MatTableDataSource(this.filterdata);
-       
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
@@ -1687,13 +1966,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-         if(this.cardsearcharray.length > 0)
-         {
-         // this.getdatafromsearchandfiltereddata();
-         this.filterdatafinal();
-         }
+        //  if(this.cardsearcharray.length > 0)
+        //  {
+        //  // this.getdatafromsearchandfiltereddata();
+        //  this.filterdatafinal();
+        //  }
         this.listData=new MatTableDataSource(this.filterdata);
-     
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(4);
         
@@ -1713,13 +1994,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        if(this.cardsearcharray.length > 0)
-           {
-            //this.getdatafromsearchandfiltereddata();
-            this.filterdatafinal();
-           }
+        // if(this.cardsearcharray.length > 0)
+        //    {
+        //     //this.getdatafromsearchandfiltereddata();
+        //     this.filterdatafinal();
+        //    }
         this.listData=new MatTableDataSource(this.filterdata);
-       
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(5);
       }
@@ -1916,13 +2199,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
           this.listData=new MatTableDataSource(this.filterdata);
-
+          if(this.filtersToSearch.length > 0){
+            this.filterBasedOnSearch();
+          }
         this.displayedColumns=this.DraftColumn;
         this.on_Highlight(1);
       }
@@ -1941,13 +2226,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
           this.listData=new MatTableDataSource(this.filterdata);
-        
+          if(this.filtersToSearch.length > 0){
+            this.filterBasedOnSearch();
+          }
           this.displayedColumns=this.SubmittedScreenColumn;
           this.on_Highlight(2);
       }
@@ -1965,12 +2252,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
         this.listData=new MatTableDataSource(this.filterdata);
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.RejectedScreenColumn;
         this.on_Highlight(3);
       }
@@ -1991,12 +2281,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
-      this.listData=new MatTableDataSource(this.filterdata); 
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
+      this.listData=new MatTableDataSource(this.filterdata);
+      if(this.filtersToSearch.length > 0){
+        this.filterBasedOnSearch();
+      } 
       this.displayedColumns=this.PendingReviewercolumn;
       this.on_Highlight(1);
       }
@@ -2017,12 +2310,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
          this.listData=new MatTableDataSource(this.filterdata);
+         if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
          this.displayedColumns=this.ReviewerApproved;
          this.on_Highlight(2);
       }
@@ -2042,13 +2338,15 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
         this.listData=new MatTableDataSource(this.filterdata);
-
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.ReviewerApproved;
         this.on_Highlight(3);
       }
@@ -2080,13 +2378,15 @@ PPLclick(selection)
        {
          this.datefilter();
        }
-         if(this.cardsearcharray.length > 0)
-         {
-         // this.getdatafromsearchandfiltereddata();
-         this.filterdatafinal();
-         }
+        //  if(this.cardsearcharray.length > 0)
+        //  {
+        //  // this.getdatafromsearchandfiltereddata();
+        //  this.filterdatafinal();
+        //  }
         this.listData=new MatTableDataSource(this.filterdata);
-
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
       this.displayedColumns=this.DraftColumn;
       this.on_Highlight(1);
     }
@@ -2105,13 +2405,15 @@ PPLclick(selection)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
         this.listData=new MatTableDataSource(this.filterdata);
-      
+        if(this.filtersToSearch.length > 0){
+          this.filterBasedOnSearch();
+        }
         this.displayedColumns=this.SubmittedScreenColumn;
         this.on_Highlight(2);
     }
@@ -2129,12 +2431,15 @@ PPLclick(selection)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
       this.listData=new MatTableDataSource(this.filterdata);
+      if(this.filtersToSearch.length > 0){
+        this.filterBasedOnSearch();
+      }
       this.displayedColumns=this.RejectedScreenColumn;
       this.on_Highlight(3);
     }
@@ -2156,12 +2461,15 @@ PPLclick(selection)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
     this.listData=new MatTableDataSource(this.filterdata); 
+    if(this.filtersToSearch.length > 0){
+      this.filterBasedOnSearch();
+    }
     this.displayedColumns=this.PendingReviewercolumn;
     this.on_Highlight(1);
     }
@@ -2181,12 +2489,15 @@ PPLclick(selection)
          {
            this.datefilter();
          }
-           if(this.cardsearcharray.length > 0)
-           {
-           // this.getdatafromsearchandfiltereddata();
-           this.filterdatafinal();
-           }
+          //  if(this.cardsearcharray.length > 0)
+          //  {
+          //  // this.getdatafromsearchandfiltereddata();
+          //  this.filterdatafinal();
+          //  }
        this.listData=new MatTableDataSource(this.filterdata);
+       if(this.filtersToSearch.length > 0){
+        this.filterBasedOnSearch();
+      }
        this.displayedColumns=this.ReviewerApproved;
        this.on_Highlight(2);
     }
@@ -2206,13 +2517,15 @@ PPLclick(selection)
       {
         this.datefilter();
       }
-        if(this.cardsearcharray.length > 0)
-        {
-        // this.getdatafromsearchandfiltereddata();
-        this.filterdatafinal();
-        }
+        // if(this.cardsearcharray.length > 0)
+        // {
+        // // this.getdatafromsearchandfiltereddata();
+        // this.filterdatafinal();
+        // }
       this.listData=new MatTableDataSource(this.filterdata);
-
+      if(this.filtersToSearch.length > 0){
+        this.filterBasedOnSearch();
+      }
       this.displayedColumns=this.ReviewerApproved;
       this.on_Highlight(3);
     }
@@ -2494,6 +2807,31 @@ getattachment(dh_id,dh_header_id)
     //approved ppl
     this.countparam.approvedpplcount =  data.filter(obj => obj.shortcurrentstatus == 'approved' && obj.phase_code == 'PPL').length;
    
+   }
+   else
+   {
+    this.countparam = new count();
+    //pending
+    this.countparam.draftscount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'submitted').length;
+    this.countparam.draftsobfcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'submitted' && obj.phase_code == 'OBF').length;
+    this.countparam.draftpplcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'submitted' && obj.phase_code == 'PPL').length;
+
+    //approved
+    this.countparam.submittedcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'approved').length;
+    this.countparam.submittedobfcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'approved' && obj.phase_code == 'OBF').length;
+    this.countparam.submittedpplcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'approved' && obj.phase_code == 'PPL').length;
+
+    //rejected
+    this.countparam.rejectedcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'rejected').length;
+    this.countparam.rejectedobfcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'rejected' && obj.phase_code == 'OBF').length;
+    this.countparam.rejectedpplcount = data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'rejected' && obj.phase_code == 'PPL').length;
+
+    //approved obf
+    this.countparam.approvedobfcount =  data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'capproved' && obj.phase_code == 'OBF').length;
+    //approved ppl
+    this.countparam.approvedpplcount =  data.filter(obj => obj.shortcurrentstatus.toLowerCase() == 'capproved' && obj.phase_code == 'PPL').length;
+   
+
    }
   }
   filterdataforcomment:any[]=[];
