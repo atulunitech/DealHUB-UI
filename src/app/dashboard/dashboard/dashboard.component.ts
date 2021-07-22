@@ -740,7 +740,7 @@ else
 
     }
     this.CallDashBoardService();
-    this.GetDatabaseCount();
+    //this.GetDatabaseCount();
     this.getcreateobfmasters();
     this.getsolutionmaster();
     this.filteredSearchData = this.searchControl.valueChanges.pipe(
