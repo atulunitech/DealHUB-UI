@@ -299,19 +299,45 @@ export class DashboardComponent implements OnInit {
      
       }
   
-
+   statusfiltervalue:any = "";
+   statusfilterselected:boolean=false;
    statusfiltermethod(evt)
    {
     if(evt.isUserInput){
     // alert(evt.target.value);
+    this.statusfiltervalue = evt.source.value;
+    this.statusfilterselected = true;
     let datefilter:any = [];
-    
+    this.getcountonstatusfilter(evt.source.value);
   datefilter = this.filterdata.filter(o => o.currentstatus_search == evt.source.value);
   this.listData=new MatTableDataSource(datefilter);
   this.listData.sort = this.sort;
  this.listData.paginator = this.paginator;
+ this.addColumn(this.selectedcolumn);
     }
    }
+
+   statusfilterfromcardselect()
+   {
+     this.getcountonstatusfilter(this.statusfiltervalue);
+    this.filterdata = this.filterdata.filter(o => o.currentstatus_search == this.statusfiltervalue);
+   }
+
+   getcountonstatusfilter(val)
+   {
+    let alpha:any = [];
+    if(this.dateselected)
+    {
+      alpha = this.dashboardData.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
+    }
+    else
+    {
+      alpha =  this.dashboardData;
+    }
+    alpha = alpha.filter(o => o.currentstatus_search == val);
+    this.getcounts(alpha);
+   }
+   
    bindfilterobject:any[]=[];
    bindfilterobjectoninit()
    {
@@ -478,8 +504,9 @@ export class DashboardComponent implements OnInit {
   returnsortedvalue(val)
   {let arr = [];
     let res = this.dashboardData.filter(obj =>{ 
-      let phasecode = (this.privilege_name == "OBF Initiator" || this.privilege_name == "OBF Reviewer")?"OBF":"PPL";
-      if(obj.is_submitted == 1 && obj.phase_code == phasecode)
+      //let phasecode = (this.privilege_name == "OBF Initiator" || this.privilege_name == "OBF Reviewer")?"OBF":"PPL";
+      // if(obj.is_submitted == 1 && obj.phase_code == phasecode)
+      if(obj.is_submitted == 1)
       {
         return obj;
       }
@@ -666,6 +693,15 @@ export class DashboardComponent implements OnInit {
 if(this.dateselected)
 {
   countdatafilter = this.dashboardData.filter(o => new Date(o.Created_On) >= new Date(this.startdate) && new Date(o.Created_On) <= new Date(this.enddate));
+}
+else
+{
+  countdatafilter = this.dashboardData; 
+}
+
+if(this.statusfilterselected)
+{
+  countdatafilter = this.dashboardData.filter(o => o.currentstatus_search == this.statusfiltervalue);
 }
 else
 {
@@ -1303,6 +1339,13 @@ onchange(evt,solutioncategory)
   onValueSelect = (evt,data: any) => {
     if(evt.isUserInput){
     console.log(data)
+    let index  = this.filtersToSearch.findIndex(obj =>obj == data);
+    if(index > -1)
+    {
+      this._mesgBox.showError("This "+data.displayName +" already exists");
+      this.searchControl.setValue(null);
+        return;
+    }
     this.filtersToSearch = [...this.filtersToSearch, data];
     this.searchControl.setValue(null);
    this.filterBasedOnSearch();
@@ -1696,7 +1739,7 @@ downloaddetailFinalAgg(row)
   // }
   filterValue:string;
   addColumn(selection) {
-    this.statusfiltercontrol.setValue("");
+  //  this.statusfiltercontrol.setValue("");
     this.selectedcolumn = parseInt(selection);
     this.searchwords = "";
     // if(this.dateselected)
@@ -1732,6 +1775,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
          this.listData=new MatTableDataSource(this.filterdata);
           //  if(this.cardsearcharray.length > 0)
           //  {
@@ -1760,6 +1807,10 @@ downloaddetailFinalAgg(row)
         if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
          this.listData=new MatTableDataSource(this.filterdata);
         // if(this.cardsearcharray.length > 0)
@@ -1790,6 +1841,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
          this.listData=new MatTableDataSource(this.filterdata);
         // if(this.cardsearcharray.length > 0)
         //    {
@@ -1819,6 +1874,10 @@ downloaddetailFinalAgg(row)
          if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
         //  if(this.cardsearcharray.length > 0)
         //  {
@@ -1852,7 +1911,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
-        
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
         // if(this.cardsearcharray.length > 0)
         //    {
         //     //this.getdatafromsearchandfiltereddata();
@@ -1884,6 +1946,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
         // if(this.cardsearcharray.length > 0)
         // {
         // // this.getdatafromsearchandfiltereddata();
@@ -1911,6 +1977,10 @@ downloaddetailFinalAgg(row)
          if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
         //  if(this.cardsearcharray.length > 0)
         //    {
@@ -1941,6 +2011,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
         // if(this.cardsearcharray.length > 0)
         // {
         //  //this.getdatafromsearchandfiltereddata();
@@ -1967,6 +2041,10 @@ downloaddetailFinalAgg(row)
          if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
         //  if(this.cardsearcharray.length > 0)
         //  {
@@ -1995,6 +2073,10 @@ downloaddetailFinalAgg(row)
         if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
         // if(this.cardsearcharray.length > 0)
         //    {
@@ -2201,6 +2283,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2228,6 +2314,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2253,6 +2343,10 @@ downloaddetailFinalAgg(row)
         if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
           //  if(this.cardsearcharray.length > 0)
           //  {
@@ -2283,6 +2377,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2312,6 +2410,10 @@ downloaddetailFinalAgg(row)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2339,6 +2441,10 @@ downloaddetailFinalAgg(row)
         if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
           //  if(this.cardsearcharray.length > 0)
           //  {
@@ -2380,6 +2486,10 @@ PPLclick(selection)
        {
          this.datefilter();
        }
+       if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
         //  if(this.cardsearcharray.length > 0)
         //  {
         //  // this.getdatafromsearchandfiltereddata();
@@ -2407,6 +2517,10 @@ PPLclick(selection)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2432,6 +2546,10 @@ PPLclick(selection)
       if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
           //  if(this.cardsearcharray.length > 0)
           //  {
@@ -2463,6 +2581,10 @@ PPLclick(selection)
          {
            this.datefilter();
          }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
           //  if(this.cardsearcharray.length > 0)
           //  {
           //  // this.getdatafromsearchandfiltereddata();
@@ -2490,6 +2612,10 @@ PPLclick(selection)
        if(this.dateselected)
          {
            this.datefilter();
+         }
+         if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
          }
           //  if(this.cardsearcharray.length > 0)
           //  {
@@ -2519,6 +2645,10 @@ PPLclick(selection)
       {
         this.datefilter();
       }
+      if(this.statusfilterselected)
+         {
+           this.statusfilterfromcardselect();
+         }
         // if(this.cardsearcharray.length > 0)
         // {
         // // this.getdatafromsearchandfiltereddata();
