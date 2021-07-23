@@ -420,15 +420,15 @@
                     {
                         background-color: #2258bf;
                         position: absolute;
-                        padding: 8px;
+                        padding: 10px;
                         border-radius: 4px;
-                        width: 160px;
+                        width: 180px;
                         display: none;
                         color: #fff;
                         line-height: initial;
                         font-size: 0.79rem;
                         left: 28px;
-                        top: -18px;
+                        top: -25px;
                         font-weight: 400;
                         cursor: initial;
                         box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
@@ -442,7 +442,7 @@
                             border-right: 7px solid #2258bf;
                             border-bottom: 7px solid transparent;
                             left: -7px;
-                            top: 21px;
+                            top: 28px;
                         }
                         h4{
                             color: #ffd800;
@@ -453,6 +453,11 @@
                         }
                         p{
                             margin: 0px;
+                            margin-top: 2px;
+                            &:last-child
+                            {
+                                font-style: italic;
+                            }
                         }
                     }
                     .on_hold_info
@@ -1447,6 +1452,19 @@
                     // color:$thm-title-color;
                     // @include font-weight(bold);
                     // @include font-size(1);
+                    &.frs_set_active
+                    {
+                        .is_curr_ve{
+                            display: block;
+                        }
+                    }
+                    .is_curr_ve
+                    {
+                        display: none;
+                        position: absolute;
+                        left: 12px;
+                        top: 20px;
+                    }
                     .mat_previe_box
                 {
                     max-width: 300px;

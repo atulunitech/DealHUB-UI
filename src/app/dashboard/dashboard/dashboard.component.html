@@ -210,7 +210,8 @@
       
     </div>
       <div class="fl_table_con" >
-        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" >
+        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" style="    min-height: calc(100vh - 343px);
+        background-color: white;" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container  [matColumnDef]="theRemovedElement.columnDef">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
@@ -584,9 +585,10 @@
         </div> -->
         <div class="cust-accor-as">
         <mat-accordion>
-          <mat-expansion-panel [expanded]="details.is_latest_version == 1" (opened)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
-            <mat-expansion-panel-header   collapsedHeight="50px" expandedHeight="60px">
+          <mat-expansion-panel  [expanded]="details.is_latest_version==1"  (opened)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+            <mat-expansion-panel-header   collapsedHeight="60px" expandedHeight="60px">
               <mat-panel-title [class.frs_set_active]="details.is_latest_version==1">
+                <img class="is_curr_ve" src="../../../assets/images/acitve_as.png" >
                 <div class="mat_previe_box">
                   <div class="prev_tit">
                   {{details.is_latest_version==1?'Current Version':'Version'}} 
