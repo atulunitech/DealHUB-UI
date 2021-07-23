@@ -210,7 +210,8 @@
       
     </div>
       <div class="fl_table_con" >
-        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" >
+        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" style="    min-height: calc(100vh - 343px);
+        background-color: white;" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container  [matColumnDef]="theRemovedElement.columnDef">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
