@@ -1038,6 +1038,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description = this.Loipodropdown;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1056,6 +1057,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
     
@@ -1071,6 +1073,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description = this.filelist[i].description;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1095,6 +1098,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
    } 
@@ -1139,6 +1143,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description =  this.filelist[i].description;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1165,6 +1170,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
     if(this.Attachments.length !=0)
