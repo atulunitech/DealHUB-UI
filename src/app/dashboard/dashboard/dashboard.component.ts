@@ -1478,6 +1478,11 @@ this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header
    this.approvalstatusdetail.Approvaldetail=jsondata.latestprogress;
 
 });
+  var i=this.approvalstatusdetail.versiondetail.findIndex(x=>x.is_latest_version==1);
+  if(i>-1)
+  {
+   this.GetComment(this.approvalstatusdetail.versiondetail[i].dh_id,this.approvalstatusdetail.versiondetail[i].dh_header_id) 
+  }
  
 }
 

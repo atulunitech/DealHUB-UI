@@ -239,7 +239,7 @@
                   <div class="onhold_st" *ngIf="row.is_on_hold==1"  >
                     <div class="on_hold_view">
                    <h4>{{row.phase_code}} on Hold </h4> 
-                   <p>Date: </p> 
+                   <p>Date: {{row.onhold_datetime | date}} </p> 
                    <p>Comment: {{row.onholdcomment}}</p> 
                     </div>
                    <div class="on_hold_info">i</div> 
@@ -584,7 +584,7 @@
         </div> -->
         <div class="cust-accor-as">
         <mat-accordion>
-          <mat-expansion-panel  (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+          <mat-expansion-panel [expanded]="details.is_latest_version == 1" (opened)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
             <mat-expansion-panel-header   collapsedHeight="50px" expandedHeight="60px">
               <mat-panel-title [class.frs_set_active]="details.is_latest_version==1">
                 <div class="mat_previe_box">

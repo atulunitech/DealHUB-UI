@@ -25,7 +25,7 @@ import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
-// import * as fileSaver from 'file-saver';
+ import * as fileSaver from 'file-saver';
  class SaveAttachmentParameter{
   _dh_id:number;
   _dh_header_id:number;
@@ -285,7 +285,7 @@ class filesdetail
           else{
            
             this.disableSupporting=true;
-            this.disableSupportingmsg="No Supporting Documents to Download";
+           // this.disableSupportingmsg="No Supporting Documents to Download";
            
           }
           let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
@@ -295,7 +295,7 @@ class filesdetail
           }
           else{
             this.disableLOIPO=true;
-            this.disableLOIPOmsg="No LOI/PO Documents to Download";
+           // this.disableLOIPOmsg="No LOI/PO Documents to Download";
           }
           let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
           if(indexofFinal > -1)
@@ -303,7 +303,7 @@ class filesdetail
             }
           else{
             this.disablefinalagg=true;
-            this.disablefinalaggmsg="No Final Agreement Documents to Download";
+           // this.disablefinalaggmsg="No Final Agreement Documents to Download";
             
           }
         }
@@ -413,7 +413,9 @@ class filesdetail
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
-           // fileSaver.saveAs(url);
+            //  let blob:any = new Blob([url], {  type: 'application/octet-stream'  });
+            //  fileSaver.saveAs(blob,this._obfservices.obfsummarymodel.AttachmentDetails[i].filename);
+             
           }
         }
       }
