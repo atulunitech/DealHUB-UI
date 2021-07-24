@@ -324,13 +324,13 @@
                           <div class="prev_tit">
                             Assumption & Risk
                           </div>
-                          <div class="prev_dis"  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length > 20)">
+                          <div class="prev_dis"  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length > 60)">
                             
                             {{(readMore) ? (_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks) : (_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks) | slice:0:50 }}  
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
-                          <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length < 20)">
+                          <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length < 60)">
                             {{(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks)}}  
                            </div>
                        </div>
@@ -676,7 +676,7 @@
     <!-- <button mat-button mat-dialog-close>Cancel</button> -->
     <div fxFlex="auto " class="mat_upload_in_wr">
       
-      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG">
+      <ngx-dropzone class="mat_up_con" (change)="onSelect($event)" accept=".xlsx,.xls,.pdf,.jpeg,.png,.doc,.docx,.csv,.JPG,.msg">
         <ngx-dropzone-label class="matUp_lable">
           <div><img src="assets/images/Group Upload.png"></div>
           <div class="drap_titl">
