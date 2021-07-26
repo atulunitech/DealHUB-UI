@@ -1668,24 +1668,57 @@ class filesdetail
     {
      var UserCode= localStorage.getItem("UserCode");
      var _ToEmailId=this.EmailAddress.value;
+
       if(_ToEmailId != null)
       {
-        this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
-          console.log(data);
-          var result=JSON.parse(data);
-          if(result[0].status=="Success")
-          {
-            this._mesgBox.showSucess(result[0].message); 
-          }
-          else
-          {
-            this._mesgBox.showError(result[0].message); 
-          }
-          this.dialog.closeAll();
-        })
+        var result=this.validateEmail(_ToEmailId);
+        if(result)
+        {
+          this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
+            console.log(data);
+            var result=JSON.parse(data);
+            if(result[0].status=="Success")
+            {
+              this._mesgBox.showSucess(result[0].message); 
+            }
+            else
+            {
+              this._mesgBox.showError(result[0].message); 
+            }
+            this.dialog.closeAll();
+            this.EmailAddress.setValue("");
+          })
+        }
+        else
+        {
+         
+          this._mesgBox.showError("Invalid email Id!");
+          this.EmailAddress.setValue("");
+        }
+        
       }
       
       
     }
+    validateEmail(email) {
+      var test=email.split(',')
+      
+      const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(test.length >0)
+      {
+        for(let i=0;i<test.length;i++)
+        {
+          var result= re.test(test[i]);
+          if(!result)
+          {
+            return false;
+          }
+        }
+        
+      }
+      return true;
+     
+    }
+    
     
   }
