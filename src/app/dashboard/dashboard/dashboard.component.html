@@ -67,7 +67,7 @@
        <div class="search_con">
         <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
         <mat-chip-list #chipListSearch >
-          <mat-chip *ngFor="let search of filtersToSearch" style="background-color:#afcaff;" [selectable]="selectable"
+          <mat-chip  *ngFor="let search of filtersToSearch" style="background-color:#afcaff;display: none;" [selectable]="selectable"
                    [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
                    {{search.value}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -105,7 +105,68 @@
       <!-- <div class="creat_bt"><span><img src="assets/images/create_icon.png" alt=""></span>create OBF</div> -->
     </div>
   </div>
-  <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" >
+  <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" style="margin-top: -16px;" >
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in" style="padding-bottom: 5px;">
+      <div class="serch_box_ms" style="width: 100%;
+      padding-left: 0px;
+      margin-left: 0;">
+        
+        <!-- <div class="search_con">
+         <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+          <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
+          <mat-autocomplete #auto="matAutocomplete" >
+           
+             <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" >
+             <div>
+               <mat-checkbox [checked]="false" (change)="toggleSelection($event,option)" (click)="$event.stopPropagation()">
+             {{option}}
+           </mat-checkbox>
+           </div>
+           </mat-option>
+           <button (click)="filterdatafinal()">filterrrrrrr</button>
+         </mat-autocomplete>
+         
+        </div> -->
+        <div class="search_con" style="width: 100%;
+        background: none;
+        border: none;
+        padding-top: 6px;
+        padding-bottom: 0;">
+         <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
+         <mat-chip-list #chipListSearch >
+           <mat-chip *ngFor="let search of filtersToSearch" style="background-color:#afcaff;" [selectable]="selectable"
+                    [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
+                    {{search.value}}
+             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+           </mat-chip>
+          <!-- <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" > -->
+          <input style="display: none;" type="text" 
+          matInput placeholder="Search"
+         [formControl]="searchControl" 
+         [matAutocomplete]="auto"
+         [matChipInputFor]="chipListSearch"
+         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+         [matChipInputAddOnBlur]="addOnBlur"
+         (matChipInputTokenEnd)="addSearch($event)" 
+         >
+         </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" >
+           
+             <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
+               {{ data.value }} -- {{ data.displayName }}
+           </mat-option>
+           <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
+         </mat-autocomplete>
+         
+        </div>
+ 
+        <!-- <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
+         <mat-icon>close</mat-icon>
+       </button> -->
+        <!-- <div class="search_icon"><img src="assets/images/search_icon.png"></div> -->
+       
+      </div>
+    </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in">
       <div class="con_fil_box p_f_apr"   [ngClass]="{'active': highlight==='tab1'}">
         <div class="box_shead" (click)=" addColumn(0) "><img src="assets/images/p_f_a.png"></div>
