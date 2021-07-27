@@ -298,15 +298,22 @@
               <div *ngIf="column.columnDef == 'Current_Status'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
-                  <div class="onhold_st" *ngIf="row.is_on_hold==1"  >
+                  <button mat-button  *ngIf="row.is_on_hold==1" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" >i</button>
+                  <mat-menu #menu="matMenu" [hasBackdrop]="false">
+                    <h4>{{row.phase_code}} on Hold </h4> 
+                    <p>Date: {{row.onhold_datetime | date}} </p> 
+                    <p>Comment: {{row.onholdcomment}}</p> 
+                    <p>Hold By: {{row.onhold_commentedby}}</p> 
+                  </mat-menu>
+                  <!-- <div class="onhold_st" [matMenuTriggerFor]="menu"  #menuTrigger *ngIf="row.is_on_hold==1" (click)="openhold(holdbox,row)">
                     <div class="on_hold_view">
                    <h4>{{row.phase_code}} on Hold </h4> 
                    <p>Date: {{row.onhold_datetime | date}} </p> 
                    <p>Comment: {{row.onholdcomment}}</p> 
                    <p>Hold By: {{row.onhold_commentedby}}</p> 
-                    </div>
+                    </div> 
                    <div class="on_hold_info">i</div> 
-                  </div>
+                  </div> -->
                 </mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Code'">
@@ -899,4 +906,13 @@
       </mat-dialog-actions>
     </form>
     </ng-template>
+  </div>
+  <div>
+    <ng-template #holdbox>
+     
+      Date:  {{holddate}}
+      Comment:  {{holdcomment}}
+       Hold By: {{holdby}}
+     
+      </ng-template>
   </div>
