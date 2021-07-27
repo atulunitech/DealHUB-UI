@@ -1764,6 +1764,7 @@ downloaddetailFinalAgg(row)
     // alert(this.autocompletearr.length);
    // this.picker.clear();
   // alert(this.dateselected);
+ // this.paginator.pageIndex=1;
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
