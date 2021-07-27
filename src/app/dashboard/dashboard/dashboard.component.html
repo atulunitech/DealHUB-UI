@@ -67,7 +67,7 @@
        <div class="search_con">
         <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
         <mat-chip-list #chipListSearch >
-          <mat-chip  *ngFor="let search of filtersToSearch"  [selectable]="selectable"
+          <mat-chip  *ngFor="let search of filtersTodisplay"  [selectable]="selectable"
                    [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
                    {{search.value}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
