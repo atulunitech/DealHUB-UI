@@ -12,7 +12,8 @@ import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
 import { NotificationComponent } from './notification/notification.component';
 import { PerfectScrollbarModule, PerfectScrollbarConfigInterface,
   PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-
+  import { MatMenuModule } from '@angular/material/menu';
+  import {MatButtonModule} from '@angular/material/button';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true
 };
@@ -34,7 +35,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CommonModule,
     FlexLayoutModule,
     PerfectScrollbarModule,
-    SharedRoutingModule
+    SharedRoutingModule,MatMenuModule,MatButtonModule
   ],
   providers:[
     MessageBoxComponent,
