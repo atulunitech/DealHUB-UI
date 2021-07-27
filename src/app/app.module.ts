@@ -20,13 +20,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BnNgIdleService } from 'bn-ng-idle';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
-    BackendLayoutComponent,
-  
+    BackendLayoutComponent
+    
     
   ],
   imports: [
@@ -38,7 +39,7 @@ import { BnNgIdleService } from 'bn-ng-idle';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,MatMenuModule
   //  BrowserAnimationsModule,
     
     ],

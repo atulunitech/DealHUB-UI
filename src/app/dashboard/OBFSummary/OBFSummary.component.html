@@ -28,7 +28,7 @@
                       right: 37px;
                       height: 33px;
                       display: flex;">
-                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="margin-right: 5px;border-radius: 4px;"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="(this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this.privilege_name=='PPL Initiator') || this._obfservices.obfsummarymodel.PPl_details != undefined"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
+                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="margin-right: 5px;border-radius: 4px;"  [disabled]='this.ShowViewButton' (click)="getOBFPPLDetails()" *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this._obfservices.obfsummarymodel.PPl_details != undefined || this.shortcurrentstatus =='cApproved'|| this.shortcurrentstatus =='approved'"> {{((this._obfservices.obfsummarymodel.uploadDetails[0].phase_code) == 'OBF') ? ('View Related PPL') : (' View Related OBF')}}  </button>
                         <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="border-radius: 4px;"  (click)="openShareBox()" *ngIf="this.role_name=='PH' && this.shortcurrentstatus!='cApproved'"> Share <img src="../../../assets/images/share_icon.png" style="margin-left: 7px;"> </button>
                         
                       </div>

@@ -30,7 +30,7 @@ import { TypeScriptEmitter } from '@angular/compiler';
 import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
 import { loginservices } from 'src/app/auth/login/LoginServices';
 import { DatePipe } from '@angular/common';
-
+import {MatMenuTrigger} from '@angular/material/menu';
 //region Model
 export class DashBoardModel
 {
@@ -219,6 +219,7 @@ export class DashboardComponent implements OnInit {
   {key: 'solutioncategory_name', displayName: 'Solution Category Name'}]
   private customizedKeySet = ['key', 'value']
   tableFilteredData: any[] = []
+  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   // POC data ends
 
@@ -1479,8 +1480,21 @@ onchange(evt,solutioncategory)
         // this.animal = result;
     });
   }
-
-
+  holddate:string="";
+  holdcomment:string="";
+  holdby:string="";
+openhold(templateRef,row)
+{
+  this.holddate =row.onhold_datetime;
+  this.holdcomment=row.onholdcomment;
+ this.holdby= row.onhold_commentedby;
+let dialogRef = this.dialog.open(templateRef, {
+  //  width: '880px',
+   // data: { name: this.name, animal: this.animal }
+   panelClass: 'custom-modalbox',
+  backdropClass: 'popupBackdropClass',
+});
+}
 
 openModal(templateRef,row) {
   console.log(row);
@@ -1810,6 +1824,7 @@ downloaddetailFinalAgg(row)
     // alert(this.autocompletearr.length);
    // this.picker.clear();
   // alert(this.dateselected);
+ // this.paginator.pageIndex=1;
   if(this.privilege_name=="OBF Initiator" || this.privilege_name=="PPL Initiator")
     {
       if(selection==0)
@@ -2146,8 +2161,10 @@ downloaddetailFinalAgg(row)
       }
     }
    // this.getcounts(this.filterdata);
+   
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    this.paginator.firstPage()
   }
  
 
@@ -2717,6 +2734,7 @@ PPLclick(selection)
     }
    
   }
+
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
 }
