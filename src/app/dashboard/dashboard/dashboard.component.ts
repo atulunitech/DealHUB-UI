@@ -203,6 +203,7 @@ export class DashboardComponent implements OnInit {
   nonFilteredSearchData: any = []
   filteredSearchData: any = []
   filtersToSearch: any = []
+  filtersTodisplay: any = []
   searchInput = ''
   public searchKeysonfilter = [];
   public searchKeys = [
@@ -1239,9 +1240,23 @@ onchange(evt,solutioncategory)
          }
     if (index >= 0) {
       this.filtersToSearch.splice(index, 1);
+      this.filtersTodisplay.splice(index, 1);
       // this._obfservices.ObfCreateForm.get("Sapio").setValue(io);
       // this._obfservices.ObfCreateForm.get("Sapionumber").setValue("");
       this.filterBasedOnSearch();
+    }
+    if(this.filtersToSearch.length >= 2)
+    {
+      if(this.filtersTodisplay.length < 2)
+    {
+      if(index == 0)
+      {
+        this.filtersTodisplay.push(this.filtersToSearch[index + 1]);
+      }else
+      {
+      this.filtersTodisplay.push(this.filtersToSearch[index]);
+    }
+    }
     }
     if(this.filtersToSearch.length == 0){  
     this.addColumn(this.selectedcolumn);
@@ -1346,6 +1361,7 @@ onchange(evt,solutioncategory)
     this.statusfilterselected = false;
     this.searchKeysonfilter = [];
     this.filtersToSearch = [];
+    this.filtersTodisplay = [];
     this.searchKeys = [
       {key: 'Project_Name', displayName: 'Project Name'}, 
       {key: 'Opp_Id', displayName: 'Oppurtunity Id'}, 
@@ -1374,6 +1390,10 @@ onchange(evt,solutioncategory)
         return;
     }
     this.filtersToSearch = [...this.filtersToSearch, data];
+    if(this.filtersTodisplay.length < 2)
+    {
+      this.filtersTodisplay = [...this.filtersTodisplay, data];
+    }
     this.searchControl.setValue(null);
    this.filterBasedOnSearch();
     }
