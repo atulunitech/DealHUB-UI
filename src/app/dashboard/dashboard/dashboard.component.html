@@ -133,10 +133,10 @@
         padding-top: 6px;
         padding-bottom: 0;">
          <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
-         <mat-chip-list #chipListSearch >
-           <mat-chip *ngFor="let search of filtersToSearch" style="background-color:#afcaff;" [selectable]="selectable"
+         <mat-chip-list #chipListSearch style="float:left">
+           <mat-chip *ngFor="let search of filtersToSearch; let i=index" style="background-color:#afcaff;" [selectable]="selectable"
                     [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
-                    {{search.value}}
+                   <div *ngIf="i == 0 || i == 1"> {{search.value}} </div>
              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
            </mat-chip>
           <!-- <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" > -->
@@ -150,6 +150,7 @@
          (matChipInputTokenEnd)="addSearch($event)" 
          >
          </mat-chip-list>
+         <button mat-flat-button class="creat_bt bt_sp" style="float:left" (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear Filter</button>
           <mat-autocomplete #auto="matAutocomplete" >
            
              <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
@@ -445,12 +446,14 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
              
           </table>
+          <div *ngIf="listData.filteredData.length == 0">No data Found</div>
         </perfect-scrollbar>
         
         <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >
       </mat-paginator>
+     
       </div>
       
    </div>
