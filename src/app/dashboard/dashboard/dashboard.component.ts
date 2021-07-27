@@ -1337,6 +1337,32 @@ onchange(evt,solutioncategory)
     console.log(this._obfservices.obfmodel);
   }
 
+  ResetallFilter()
+  {
+    this.picker.clear();
+    this.statusfiltercontrol.setValue("");
+    this.searchfiltercontrol.patchValue([]);
+    this.dateselected = false;
+    this.statusfilterselected = false;
+    this.searchKeysonfilter = [];
+    this.filtersToSearch = [];
+    this.searchKeys = [
+      {key: 'Project_Name', displayName: 'Project Name'}, 
+      {key: 'Opp_Id', displayName: 'Oppurtunity Id'}, 
+      {key: 'customer_name', displayName: 'Customer Name'}, 
+      {key: 'Project_Type', displayName: 'Project Type'}, 
+      {key: 'Vertical_Name', displayName: 'Vertical Name'}, 
+      {key: 'dh_location', displayName: 'Location'},
+      {key: 'sap_customer_code', displayName: 'SAP Customer Code'},
+      {key: 'sector_name', displayName: 'Sector Name'},
+      {key: 'subsector_name', displayName: 'Sub Sector Name'},
+    {key: 'solutioncategory_name', displayName: 'Solution Category Name'}];
+    this.getnonfilteredsearchdataimp(this.dashboardData);
+    this.addColumn(this.selectedcolumn); 
+    this.getcounts(this.dashboardData);
+  }
+
+
   onValueSelect = (evt,data: any) => {
     if(evt.isUserInput){
     console.log(data)

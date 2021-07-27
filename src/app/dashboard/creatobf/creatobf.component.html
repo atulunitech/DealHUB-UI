@@ -109,7 +109,7 @@
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" *ngIf="Coversheetprogress.length == 0">
-                                  {{ f.name }}
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  
 
                                 </div> 
@@ -127,8 +127,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f.fileName }}
-                                
+                                  <!-- {{ f.fileName }} -->
+                                  {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
 
                                 </div> 
                                 
@@ -145,7 +145,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f._fname }}
+                                  <!-- {{ f._fname }} -->
+                                  {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
                                 
 
                                 </div> 
@@ -220,7 +221,8 @@
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
@@ -236,8 +238,8 @@
                                     <img src="assets/images/tick.png" style="margin-right: 15px;">
                                   </div>
                                   <div class="doc_cont" style="position: relative;" >
-                                    {{ f.fileName }}
-                                   
+                                    <!-- {{ f.fileName }} -->
+                                    {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
   
                                   </div>  
                                 </ngx-dropzone-label>
@@ -253,8 +255,8 @@
                                       <img src="assets/images/tick.png" style="margin-right: 15px;">
                                     </div>
                                     <div class="doc_cont" style="position: relative;" >
-                                      {{ f._fname }}
-                                    
+                                      <!-- {{ f._fname }} -->
+                                      {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
     
                                     </div> 
                                     
@@ -301,7 +303,8 @@
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
@@ -316,7 +319,8 @@
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
@@ -330,8 +334,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f.fileName }}
-                                 
+                                  <!-- {{ f.fileName }} -->
+                                  {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
 
                                 </div> 
                               </ngx-dropzone-label>
@@ -347,8 +351,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f._fname }}
-                                
+                                  <!-- {{ f._fname }} -->
+                                  {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
 
                                 </div> 
                                 

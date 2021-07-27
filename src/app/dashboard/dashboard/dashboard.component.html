@@ -67,7 +67,7 @@
        <div class="search_con">
         <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
         <mat-chip-list #chipListSearch >
-          <mat-chip  *ngFor="let search of filtersToSearch" style="background-color:#afcaff;display: none;" [selectable]="selectable"
+          <mat-chip  *ngFor="let search of filtersToSearch"  [selectable]="selectable"
                    [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
                    {{search.value}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -133,7 +133,7 @@
         padding-top: 6px;
         padding-bottom: 0;">
          <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
-         <mat-chip-list #chipListSearch >
+         <mat-chip-list #chipListSearch style="float:left">
            <mat-chip *ngFor="let search of filtersToSearch" style="background-color:#afcaff;" [selectable]="selectable"
                     [removable]="removable" [matTooltip]="search.displayName" (removed)="removesearch(search)">
                     {{search.value}}
@@ -150,6 +150,7 @@
          (matChipInputTokenEnd)="addSearch($event)" 
          >
          </mat-chip-list>
+         <button mat-flat-button class="creat_bt bt_sp" style="float:left" (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear Filter</button>
           <mat-autocomplete #auto="matAutocomplete" >
            
              <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
@@ -303,6 +304,7 @@
                    <h4>{{row.phase_code}} On Hold </h4> 
                    <p>Date: {{row.onhold_datetime | date}} </p> 
                    <p>Comment: {{row.onholdcomment}}</p> 
+                   <p>Hold By: {{row.onhold_commentedby}}</p> 
                     </div>
                    <div class="on_hold_info">i</div> 
                   </div>
@@ -444,12 +446,14 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
              
           </table>
+          <div *ngIf="listData.filteredData.length == 0">No data Found</div>
         </perfect-scrollbar>
         
         <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >
       </mat-paginator>
+     
       </div>
       
    </div>
