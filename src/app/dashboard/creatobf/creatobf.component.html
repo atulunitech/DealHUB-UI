@@ -102,7 +102,7 @@
                              </div>
                             <div *ngIf="Coversheetprogress.length == 0">
                               
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f,'coversheet')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f,'coversheet')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -119,7 +119,7 @@
                           </div>
                           <div *ngIf="Coversheetprogress.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()" [matTooltip]="f.fileName">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
@@ -137,7 +137,7 @@
                           </div>
                           <div *ngIf="editObfcoverbol && _obfservices.coversheetarray.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()" [matTooltip]="f._fname">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
@@ -214,7 +214,7 @@
                               Uploaded Loi/Po Agreement 
                              </div>
                              <div *ngIf="LoiPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -230,7 +230,7 @@
                             </ngx-dropzone-preview>
                             </div>
                             <div *ngIf="LoiPoprogress.length > 0">
-                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
+                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)" [matTooltip]="f.fileName">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
@@ -247,7 +247,7 @@
                               </div>
                               <div *ngIf="editObfLoiPobol && _obfservices.loipoarray.length > 0">
                             
-                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
+                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" [matTooltip]="f._fname">
                                   
                                   <ngx-dropzone-label class="drop_lab_cs">
                                     <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
@@ -296,7 +296,7 @@
                               Uploaded Supporting Documents 
                              </div>
                           <div *ngIf="SupportPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -312,7 +312,7 @@
                             </ngx-dropzone-preview>
                           </div>  
                           <div *ngIf="SupportPoprogress.length > 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
@@ -326,7 +326,7 @@
                                 </div> 
                               </ngx-dropzone-label>
                             </ngx-dropzone-preview>
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of finalsupportarray" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,finalsupportarray)" >
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of finalsupportarray" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,finalsupportarray)" [matTooltip]="f.fileName">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -343,7 +343,7 @@
                           </div>   
                           <div *ngIf="editObfSupportbol && _obfservices.supportarray.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)" [matTooltip]="f._fname">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
