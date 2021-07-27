@@ -300,7 +300,7 @@
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
                   <div class="onhold_st" *ngIf="row.is_on_hold==1"  >
                     <div class="on_hold_view">
-                   <h4>{{row.phase_code}} on Hold </h4> 
+                   <h4>{{row.phase_code}} On Hold </h4> 
                    <p>Date: {{row.onhold_datetime | date}} </p> 
                    <p>Comment: {{row.onholdcomment}}</p> 
                     </div>
