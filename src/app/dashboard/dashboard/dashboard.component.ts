@@ -448,6 +448,8 @@ export class DashboardComponent implements OnInit {
    // let finalrray:any[] = [];
     if(evt.isUserInput)
     {
+     // this.filteredSearchData = [];
+     this.searchControl.setValue("");
       if(evt.source.selected)
       {
         this.searchKeysonfilter.push(evt.source.value);
@@ -784,7 +786,8 @@ else
     this.getsolutionmaster();
     this.filteredSearchData = this.searchControl.valueChanges.pipe(
       startWith(""),
-      map(value => value?this._filter(value): this.nonFilteredSearchData.slice())
+      map(value => value.length >= 1?this._filter(value):[])
+      // map(value => value?this._filter(value): this.nonFilteredSearchData.slice())
     );
     this.commonService.getresetclickedevent().subscribe(res =>{
       //alert(res);
