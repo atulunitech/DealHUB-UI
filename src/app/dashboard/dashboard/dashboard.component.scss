@@ -1807,11 +1807,22 @@ padding-bottom: 14px;
 ::ng-deep .cdk-overlay-pane
 {
     margin-top: 5px;
+
 }
 ::ng-deep .mat-menu-panel{
     background: #2258bf;
+    min-height: auto !important;
     padding: 0 15px 0 15px;
     color: white;
+    &.nor_tool
+    {
+        background-color: #487de2;
+        p{
+            margin: 0px;
+            font-style: normal;
+            font-size: 0.75rem;
+        }
+    }
     h4{
         color: #ffd800;
         margin: 0px;
