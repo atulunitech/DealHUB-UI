@@ -437,6 +437,8 @@
                     padding-right: 10px;
                     padding-top: 10px;
                     padding-bottom: 10px;
+                   
+                   
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -1718,9 +1720,14 @@ padding-bottom: 14px;
     .mat-autocomplete-panel
     {
         right: 50px !important;
-    min-width: 275px !important;
+    min-width: 375px !important;
     left: auto !important;
-    margin-top: -10px;
+    margin-top: 0px;
+    .mat-option
+    {
+        height: 28px !important;
+        font-size: 0.90rem !important;
+    }
     }
 }
 // ::ng-deep #mat-select-0-panel, ::ng-deep #mat-select-7-panel
@@ -1802,4 +1809,40 @@ padding-bottom: 14px;
     
 }
 
+::ng-deep .cdk-overlay-pane
+{
+    margin-top: 5px;
 
+}
+::ng-deep .mat-menu-panel{
+    background: #487de2;
+    min-height: auto !important;
+    padding: 0 15px 0 15px;
+    color: white;
+    &.nor_tool
+    {
+        background-color: #487de2;
+        p{
+            margin: 0px;
+            font-style: normal;
+            font-size: 0.75rem;
+        }
+    }
+    h4{
+        color: #ffd800;
+        margin: 0px;
+        line-height: initial;
+        font-size: inherit;
+        font-weight: 500;
+    }
+    p{
+        margin: 0px;
+        margin-top: 2px;
+        &:last-child
+        {
+            font-style: italic;
+        }
+    }
+  }
+
+  

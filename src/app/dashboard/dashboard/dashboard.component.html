@@ -1,6 +1,10 @@
 <form [formGroup]="Dashboardvalid" >
+  <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" style="    margin-top: -48px;" >
+    <div class="com_title">dashboard</div>
+    
+ </div>
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
-     <div class="com_title">dashboard</div>
+     
      <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
       <!-- <input
       ngxDaterangepickerMd
@@ -100,10 +104,14 @@
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
       
      </div>
-     <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" 
-     routerLink="/DealHUB/dashboard/Obf" >
-     <img class="creat_bt_icon" src="assets/images/create_icon.png" alt="">create OBF</button>
+    
       <!-- <div class="creat_bt"><span><img src="assets/images/create_icon.png" alt=""></span>create OBF</div> -->
+    </div>
+    <div>
+      <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" style="padding:0 20px 0 20px"
+      routerLink="/DealHUB/dashboard/Obf" >
+      <!-- <img class="creat_bt_icon" src="assets/images/create_icon.png" alt=""> -->
+      create OBF</button>
     </div>
   </div>
   <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data"  >
@@ -168,7 +176,11 @@
          </button> -->
           <!-- <div class="search_icon"><img src="assets/images/search_icon.png"></div> -->
          
-          <button mat-flat-button class="creat_bt fil_bt"  (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear Filter</button>
+          <button mat-flat-button class="creat_bt fil_bt" style="position: absolute;
+          padding: 5px 18px 5px 18px;
+          line-height: initial;
+          top: 2px;
+          right: 14px;"  (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear All Filter</button>
           
         </div>
       
@@ -293,9 +305,12 @@
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
-                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" title="V{{row.version_name}}">
+                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" [matMenuTriggerFor]="menunew_s" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()">
     <span class="label"><span class="smaller">{{row.progresspercentage}}%</span></span>
   </div>
+  <mat-menu class="nor_tool" #menunew_s="matMenu" [hasBackdrop]="false">
+    <p>Current version:{{row.version_name}}</p> 
+    </mat-menu>
 </div>
             </mat-cell>
           </ng-container>
@@ -305,14 +320,16 @@
               <div *ngIf="column.columnDef == 'Current_Status'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
-                  <!-- <button mat-button  *ngIf="row.is_on_hold==1" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" >i</button>
-                  <mat-menu #menu="matMenu" [hasBackdrop]="false">
-                    <h4>{{row.phase_code}} on Hold </h4> 
+                  <div style="padding: 0;min-width: auto;background: transparent !important;cursor: pointer;"  *ngIf="row.is_on_hold==1" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" >
+                    <img src="assets/images/on_hold_icon.png">
+                  </div>
+                  <mat-menu class="on_hold_view" style="display: block;" #menu="matMenu" [hasBackdrop]="false">
+                    <h4>{{row.phase_code}} On Hold </h4> 
                     <p>Date: {{row.onhold_datetime | date}} </p> 
                     <p>Comment: {{row.onholdcomment}}</p> 
                     <p>Hold By: {{row.onhold_commentedby}}</p> 
-                  </mat-menu> -->
-                  <div class="onhold_st"  *ngIf="row.is_on_hold==1" >
+                  </mat-menu> 
+                  <!-- <div class="onhold_st"  *ngIf="row.is_on_hold==1" >
                     <div class="on_hold_view">
                    <h4>{{row.phase_code}} on Hold </h4> 
                    <p>Date: {{row.onhold_datetime | date}} </p> 
@@ -320,15 +337,28 @@
                    <p>Hold By: {{row.onhold_commentedby}}</p> 
                     </div> 
                    <div class="on_hold_info">i</div> 
-                  </div>
+                  </div> -->
                 </mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Code'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
+                  
+                  <mat-menu class="nor_tool" #menunew="matMenu" [hasBackdrop]="false">
+                  <p> Download Coversheet</p> 
+                  </mat-menu>
+                  <mat-menu class="nor_tool" #menunew1="matMenu" [hasBackdrop]="false">
+                    <p>{{row.IsFinalAggUpload==0 ?'No Final Agreement to Download':' Download Final Aggreement' }}  </p> 
+                    </mat-menu>
                   <div style="display: flex;">
-                  <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
-                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0">
+                  <div class="dwon_ic_con_new" [matMenuTriggerFor]="menunew" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new" style="position: relative;"  [class.disablefinalagg]="row.IsFinalAggUpload==0">
+                    <div style="position: absolute;
+                    width: 20px;
+                    height: 20PX;
+                    background-color: transparent;
+                    pointer-events: initial;
+                    cursor: initial;"  [matMenuTriggerFor]="menunew1" #menuTriggerNew="matMenuTrigger" (mouseover)="menuTriggerNew.openMenu()" (mouseleave)="menuTriggerNew.closeMenu()"></div>
                     <img (click)="downloaddetailFinalAgg(row)" [src]="row.IsFinalAggUpload==0 ? 'assets/images/download_dis_icon.png' : 
                     'assets/images/download-iconnew.png'" >
                     <!-- <div>
@@ -460,16 +490,28 @@
              
           </table>
           <!-- <div *ngIf="listData.filteredData.length == 0">No data Found</div> -->
-          <div style="display: flex;justify-content: center;flex-direction: inherit;position: relative;height: auto;width: 100%;top: 50%;transform: translate(-50%, 0%);left: 50%;" *ngIf="listData.filteredData.length == 0">
-            <img src="../../../assets/images/no-data.jpg" style="
-            width: 255px;
+          <div style="    display: flex;
+          justify-content: center;
+          flex-direction: inherit;
+          position: fixed;
+          height: auto;
+          width: 100%;
+          top: 50%;
+          transform: translate(-50%, 3%);
+          left: 50%;" *ngIf="listData.filteredData.length == 0">
+            <img src="assets/images/no-data1.jpg" style="
+            width: 243px;
         ">
           </div>
         </perfect-scrollbar>
         
-        <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
+        <!-- <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >
+      </mat-paginator> -->
+      <mat-paginator style-paginator showFirstLastButtons  [length]="100"
+              [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]">
       </mat-paginator>
      
       </div>
