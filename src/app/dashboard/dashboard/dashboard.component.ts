@@ -2156,8 +2156,6 @@ downloaddetailFinalAgg(row)
 
   GetDatabaseCount()
   {
-    
-
     this._dashboardmodel._user_code=localStorage.getItem("UserCode");
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
     
