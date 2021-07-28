@@ -207,6 +207,50 @@
         @include heightwidth(200px,inherit);
         @include padding(5px,40px,5px,20px);
         background-color: $thm-bg;
+        &.search_top_view
+        {
+            width: 100%;
+        background: none;
+        border: none;
+        padding-top: 6px;
+        padding-bottom: 0;
+        ::ng-deep.mat-chip-list-wrapper{display: contents;}
+            ::ng-deep.mat-chip.mat-standard-chip
+            {
+                background-color: #fff;
+    padding: 0px 5px 0 8px;
+    margin: 0 1px 0 0;
+    font-size: 0.75rem;
+    color: #2258BF;
+    min-height: 28px;
+    border: 1px solid #91B7FF;
+    .mat-chip-remove
+    {
+        color: rgb(34, 88, 191);
+    opacity: 0.8;
+    }
+            }
+        }
+        &.search_top
+        {
+            width: auto;
+            padding-left: 10px;
+            ::ng-deep.mat-chip.mat-standard-chip
+            {
+                background-color: #E5EEFF;
+    padding: 0px 5px 0 8px;
+    margin: 0 1px 0 0;
+    font-size: 0.75rem;
+    min-height: 28px;
+    color: #2258BF;
+    border: 1px solid #91B7FF;
+    .mat-chip-remove
+    {
+        color: rgb(34, 88, 191);
+    opacity: 0.8;
+    }
+            }
+        }
         input
         {
             border: none;
@@ -248,6 +292,14 @@
 {
     @include margin(initial,initial,initial,10px);
     
+}
+.fil_bt
+{
+    position: absolute;
+    padding: 3px 18px 3px 18px;
+    line-height: initial;
+    top: 4px;
+    right: 14px;
 }
 .edit_bt
 {
@@ -639,7 +691,7 @@
     overflow: hidden;
     @include padding(0,0px,0,0px);
     @include margin(initial,10px,initial,0px);
-    @include heightwidth(215px,42px);
+    @include heightwidth(200px,42px);
     // @include flexbox();
     @include font-weight(normal);
     @include font-size(0.80);
@@ -698,7 +750,7 @@
     }
     &.disablefinalagg
     {
-        background-color: #C6C6C6;
+        background-color: #eaeaea;
         pointer-events: none;
     }
 }
