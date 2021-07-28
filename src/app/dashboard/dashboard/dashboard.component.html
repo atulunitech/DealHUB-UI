@@ -336,7 +336,7 @@
                   <p> Download Coversheet</p> 
                   </mat-menu>
                   <mat-menu class="nor_tool" #menunew1="matMenu" [hasBackdrop]="false">
-                    <p>{{row.IsFinalAggUpload==0 ?'No Final Agreement Documents to Download':' Download Final Aggreement' }}  </p> 
+                    <p>{{row.IsFinalAggUpload==0 ?'No Final Agreement to Download':' Download Final Aggreement' }}  </p> 
                     </mat-menu>
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new" [matMenuTriggerFor]="menunew" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
