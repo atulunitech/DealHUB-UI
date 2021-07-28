@@ -2118,7 +2118,7 @@ downloaddetailFinalAgg(row)
    
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
-    this.paginator.firstPage()
+   // this.paginator.firstPage()
   }
  
 
