@@ -1480,21 +1480,7 @@ onchange(evt,solutioncategory)
         // this.animal = result;
     });
   }
-  holddate:string="";
-  holdcomment:string="";
-  holdby:string="";
-openhold(templateRef,row)
-{
-  this.holddate =row.onhold_datetime;
-  this.holdcomment=row.onholdcomment;
- this.holdby= row.onhold_commentedby;
-let dialogRef = this.dialog.open(templateRef, {
-  //  width: '880px',
-   // data: { name: this.name, animal: this.animal }
-   panelClass: 'custom-modalbox',
-  backdropClass: 'popupBackdropClass',
-});
-}
+ 
 
 openModal(templateRef,row) {
   console.log(row);
