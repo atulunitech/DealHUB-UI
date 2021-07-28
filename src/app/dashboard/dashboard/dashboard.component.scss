@@ -1720,9 +1720,14 @@ padding-bottom: 14px;
     .mat-autocomplete-panel
     {
         right: 50px !important;
-    min-width: 275px !important;
+    min-width: 375px !important;
     left: auto !important;
-    margin-top: -10px;
+    margin-top: 0px;
+    .mat-option
+    {
+        height: 28px !important;
+        font-size: 0.90rem !important;
+    }
     }
 }
 // ::ng-deep #mat-select-0-panel, ::ng-deep #mat-select-7-panel
@@ -1810,7 +1815,7 @@ padding-bottom: 14px;
 
 }
 ::ng-deep .mat-menu-panel{
-    background: #2258bf;
+    background: #487de2;
     min-height: auto !important;
     padding: 0 15px 0 15px;
     color: white;
@@ -1839,3 +1844,5 @@ padding-bottom: 14px;
         }
     }
   }
+
+  
