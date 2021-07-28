@@ -293,9 +293,12 @@
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
-                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" title="V{{row.version_name}}">
+                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" [matMenuTriggerFor]="menunew_s" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()">
     <span class="label"><span class="smaller">{{row.progresspercentage}}%</span></span>
   </div>
+  <mat-menu class="nor_tool" #menunew_s="matMenu" [hasBackdrop]="false">
+    <p> Version:{{row.version_name}}</p> 
+    </mat-menu>
 </div>
             </mat-cell>
           </ng-container>
@@ -309,7 +312,7 @@
                     <img src="assets/images/on_hold_icon.png">
                   </div>
                   <mat-menu class="on_hold_view" style="display: block;" #menu="matMenu" [hasBackdrop]="false">
-                    <h4>{{row.phase_code}} on Hold </h4> 
+                    <h4>{{row.phase_code}} On Hold </h4> 
                     <p>Date: {{row.onhold_datetime | date}} </p> 
                     <p>Comment: {{row.onholdcomment}}</p> 
                     <p>Hold By: {{row.onhold_commentedby}}</p> 
@@ -328,9 +331,22 @@
               <div *ngIf="column.columnDef == 'Code'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
+                  
+                  <mat-menu class="nor_tool" #menunew="matMenu" [hasBackdrop]="false">
+                  <p> Download Coversheet</p> 
+                  </mat-menu>
+                  <mat-menu class="nor_tool" #menunew1="matMenu" [hasBackdrop]="false">
+                    <p> Download Final Aggreement</p> 
+                    </mat-menu>
                   <div style="display: flex;">
-                  <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
-                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0">
+                  <div class="dwon_ic_con_new" [matMenuTriggerFor]="menunew" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new" style="position: relative;"  [class.disablefinalagg]="row.IsFinalAggUpload==0">
+                    <div style="position: absolute;
+                    width: 20px;
+                    height: 20PX;
+                    background-color: transparent;
+                    pointer-events: initial;
+                    cursor: initial;"  [matMenuTriggerFor]="menunew1" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()"></div>
                     <img (click)="downloaddetailFinalAgg(row)" [src]="row.IsFinalAggUpload==0 ? 'assets/images/download_dis_icon.png' : 
                     'assets/images/download-iconnew.png'" >
                     <!-- <div>
