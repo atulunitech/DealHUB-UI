@@ -336,7 +336,7 @@
                   <p> Download Coversheet</p> 
                   </mat-menu>
                   <mat-menu class="nor_tool" #menunew1="matMenu" [hasBackdrop]="false">
-                    <p> Download Final Aggreement</p> 
+                    <p>{{row.IsFinalAggUpload==0 ?'No Final Agreement Documents to Download':' Download Final Aggreement' }}  </p> 
                     </mat-menu>
                   <div style="display: flex;">
                   <div class="dwon_ic_con_new" [matMenuTriggerFor]="menunew" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
@@ -346,7 +346,7 @@
                     height: 20PX;
                     background-color: transparent;
                     pointer-events: initial;
-                    cursor: initial;"  [matMenuTriggerFor]="menunew1" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()"></div>
+                    cursor: initial;"  [matMenuTriggerFor]="menunew1" #menuTriggerNew="matMenuTrigger" (mouseover)="menuTriggerNew.openMenu()" (mouseleave)="menuTriggerNew.closeMenu()"></div>
                     <img (click)="downloaddetailFinalAgg(row)" [src]="row.IsFinalAggUpload==0 ? 'assets/images/download_dis_icon.png' : 
                     'assets/images/download-iconnew.png'" >
                     <!-- <div>
