@@ -437,6 +437,8 @@
                     padding-right: 10px;
                     padding-top: 10px;
                     padding-bottom: 10px;
+                   
+                   
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -1802,4 +1804,27 @@ padding-bottom: 14px;
     
 }
 
-
+::ng-deep .cdk-overlay-pane
+{
+    margin-top: 5px;
+}
+::ng-deep .mat-menu-panel{
+    background: #2258bf;
+    padding: 0 15px 0 15px;
+    color: white;
+    h4{
+        color: #ffd800;
+        margin: 0px;
+        line-height: initial;
+        font-size: inherit;
+        font-weight: 500;
+    }
+    p{
+        margin: 0px;
+        margin-top: 2px;
+        &:last-child
+        {
+            font-style: italic;
+        }
+    }
+  }
