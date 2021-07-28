@@ -1744,9 +1744,13 @@ downloaddetailFinalAgg(row)
   {
     var action=sessionStorage.getItem("Action");
     
-    if(action =='Approve')
+    if(action =='Approve' && localStorage.getItem('role_name') !='CEO')
     {
       this.addColumn(1);
+    }
+    else if(action =='Approve' && localStorage.getItem('role_name') =='CEO')
+    {
+      this.addColumn(0);
     }
     else if(action =='Hold')
     {

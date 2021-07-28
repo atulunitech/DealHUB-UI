@@ -463,15 +463,19 @@
           </table>
           <!-- <div *ngIf="listData.filteredData.length == 0">No data Found</div> -->
           <div style="display: flex;justify-content: center;flex-direction: inherit;position: relative;height: auto;width: 100%;top: 50%;transform: translate(-50%, 0%);left: 50%;" *ngIf="listData.filteredData.length == 0">
-            <img src="../../../assets/images/no-data.jpg" style="
+            <img src="assets/images/no-data.jpg" style="
             width: 255px;
         ">
           </div>
         </perfect-scrollbar>
         
-        <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
+        <!-- <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >
+      </mat-paginator> -->
+      <mat-paginator style-paginator showFirstLastButtons  [length]="100"
+              [pageSize]="5"
+              [pageSizeOptions]="[5, 10, 25, 100]">
       </mat-paginator>
      
       </div>
