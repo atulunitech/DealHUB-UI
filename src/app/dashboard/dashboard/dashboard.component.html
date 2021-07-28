@@ -1,6 +1,10 @@
 <form [formGroup]="Dashboardvalid" >
+  <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" style="    margin-top: -48px;" >
+    <div class="com_title">dashboard</div>
+    
+ </div>
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
-     <div class="com_title">dashboard</div>
+     
      <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
       <!-- <input
       ngxDaterangepickerMd
@@ -100,10 +104,14 @@
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
       
      </div>
-     <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" 
-     routerLink="/DealHUB/dashboard/Obf" >
-     <img class="creat_bt_icon" src="assets/images/create_icon.png" alt="">create OBF</button>
+    
       <!-- <div class="creat_bt"><span><img src="assets/images/create_icon.png" alt=""></span>create OBF</div> -->
+    </div>
+    <div>
+      <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" style="padding:0 20px 0 20px"
+      routerLink="/DealHUB/dashboard/Obf" >
+      <!-- <img class="creat_bt_icon" src="assets/images/create_icon.png" alt=""> -->
+      create OBF</button>
     </div>
   </div>
   <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data"  >
@@ -168,7 +176,11 @@
          </button> -->
           <!-- <div class="search_icon"><img src="assets/images/search_icon.png"></div> -->
          
-          <button mat-flat-button class="creat_bt fil_bt"  (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear Filter</button>
+          <button mat-flat-button class="creat_bt fil_bt" style="position: absolute;
+          padding: 5px 18px 5px 18px;
+          line-height: initial;
+          top: 2px;
+          right: 14px;"  (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear All Filter</button>
           
         </div>
       
@@ -478,9 +490,17 @@
              
           </table>
           <!-- <div *ngIf="listData.filteredData.length == 0">No data Found</div> -->
-          <div style="display: flex;justify-content: center;flex-direction: inherit;position: relative;height: auto;width: 100%;top: 50%;transform: translate(-50%, 0%);left: 50%;" *ngIf="listData.filteredData.length == 0">
-            <img src="assets/images/no-data.jpg" style="
-            width: 255px;
+          <div style="    display: flex;
+          justify-content: center;
+          flex-direction: inherit;
+          position: fixed;
+          height: auto;
+          width: 100%;
+          top: 50%;
+          transform: translate(-50%, 3%);
+          left: 50%;" *ngIf="listData.filteredData.length == 0">
+            <img src="assets/images/no-data1.jpg" style="
+            width: 243px;
         ">
           </div>
         </perfect-scrollbar>
