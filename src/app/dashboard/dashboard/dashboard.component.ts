@@ -786,7 +786,7 @@ else
     this.getsolutionmaster();
     this.filteredSearchData = this.searchControl.valueChanges.pipe(
       startWith(""),
-      map(value => value.length >= 1?this._filter(value):[])
+      map(value => value != null && value.length >= 1?this._filter(value):[])
       // map(value => value?this._filter(value): this.nonFilteredSearchData.slice())
     );
     this.commonService.getresetclickedevent().subscribe(res =>{
