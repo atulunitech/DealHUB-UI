@@ -1750,7 +1750,7 @@ downloaddetailFinalAgg(row)
     }
     else if(action =='Approve' && localStorage.getItem('role_name') =='CEO')
     {
-      this.addColumn(0);
+      this.addColumn(3);
     }
     else if(action =='Hold')
     {
