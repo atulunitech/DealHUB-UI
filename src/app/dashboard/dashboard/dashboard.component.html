@@ -306,7 +306,7 @@
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
                   <button mat-button  *ngIf="row.is_on_hold==1" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" >i</button>
-                  <mat-menu #menu="matMenu">
+                  <mat-menu #menu="matMenu" [hasBackdrop]="false">
                     <h4>{{row.phase_code}} on Hold </h4> 
                     <p>Date: {{row.onhold_datetime | date}} </p> 
                     <p>Comment: {{row.onholdcomment}}</p> 
