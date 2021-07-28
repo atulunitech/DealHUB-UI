@@ -2290,6 +2290,7 @@ downloadCoversheet(event)
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
       this.loipofiles = [];
       this.LoiPoprogress = [];
+      this.disableLOIPO=true;
       if(this.isEditObf)
       {
         this.onRemoveLoiAttachments();
@@ -2307,6 +2308,7 @@ downloadCoversheet(event)
      
     }
     else{
+      this.disableLOIPO=false;
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       this.loiopdisabled = false;
