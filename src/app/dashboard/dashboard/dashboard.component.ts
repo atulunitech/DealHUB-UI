@@ -1671,7 +1671,14 @@ downloaddetailFinalAgg(row)
       this.dashboardData=JSON.parse(Result);
       this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
+      if(this.dashboardData.length > 0)
+      {
        this.BindGridDetails();
+      }
+      else
+      {
+        this.listData = new MatTableDataSource(this.dashboardData);
+      }
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
        this.bindfilterobjectoninit();
     },

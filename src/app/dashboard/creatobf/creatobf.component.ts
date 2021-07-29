@@ -1759,6 +1759,8 @@ downloadCoversheet(event)
       validmsg +="Vertical field is not correct, please check ,";
       validcount +=1;
      }
+     else
+     {
       let verticalid = parseInt(result[0].value.toString());
       if(verticalid == 8)
       {
@@ -1822,6 +1824,7 @@ downloadCoversheet(event)
     //let verticalheadid = res[0].vertical_head_id;
      this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
     }
+  }
       // let value: any = ws.H3.v;
       // const parsedDate: Date = new Date(value);
       //  //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
