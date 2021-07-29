@@ -33,9 +33,25 @@
           
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
-                          <div fxFlex="auto " class="mat_upload_in_wr">
+                          <div fxFlex="auto " class="mat_upload_in_wr" style="position: relative;">
+                            <div _ngcontent-usm-c220="" style="
+    position: absolute;
+    right: 0;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: #2258bf;
+    z-index: 99;
+    top: 4px;
+"><img _ngcontent-usm-c220="" src="../../../assets/images/download-Icon.png" style="
+    width: 12px;
+    margin-right: 4px;
+    margin-top: -1px;
+"> Download Template </div>
                             <div class="mat_upload_tit" *ngIf="!isppl" >
-                              Attach OBF SHEET <div class="info_view"><img src="assets/images/infoicon.png" style="width: 18px;">
+                              Attach OBF SHEET 
+                              <div class="info_view"><img src="assets/images/infoicon.png" style="width: 18px;">
                                 <div class="hov_info">
                                   <div class="infopop_title">OBF Sheet file instructions</div>
                                   <ul class="infopop_discrip">
@@ -103,6 +119,7 @@
                             <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="!isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded Attach Obf Sheet 
                              </div>
+                             
                              <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded PPL Sheet 
                              </div>
