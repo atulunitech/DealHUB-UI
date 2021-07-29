@@ -24,6 +24,7 @@ export class SideNaveComponent implements OnInit {
   // signle open mode
   config = { multi: false };
   options = { multi: false };
+  
  
   ngOnInit(): void {
     // alert("Hello from Side Navigation");
