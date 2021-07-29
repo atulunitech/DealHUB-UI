@@ -344,10 +344,16 @@ export class CreatobfComponent implements OnInit {
   
   geteditobfdata(dh_id,dh_header_id)
   {
+    let randomadd  =  Math.floor(Math.random() * (2000 - 1000 + 1) + 1000);
+    // this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
+    
    let editobf:editobfarguement = new editobfarguement();
-   editobf.dh_id = dh_id;
-   editobf.dh_header_id = dh_header_id;
-   editobf.user_code = localStorage.getItem("UserCode");
+  //  editobf.dh_id = dh_id;
+  //  editobf.dh_header_id = dh_header_id;
+    editobf.dh_id = <number>(<unknown>((dh_id + randomadd).toString()+""+randomadd));
+    editobf.dh_header_id = <number>(<unknown>((dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+  //  editobf.user_code = localStorage.getItem("UserCode");  commented for vapt
+  editobf.user_code ="RANDOM";
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
      let result =  JSON.parse(res);
      this.isEditObf = true;
@@ -409,8 +415,8 @@ export class CreatobfComponent implements OnInit {
 
          }else
          {
-         this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
-          this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+        //  this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
+        //   this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
          }
 
       }
@@ -1154,16 +1160,17 @@ downloadCoversheet(event)
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(this.isEditObf)
         {
-          for(var i = 0;i<this._obfservices.obfmodel.Attachments.length;i++)
-          {
-          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "support");
-         if(index > -1)
-            {
-             this._obfservices.obfmodel.Attachments.splice(index,1);
-            //  this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
-            //  this.uploadnotdisabled = false;
-           }
-          }
+          this.editObfSupportbol = true;
+        //   for(var i = 0;i<this._obfservices.obfmodel.Attachments.length;i++)
+        //   {
+        //   let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "support");
+        //  if(index > -1)
+        //     {
+        //      this._obfservices.obfmodel.Attachments.splice(index,1);
+        //     //  this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+        //     //  this.uploadnotdisabled = false;
+        //    }
+        //   }
         }
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)

@@ -342,7 +342,7 @@
                             </ngx-dropzone-preview>
                           </div>   
                           <div *ngIf="editObfSupportbol && _obfservices.supportarray.length > 0">
-                            
+                           
                             <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)" [matTooltip]="f._fname">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
