@@ -51,8 +51,11 @@
                                       <li> Please check before submitting for all entered values.</li>
                                   </ul>
                                 </div>
-                               
+                              
                               </div>
+                              <a [href]="sanitize(standardTemplete)" target="_blank" >
+                                Download Template
+                               </a>
                             </div>
                             <div class="mat_upload_tit" *ngIf="isppl" >
                               Attach PPL SHEET <div class="info_view"><img src="assets/images/infoicon.png" style="width: 18px;">
@@ -74,6 +77,9 @@
                                 </div>
                                
                               </div>
+                              <a [href]="sanitize(standardTemplete)" target="_blank" >
+                                Download Template
+                               </a>
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">

@@ -171,6 +171,8 @@ export class CreatobfComponent implements OnInit {
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
+  standardTemplete:string;
+ 
   declarations:string = "";
     coversheetpath:string="";
     loipopath:string="";
@@ -260,7 +262,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
     this.reinitiatefordisable = false;
-
+      
     this.isppl = false;
     this.initiateppl = false;
     this._obfservices.obfmodel._dh_id =0;
@@ -321,6 +323,7 @@ export class CreatobfComponent implements OnInit {
       // }
   });
   //this.getClientKey();
+  this.standardTemplete =this.isppl?'/DealHub - PPL Coversheet.xlsx':'/DealHub - OBF Coversheet.xlsx';
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
