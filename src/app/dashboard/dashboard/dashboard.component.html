@@ -290,8 +290,9 @@
       
     </div>
       <div class="fl_table_con" >
-        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" style="    min-height: calc(100vh - 343px);
-        background-color: white;" >
+        <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 315px);
+        background-color: white;
+        height: 100vh;" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container  [matColumnDef]="theRemovedElement.columnDef">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
@@ -500,7 +501,7 @@
           transform: translate(-50%, 3%);
           left: 50%;" *ngIf="listData.filteredData.length == 0">
             <img src="assets/images/no-data1.jpg" style="
-            width: 243px;
+            width: 270px;
         ">
           </div>
         </perfect-scrollbar>
@@ -510,7 +511,7 @@
         >
       </mat-paginator> -->
       <mat-paginator style-paginator showFirstLastButtons  [length]="100"
-              [pageSize]="5"
+              [pageSize]="7"
               [pageSizeOptions]="[5, 10, 25, 100]">
       </mat-paginator>
      
