@@ -758,6 +758,7 @@ else
   }
 
   ngOnInit() {
+    this.commonService.menu_status=false;
     this.myForm1
     .get('names')
     .statusChanges.subscribe(
