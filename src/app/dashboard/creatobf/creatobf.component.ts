@@ -2908,4 +2908,9 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         return -2; 
       }
   }
+  downloadtemplete(url)
+  {
+    let temp= environment.apiUrl+url;
+    window.open(temp);
+  }
 }
