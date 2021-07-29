@@ -1487,12 +1487,16 @@ onchange(evt,solutioncategory)
 
 openModal(templateRef,row) {
   console.log(row);
+  let randomadd  =  Math.floor(Math.random() * (2000 - 1000 + 1) + 1000);
   this._obfservices.createform();
   this._obfservices.createnewobfmodelandeditobfmodel();
   let editobf:editobfarguement = new editobfarguement();
-   editobf.dh_id = row.dh_id;
-   editobf.dh_header_id = row.dh_header_id;
-   editobf.user_code = localStorage.getItem("UserCode");
+  //  editobf.dh_id = row.dh_id;
+  //  editobf.dh_header_id = row.dh_header_id;
+  editobf.dh_id = <number>(<unknown>((row.dh_id + randomadd).toString()+""+randomadd));
+  editobf.dh_header_id = <number>(<unknown>((row.dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+   //editobf.user_code = localStorage.getItem("UserCode");  commented for vapt
+   editobf.user_code ="RANDOM";
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
     let result =  JSON.parse(res);
     this._obfservices.editObfObject = JSON.parse(res);
@@ -3067,6 +3071,13 @@ getattachment(dh_id,dh_header_id)
           return mes;
         
         }
+    }
+
+    randomIntFromInterval(min, max) { // min and max included 
+      let randnum =  Math.floor(Math.random() * (max - min + 1) + min);
+      //let len = randnum.toString().length;
+     // return randnum.toString().trim() + (len + 1).toString().trim();
+     return randnum.toString().trim();
     }
 
   
