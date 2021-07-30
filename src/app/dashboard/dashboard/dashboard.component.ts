@@ -1480,6 +1480,7 @@ onchange(evt,solutioncategory)
     });
   
     dialogRef.afterClosed().subscribe(result => {
+      this.dialog.closeAll();
         console.log('The dialog was closed');
         // this.animal = result;
     });
