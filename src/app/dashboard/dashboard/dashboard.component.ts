@@ -2,7 +2,7 @@ import { TemplateRef, ViewChild } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule ,MatTableDataSource} from '@angular/material/table'
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DashboardService } from '../dashboard.service';
 import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
@@ -759,6 +759,8 @@ else
 
   ngOnInit() {
     this.commonService.menu_status=false;
+    this.commonService.notification_view=false;
+
     this.myForm1
     .get('names')
     .statusChanges.subscribe(
@@ -2166,10 +2168,21 @@ downloaddetailFinalAgg(row)
       }
     }
    // this.getcounts(this.filterdata);
-   
+   //this.paginator.pageIndex=0;
+   if(this.paginator != undefined)
+   {
+    this.paginator.firstPage()
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
-   // this.paginator.firstPage()
+   }
+  
+    //this.listData.paginator.firstPage();
+    //this.listData.paginator.pageIndex=0;
+   
+  }
+  onChangePage(pe:PageEvent) {
+    console.log(pe.pageIndex);
+    console.log(pe.pageSize);
   }
  
 
