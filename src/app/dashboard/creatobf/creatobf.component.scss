@@ -592,3 +592,40 @@
     max-width: 217px;
     word-break: break-word;
 }
+
+
+::ng-deep .cdk-overlay-pane
+{
+    margin-top: 5px;
+
+}
+::ng-deep .mat-menu-panel{
+    background: #487de2;
+    min-height: auto !important;
+    padding: 0 15px 0 15px;
+    color: white;
+    &.nor_tool
+    {
+        background-color: #487de2;
+        p{
+            margin: 0px;
+            font-style: normal;
+            font-size: 0.75rem;
+        }
+    }
+    h4{
+        color: #ffd800;
+        margin: 0px;
+        line-height: initial;
+        font-size: inherit;
+        font-weight: 500;
+    }
+    p{
+        margin: 0px;
+        margin-top: 2px;
+        &:last-child
+        {
+            font-style: italic;
+        }
+    }
+  }

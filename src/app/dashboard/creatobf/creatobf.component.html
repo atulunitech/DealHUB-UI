@@ -972,14 +972,13 @@
                             </div>
                             <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting">
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting" style="position: relative;">
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
                                   <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                               </div>
                               <div class="dwn_con_wr"><img (click)="downloaddocument($event)"  src="assets/images/dwn_fil_icon.png"></div>
-                              </div>
                               <div style="position: absolute;
                         width: 100%;
                         height: 31PX;
@@ -988,34 +987,37 @@
                         cursor: initial;" *ngIf="disableSupporting" [matMenuTriggerFor]="downloadsupporting" #DownloadSupportTrigger="matMenuTrigger" (mouseover)="DownloadSupportTrigger.openMenu()" (mouseleave)="DownloadSupportTrigger.closeMenu()" > 
                         
                       </div>
-                        <mat-menu  #downloadsupporting="matMenu" [hasBackdrop]="false">
-                          <p>No Supporting Documents to Download</p>  
-                          </mat-menu>
+                        
+                              </div>
+                              <mat-menu  #downloadsupporting="matMenu" [hasBackdrop]="false">
+                                <p>No Supporting Documents to Download</p>  
+                                </mat-menu>
                            
 
-                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO">
+                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO" style="position: relative;">
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
                                   <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
                                 <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
+                                <div style="position: absolute;
+                                width: 100%;
+                                height: 31PX;
+                                background-color: transparent;
+                                pointer-events: initial;
+                                cursor: initial;" *ngIf="disableLOIPO" [matMenuTriggerFor]="downloadLOIPO" #downloadLOIPOTrigger="matMenuTrigger" (mouseover)="downloadLOIPOTrigger.openMenu()" (mouseleave)="downloadLOIPOTrigger.closeMenu()" > 
+                                
                               </div>
-                              <div style="position: absolute;
-                        width: 100%;
-                        height: 31PX;
-                        background-color: transparent;
-                        pointer-events: initial;
-                        cursor: initial;" *ngIf="disableLOIPO" [matMenuTriggerFor]="downloadLOIPO" #downloadLOIPOTrigger="matMenuTrigger" (mouseover)="downloadLOIPOTrigger.openMenu()" (mouseleave)="downloadLOIPOTrigger.closeMenu()" > 
-                        
-                      </div>
-                        <mat-menu  #downloadLOIPO="matMenu" [hasBackdrop]="false">
-                          <p>No LOI/PO Documents to Download</p>  
-                          </mat-menu>
+                              </div>
+                              
+                       
                              
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
-                         
+                            <mat-menu  #downloadLOIPO="matMenu" [hasBackdrop]="false">
+                              <p>No LOI/PO Documents to Download</p>  
+                              </mat-menu>
                             <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?(initiateppl?'OBF':'PPL'):'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div  *ngIf="this.editorcreateobfstring.trim() == 'Edit PPL'"   class="mat_exp_title">Previous OBF (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf || (this.editorcreateobfstring.trim() == 'Edit PPL')"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">
