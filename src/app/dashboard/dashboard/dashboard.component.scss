@@ -224,6 +224,14 @@
     color: #2258BF;
     min-height: 28px;
     border: 1px solid #91B7FF;
+    &:hover
+    {
+        background: white;
+    }
+    &::after
+    {
+        background: #fff;
+    }
     .mat-chip-remove
     {
         color: rgb(34, 88, 191);
@@ -244,6 +252,14 @@
     min-height: 28px;
     color: #2258BF;
     border: 1px solid #91B7FF;
+    &:hover
+    {
+        background: #E5EEFF;
+    }
+    &::after
+    {
+        background: #E5EEFF;
+    }
     .mat-chip-remove
     {
         color: rgb(34, 88, 191);
