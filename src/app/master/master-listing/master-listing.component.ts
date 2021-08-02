@@ -25,13 +25,18 @@ export class MasterListingComponent implements OnInit {
   switchtotypeapi(type)
   {
      switch (type) {
-       case "":
-         
+       case "Users":
+         this.getdataforusers();
          break;
      
        default:
          break;
      }
+  }
+
+  getdataforusers()
+  {
+    
   }
 
   pageTitle()
