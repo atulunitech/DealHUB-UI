@@ -6,6 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MasterDataComponent } from './master-data/master-data.component';
 import { MasterListingComponent } from './master-listing/master-listing.component';
 import { ProjectTypeComponent } from './project-type/project-type.component';
+import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
 
 
 
@@ -14,7 +15,8 @@ import { ProjectTypeComponent } from './project-type/project-type.component';
   imports: [
     CommonModule,
     FlexLayoutModule,
-    MasterRoutingModule
+    MasterRoutingModule,
+    MaterialModule
   ]
 })
 export class MasterModule { }

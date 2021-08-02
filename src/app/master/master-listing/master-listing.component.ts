@@ -3,8 +3,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { MasterService } from '../services/master.service';
 
+class Mstcommonparameters
+{
+  _domain_id:number
+  _domain_code:string
+  _domain_name:string
+  _active:number
+  _user_id:string;
+}
 @Component({
   selector: 'app-master-listing',
   templateUrl: './master-listing.component.html',
@@ -13,8 +22,9 @@ import { MasterService } from '../services/master.service';
 export class MasterListingComponent implements OnInit {
 @Input() masterType : any;
 displayedColumns:Array<any>;
-  
-  constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService) { }
+  constructor(private router: Router,private route:ActivatedRoute,private _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
+  userdetails :Mstcommonparameters;
+  UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
@@ -23,6 +33,7 @@ displayedColumns:Array<any>;
      }
      DraftColumn: string[] = ['domain_code','domain_name'];
   ngOnInit(): void {
+    this.userdetails = new Mstcommonparameters();
     this.route.queryParams.subscribe
     (params => {
       if(params['type'] != undefined)
@@ -35,7 +46,11 @@ displayedColumns:Array<any>;
     
   }
   
-  
+  casshChange()
+  {
+    alert("changes");
+  }
+
   switchtotypeapi(type)
   {
      switch (type) {
@@ -53,7 +68,18 @@ displayedColumns:Array<any>;
 
   getdataforusers()
   {
-    
+    this.userdetails._user_id = localStorage.getItem('UserCode');
+    this._masterservice.getusermaster(this.userdetails).subscribe(res =>{
+      console.log(res);
+      res =JSON.parse(res);
+      this.dashboardData = res.mst_users;
+      this.BindGridDetails();
+      this.displayedColumns=this.UsersColumn;
+    },
+   error =>
+   {
+    this._mesgBox.showError(error.message);
+   });
   }
 
   pageTitle()
@@ -86,7 +112,7 @@ displayedColumns:Array<any>;
     }
   })
   this.displayedColumns = this.columns.map(c => c.columnDef);
-  
+ 
   this.listData = new MatTableDataSource(this.dashboardData);
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;

@@ -15,9 +15,17 @@
     <div>
         <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
-               <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-               <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>
+                
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                    <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
             </ng-container>
+            <ng-container  matColumnDef="useractive" >
+                <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+              <mat-cell  *matCellDef="let row" >
+                <mat-slide-toggle (change)="casshChange()" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+              </mat-cell>
+              <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+               </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </table>

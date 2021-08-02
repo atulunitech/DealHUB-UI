@@ -8,7 +8,11 @@ export const environment = {
     apiUrl:'http://localhost:52229/' 
   // apiUrl: 'http://13.235.216.142/dealhubapidev/'
   // apiUrl: 'http://13.235.216.142/dealhubapiqa/'
+<<<<<<< HEAD
  //apiUrl: 'http://13.235.216.142/dealhubapiuat/'
+=======
+// //apiUrl: 'http://13.235.216.142/dealhubapiuat/'
+>>>>>>> c8510c6c5b942084d0373664797b2ec7d6421c79
  // apiUrl: 'http://13.235.216.142/dealhubapivapt/'
 };
 
