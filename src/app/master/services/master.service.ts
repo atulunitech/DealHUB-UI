@@ -21,4 +21,10 @@ export class MasterService {
     return this.http.get<MasterModule[]>(`${this.apiUrl}`)
    
   }
+
+  getusermaster(): Observable<any> {  
+    //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
+    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",null);  
+       
+  }
 }
