@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MasterService } from '../services/master.service';
 
 @Component({
   selector: 'app-master-listing',
@@ -11,14 +12,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MasterListingComponent implements OnInit {
 @Input() masterType : any;
-
-  constructor(private router: Router,private route:ActivatedRoute) { }
+displayedColumns:Array<any>;
+  
+  constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService) { }
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
      this.paginator = mp;
     
      }
+     DraftColumn: string[] = ['domain_code','domain_name'];
   ngOnInit(): void {
     this.route.queryParams.subscribe
     (params => {
@@ -32,23 +35,32 @@ export class MasterListingComponent implements OnInit {
     
   }
   
+  
   switchtotypeapi(type)
   {
      switch (type) {
-       case "ProjectType":
-         this.masterType="ProjectType";
+       case "Users":
+         this.getdataforusers();
          break;
-     
+      case "ProjectType":
+        this.GetMasterData();
+        this.masterType="Project Type";
+        break;
        default:
          break;
      }
+  }
+
+  getdataforusers()
+  {
+    
   }
 
   pageTitle()
   {
    return this.masterType;
   }
-  displayedColumns:Array<any>;
+  
   dashboardData:any[]=[];
   columns:Array<any>;
   listData: MatTableDataSource<any>;
@@ -81,5 +93,21 @@ export class MasterListingComponent implements OnInit {
   //this.displayedColumns.push('ActionDraft');
    
  // this.theRemovedElement  = this.columns.shift();
+}
+
+GetMasterData()
+{
+ 
+  this._masterservice.GetMstDomains().subscribe((Result)=>
+  {
+    console.log(Result);
+    var res=JSON.parse(Result);
+    this.displayedColumns=this.DraftColumn;
+    this.dashboardData=res.domains;
+  
+    this.BindGridDetails();
+   
+  })
+  
 }
 }

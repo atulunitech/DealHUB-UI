@@ -4,9 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MasterModule } from '../master.module';
 
+export class CommonParameters
+{
+  _user_id:number;
+}
 @Injectable({
   providedIn: 'root'
 })
+
 export class MasterService {
 
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
@@ -27,4 +32,11 @@ export class MasterService {
     return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",null);  
        
   }
+  GetMstDomains():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstDomains",modeldata);  
+  }
+
 }
