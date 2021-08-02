@@ -8,6 +8,18 @@
             <input type="text">
         </div>
         <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+
+
         </div>
+    </div>
+    <div>
+        <table mat-table [dataSource]="listData" class="ms_table" matSort>
+            <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+                <div *ngIf="column.columnDef != 'download'">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                    <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>
+                  </div>
+            </ng-container>
+        </table>
     </div>
 </div>
