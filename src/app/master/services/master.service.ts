@@ -22,9 +22,9 @@ export class MasterService {
    
   }
 
-  getusermaster(): Observable<any> {  
+  getusermaster(userdetails): Observable<any> {  
     //const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True','Content-Type': 'application/json'})};  
-    return this.http.post<any>(environment.apiUrl+"Api/Manage_OBF/geteditobfdata",null);  
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstUsers",userdetails);  
        
   }
 }

@@ -1428,6 +1428,10 @@ downloadCoversheet(event)
      // this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
     }
+    if(this._obfservices.obfmodel.Attachments.length==0)
+    {
+      this.disableSupporting=true;
+    }
   }
 
   onRemoveAttachmentsPreview(attachment,array)
@@ -1457,6 +1461,10 @@ downloadCoversheet(event)
       //this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
     }
+    if(this._obfservices.obfmodel.Attachments.length==0)
+    {
+      this.disableSupporting=true;
+    }
     // console.log(attachment);
   }
 
@@ -1481,7 +1489,9 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
       this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isloipo = !this.isloipo;
+      
     }
+
     // console.log(attachment);
   }
 
