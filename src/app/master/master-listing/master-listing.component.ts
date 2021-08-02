@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-master-listing',
@@ -7,10 +8,32 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MasterListingComponent implements OnInit {
 @Input() masterType : any;
-  constructor() { }
+  constructor(private router: Router,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe
+    (params => {
+      if(params['type'] != undefined)
+      {
+        let type = params['type'].toString().trim();
+        this.switchtotypeapi(type);
+      }
+    }
+    );
   }
+  
+  switchtotypeapi(type)
+  {
+     switch (type) {
+       case "":
+         
+         break;
+     
+       default:
+         break;
+     }
+  }
+
   pageTitle()
   {
    return this.masterType;
