@@ -26,8 +26,51 @@
               </mat-cell>
               <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
                </ng-container>
+               <ng-container  matColumnDef="ProjectTypeAction" >
+                <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+              <mat-cell  *matCellDef="let row" >
+                <button mat-flat-button class="creat_bt view_bt" >Edit</button>
+              </mat-cell>
+              <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+               </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </table>
+    </div>
+    <div>
+        <form [formGroup]="ProjectTypeForm">
+            <div>Create Project Type</div>
+            <div>
+               <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Project Code</mat-label>
+                    <input matInput  formControlName="ProjectCode">
+                    <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
+                    <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
+                        Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
+                  </mat-form-field>
+</div>
+<div>
+  <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Project Code</mat-label>
+    <input matInput  formControlName="ProjectName">
+    <mat-error *ngIf="checkError('ProjectName', 'required')">Project Code is required</mat-error>
+    <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
+        Black-Listed characters `<>'"&` are not allowed
+      </mat-error>
+  </mat-form-field>
+</div>
+                 <div>
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Project Code</mat-label>
+                    <input matInput  formControlName="ProjectStatus">
+                    <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Code is required</mat-error>
+                    <mat-error *ngIf="ProjectTypeForm.controls.ProjectStatus.errors?.invalidservices">
+                        Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
+                  </mat-form-field>
+            </div>
+        </form>
+       
     </div>
 </div>

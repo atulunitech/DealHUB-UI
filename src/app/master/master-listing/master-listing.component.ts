@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {FormBuilder,FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,16 +23,20 @@ class Mstcommonparameters
 export class MasterListingComponent implements OnInit {
 @Input() masterType : any;
 displayedColumns:Array<any>;
+public ProjectTypeForm:FormGroup;
+
   constructor(private router: Router,private route:ActivatedRoute,private _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
+  ProjectTypeColumn: string[] = ['domain_code','domain_name','ProjectTypeAction'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
      this.paginator = mp;
     
      }
-     DraftColumn: string[] = ['domain_code','domain_name'];
+   
+    
   ngOnInit(): void {
     this.userdetails = new Mstcommonparameters();
     this.route.queryParams.subscribe
@@ -43,9 +48,23 @@ displayedColumns:Array<any>;
       }
     }
     );
-    
+    this.ProjectTypeForm = new FormGroup({
+      // Validators.email,
+      ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      ProjectStatus:new FormControl("")
+    });
   }
-  
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&]/;
+    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
+      return { 'invalidservices': true };
+    }
+    return null;
+  }
+  public checkError = (controlName: string, errorName: string) => {
+    return this.ProjectTypeForm.controls[controlName].hasError(errorName);
+  }
   casshChange()
   {
     alert("changes");
@@ -128,7 +147,8 @@ GetMasterData()
   {
     console.log(Result);
     var res=JSON.parse(Result);
-    this.displayedColumns=this.DraftColumn;
+    this.displayedColumns=this.ProjectTypeColumn;
+     
     this.dashboardData=res.domains;
   
     this.BindGridDetails();
