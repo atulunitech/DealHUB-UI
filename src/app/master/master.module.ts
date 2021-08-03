@@ -7,6 +7,7 @@ import { MasterDataComponent } from './master-data/master-data.component';
 import { MasterListingComponent } from './master-listing/master-listing.component';
 import { ProjectTypeComponent } from './project-type/project-type.component';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -16,7 +17,8 @@ import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
     CommonModule,
     FlexLayoutModule,
     MasterRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class MasterModule { }

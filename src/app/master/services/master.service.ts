@@ -3,12 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MasterModule } from '../master.module';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MasterService {
-
+   usermasterform:FormGroup;
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
   
   httpOptions = {
@@ -20,6 +21,20 @@ export class MasterService {
   getMaster(): Observable<MasterModule[]> {
     return this.http.get<MasterModule[]>(`${this.apiUrl}`)
    
+  }
+
+  createusermasterform()
+  {
+    this.usermasterform = new FormGroup({
+      usercode : new FormControl("",Validators.required),
+      firstname : new FormControl("",Validators.required),
+      lastname : new FormControl("",Validators.required),
+      role : new FormControl("",Validators.required),
+      email : new FormControl("",[Validators.required,Validators.email]),
+      mobile : new FormControl("",Validators.required),
+      branch : new FormControl("",Validators.required),
+      verticals : new FormControl("",Validators.required)
+    });
   }
 
   getusermaster(userdetails): Observable<any> {  

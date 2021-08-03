@@ -12,22 +12,145 @@
 
         </div>
     </div>
-    <div>
-        <table mat-table [dataSource]="listData" class="ms_table" matSort>
-            <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
-                
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-                    <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
-            </ng-container>
-            <ng-container  matColumnDef="useractive" >
-                <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
-              <mat-cell  *matCellDef="let row" >
-                <mat-slide-toggle (change)="casshChange()" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
-              </mat-cell>
-              <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-               </ng-container>
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-        </table>
+    
+</div>
+<div>
+  <form [formGroup]="_masterservice.usermasterform">
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Enter User Code</mat-label>
+          <input matInput formControlName="usercode" />
+          <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.required">
+            User Code is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
     </div>
+
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Enter First Name</mat-label>
+          <input matInput formControlName="firstname" />
+          <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.required">
+            First Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Enter Last Name</mat-label>
+          <input matInput formControlName="lastname" />
+          <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.required">
+            Last Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Select Role</mat-label>
+          <mat-select  formControlName="role"  [errorStateMatcher]="matcher" disableOptionCentering>
+            <mat-option *ngFor="let roles of mst_roles_array" [value]="roles.value">
+
+              {{roles.role_name}}
+            </mat-option>
+            
+          </mat-select>
+          <mat-error *ngIf="_masterservice.usermasterform.controls.role.errors?.required">
+            Role is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Enter Email ID</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.required">
+            Email is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.email">
+            Email is not <strong>correct</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Enter Mobile Number</mat-label>
+          <input type="number" matInput formControlName="mobile" />
+          <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.required">
+            Mobile number is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+      <div class="mt-cust-fd">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Select Branch</mat-label>
+          <mat-select formControlName="branch"  [errorStateMatcher]="matcher" multiple disableOptionCentering >
+            <!-- <mat-option>-- None --</mat-option> -->
+            <input type="text"  matInput placeholder="Search" [formControl]="branchSearchControl" />
+              <mat-option *ngFor="let branch of mst_branches_array"  [value]="branch.value">
+                {{branch.viewValue}} 
+              </mat-option>
+          </mat-select>
+          <mat-error *ngIf="_masterservice.usermasterform.controls.branch.errors?.required">
+            Branch is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div>
+  <table mat-table [dataSource]="listData" style="width: 100%;" matSort>
+      <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+          
+              <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+              <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
+      </ng-container>
+      <ng-container  matColumnDef="usercash" >
+          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+        <mat-cell  *matCellDef="let row" >
+          <mat-slide-toggle (change)="casshChange($event)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+        </mat-cell>
+        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+         </ng-container>
+      <ng-container  matColumnDef="userlocked" >
+          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
+        <mat-cell  *matCellDef="let row" >
+          <img [src]="row.islocked == 1 ? 'assets/images/copay_icon.png' : 'assets/images/change_pass_icon.png'" (click)="lockunlockuser($event)">
+        </mat-cell>
+        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+         </ng-container>
+         <ng-container  matColumnDef="userstatus" >
+          <mat-header-cell  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+        <mat-cell  *matCellDef="let row" >
+          <mat-button-toggle-group name="activegroup" aria-label="Font Style"  (change)="onToggleGroupChange($event)">
+            <mat-button-toggle [checked]="row.active == 1" value="1">Active</mat-button-toggle>
+            <mat-button-toggle [checked]="row.active == 0" value="0">Inactive</mat-button-toggle>
+          </mat-button-toggle-group>
+        </mat-cell>
+        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+         </ng-container>
+         <ng-container  matColumnDef="useraction" >
+          <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+        <mat-cell  *matCellDef="let row" >
+          <button mat-flat-button class="creat_bt view_bt"  (click)="getusereditdetails(row)">Edit</button>
+        </mat-cell>
+        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+         </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </table>
 </div>
