@@ -366,7 +366,7 @@ this._masterservice.PrivilegeList=res.mst_privilege;
   this.displayedColumns=this.RolesColumn;
   });
 }
-SubmitRoleType(RoleForm)
+SubmitRoleType()
 {
   this._masterservice.mst_roles._id=this.Role_id;
   this._masterservice.mst_roles._role_name=this.RoleForm.controls.role_name.value;

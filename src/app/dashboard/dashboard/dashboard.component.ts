@@ -916,6 +916,7 @@ else
   {
     if(row.ppl_init == 1)
     {
+      
      // this.MsgOnButton="PPL is already initiated";
       return true;
     }
