@@ -104,6 +104,9 @@
           <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.required">
             Mobile number is <strong>required</strong>
           </mat-error>
+          <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.pattern">
+            Mobile number must be <strong>10 digits</strong>
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -114,7 +117,7 @@
     <div><button (click)="showhidebranchFn()">show / hide</button></div>
     <div *ngIf="showhidebranch">
       <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
-      <p *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">  <mat-checkbox (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
+      <p *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">  <mat-checkbox  [checked]="allbranchselected" #allbranchchck (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
                   Select All
             </mat-checkbox></p>
       <p *ngFor="let data of filteredSearchData | async">
@@ -131,7 +134,7 @@
     <div *ngIf="showhidevertical">
       <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
       <p *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
-        <mat-checkbox  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
+        <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
             Select All
       </mat-checkbox>
       </p>

@@ -57,7 +57,7 @@ export class MasterService {
       lastname : new FormControl("",Validators.required),
       role : new FormControl("",Validators.required),
       email : new FormControl("",[Validators.required,Validators.email]),
-      mobile : new FormControl("",Validators.required),
+      mobile : new FormControl("",[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
       branch : new FormControl("",Validators.required),
       verticals : new FormControl("",Validators.required)
     });
