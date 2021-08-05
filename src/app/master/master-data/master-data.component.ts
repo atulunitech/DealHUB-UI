@@ -15,7 +15,15 @@ export class MasterDataComponent implements OnInit {
 
   Route(type)
   {
+    if(type =="Users")
+    {
+      
+      this.router.navigate(['/DealHUB/master/UserMaster'],{ queryParams: { type:type } });
+    }
+    else
+    {
     this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:type } });
+    }
   }
 
 }

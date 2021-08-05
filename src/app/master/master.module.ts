@@ -7,18 +7,20 @@ import { MasterDataComponent } from './master-data/master-data.component';
 import { MasterListingComponent } from './master-listing/master-listing.component';
 import { ProjectTypeComponent } from './project-type/project-type.component';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserMasterComponent } from './user-master/user-master.component';
 
 
 
 @NgModule({
-  declarations: [MasterDataComponent, MasterListingComponent, ProjectTypeComponent],
+  declarations: [MasterDataComponent, MasterListingComponent, ProjectTypeComponent, UserMasterComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
     MasterRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class MasterModule { }

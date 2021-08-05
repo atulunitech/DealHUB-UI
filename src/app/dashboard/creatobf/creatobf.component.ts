@@ -1725,15 +1725,11 @@ downloadCoversheet(event)
     else{
       let branchname:string = ws.E7.w;
       let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
-      if(indexbranch == -1)
-      {
-        // this._mesgBox.showError("Branch location is not correct, kindly check");
-        //       this.coversheetfiles = [];
-        //       this.iscoversheet = !this.iscoversheet;
-        //       return false;
-        validmsg +="Branch location is not correct, kindly check ,";
-        validcount +=1;
-      }
+      // if(indexbranch == -1)
+      // {
+      //   validmsg +="Branch location is not correct, kindly check ,";
+      //   validcount +=1;
+      // }
       if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())

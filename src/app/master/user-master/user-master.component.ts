@@ -45,12 +45,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-master-listing',
-  templateUrl: './master-listing.component.html',
-  styleUrls: ['./master-listing.component.scss']
+  selector: 'app-user-master',
+  templateUrl: './user-master.component.html',
+  styleUrls: ['./user-master.component.scss']
 })
 
-export class MasterListingComponent implements OnInit {
+export class UserMasterComponent implements OnInit {
 @Input() masterType : any;
 
   constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent,public dialog: MatDialog) { }

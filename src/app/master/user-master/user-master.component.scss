@@ -1,0 +1,62 @@
+@import '../../../assets/scss/mixins';
+@import '../../../assets/scss/variables';
+
+.filter_cont {
+    @include padding(15px,50px,15px,50px);
+}
+.com_title
+{
+    display: inline-block;
+    text-transform: capitalize;
+    @include font-size(1.4);
+    @include font-weight(semi-bold);
+    color:$thm-title-color;
+}
+.serch_box_ms
+{
+    margin-left: 10px;
+  @include position(relative);
+    .search_con
+    {
+        border: solid 1px #eeeeee;
+        @include border-radius(0px);
+        @include heightwidth(200px,inherit);
+        @include padding(5px,40px,5px,20px);
+        background-color: $thm-bg;
+        input
+        {
+            border: none;
+            @include heightwidth(100%,30px);
+            &:focus
+            {
+                outline: none;
+            }
+            &::placeholder
+            {
+                color: #ccc;
+            }
+        }
+        
+    }
+    .fas
+        {
+            color: #eee;
+            @include position(absolute,10px,15px,inherit,inherit);
+            @include font-size(1.2);
+        }
+    .search_icon
+    {
+        @include position(absolute,11px,15px,inherit,inherit);
+        img
+        {@include heightwidth(18px,auto);}
+    }
+    .search_close
+    {
+        position: absolute;
+    right: 9px;
+    top: 8px;
+    z-index: 9;
+    background-color: white;
+    border: none;
+    }
+}
