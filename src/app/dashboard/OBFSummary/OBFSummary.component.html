@@ -37,7 +37,7 @@
                         cursor: initial;" *ngIf="this.ShowViewButton" [matMenuTriggerFor]="menunew" #menuNEwTrigger="matMenuTrigger" (mouseover)="menuNEwTrigger.openMenu()" (mouseleave)="menuNEwTrigger.closeMenu()" > 
                         
                       </div>
-                        <mat-menu  #menunew="matMenu" [hasBackdrop]="false">
+                        <mat-menu  *ngIf="this.ShowViewButton" #menunew="matMenu" [hasBackdrop]="false">
                           <p>{{this.ShowViewButton ? 'PPL not initiated.':'' }}  </p>  
                           </mat-menu>
                         <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="border-radius: 4px;"  (click)="openShareBox()" *ngIf="(this.role_name=='PH' || this.role_name=='VH') && this.shortcurrentstatus =='Submitted'"> Share <img src="assets/images/share_icon.png" style="margin-left: 7px;"> </button>

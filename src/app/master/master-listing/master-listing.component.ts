@@ -80,7 +80,7 @@ public RoleForm:FormGroup;
       role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       privilege:new FormControl('', [Validators.required]),
-      Rolestatus:new FormControl('', [Validators.required]),
+      Rolestatus:new FormControl("", [Validators.required]),
     });
     
    }
@@ -200,9 +200,9 @@ public RoleForm:FormGroup;
     this.ShowProjectTypeEdit=true;
     this.DomainId=Details.domain_id;
   
-    this.ProjectTypeForm.controls.ProjectCode.setValue(Details.domain_code);
-    this.ProjectTypeForm.controls.ProjectName.setValue(Details.domain_name);
-    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.active ==1?'Active':'Inactive');
+    this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
+    this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active);
   }
   else if(this.masterType=="Privilege")
   {
@@ -213,9 +213,13 @@ public RoleForm:FormGroup;
   }
   else if(this.masterType=="Roles")
   {
+
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
-    
+    this.RoleForm.controls.Role_code.setValue(Details.role_code);
+    this.RoleForm.controls.role_name.setValue(Details.role_name);
+    this.RoleForm.controls.Rolestatus.setValue(Details.active);
+    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
   }
   }
   Canceltype()
@@ -258,6 +262,11 @@ createType()
   {
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=0;
+  }
+  else if(this.masterType=="Roles")
+  {
+    this.ShowRoleEdit=true;
+    this.Role_id=0;
   }
 
 }
@@ -328,7 +337,7 @@ GetMstPrivilege()
     this.displayedColumns=this.PrivilegeColumn;
     });
   }
-  SubmitPrivilegeType(ProjectTypeForm)
+  SubmitPrivilegeType()
 {
   this._masterservice.Mst_privilege._privilege_Id=this.PrivilegeId;
   this._masterservice.Mst_privilege._privilege_name=this.PrivilegeForm.controls.privilege_name.value;
@@ -359,6 +368,16 @@ this._masterservice.PrivilegeList=res.mst_privilege;
 }
 SubmitRoleType(RoleForm)
 {
+  this._masterservice.mst_roles._id=this.Role_id;
+  this._masterservice.mst_roles._role_name=this.RoleForm.controls.role_name.value;
+  this._masterservice.mst_roles._role_code=this.RoleForm.controls.Role_code.value;
+  this._masterservice.mst_roles._equivalent_cassh_role_name=this.RoleForm.controls.equivalent_cassh_role_name.value;
+  this._masterservice.mst_roles._Previlege_Id=this.RoleForm.controls.privilege.value;
+  this._masterservice.mst_roles._active=this.RoleForm.controls.Rolestatus.value;
+  this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
+    console.log(Result);
+  });
+  
 
 }
 //Roles End

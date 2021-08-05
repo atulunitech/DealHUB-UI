@@ -92,7 +92,7 @@
       Cancel
         </button>
         <button  mat-flat-button 
-       style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType(PrivilegeForm)">
+       style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType()">
         Submit
         </button>
      </div>
@@ -168,7 +168,7 @@
      Cancel
        </button>
        <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="SubmitRoleType(RoleForm)">
+      style="padding:0 20px 0 20px" (click)="SubmitRoleType()">
        Submit
        </button>
     </div>
@@ -196,18 +196,7 @@
           <button mat-flat-button  (click)="ShowEditType(row)">Edit</button>
         </mat-cell>
       </ng-container>
-      <!-- <ng-container  matColumnDef="PrivilegeAction" >
-        <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-      <mat-cell  *matCellDef="let row" >
-        <button mat-flat-button  (click)="ShowEditType(row)">Edit</button>
-      </mat-cell>
-    </ng-container>
-    <ng-container  matColumnDef="RolesAction" >
-      <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-    <mat-cell  *matCellDef="let row" >
-      <button mat-flat-button  (click)="ShowEditType(row)">Edit</button>
-    </mat-cell>
-  </ng-container> -->
+  
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </table>

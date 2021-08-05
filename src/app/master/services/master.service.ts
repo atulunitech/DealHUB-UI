@@ -22,6 +22,14 @@ export class Mst_privilege
   _privilege_name:string;
   _user_id:string;
 }
+export class mst_roles{
+  _id:number;
+  _role_code:string;
+  _role_name :string;
+  _equivalent_cassh_role_name :string;
+  _active:string
+  _Previlege_Id :number;
+}
 export interface PrivilegeList{
   value: number;
   viewValue: string;
@@ -35,6 +43,7 @@ export class MasterService {
   Mst_Domains:Mst_Domains=new Mst_Domains();
   Mst_privilege:Mst_privilege=new Mst_privilege();
   PrivilegeList:PrivilegeList[]=[];
+  mst_roles:mst_roles=new mst_roles();
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
   
   httpOptions = {
@@ -80,6 +89,9 @@ export class MasterService {
     modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstRole",modeldata);  
+  }
+  Update_Mst_Roles(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Roles",modeldata);  
   }
   //roles function
 }
