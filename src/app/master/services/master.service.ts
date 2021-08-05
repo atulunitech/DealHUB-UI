@@ -8,12 +8,33 @@ export class CommonParameters
 {
   _user_id:number;
 }
+export class Mst_Domains
+{
+  _domain_id:number;
+  _domain_code:string;
+  _domain_name:string;
+  _active:number;
+  _user_id:string;
+}
+export class Mst_privilege
+{
+  _privilege_Id:number;
+  _privilege_name:string;
+  _user_id:string;
+}
+export interface PrivilegeList{
+  value: number;
+  viewValue: string;
+  tablename:string;
+}
 @Injectable({
   providedIn: 'root'
 })
 
 export class MasterService {
-
+  Mst_Domains:Mst_Domains=new Mst_Domains();
+  Mst_privilege:Mst_privilege=new Mst_privilege();
+  PrivilegeList:PrivilegeList[]=[];
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
   
   httpOptions = {
@@ -38,5 +59,27 @@ export class MasterService {
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstDomains",modeldata);  
   }
-
+  Update_Mst_Domains(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Domains",modeldata);  
+  }
+  //privilege function
+  GetMstPrivilege():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstPrivilege",modeldata);  
+  }
+  Update_Mst_Privilege(modeldata):Observable<any>
+  {
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Privilege",modeldata); 
+  }
+  //privilege function
+  //Roles function
+  GetMstRole():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstRole",modeldata);  
+  }
+  //roles function
 }

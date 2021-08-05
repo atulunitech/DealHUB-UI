@@ -22,13 +22,18 @@ class Mstcommonparameters
 })
 export class MasterListingComponent implements OnInit {
 @Input() masterType : any;
-displayedColumns:Array<any>;
-public ProjectTypeForm:FormGroup;
-
-  constructor(private router: Router,private route:ActivatedRoute,private _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
+ displayedColumns:Array<any>;
+//FormGroup Declartaion
+ public ProjectTypeForm:FormGroup;
+ public PrivilegeForm:FormGroup;
+public RoleForm:FormGroup;
+  constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
-  ProjectTypeColumn: string[] = ['domain_code','domain_name','ProjectTypeAction'];
+  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','ProjectTypeAction'];
+  PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
+  RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','active','ProjectTypeAction'];
+  PrivilegeId:number=0;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
@@ -48,43 +53,45 @@ public ProjectTypeForm:FormGroup;
       }
     }
     );
-    this.ProjectTypeForm = new FormGroup({
-      // Validators.email,
-      ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      ProjectStatus:new FormControl("")
-    });
-  }
-  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&]/;
-    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
-      return { 'invalidservices': true };
+    if( this.masterType=="Project Type")
+    {
+      this.ProjectTypeForm = new FormGroup({
+        // Validators.email,
+        ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+        ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+        ProjectStatus:new FormControl("",[Validators.required])
+      });
     }
-    return null;
+   else if(this.masterType=="Privilege")
+   {
+    this.PrivilegeForm = new FormGroup({
+      // Validators.email,
+      privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+
+    });
+   }
+   else if( this.masterType=="Roles" )
+   {
+    this.RoleForm = new FormGroup({
+      // Validators.email,
+      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      privilege:new FormControl('', [Validators.required]),
+      Rolestatus:new FormControl('', [Validators.required]),
+    });
+    
+   }
+  
   }
-  public checkError = (controlName: string, errorName: string) => {
-    return this.ProjectTypeForm.controls[controlName].hasError(errorName);
-  }
+  // Users Type Start
+
   casshChange()
   {
     alert("changes");
   }
-
-  switchtotypeapi(type)
-  {
-     switch (type) {
-       case "Users":
-         this.getdataforusers();
-         break;
-      case "ProjectType":
-        this.GetMasterData();
-        this.masterType="Project Type";
-        break;
-       default:
-         break;
-     }
-  }
-
   getdataforusers()
   {
     this.userdetails._user_id = localStorage.getItem('UserCode');
@@ -101,14 +108,15 @@ public ProjectTypeForm:FormGroup;
    });
   }
 
+  //User Type End
+
+ 
+
+  //Common fUnction start
   pageTitle()
   {
    return this.masterType;
   }
-  
-  dashboardData:any[]=[];
-  columns:Array<any>;
-  listData: MatTableDataSource<any>;
   BindGridDetails()// code given by kirti kumar shifted to new function
   {
     
@@ -138,22 +146,220 @@ public ProjectTypeForm:FormGroup;
   //this.displayedColumns.push('ActionDraft');
    
  // this.theRemovedElement  = this.columns.shift();
-}
+  }
+  
+  switchtotypeapi(type)
+  {
+     switch (type) {
+       case "Users":
+         this.getdataforusers();
+         break;
+      case "ProjectType":
+        this.GetMstDomains();
+        this.masterType="Project Type";
+        break;
+        case "Privilege":
+          this.GetMstPrivilege();
+          this.masterType="Privilege";
+          break;
+          case "Roles":
+            this.GetMstRole();
+            this.masterType="Roles";
+            break;
+          
+       default:
+         break;
+     }
+  }
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&]/;
+    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
+      return { 'invalidservices': true };
+    }
+    return null;
+  }
+  public checkError = (controlName: string, errorName: string) => {
+    if( this.masterType=="Project Type")
+  {
+    return this.ProjectTypeForm.controls[controlName].hasError(errorName);
+  }
+  else if(this.masterType=="Privilege")
+  {
+    return this.PrivilegeForm.controls[controlName].hasError(errorName);
+  }
+  else if(this.masterType=="Roles")
+  {
+    return this.RoleForm.controls[controlName].hasError(errorName);
+  }
+    
+  }
+  ShowEditType(Details)
+{
+  if( this.masterType=="Project Type")
+  {
+    this.ShowProjectTypeEdit=true;
+    this.DomainId=Details.domain_id;
+  
+    this.ProjectTypeForm.controls.ProjectCode.setValue(Details.domain_code);
+    this.ProjectTypeForm.controls.ProjectName.setValue(Details.domain_name);
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.active ==1?'Active':'Inactive');
+  }
+  else if(this.masterType=="Privilege")
+  {
+    this.ShowPrivilegeEdit=true;
+    this.PrivilegeId=Details.privilege_Id;
+  
+    this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
+  }
+  else if(this.masterType=="Roles")
+  {
+    this.ShowRoleEdit=true;
+    this.Role_id=Details. id;
+    
+  }
+  }
+  Canceltype()
+  {
+    if( this.masterType=="Project Type")
+    {
+      this.ShowProjectTypeEdit=false;
+      this.ProjectTypeForm.controls.ProjectCode.setValue("");
+      this.ProjectTypeForm.controls.ProjectName.setValue("");
+      this.ProjectTypeForm.controls.ProjectStatus.setValue("");
+    }
+    else if(this.masterType=="Privilege")
+    {
+      this.ShowPrivilegeEdit=false;
+      this.PrivilegeForm.controls.privilege_name.setValue("");
+    }
+    else if(this.masterType=="Roles")
+    {
+     
+    }
+    
 
-GetMasterData()
+    
+  }
+  //Common function End
+
+  
+  dashboardData:any[]=[];
+  columns:Array<any>;
+  listData: MatTableDataSource<any>;
+  
+createType()
+{
+  if(this.masterType=="Project Type")
+  {
+    this.ShowProjectTypeEdit=true;
+    this.DomainId=0;
+  }
+  else if(this.masterType=="Privilege")
+  {
+    this.ShowPrivilegeEdit=true;
+    this.PrivilegeId=0;
+  }
+
+}
+//project Type Start
+ShowProjectTypeEdit:boolean=false;
+ShowPrivilegeEdit:boolean=false;
+DomainId:number=0;
+Role_id:number=0;
+ShowRoleEdit:boolean=false;
+GetMstDomains()
 {
  
   this._masterservice.GetMstDomains().subscribe((Result)=>
   {
     console.log(Result);
     var res=JSON.parse(Result);
-    this.displayedColumns=this.ProjectTypeColumn;
+   
      
     this.dashboardData=res.domains;
   
     this.BindGridDetails();
+    this.displayedColumns=this.ProjectTypeColumn;
    
   })
   
 }
+
+SubmitProjectType(ProjectTypeForm)
+{
+  this._masterservice.Mst_Domains._active= this.ProjectTypeForm.controls.ProjectStatus.value;
+  this._masterservice.Mst_Domains._domain_code=this.ProjectTypeForm.controls.ProjectCode.value;
+  this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
+  this._masterservice.Mst_Domains._domain_id=this.DomainId;
+  this._masterservice.Mst_Domains._user_id=localStorage.getItem("UserCode");
+  this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
+    console.log(Result);
+    var Res=JSON.parse(Result);
+    this._mesgBox.showSucess(Res[0].message);
+    this.clearProjectTypedata();
+    this.ShowProjectTypeEdit=false;
+    this.GetMstDomains();
+  });
+}
+clearProjectTypedata()
+{
+  this._masterservice.Mst_Domains._active=0;
+  this._masterservice.Mst_Domains._domain_name="";
+  this._masterservice.Mst_Domains._domain_code="";
+  this._masterservice.Mst_Domains._domain_id=0;
+  this._masterservice.Mst_Domains._user_id="";
+ this.DomainId=0;
+ this.ProjectTypeForm.controls.ProjectCode.setValue("");
+ this.ProjectTypeForm.controls.ProjectName.setValue("");
+ this.ProjectTypeForm.controls.ProjectStatus.setValue("");
+
+}
+//Project Type End
+
+//Privilege start
+GetMstPrivilege()
+  {
+    this._masterservice.GetMstPrivilege().subscribe((Result)=>{
+      console.log(Result);
+    var res=JSON.parse(Result);
+    this.dashboardData=res.mst_privilege;
+  
+    this.BindGridDetails();
+    this.displayedColumns=this.PrivilegeColumn;
+    });
+  }
+  SubmitPrivilegeType(ProjectTypeForm)
+{
+  this._masterservice.Mst_privilege._privilege_Id=this.PrivilegeId;
+  this._masterservice.Mst_privilege._privilege_name=this.PrivilegeForm.controls.privilege_name.value;
+  
+  this._masterservice.Mst_privilege._user_id=localStorage.getItem("UserCode");
+  this._masterservice.Update_Mst_Privilege( this._masterservice.Mst_privilege).subscribe((Result)=>{
+    console.log(Result);
+    var Res=JSON.parse(Result);
+    this._mesgBox.showSucess(Res[0].message);
+    this.Canceltype();
+    this.ShowPrivilegeEdit=false;
+    this.GetMstPrivilege();
+  });
+}
+//Privilege End
+//Roles Start
+
+GetMstRole()
+{
+  this._masterservice.GetMstRole().subscribe((Result)=>{
+    console.log(Result);
+  var res=JSON.parse(Result);
+  this.dashboardData=res.mst_roles;
+this._masterservice.PrivilegeList=res.mst_privilege;
+  this.BindGridDetails();
+  this.displayedColumns=this.RolesColumn;
+  });
+}
+SubmitRoleType(RoleForm)
+{
+
+}
+//Roles End
 }
