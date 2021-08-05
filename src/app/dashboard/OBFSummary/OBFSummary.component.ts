@@ -589,6 +589,7 @@ class filesdetail
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
             {
@@ -597,6 +598,7 @@ class filesdetail
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
             else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
             {
@@ -605,8 +607,9 @@ class filesdetail
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
-            this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+            
         }
       }
     }

@@ -455,11 +455,18 @@
                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px; 
                   " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" 
-                  [matTooltip]="getmsg(row)" #tooltip="matTooltip" >
+                  >
                   <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
-                <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
-                
+               
+                <div class="prev_dis" [matMenuTriggerFor]="menunew_PI" #menuPITrigger="matMenuTrigger" (mouseover)="menuPITrigger.openMenu()" (mouseleave)="menuPITrigger.closeMenu()">
+                  <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" 
+                  [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
+                 
+                </div>
+                  <mat-menu class="nor_tool" #menunew_PI="matMenu" [hasBackdrop]="false">
+                    <p>PPL is already initiated</p> 
+                    </mat-menu>
               </mat-cell>
              
            
