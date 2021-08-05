@@ -18,7 +18,7 @@
 <div *ngIf="displaydiv">
   <label>{{userlabel}}</label>
   <form [formGroup]="_masterservice.usermasterform">
-    <div>
+    <!-- <div>
         <div *ngFor="let vertical of verticalchipstodisplay" style="background:red;"> {{vertical.viewValue}}<span (click)="removesearchvertical(vertical)">X</span></div>
     </div>
     <div><button (click)="showhideverticalFn()">show / hide</button></div>
@@ -29,7 +29,7 @@
           {{ data.viewValue }}
     </mat-checkbox>
       </p>
-    </div>
+    </div> -->
     <div class="mat_fld_box_in" fxFlex="1 1 100%">
       <div class="mt-cust-fd">
         <mat-form-field appearance="fill" class="example-full-width">
@@ -107,17 +107,45 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+
+    <div>
+        <div *ngFor="let branch of branchchipstodisplay" style="background:red;"> {{branch.viewValue}}<span (click)="removesearch(branch)">X</span></div>
+    </div>
+    <div><button (click)="showhidebranchFn()">show / hide</button></div>
+    <div *ngIf="showhidebranch">
+      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
+      <p *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">  <mat-checkbox (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
+                  Select All
+            </mat-checkbox></p>
+      <p *ngFor="let data of filteredSearchData | async">
+        <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
+          {{ data.viewValue }}
+    </mat-checkbox>
+      </p>
+    </div>
+
+    <div>
+        <div *ngFor="let vertical of verticalchipstodisplay" style="background:red;"> {{vertical.viewValue}}<span (click)="removesearchvertical(vertical)">X</span></div>
+    </div>
+    <div><button (click)="showhideverticalFn()">show / hide</button></div>
+    <div *ngIf="showhidevertical">
+      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
+      <p *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
+        <mat-checkbox  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
+            Select All
+      </mat-checkbox>
+      </p>
+      <p *ngFor="let data of filteredSearchDatavertical | async">
+        <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
+          {{ data.viewValue }}
+    </mat-checkbox>
+      </p>
+    </div>
+    <!-- <div class="mat_fld_box_in" fxFlex="1 1 100%">
       <div class="mt-cust-fd">
         <mat-form-field appearance="fill" class="example-full-width">
           <mat-label>Select Branch</mat-label>
-          <!-- <mat-select formControlName="branch"  [errorStateMatcher]="matcher" multiple disableOptionCentering >
-            
-            <input type="text"  matInput placeholder="Search" [formControl]="branchSearchControl" />
-              <mat-option *ngFor="let branch of mst_branches_array"  [value]="branch.value">
-                {{branch.viewValue}} 
-              </mat-option>
-          </mat-select> -->
+         
           <mat-chip-list #chipListSearch >
             <mat-chip  *ngFor="let branch of branchchipstodisplay"  [selectable]="selectable"
                      [removable]="removable"  (removed)="removesearch(branch)">
@@ -151,7 +179,6 @@
             </mat-checkbox>
             </div>
           </mat-option>
-          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
         </mat-autocomplete>
           <mat-error *ngIf="_masterservice.usermasterform.controls.branch.errors?.required">
             Branch is <strong>required</strong>
@@ -198,14 +225,13 @@
             </mat-checkbox>
             </div>
           </mat-option>
-          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
         </mat-autocomplete>
           <mat-error *ngIf="_masterservice.usermasterform.controls.verticals.errors?.required">
             Vertical is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- <div class="mat_fld_box_in" fxFlex="1 1 100%">

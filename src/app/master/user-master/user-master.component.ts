@@ -64,6 +64,7 @@ export class UserMasterComponent implements OnInit {
   removable = true;
   displaydiv = false;
   showhidevertical = false;
+  showhidebranch = false;
   selectable = true;
   filteredSearchData: Observable<branch[]>;
   filteredSearchDatavertical: Observable<branch[]>;
@@ -113,6 +114,12 @@ export class UserMasterComponent implements OnInit {
 showhideverticalFn()
 {
   this.showhidevertical = !this.showhidevertical;
+}
+
+
+showhidebranchFn()
+{
+  this.showhidebranch = !this.showhidebranch;
 }
 
   applyFilter() {
@@ -641,7 +648,7 @@ showhideverticalFn()
     console.log("check vertical array with selected");
     console.log(this.vertical_array_selected);
      
-    this.filteredSearchDatavertical = this.testsearchControl.valueChanges.pipe(
+    this.filteredSearchDatavertical = this.vericalSearchControl.valueChanges.pipe(
       startWith(""),
       //map(value => value != null && value.length >= 1?this._filter(value):this.barnch_array_selected.slice())
        map(value => value?this._filtervertical(value): this.vertical_array_selected.slice())
