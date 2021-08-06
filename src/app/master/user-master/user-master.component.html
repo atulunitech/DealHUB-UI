@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
   
-    <div class="com_title">User Master </div>
+    <div class="com_title"> User Master </div>
     
     <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
         <div class="serch_box_ms">
@@ -12,7 +12,7 @@
 
        
         </div>
-        <div> <button mat-flat-button class="creat_bt cu_width" (click)="Showdiv()" >Create</button></div>
+        <div> <button mat-flat-button class="creat_bt cu_width" (click)="Showdiv()" style="margin-left: 20px;" >Create</button></div>
     </div>
     
 </div>
@@ -112,7 +112,7 @@
          </div>
          
           <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between top" fxFlex="50" >
-              <div class="edit_body_in" fxFlex="100">
+              <div class="edit_body_in" fxFlex="96.5">
                 <div class="search_select" (click)="showhidebranchFn()">
                   <div>Select Branch</div>
                 </div>
@@ -125,13 +125,13 @@
                   
               </div>
               <!-- <div><button (click)="showhideverticalFn()">show / hide</button></div> -->
-              <div *ngIf="showhidebranch" class="search_select_list" >
+              <div *ngIf="showhidebranch" class="search_select_list" (clickOutside)="showhidebrranchfn_out()" >
                 <div class="search_select_list_in">
                   <div class="search_con_lis">
                     <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
                     <img src="../../../assets/images/auto_search.png">
                   </div>
-                  <div class="select_all_con" *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
+                  <div class="select_all_con cus_check" *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
                     <mat-checkbox [checked]="allbranchselected" #allbranchchck  (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
                         Select All
                   </mat-checkbox>
@@ -139,7 +139,7 @@
                 </div>
                   <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
                     
-                  <div class="select_all_con" *ngFor="let data of filteredSearchData | async">
+                  <div class="select_all_con cus_check" *ngFor="let data of filteredSearchData | async">
                     <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
                       {{ data.viewValue }}
                 </mat-checkbox>
@@ -157,8 +157,8 @@
 
         <div class="edit_body">
           <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
-            <div class="edit_body_in" fxFlex="100">
-              <div class="search_select" (click)="showhideverticalFn()">
+            <div class="edit_body_in" fxFlex="96.5">
+              <div class="search_select"  (click)="showhideverticalFn()">
                 <div>Select Verticals</div>
               </div>
               <div class="search_select_chip"  [ngStyle]="{'display': (verticalchips.length > 0) ? 'block' : 'none'}">
@@ -170,13 +170,13 @@
                 
             </div>
             <!-- <div><button (click)="showhideverticalFn()">show / hide</button></div> -->
-            <div *ngIf="showhidevertical" class="search_select_list" >
+            <div *ngIf="showhidevertical" class="search_select_list"  (clickOutside)="clickOutside()" >
               <div class="search_select_list_in">
                 <div class="search_con_lis">
                   <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
                   <img src="../../../assets/images/auto_search.png">
                 </div>
-                <div class="select_all_con" *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
+                <div class="select_all_con cus_check" *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
                   <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
                       Select All
                 </mat-checkbox>
@@ -184,16 +184,13 @@
               </div>
                 <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
                   
-                <div class="select_all_con" *ngFor="let data of filteredSearchDatavertical | async">
+                <div class="select_all_con cus_check" *ngFor="let data of filteredSearchDatavertical | async">
                   <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
                     {{ data.viewValue }}
               </mat-checkbox>
             </div>
                 </perfect-scrollbar>
-              </div>
-              
-              
-              
+              </div> 
             </div>
             </div>
        </div>
@@ -221,30 +218,37 @@
         <ng-container  matColumnDef="usercash" >
             <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
           <mat-cell  *matCellDef="let row" >
-            <mat-slide-toggle (change)="casshChange($event,row)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+            <div class="maser_toggel" >
+              <div class="prev_dis mt-cust-fd-com">
+                <mat-slide-toggle (change)="casshChange($event,row)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+              </div>
+            </div>
+            
           </mat-cell>
           <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
            </ng-container>
         <ng-container  matColumnDef="userlocked" >
             <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
           <mat-cell  *matCellDef="let row" >
-            <img [src]="row.islocked == 1 ? 'assets/images/copay_icon.png' : 'assets/images/change_pass_icon.png'" (click)="lockunlockuser($event,row)">
+            <img style="width: 18px;" [src]="row.islocked == 1 ? 'assets/images/unlock-alt.png' : 'assets/images/lock_icon.png'" (click)="lockunlockuser($event,row)">
           </mat-cell>
           <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
            </ng-container>
            <ng-container  matColumnDef="userstatus" >
             <mat-header-cell  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
           <mat-cell  *matCellDef="let row" >
+            <div class="cus_toggle_bt">
             <mat-button-toggle-group name="activegroup" aria-label="Font Style"  (change)="onToggleGroupChange($event,row)">
               <mat-button-toggle [checked]="row.active == 1" value="1">Active</mat-button-toggle>
               <mat-button-toggle [checked]="row.active == 0" value="0">Inactive</mat-button-toggle>
             </mat-button-toggle-group>
+          </div>
           </mat-cell>
           <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
            </ng-container>
-           <ng-container  matColumnDef="useraction" stickyEnd>
-            <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-          <mat-cell  *matCellDef="let row" >
+           <ng-container  matColumnDef="useraction" stickyEnd >
+            <mat-header-cell  *matHeaderCellDef mat-sort-header style="min-width: 120px;padding-left: 7px;">Action</mat-header-cell>
+          <mat-cell  *matCellDef="let row" style="min-width: 120px;padding-left: 7px;">
             <button mat-flat-button class="creat_bt view_bt"  (click)="getusereditdetails(row)">Edit</button>
           </mat-cell>
           <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->

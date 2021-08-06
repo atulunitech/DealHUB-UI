@@ -175,7 +175,22 @@
                     padding-top: 10px;
                     padding-bottom: 10px;
                    
-                   
+                   &.cdk-column-usercash
+                   {
+                       min-width: 100px;
+                   }
+                   &.cdk-column-mobile_no
+            {
+                min-width: 80px;
+            }
+            &.cdk-column-user_code
+            {
+                min-width: 80px;
+            }
+                   &.cdk-column-userlocked
+            {
+                min-width: 60px;
+            }
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -359,6 +374,22 @@
                 {
                     text-align: left;
                 }
+            }
+            &.cdk-column-usercash
+            {
+                min-width: 100px;
+            }
+            &.cdk-column-mobile_no
+            {
+               min-width:80px;
+            }
+            &.cdk-column-user_code
+            {
+                min-width: 80px;
+            }
+            &.cdk-column-userlocked
+            {
+                min-width: 60px;
             }
             &.cdk-column-ProjectName
                     {
@@ -645,8 +676,9 @@
                         .select_all_con
                         {
                             position: relative;
-                            padding-top: 10px;
+                            padding-top: 0px;
                             padding-left: 10px;
+                            font-weight: 400;
                             .clear_all_lab
                             {
                                 position: absolute;
@@ -703,6 +735,44 @@
                         border-right: solid 6px transparent;
                     }
                 }
+            }
+        }
+    }
+}
+
+
+.cus_toggle_bt
+{
+    background-color: #fff;
+    border:1px solid rgb(247, 247, 247);
+    padding: 1px;
+    border-radius: 4px;
+    ::ng-deep.mat-button-toggle-group
+    {
+        &.mat-button-toggle-group-appearance-standard
+        {
+            border: solid 2px rgba(245, 245, 245, 0.12) !important;
+            padding:2px !important;
+            .mat-button-toggle-focus-overlay
+            {
+                background: transparent !important;
+            }
+            .mat-button-toggle
+            {
+                border: none !important;
+                
+                &.mat-button-toggle-checked
+                {
+                    background-color: #2258bf !important;
+                    color: #fff;
+                    border-radius: 4px;
+                }
+               
+                
+            }
+            .mat-button-toggle-label-content
+            {
+                line-height: 32px !important;
             }
         }
     }
