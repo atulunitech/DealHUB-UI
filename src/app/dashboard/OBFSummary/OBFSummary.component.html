@@ -34,7 +34,8 @@
                         height: 31PX;
                         background-color: transparent;
                         pointer-events: initial;
-                        cursor: initial;"  *ngIf="this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || this._obfservices.obfsummarymodel.PPl_details != undefined || this.shortcurrentstatus =='cApproved'|| this.shortcurrentstatus =='approved' || (this.shortcurrentstatus =='approved' && this.privilege_name== 'OBF Initiator')" [matMenuTriggerFor]="menunew" #menuNEwTrigger="matMenuTrigger"
+                        cursor: initial;" 
+                        *ngIf="this.ShowViewButton" [matMenuTriggerFor]="menunew" #menuNEwTrigger="matMenuTrigger"
                          (mouseover)="menuNEwTrigger.openMenu()" (mouseleave)="menuNEwTrigger.closeMenu()" > 
                         
                       </div>

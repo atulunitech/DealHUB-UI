@@ -30,9 +30,9 @@ public RoleForm:FormGroup;
   constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
-  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','ProjectTypeAction'];
+  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
   PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
-  RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','active','ProjectTypeAction'];
+  RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','Active','ProjectTypeAction'];
   PrivilegeId:number=0;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -202,7 +202,7 @@ public RoleForm:FormGroup;
   
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
-    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active);
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Privilege")
   {
@@ -218,7 +218,7 @@ public RoleForm:FormGroup;
     this.Role_id=Details. id;
     this.RoleForm.controls.Role_code.setValue(Details.role_code);
     this.RoleForm.controls.role_name.setValue(Details.role_name);
-    this.RoleForm.controls.Rolestatus.setValue(Details.active);
+    this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
     this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
   }
   }
