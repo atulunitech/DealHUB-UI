@@ -103,42 +103,68 @@
           <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.required">
             Mobile number is <strong>required</strong>
           </mat-error>
+          <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.pattern">
+            Mobile number must be <strong>10 digits</strong>
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
          </div>
-         <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
-          <div class="edit_body_in" fxFlex="100" >
-            <div>
-              <div *ngFor="let branch of branchchipstodisplay" style="background:red;"> {{branch.viewValue}}<span (click)="removesearch(branch)">X</span></div>
+         
+        </div>
+<div class="edit_body">
+    <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+        <div class="edit_body_in" fxFlex="100">
+          <div class="search_select" (click)="showhidebranchFn()">
+            <div>Select Branch</div>
           </div>
-          <div><button (click)="showhidebranchFn()">show / hide</button></div>
-          <div *ngIf="showhidebranch">
-            <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
-            <p *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">  <mat-checkbox (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
-                        Select All
-                  </mat-checkbox></p>
-            <p *ngFor="let data of filteredSearchData | async">
+          <div class="search_select_chip"  [ngStyle]="{'display': (branchchips.length > 0) ? 'block' : 'none'}">
+            <perfect-scrollbar class="perfect_scroll_com">
+             <div fxLayout="row" fxLayoutAlign=" none">
+              <div class="search_chip_box"  *ngFor="let branch of branchchips" > {{branch.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
+              </div>
+            </perfect-scrollbar>
+            
+        </div>
+        <!-- <div><button (click)="showhideverticalFn()">show / hide</button></div> -->
+        <div *ngIf="showhidebranch" class="search_select_list" >
+          <div class="search_select_list_in">
+            <div class="search_con_lis">
+              <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
+              <img src="../../../assets/images/auto_search.png">
+            </div>
+            <div class="select_all_con" *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
+              <mat-checkbox [checked]="allbranchselected" #allbranchchck  (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
+                  Select All
+            </mat-checkbox>
+            <div class="clear_all_lab" (click)="ClearAllBranch()">Clear All</div>
+          </div>
+            <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
+              
+            <div class="select_all_con" *ngFor="let data of filteredSearchData | async">
               <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
                 {{ data.viewValue }}
           </mat-checkbox>
-            </p>
-          </div>
-          </div>
-         
-               </div>
         </div>
-
+            </perfect-scrollbar>
+          </div>
+          
+          
+          
+        </div>
+        </div>
+   </div>
+</div>
         <div class="edit_body">
           <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
             <div class="edit_body_in" fxFlex="100">
               <div class="search_select" (click)="showhideverticalFn()">
                 <div>Select Verticals</div>
               </div>
-              <div class="search_select_chip">
+              <div class="search_select_chip"  [ngStyle]="{'display': (verticalchips.length > 0) ? 'block' : 'none'}">
                 <perfect-scrollbar class="perfect_scroll_com">
                  <div fxLayout="row" fxLayoutAlign=" none">
-                  <div class="search_chip_box"  *ngFor="let vertical of verticalchipstodisplay" > {{vertical.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
+                  <div class="search_chip_box"  *ngFor="let vertical of verticalchips" > {{vertical.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
                   </div>
                 </perfect-scrollbar>
                 
@@ -151,10 +177,10 @@
                   <img src="../../../assets/images/auto_search.png">
                 </div>
                 <div class="select_all_con" *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
-                  <mat-checkbox  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
+                  <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
                       Select All
                 </mat-checkbox>
-                <div class="clear_all_lab">Clear All</div>
+                <div class="clear_all_lab" (click)="ClearAllVerticals()">Clear All</div>
               </div>
                 <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
                   

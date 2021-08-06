@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { request } from "node:http";
-import { Observable } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import {catchError,map, tap,finalize} from "rxjs/operators";
 import { CommonService } from "../services/common.service";
 import { MessageBoxComponent } from "../shared/MessageBox/MessageBox.Component";
@@ -91,6 +91,7 @@ export class AuthInterceptor implements HttpInterceptor {
                             //alert(error.message);
                             //this._mesgBox.showError("Technical Error");
                             this._mesgBox.showError(error.error.Record.MESSAGE);
+                            return throwError(error);
                           }
 
                           if(error.status === 500)

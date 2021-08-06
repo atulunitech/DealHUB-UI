@@ -2142,8 +2142,26 @@ downloadCoversheet(event)
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+          
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
-        //alert(error.message);
+      }
       })
     }
       }
@@ -2723,7 +2741,26 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+         
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
+      }
         //alert(error.message);
       });
     }

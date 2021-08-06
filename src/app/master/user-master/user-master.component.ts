@@ -84,6 +84,8 @@ export class UserMasterComponent implements OnInit {
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','usercash','userlocked','userstatus','useraction'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('branchinput') branchinput: ElementRef;
+  @ViewChild('allbranchchck') allbranchchck: ElementRef;
+  @ViewChild('allverticalchck') allverticalchck: ElementRef;
   @ViewChild('verticalinput') verticalinput: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
@@ -181,6 +183,8 @@ showhidebranchFn()
       if(elt == branch)
       {
         elt.selected = false;
+        this.allbranchselected = false;
+        this.allbranchchck['checked'] = false;
       }
     });
     let branchid = "";
@@ -188,7 +192,7 @@ showhidebranchFn()
          branchid += element.value +",";     
     });
 
-    this.branchinput.nativeElement.value = '...'+this.branchchips.length;
+   // this.branchinput.nativeElement.value = '...'+this.branchchips.length;
     branchid = branchid.substring(0,branchid.length - 1);
     this._masterservice.usermasterform.controls.branch.setValue(branchid);
   }
@@ -219,13 +223,15 @@ showhidebranchFn()
       if(elt == vertical)
       {
         elt.selected = false;
+        this.allverticalselected = false;
+        this.allverticalchck['checked'] = false;
       }
     });
     let verticalid = "";
     this.verticalchips.forEach(element =>{
       verticalid += element.value +",";     
     });
-    this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
+   // this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
     verticalid = verticalid.substring(0,verticalid.length - 1);
     this._masterservice.usermasterform.controls.verticals.setValue(verticalid);
   }
@@ -234,8 +240,12 @@ showhidebranchFn()
   {
     if(event.checked)
     {
+      
       this.branchchips.push(option);
       option.selected = true;
+      this.allbranchselected = this.barnch_array_selected.every(function(item:any) {
+        return item.selected == true;
+      });
       if(this.branchchipstodisplay.length < 2)
       {
       this.branchchipstodisplay = [...this.branchchipstodisplay, option];
@@ -248,6 +258,7 @@ showhidebranchFn()
       {
         this.branchchips.splice(index,1);
         this.branchchipstodisplay.splice(index,1);
+        option.selected = false;
       }
 
       if(this.branchchips.length >= 2)
@@ -263,15 +274,17 @@ showhidebranchFn()
       }
       }
       }
+      this.allbranchselected = false;
+      this.allbranchchck['checked'] = false;
     }
-    if(this.branchchips.length > 2)
-    {
-    this.branchinput.nativeElement.value = '...'+this.branchchips.length;
-    }
-    else
-    {
-      this.branchinput.nativeElement.value = "";
-    }
+    // if(this.branchchips.length > 2)
+    // {
+    // this.branchinput.nativeElement.value = '...'+this.branchchips.length;
+    // }
+    // else
+    // {
+    //   this.branchinput.nativeElement.value = "";
+    // }
     this.branchSearchControl.setValue(null);
     let branchid = "";
     this.branchchips.forEach(element =>{
@@ -287,6 +300,9 @@ showhidebranchFn()
     {
       this.verticalchips.push(option)
       option.selected = true;
+      this.allverticalselected = this.vertical_array_selected.every(function(item:any) {
+        return item.selected == true;
+      });
       if(this.verticalchipstodisplay.length < 2)
       {
       this.verticalchipstodisplay = [...this.verticalchipstodisplay, option];
@@ -299,6 +315,7 @@ showhidebranchFn()
       {
         this.verticalchips.splice(index,1);
         this.verticalchipstodisplay.splice(index,1);
+        option.selected = false;
       }
 
       if(this.verticalchips.length >= 2)
@@ -314,16 +331,17 @@ showhidebranchFn()
     }
     }
     }
-
+    this.allverticalselected = false;
+    this.allverticalchck['checked'] = false;
     }
-    if(this.verticalchips.length > 2)
-    {
-    this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
-    }
-    else
-    {
-      this.verticalinput.nativeElement.value = "";
-    }
+    // if(this.verticalchips.length > 2)
+    // {
+    // this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
+    // }
+    // else
+    // {
+    //   this.verticalinput.nativeElement.value = "";
+    // }
     this.vericalSearchControl.setValue(null);
     let verticalid = "";
     this.verticalchips.forEach(element =>{
@@ -341,7 +359,7 @@ showhidebranchFn()
       this.barnch_array_selected.forEach(elt =>{
         elt.selected = true;
       });
-      this.branchchips = this.barnch_array_selected;
+      this.branchchips = this.barnch_array_selected.slice();
       this.branchchips.forEach(elt =>{
          if(this.branchchipstodisplay.length < 2)
          {
@@ -357,15 +375,31 @@ showhidebranchFn()
       this.branchchips = [];
       this.branchchipstodisplay = [];
     }
-    if(this.branchchips.length > 2)
-    {
-    this.branchinput.nativeElement.value = '...'+this.branchchips.length;
-    }
-    else
-    {
-      this.branchinput.nativeElement.value = "";
-    } 
+    // if(this.branchchips.length > 2)
+    // {
+    // this.branchinput.nativeElement.value = '...'+this.branchchips.length;
+    // }
+    // else
+    // {
+    //   this.branchinput.nativeElement.value = "";
+    // } 
 
+    let branchid = "";
+    this.branchchips.forEach(element =>{
+         branchid += element.value +",";     
+    });
+    branchid = branchid.substring(0,branchid.length - 1);
+    this._masterservice.usermasterform.controls.branch.setValue(branchid);
+  }
+
+  ClearAllBranch()
+  {
+    this.allbranchchck['checked'] = false;
+    this.barnch_array_selected.forEach(elt =>{
+      elt.selected = false;
+    });
+    this.branchchips = [];
+    this.branchchipstodisplay = [];
     let branchid = "";
     this.branchchips.forEach(element =>{
          branchid += element.value +",";     
@@ -382,7 +416,7 @@ showhidebranchFn()
       this.vertical_array_selected.forEach(elt =>{
         elt.selected = true;
       });
-      this.verticalchips = this.vertical_array_selected;
+      this.verticalchips = this.vertical_array_selected.slice();
       this.verticalchips.forEach(elt =>{
         if(this.verticalchipstodisplay.length < 2)
         {
@@ -398,14 +432,30 @@ showhidebranchFn()
       this.verticalchips = [];
       this.verticalchipstodisplay = [];
     }
-    if(this.verticalchips.length > 2)
-    {
-    this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
-    }
-    else
-    {
-      this.verticalinput.nativeElement.value = "";
-    }
+    // if(this.verticalchips.length > 2)
+    // {
+    // this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
+    // }
+    // else
+    // {
+    //   this.verticalinput.nativeElement.value = "";
+    // }
+    let verticalid = "";
+    this.verticalchips.forEach(element =>{
+      verticalid += element.value +",";     
+    });
+    verticalid = verticalid.substring(0,verticalid.length - 1);
+    this._masterservice.usermasterform.controls.verticals.setValue(verticalid);
+  }
+
+  ClearAllVerticals()
+  {
+    this.allverticalchck['checked'] = false;
+    this.vertical_array_selected.forEach(elt =>{
+      elt.selected = false;
+    });
+    this.verticalchips = [];
+    this.verticalchipstodisplay = [];
     let verticalid = "";
     this.verticalchips.forEach(element =>{
       verticalid += element.value +",";     
@@ -755,8 +805,12 @@ hidediv()
   this.displaydiv = false;
 }
 
+allbranchselected:boolean = false;
+allverticalselected:boolean = false;
 getusereditdetails(data)
 {
+  this.allbranchselected = true;
+  this.allverticalselected = true;
   this.displaydiv = true;
   this.userlabel = "Edit :"+data.first_name+" "+data.last_name;
   this.branchchips =[];
@@ -827,24 +881,38 @@ getusereditdetails(data)
         }
     });
   });
-  
-  if(this.branchchips.length > 2)
-    {
-    this.branchinput.nativeElement.value = '...'+this.branchchips.length;
-    }
-    else
-    {
-      this.branchinput.nativeElement.value = "";
-    }
 
-  if(this.verticalchips.length > 2)
+  this.barnch_array_selected.forEach(elt =>{
+    if(elt.selected == false)
     {
-    this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
+      this.allbranchselected = false;
     }
-    else
+  });
+
+  this.vertical_array_selected.forEach(elt =>{
+    if(elt.selected == false)
     {
-      this.verticalinput.nativeElement.value = "";
+      this.allverticalselected = false;
     }
+  });
+  
+  // if(this.branchchips.length > 2)
+  //   {
+  //   this.branchinput.nativeElement.value = '...'+this.branchchips.length;
+  //   }
+  //   else
+  //   {
+  //     this.branchinput.nativeElement.value = "";
+  //   }
+
+  // if(this.verticalchips.length > 2)
+  //   {
+  //   this.verticalinput.nativeElement.value = '...'+this.verticalchips.length;
+  //   }
+  //   else
+  //   {
+  //     this.verticalinput.nativeElement.value = "";
+  //   }
 
   // edit_branch_list.forEach(element => {
   //   let elt = new branch();
