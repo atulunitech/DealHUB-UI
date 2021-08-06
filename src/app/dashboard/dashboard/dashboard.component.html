@@ -705,9 +705,12 @@
         <div class="edit_box_popup">
           <div id="flowBoxes" >
           
-            <div class="right view_{{details.is_stage_completed}}"  title="" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="assets/images/tick_icon.png"></div>
+            <div class="right view_{{details.is_stage_completed}}"  title="" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}}
+               <img [src]="details.is_stage_completed==-2? 'assets/images/on_hold_icon.png' : 
+               details.is_stage_completed==-1 ? 'assets/images/Reject-icon.png': 'assets/images/tick_icon.png' " ></div>
             
     </div>
+
 <!-- <div *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> 
   {{details.is_stage_completed}}
   </div> -->
@@ -753,7 +756,7 @@
              Project Name
             </div>
             <div class="prev_dis" [matMenuTriggerFor]="menunew_P" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()">
-            {{details.dh_project_name.length > 50?details.dh_project_name.substring(0,50)+"...": details.dh_project_name}}
+            {{details.dh_project_name.length > 100 ?details.dh_project_name.substring(0,50)+"...": details.dh_project_name}}
             </div>
             <mat-menu class="nor_tool" #menunew_P="matMenu" [hasBackdrop]="false">
               <p>{{details.dh_project_name}}</p> 
