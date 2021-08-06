@@ -1,294 +1,275 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
-    <div class="com_title">User Master </div>
-    
-    <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
-        <div class="serch_box_ms">
-        
-            <div class="search_con">
-            <input type="text" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
-        </div>
-        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+  <div class="com_title">{{pageTitle() }} </div>
+  
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
+      <div class="serch_box_ms">
+      
+          <div class="search_con">
+          <input type="text">
+      </div>
+      <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+      <div>
+        <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="createType()">         
+        create </button>
+      </div>
 
-       
-        </div>
-        <div> <button mat-flat-button class="creat_bt cu_width" (click)="Showdiv()" >Create</button></div>
-    </div>
-    
+      </div>
+  </div>
+
 </div>
-<div *ngIf="displaydiv">
-  <label>{{userlabel}}</label>
-  <form [formGroup]="_masterservice.usermasterform">
+
+<div *ngIf="ShowProjectTypeEdit">
+ <form [formGroup]="ProjectTypeForm">
+    <div>Create Project Type</div>
     <div>
-        <div *ngFor="let vertical of verticalchipstodisplay" style="background:red;"> {{vertical.viewValue}}<span (click)="removesearchvertical(vertical)">X</span></div>
+       <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Project Code</mat-label>
+            <input matInput  formControlName="ProjectCode">
+            <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
+            <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
+                Black-Listed characters `<>'"&` are not allowed
+              </mat-error>
+          </mat-form-field>
     </div>
-    <div><button (click)="showhideverticalFn()">show / hide</button></div>
-    <div *ngIf="showhidevertical">
-      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="testsearchControl" />
-      <p *ngFor="let data of filteredSearchDatavertical | async">
-        <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
-          {{ data.viewValue }}
-    </mat-checkbox>
-      </p>
+    <div>
+    <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Project Name</mat-label>
+    <input matInput  formControlName="ProjectName">
+    <mat-error *ngIf="checkError('ProjectName', 'required')">Project Name is required</mat-error>
+    <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
+      Black-Listed characters `<>'"&` are not allowed
+    </mat-error>
+    </mat-form-field>
     </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter User Code</mat-label>
-          <input matInput formControlName="usercode" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.required">
-            User Code is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter First Name</mat-label>
-          <input matInput formControlName="firstname" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.required">
-            First Name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter Last Name</mat-label>
-          <input matInput formControlName="lastname" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.required">
-            Last Name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Role</mat-label>
-          <mat-select  formControlName="role"  [errorStateMatcher]="matcher" disableOptionCentering>
-            <mat-option *ngFor="let roles of mst_roles_array" [value]="roles.value">
-
-              {{roles.role_name}}
-            </mat-option>
-            
-          </mat-select>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.role.errors?.required">
-            Role is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter Email ID</mat-label>
-          <input matInput formControlName="email" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.required">
-            Email is <strong>required</strong>
-          </mat-error>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.email">
-            Email is not <strong>correct</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter Mobile Number</mat-label>
-          <input type="number" matInput formControlName="mobile" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.mobile.errors?.required">
-            Mobile number is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Branch</mat-label>
-          <!-- <mat-select formControlName="branch"  [errorStateMatcher]="matcher" multiple disableOptionCentering >
-            
-            <input type="text"  matInput placeholder="Search" [formControl]="branchSearchControl" />
-              <mat-option *ngFor="let branch of mst_branches_array"  [value]="branch.value">
-                {{branch.viewValue}} 
+     <div>
+         <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Select Type</mat-label>
+            <mat-select formControlName="ProjectStatus">
+              <mat-option value="1"  >
+                Active
               </mat-option>
-          </mat-select> -->
-          <mat-chip-list #chipListSearch >
-            <mat-chip  *ngFor="let branch of branchchipstodisplay"  [selectable]="selectable"
-                     [removable]="removable"  (removed)="removesearch(branch)">
-                     {{branch.viewValue}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-          <input type="text"
-            #branchinput
-            [matAutocomplete]="auto" 
-            matInput placeholder="Search"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (focus)="clearinput($event)"
-           (matChipInputTokenEnd)="addSearch($event)"
-            [formControl]="branchSearchControl" 
-            [matChipInputFor]="chipListSearch"
-            />
-        </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
-              <div>
-                <mat-checkbox (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
-                  Select All
-            </mat-checkbox>
-            </div>
-            </mat-option>
-            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data"  >
-              <div>
-                <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
-                  {{ data.viewValue }}
-            </mat-checkbox>
-            </div>
-          </mat-option>
-          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
-        </mat-autocomplete>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.branch.errors?.required">
-            Branch is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Vertical</mat-label>
+              <mat-option value="0">
+                Inactive
+              </mat-option>
+            
+            </mat-select>
+            <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Status is required</mat-error>
           
-          <mat-chip-list #chipListSearchvertical >
-            <mat-chip  *ngFor="let vertical of verticalchipstodisplay"  [selectable]="selectable"
-                     [removable]="removable"  (removed)="removesearchvertical(vertical)">
-                     {{vertical.viewValue}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-          <input type="text"
-            [matAutocomplete]="autovertical" 
-            matInput placeholder="Search"
-            #verticalinput
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (focus)="clearinput($event)"
-           (matChipInputTokenEnd)="addSearch($event)"
-            [formControl]="vericalSearchControl" 
-            [matChipInputFor]="chipListSearchvertical"
-            />
-        </mat-chip-list>
-          <mat-autocomplete #autovertical="matAutocomplete" >
-            <mat-option *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
-              <div >
-                <mat-checkbox  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
-                  Select All
-            </mat-checkbox>
-            </div>
-            </mat-option>
-            <mat-option  *ngFor="let data of filteredSearchDatavertical | async" [value]="data"  >
-              <div>
-                <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
-                  {{ data.viewValue }}
-            </mat-checkbox>
-            </div>
-          </mat-option>
-          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
-        </mat-autocomplete>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.verticals.errors?.required">
-            Vertical is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
+           
+          </mat-form-field>
     </div>
-
-
-    <!-- <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field>
-          <mat-select (openedChange)="openedChange($event)" placeholder="Select" formControlName="verticals" multiple>
-            <mat-select-trigger>
-              {{_masterservice.usermasterform.controls.verticals.value ? (_masterservice.usermasterform.controls.verticals.value[0] != undefined ?_masterservice.usermasterform.controls.verticals.value[0].viewValue : '') : ''}}
-              <span *ngIf="_masterservice.usermasterform.controls.verticals.value?.length > 1" class="additional-selection">
-                (+{{_masterservice.usermasterform.controls.verticals.value.length - 1}} {{_masterservice.usermasterform.controls.verticals.value?.length === 2 ? 'other' : 'others'}})
-              </span>
-            </mat-select-trigger>
-            <div class="select-container">
-            <mat-optgroup >
-          <mat-form-field style="width:100%;">
-            <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput [formControl]="searchTextboxControl">
-            
-                 </mat-form-field>
-            </mat-optgroup>
-            <mat-optgroup *ngIf="(filteredOptions | async).length == 0">
-              <div>No results found!</div>
-            </mat-optgroup>
-         <mat-option (onSelectionChange)="selectionChange($event)" *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.viewValue}}
-              </mat-option>
-        </div>
-        </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
- -->
-
-
-
     <div>
-      <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">Save</button>
-      <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" >Cancel</button>
+      <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="Canceltype()">
+     Cancel
+       </button>
+       <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="SubmitProjectType(ProjectTypeForm)">
+       Submit
+       </button>
     </div>
-  </form>
+</form> 
+
+</div>
+<div *ngIf="ShowPrivilegeEdit">
+<form [formGroup]="PrivilegeForm">
+   <div>Create Privilege</div>
+   <div>
+      <mat-form-field appearance="fill" class="example-full-width">
+           <mat-label>Privilege Name</mat-label>
+           <input matInput  formControlName="privilege_name">
+           <mat-error *ngIf="checkError('privilege_name', 'required')">Privilege Name is required</mat-error>
+           <mat-error *ngIf="PrivilegeForm.controls.privilege_name.errors?.invalidservices">
+               Black-Listed characters `<>'"&` are not allowed
+             </mat-error>
+         </mat-form-field>
+   </div>
+  
+   <div>
+     <button  mat-flat-button 
+     style="padding:0 20px 0 20px" (click)="Canceltype()">
+    Cancel
+      </button>
+      <button  mat-flat-button 
+     style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType()">
+      Submit
+      </button>
+   </div>
+</form> 
+
+</div>
+<div *ngIf="ShowRoleEdit">
+<form [formGroup]="RoleForm">
+  <div>Create Role</div>
+  <div>
+     <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Role Code</mat-label>
+          <input matInput  formControlName="Role_code">
+          <mat-error *ngIf="checkError('Role_code', 'required')">Role code is required</mat-error>
+          <mat-error *ngIf="RoleForm.controls.Role_code.errors?.invalidservices">
+              Black-Listed characters `<>'"&` are not allowed
+            </mat-error>
+        </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" class="example-full-width">
+         <mat-label>Role Name</mat-label>
+         <input matInput  formControlName="role_name">
+         <mat-error *ngIf="checkError('role_name', 'required')">Role Name is required</mat-error>
+         <mat-error *ngIf="RoleForm.controls.role_name.errors?.invalidservices">
+             Black-Listed characters `<>'"&` are not allowed
+           </mat-error>
+       </mat-form-field>
+ </div>
+ <div>
+  <mat-form-field appearance="fill" class="example-full-width">
+       <mat-label>Equivalent cash role name</mat-label>
+       <input matInput  formControlName="equivalent_cassh_role_name">
+       <mat-error *ngIf="checkError('equivalent_cassh_role_name', 'required')">Equivalent cash role name is required</mat-error>
+       <mat-error *ngIf="RoleForm.controls.equivalent_cassh_role_name.errors?.invalidservices">
+           Black-Listed characters `<>'"&` are not allowed
+         </mat-error>
+     </mat-form-field>
+</div>
+
+<div>
+<mat-form-field appearance="fill" class="example-full-width">
+  <mat-label>Select Privilege*</mat-label>
+  <mat-select formControlName="" >
+    <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
+      {{privilege.viewValue}}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="RoleForm.controls.privilege.errors?.required">
+    privilege  is <strong>required</strong>
+  </mat-error>
+</mat-form-field>
 </div>
 <div>
-  <table mat-table [dataSource]="listData" style="width: 100%;" matSort>
-      <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
-          
-              <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-              <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
-      </ng-container>
-      <ng-container  matColumnDef="usercash" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <mat-slide-toggle (change)="casshChange($event,row)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-      <ng-container  matColumnDef="userlocked" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <img [src]="row.islocked == 1 ? 'assets/images/copay_icon.png' : 'assets/images/change_pass_icon.png'" (click)="lockunlockuser($event,row)">
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-         <ng-container  matColumnDef="userstatus" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <mat-button-toggle-group name="activegroup" aria-label="Font Style"  (change)="onToggleGroupChange($event,row)">
-            <mat-button-toggle [checked]="row.active == 1" value="1">Active</mat-button-toggle>
-            <mat-button-toggle [checked]="row.active == 0" value="0">Inactive</mat-button-toggle>
-          </mat-button-toggle-group>
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-         <ng-container  matColumnDef="useraction" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <button mat-flat-button class="creat_bt view_bt"  (click)="getusereditdetails(row)">Edit</button>
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </table>
-  <mat-paginator  #pagination style-paginator showFirstLastButtons  [length]="this.listData.filteredData.length"
-              [pageSize]="7"
-              >
-      </mat-paginator>
+<mat-form-field appearance="fill" class="example-full-width">
+   <mat-label>Select Type</mat-label>
+   <mat-select formControlName="Rolestatus">
+     <mat-option value="1"  >
+       Active
+     </mat-option>
+     <mat-option value="0">
+       Inactive
+     </mat-option>
+   
+   </mat-select>
+   <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
+ </mat-form-field>
+</div>
+
+  <div>
+    <button  mat-flat-button 
+    style="padding:0 20px 0 20px" (click)="Canceltype()">
+   Cancel
+     </button>
+     <button  mat-flat-button 
+    style="padding:0 20px 0 20px" (click)="SubmitRoleType()">
+     Submit
+     </button>
+  </div>
+</form> 
+
+</div>
+
+<div *ngIf="ShowBranchEdit">
+  <form [formGroup]="BranchForm">
+    <div>Create Branch</div>
+    <div>
+      <mat-form-field appearance="fill" class="example-full-width">
+           <mat-label>Branch Name</mat-label>
+           <input matInput  formControlName="Branch_Name">
+           <mat-error *ngIf="checkError('Branch_Name', 'required')">Branch Name is required</mat-error>
+           <mat-error *ngIf="BranchForm.controls.Branch_Name.errors?.invalidservices">
+               Black-Listed characters `<>'"&` are not allowed
+             </mat-error>
+         </mat-form-field>
+   </div>
+   
+  <div>
+  <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Select Active / Inactive*</mat-label>
+    <mat-select formControlName="Active" >
+      <mat-option  value="1"  >
+       Active
+      </mat-option>
+      <mat-option  value="0"  >
+        Inactive
+       </mat-option>
+    </mat-select>
+    <mat-error *ngIf="BranchForm.controls.Active.errors?.required">
+      Please select Active / Inactive
+    </mat-error>
+  </mat-form-field>
+  </div>
+    <div>
+      <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="Canceltype()">
+     Cancel
+       </button>
+       <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="SubmitBranchType()">
+       Submit
+       </button>
+    </div>
+  </form> 
+  
+  </div>
+
+  <div *ngIf="ShowCommentEdit">
+    <form [formGroup]="CommentForm">
+      <div>Comment Type</div>
+      <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Comment Type</mat-label>
+             <input matInput  formControlName="Comment">
+             <mat-error *ngIf="checkError('Comment', 'required')">Comment Type is required</mat-error>
+             <mat-error *ngIf="CommentForm.controls.Comment.errors?.invalidservices">
+                 Black-Listed characters `<>'"&` are not allowed
+               </mat-error>
+           </mat-form-field>
+     </div>
+    
+      <div>
+        <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="Canceltype()">
+       Cancel
+         </button>
+         <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="SubmitCommentType()">
+         Submit
+         </button>
+      </div>
+    </form> 
+    
+    </div>
+
+<div>
+<table style="width: 100%;" mat-table [dataSource]="listData" class="ms_table" matSort>
+    <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+        
+            <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+            <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
+    </ng-container>
+    <ng-container  matColumnDef="useractive" >
+        <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+      <mat-cell  *matCellDef="let row" >
+        <mat-slide-toggle (change)="casshChange()" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+      </mat-cell>
+      <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+    </ng-container>
+    <ng-container  matColumnDef="ProjectTypeAction" >
+        <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+      <mat-cell  *matCellDef="let row" >
+        <button mat-flat-button  (click)="ShowEditType(row)">Edit</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</table>
 </div>
