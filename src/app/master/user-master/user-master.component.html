@@ -1,4 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
+  
     <div class="com_title">User Master </div>
     
     <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
@@ -15,74 +16,72 @@
     </div>
     
 </div>
-<div *ngIf="displaydiv">
-  <label>{{userlabel}}</label>
-  <form [formGroup]="_masterservice.usermasterform">
-    <!-- <div>
-        <div *ngFor="let vertical of verticalchipstodisplay" style="background:red;"> {{vertical.viewValue}}<span (click)="removesearchvertical(vertical)">X</span></div>
-    </div>
-    <div><button (click)="showhideverticalFn()">show / hide</button></div>
-    <div *ngIf="showhidevertical">
-      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="testsearchControl" />
-      <p *ngFor="let data of filteredSearchDatavertical | async">
-        <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
-          {{ data.viewValue }}
-    </mat-checkbox>
-      </p>
-    </div> -->
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter User Code</mat-label>
-          <input matInput formControlName="usercode" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.required">
-            User Code is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
 
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter First Name</mat-label>
-          <input matInput formControlName="firstname" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.required">
-            First Name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
+<div  fxLayout="column" fxLayoutAlign=" none"  class="con_data"  >
+  <div *ngIf="displaydiv" class="edit_masters">
+    <div class="edit_heda">
+      Edit : NIKESH BHABAL
     </div>
-
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Enter Last Name</mat-label>
-          <input matInput formControlName="lastname" />
-          <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.required">
-            Last Name is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
+    <form [formGroup]="_masterservice.usermasterform">
+      <div class="edit_body">
+        <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+   <div fxFlex="50" class="edit_body_in">
+     <div class="mt-cust-fd">
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Enter User Code</mat-label>
+      <input matInput formControlName="usercode" />
+      <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.required">
+        User Code is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+   <div fxFlex="50" class="edit_body_in">
+    <div class="mt-cust-fd">
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Enter First Name</mat-label>
+        <input matInput formControlName="firstname" />
+        <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.required">
+          First Name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
     </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Role</mat-label>
-          <mat-select  formControlName="role"  [errorStateMatcher]="matcher" disableOptionCentering>
-            <mat-option *ngFor="let roles of mst_roles_array" [value]="roles.value">
-
-              {{roles.role_name}}
-            </mat-option>
-            
-          </mat-select>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.role.errors?.required">
-            Role is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+   </div>
+        </div>
+        <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+         <div class="edit_body_in" fxFlex="50" >
+          <div class="mt-cust-fd">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Enter Last Name</mat-label>
+              <input matInput formControlName="lastname" />
+              <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.required">
+                Last Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+         </div>
+         <div class="edit_body_in" fxFlex="50">
+          <div class="mt-cust-fd">
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Select Role</mat-label>
+              <mat-select  formControlName="role"  [errorStateMatcher]="matcher" disableOptionCentering>
+                <mat-option *ngFor="let roles of mst_roles_array" [value]="roles.value">
+    
+                  {{roles.role_name}}
+                </mat-option>
+                
+              </mat-select>
+              <mat-error *ngIf="_masterservice.usermasterform.controls.role.errors?.required">
+                Role is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+         </div>
+              </div>
+       </div>
+       <div class="edit_body">
+         <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+    <div fxFlex="50" class="edit_body_in">
       <div class="mt-cust-fd">
         <mat-form-field appearance="fill" class="example-full-width">
           <mat-label>Enter Email ID</mat-label>
@@ -96,7 +95,7 @@
         </mat-form-field>
       </div>
     </div>
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
+    <div fxFlex="50" class="edit_body_in">
       <div class="mt-cust-fd">
         <mat-form-field appearance="fill" class="example-full-width">
           <mat-label>Enter Mobile Number</mat-label>
@@ -110,214 +109,154 @@
         </mat-form-field>
       </div>
     </div>
-
-    <div>
-        <div *ngFor="let branch of branchchipstodisplay" style="background:red;"> {{branch.viewValue}}<span (click)="removesearch(branch)">X</span></div>
-    </div>
-    <div><button (click)="showhidebranchFn()">show / hide</button></div>
-    <div *ngIf="showhidebranch">
-      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
-      <p *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">  <mat-checkbox  [checked]="allbranchselected" #allbranchchck (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
-                  Select All
-            </mat-checkbox></p>
-      <p *ngFor="let data of filteredSearchData | async">
-        <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
-          {{ data.viewValue }}
-    </mat-checkbox>
-      </p>
-    </div>
-
-    <div>
-        <div *ngFor="let vertical of verticalchipstodisplay" style="background:red;"> {{vertical.viewValue}}<span (click)="removesearchvertical(vertical)">X</span></div>
-    </div>
-    <div><button (click)="showhideverticalFn()">show / hide</button></div>
-    <div *ngIf="showhidevertical">
-      <input matInput style="display: inline-block;width: 180px;height: 51px;background: red;" autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
-      <p *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
-        <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
-            Select All
-      </mat-checkbox>
-      </p>
-      <p *ngFor="let data of filteredSearchDatavertical | async">
-        <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
-          {{ data.viewValue }}
-    </mat-checkbox>
-      </p>
-    </div>
-    <!-- <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Branch</mat-label>
+         </div>
          
-          <mat-chip-list #chipListSearch >
-            <mat-chip  *ngFor="let branch of branchchipstodisplay"  [selectable]="selectable"
-                     [removable]="removable"  (removed)="removesearch(branch)">
-                     {{branch.viewValue}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-          <input type="text"
-            #branchinput
-            [matAutocomplete]="auto" 
-            matInput placeholder="Search"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (focus)="clearinput($event)"
-           (matChipInputTokenEnd)="addSearch($event)"
-            [formControl]="branchSearchControl" 
-            [matChipInputFor]="chipListSearch"
-            />
-        </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
-              <div>
-                <mat-checkbox (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
-                  Select All
-            </mat-checkbox>
-            </div>
-            </mat-option>
-            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data"  >
-              <div>
-                <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
-                  {{ data.viewValue }}
-            </mat-checkbox>
-            </div>
-          </mat-option>
-        </mat-autocomplete>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.branch.errors?.required">
-            Branch is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Vertical</mat-label>
-          
-          <mat-chip-list #chipListSearchvertical >
-            <mat-chip  *ngFor="let vertical of verticalchipstodisplay"  [selectable]="selectable"
-                     [removable]="removable"  (removed)="removesearchvertical(vertical)">
-                     {{vertical.viewValue}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-          <input type="text"
-            [matAutocomplete]="autovertical" 
-            matInput placeholder="Search"
-            #verticalinput
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (focus)="clearinput($event)"
-           (matChipInputTokenEnd)="addSearch($event)"
-            [formControl]="vericalSearchControl" 
-            [matChipInputFor]="chipListSearchvertical"
-            />
-        </mat-chip-list>
-          <mat-autocomplete #autovertical="matAutocomplete" >
-            <mat-option *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
-              <div >
-                <mat-checkbox  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
-                  Select All
-            </mat-checkbox>
-            </div>
-            </mat-option>
-            <mat-option  *ngFor="let data of filteredSearchDatavertical | async" [value]="data"  >
-              <div>
-                <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
-                  {{ data.viewValue }}
-            </mat-checkbox>
-            </div>
-          </mat-option>
-        </mat-autocomplete>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.verticals.errors?.required">
-            Vertical is <strong>required</strong>
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div> -->
-
-
-    <!-- <div class="mat_fld_box_in" fxFlex="1 1 100%">
-      <div class="mt-cust-fd">
-        <mat-form-field>
-          <mat-select (openedChange)="openedChange($event)" placeholder="Select" formControlName="verticals" multiple>
-            <mat-select-trigger>
-              {{_masterservice.usermasterform.controls.verticals.value ? (_masterservice.usermasterform.controls.verticals.value[0] != undefined ?_masterservice.usermasterform.controls.verticals.value[0].viewValue : '') : ''}}
-              <span *ngIf="_masterservice.usermasterform.controls.verticals.value?.length > 1" class="additional-selection">
-                (+{{_masterservice.usermasterform.controls.verticals.value.length - 1}} {{_masterservice.usermasterform.controls.verticals.value?.length === 2 ? 'other' : 'others'}})
-              </span>
-            </mat-select-trigger>
-            <div class="select-container">
-            <mat-optgroup >
-          <mat-form-field style="width:100%;">
-            <input #search autocomplete="off" placeholder="Search" aria-label="Search" matInput [formControl]="searchTextboxControl">
-            
-                 </mat-form-field>
-            </mat-optgroup>
-            <mat-optgroup *ngIf="(filteredOptions | async).length == 0">
-              <div>No results found!</div>
-            </mat-optgroup>
-         <mat-option (onSelectionChange)="selectionChange($event)" *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.viewValue}}
-              </mat-option>
         </div>
-        </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
- -->
-
-
-
-    <div>
-      <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">Save</button>
-      <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" >Cancel</button>
-    </div>
-  </form>
-</div>
-<div>
-  <table mat-table [dataSource]="listData" style="width: 100%;" matSort>
-      <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+<div class="edit_body">
+    <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+        <div class="edit_body_in" fxFlex="100">
+          <div class="search_select" (click)="showhidebranchFn()">
+            <div>Select Branch</div>
+          </div>
+          <div class="search_select_chip"  [ngStyle]="{'display': (branchchips.length > 0) ? 'block' : 'none'}">
+            <perfect-scrollbar class="perfect_scroll_com">
+             <div fxLayout="row" fxLayoutAlign=" none">
+              <div class="search_chip_box"  *ngFor="let branch of branchchips" > {{branch.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
+              </div>
+            </perfect-scrollbar>
+            
+        </div>
+        <!-- <div><button (click)="showhideverticalFn()">show / hide</button></div> -->
+        <div *ngIf="showhidebranch" class="search_select_list" >
+          <div class="search_select_list_in">
+            <div class="search_con_lis">
+              <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
+              <img src="../../../assets/images/auto_search.png">
+            </div>
+            <div class="select_all_con" *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
+              <mat-checkbox [checked]="allbranchselected" #allbranchchck  (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
+                  Select All
+            </mat-checkbox>
+            <div class="clear_all_lab" (click)="ClearAllBranch()">Clear All</div>
+          </div>
+            <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
+              
+            <div class="select_all_con" *ngFor="let data of filteredSearchData | async">
+              <mat-checkbox [checked]="data.selected" (change)="toggleSelection($event,data)" (click)="$event.stopPropagation()">
+                {{ data.viewValue }}
+          </mat-checkbox>
+        </div>
+            </perfect-scrollbar>
+          </div>
           
-              <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-              <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
-      </ng-container>
-      <ng-container  matColumnDef="usercash" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <mat-slide-toggle (change)="casshChange($event,row)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-      <ng-container  matColumnDef="userlocked" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <img [src]="row.islocked == 1 ? 'assets/images/copay_icon.png' : 'assets/images/change_pass_icon.png'" (click)="lockunlockuser($event,row)">
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-         <ng-container  matColumnDef="userstatus" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <mat-button-toggle-group name="activegroup" aria-label="Font Style"  (change)="onToggleGroupChange($event,row)">
-            <mat-button-toggle [checked]="row.active == 1" value="1">Active</mat-button-toggle>
-            <mat-button-toggle [checked]="row.active == 0" value="0">Inactive</mat-button-toggle>
-          </mat-button-toggle-group>
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-         <ng-container  matColumnDef="useraction" >
-          <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-        <mat-cell  *matCellDef="let row" >
-          <button mat-flat-button class="creat_bt view_bt"  (click)="getusereditdetails(row)">Edit</button>
-        </mat-cell>
-        <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-         </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </table>
-  <mat-paginator  #pagination style-paginator showFirstLastButtons  [length]="this.listData.filteredData.length"
-              [pageSize]="7"
-              >
-      </mat-paginator>
+          
+          
+        </div>
+        </div>
+   </div>
 </div>
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div class="edit_body_in" fxFlex="100">
+              <div class="search_select" (click)="showhideverticalFn()">
+                <div>Select Verticals</div>
+              </div>
+              <div class="search_select_chip"  [ngStyle]="{'display': (verticalchips.length > 0) ? 'block' : 'none'}">
+                <perfect-scrollbar class="perfect_scroll_com">
+                 <div fxLayout="row" fxLayoutAlign=" none">
+                  <div class="search_chip_box"  *ngFor="let vertical of verticalchips" > {{vertical.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
+                  </div>
+                </perfect-scrollbar>
+                
+            </div>
+            <!-- <div><button (click)="showhideverticalFn()">show / hide</button></div> -->
+            <div *ngIf="showhidevertical" class="search_select_list" >
+              <div class="search_select_list_in">
+                <div class="search_con_lis">
+                  <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
+                  <img src="../../../assets/images/auto_search.png">
+                </div>
+                <div class="select_all_con" *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
+                  <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">
+                      Select All
+                </mat-checkbox>
+                <div class="clear_all_lab" (click)="ClearAllVerticals()">Clear All</div>
+              </div>
+                <perfect-scrollbar class="perfect_scroll_com" style="height: 120px;">
+                  
+                <div class="select_all_con" *ngFor="let data of filteredSearchDatavertical | async">
+                  <mat-checkbox [checked]="data.selected" (change)="toggleSelectionvertical($event,data)" (click)="$event.stopPropagation()">
+                    {{ data.viewValue }}
+              </mat-checkbox>
+            </div>
+                </perfect-scrollbar>
+              </div>
+              
+              
+              
+            </div>
+            </div>
+       </div>
+       </div>
+        <div>
+          <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" >Cancel</button>
+        </div>
+        </div>
+    </form>
+    
+  </div>
+  
+  <div class="fl_table_con">
+    <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 315px);
+          background-color: white;
+          height: 100vh;" >
+    <table mat-table [dataSource]="listData" class="ms_table"  matSort>
+        <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+  
+                <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
+        </ng-container>
+        <ng-container  matColumnDef="usercash" >
+            <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+          <mat-cell  *matCellDef="let row" >
+            <mat-slide-toggle (change)="casshChange($event,row)" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+          </mat-cell>
+          <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+           </ng-container>
+        <ng-container  matColumnDef="userlocked" >
+            <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
+          <mat-cell  *matCellDef="let row" >
+            <img [src]="row.islocked == 1 ? 'assets/images/copay_icon.png' : 'assets/images/change_pass_icon.png'" (click)="lockunlockuser($event,row)">
+          </mat-cell>
+          <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+           </ng-container>
+           <ng-container  matColumnDef="userstatus" >
+            <mat-header-cell  *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+          <mat-cell  *matCellDef="let row" >
+            <mat-button-toggle-group name="activegroup" aria-label="Font Style"  (change)="onToggleGroupChange($event,row)">
+              <mat-button-toggle [checked]="row.active == 1" value="1">Active</mat-button-toggle>
+              <mat-button-toggle [checked]="row.active == 0" value="0">Inactive</mat-button-toggle>
+            </mat-button-toggle-group>
+          </mat-cell>
+          <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+           </ng-container>
+           <ng-container  matColumnDef="useraction" stickyEnd>
+            <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+          <mat-cell  *matCellDef="let row" >
+            <button mat-flat-button class="creat_bt view_bt"  (click)="getusereditdetails(row)">Edit</button>
+          </mat-cell>
+          <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+           </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </table>
+    </perfect-scrollbar>
+    <mat-paginator  #pagination style-paginator showFirstLastButtons  [length]="this.listData.filteredData.length"
+                [pageSize]="7"
+                >
+        </mat-paginator>
+  </div>
+</div>
+

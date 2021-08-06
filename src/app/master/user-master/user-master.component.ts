@@ -392,6 +392,22 @@ showhidebranchFn()
     this._masterservice.usermasterform.controls.branch.setValue(branchid);
   }
 
+  ClearAllBranch()
+  {
+    this.allbranchchck['checked'] = false;
+    this.barnch_array_selected.forEach(elt =>{
+      elt.selected = false;
+    });
+    this.branchchips = [];
+    this.branchchipstodisplay = [];
+    let branchid = "";
+    this.branchchips.forEach(element =>{
+         branchid += element.value +",";     
+    });
+    branchid = branchid.substring(0,branchid.length - 1);
+    this._masterservice.usermasterform.controls.branch.setValue(branchid);
+  }
+
   selectallvertical(event)
   {
     if(event.checked)
@@ -424,6 +440,22 @@ showhidebranchFn()
     // {
     //   this.verticalinput.nativeElement.value = "";
     // }
+    let verticalid = "";
+    this.verticalchips.forEach(element =>{
+      verticalid += element.value +",";     
+    });
+    verticalid = verticalid.substring(0,verticalid.length - 1);
+    this._masterservice.usermasterform.controls.verticals.setValue(verticalid);
+  }
+
+  ClearAllVerticals()
+  {
+    this.allverticalchck['checked'] = false;
+    this.vertical_array_selected.forEach(elt =>{
+      elt.selected = false;
+    });
+    this.verticalchips = [];
+    this.verticalchipstodisplay = [];
     let verticalid = "";
     this.verticalchips.forEach(element =>{
       verticalid += element.value +",";     
