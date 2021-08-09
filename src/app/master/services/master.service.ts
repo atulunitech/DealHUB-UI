@@ -39,6 +39,15 @@ export class mst_branch{
   _user_id:string;
 }
 
+export class mst_sector{
+  _Sector_Id:number;
+  _Sector_Name:string;
+  _active:string;
+  _user_id:string;
+}
+
+
+
 export class mst_commenttype{
   _comment_type_id:number;
   _comment_type:string;
@@ -87,6 +96,7 @@ export class MasterService {
    usermasterform:FormGroup;
    usermodel:users;
    branchmodel:mst_branch;
+   sectormodel:mst_sector;
    commentmodel:mst_commenttype;
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
   
@@ -104,6 +114,11 @@ export class MasterService {
   createnewbranchmodel()
   {
     this.branchmodel = new mst_branch();
+  }
+
+  createnewsectormodel()
+  {
+    this.sectormodel = new mst_sector();
   }
 
   createnewcommentmodel()
@@ -187,6 +202,10 @@ export class MasterService {
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Branch",modeldata);  
   }
 
+  Update_Mst_Sector(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/UpdateMstSector",modeldata);  
+  }
+
   GetMstCommentType():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
     modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
@@ -196,5 +215,12 @@ export class MasterService {
 
   Update_Mst_Comment(modeldata):Observable<any>{
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_CommentType",modeldata);  
+  }
+
+  GetMstSector():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSector",modeldata);  
   }
 }

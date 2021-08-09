@@ -220,6 +220,51 @@
   
   </div>
 
+
+  <div *ngIf="ShowSectorEdit">
+    <form [formGroup]="SectorForm">
+      <div>Create Sector</div>
+      <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Sector Name</mat-label>
+             <input matInput  formControlName="Sector_Name">
+             <mat-error *ngIf="checkError('Sector_Name', 'required')">Sector Name is required</mat-error>
+             <mat-error *ngIf="SectorForm.controls.Sector_Name.errors?.invalidservices">
+                 Black-Listed characters `<>'"&` are not allowed
+               </mat-error>
+           </mat-form-field>
+     </div>
+     
+    <div>
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Select Active / Inactive*</mat-label>
+      <mat-select formControlName="Active" >
+        <mat-option  value="1"  >
+         Active
+        </mat-option>
+        <mat-option  value="0"  >
+          Inactive
+         </mat-option>
+      </mat-select>
+      <mat-error *ngIf="SectorForm.controls.Active.errors?.required">
+        Please select Active / Inactive
+      </mat-error>
+    </mat-form-field>
+    </div>
+      <div>
+        <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="Canceltype()">
+       Cancel
+         </button>
+         <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="SubmitSectorType()">
+         Submit
+         </button>
+      </div>
+    </form> 
+    
+    </div>
+
   <div *ngIf="ShowCommentEdit">
     <form [formGroup]="CommentForm">
       <div>Comment Type</div>
