@@ -117,12 +117,20 @@ showhideverticalFn()
 {
   this.showhidevertical = !this.showhidevertical;
 }
-
+clickOutside() {
+  this.showhidevertical = !this.showhidevertical;
+}
 
 showhidebranchFn()
 {
   this.showhidebranch = !this.showhidebranch;
 }
+
+showhidebrranchfn_out()
+{
+  this.showhidebranch = !this.showhidebranch;
+}
+
 
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();

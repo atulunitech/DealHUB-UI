@@ -11,6 +11,7 @@ import { ProjectTypeComponent } from './project-type/project-type.component';
 import { MaterialModule } from '../shared/materialmodule/materialmodule.module';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserMasterComponent } from './user-master/user-master.component';
+import { ClickOutsideDirective } from './clickoutside.directive';
 import { PerfectScrollbarModule, PerfectScrollbarConfigInterface,
   PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
   import { MatMenuModule } from '@angular/material/menu';
@@ -21,7 +22,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 
 @NgModule({
-  declarations: [MasterDataComponent, MasterListingComponent, ProjectTypeComponent, UserMasterComponent],
+  declarations: [MasterDataComponent, MasterListingComponent, ProjectTypeComponent,ClickOutsideDirective, UserMasterComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,

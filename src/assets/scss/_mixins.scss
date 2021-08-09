@@ -897,7 +897,73 @@
 }
 
 //end
+// s
+.maser_toggel
+{
+  position: relative;
+  ::ng-deep .mat-slide-toggle
+ {
+   &::after
+   {
+    content: 'NO';
+    position: absolute;
+    top: 0px;
+    right: 9px;
+    font-size: 0.7rem;
+    color: #fff;
+    text-transform: uppercase;
+   }
+   &.mat-checked
+   {
+     &::after
+     {
+       content: 'yes';
+       position: absolute;
+       top: 0px;
+       left: 5px;
+       font-size: 0.7rem;
+       color: #fff;
+       text-transform: uppercase;
+     }
+    .mat-slide-toggle-label
+    {
+      .mat-slide-toggle-bar
+      {
+        background-color: #345d9d;
+        .mat-slide-toggle-thumb-container
+      {
+       left: 13px;
+        .mat-slide-toggle-thumb
+        {
+         background-color: #fff;
+        }
+      }
+      }
+    }
+   }
+  .mat-slide-toggle-label
+  {
+    .mat-slide-toggle-bar
+    {
+      width: 48px;
+      height: 20px;
+      border-radius: 10px;
+      .mat-slide-toggle-thumb-container
+      {
+        top: 2px;
+    left: 2px;
+        .mat-slide-toggle-thumb
+        {
+          width: 16px;
+          height: 16px;
+        }
+      }
 
+    }
+  }
+ }
+}
+// e
 //startloader
 // Functions
 @function colour($value) {
