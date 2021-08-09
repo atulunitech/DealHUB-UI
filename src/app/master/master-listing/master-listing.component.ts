@@ -29,6 +29,7 @@ export class MasterListingComponent implements OnInit {
  public PrivilegeForm:FormGroup;
 public RoleForm:FormGroup;
 public BranchForm:FormGroup;
+public SectorForm:FormGroup;
 public CommentForm:FormGroup;
   constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
@@ -38,6 +39,7 @@ public CommentForm:FormGroup;
   RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','active','ProjectTypeAction'];
   BranchColumn: string[] = ['Branch_Name','Active','ProjectTypeAction'];
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
+  SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
   PrivilegeId:number=0;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -100,6 +102,13 @@ public CommentForm:FormGroup;
    {
     this.CommentForm = new FormGroup({
       Comment : new FormControl('', [Validators.required,this.NoInvalidCharacters])
+    });
+   }
+   else if(this.masterType == "Sector")
+   {
+    this.SectorForm = new FormGroup({
+      Sector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Active : new FormControl('', [Validators.required])
     });
    }
   
@@ -192,6 +201,10 @@ public CommentForm:FormGroup;
                 this.GetMstCommentType();
                 this.masterType="Comment Type";
                 break;
+                case "Sector":
+                this.GetMstSector();
+                this.masterType="Sector";
+                break;
           
        default:
          break;
@@ -224,6 +237,10 @@ public CommentForm:FormGroup;
   else if(this.masterType=="Comment Type")
   {
     return this.CommentForm.controls[controlName].hasError(errorName);
+  }
+  else if(this.masterType=="Sector")
+  {
+    return this.SectorForm.controls[controlName].hasError(errorName);
   }
     
   }
@@ -271,6 +288,14 @@ public CommentForm:FormGroup;
     this.CommentForm.controls.Comment.setValue(Details.Comment_Type);
     //this.BranchForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
+  else if(this.masterType=="Sector")
+  {
+    this._masterservice.createnewsectormodel();
+    this.ShowSectorEdit=true;
+    this._masterservice.sectormodel._Sector_Id = Details.Sector_Id ;
+    this.SectorForm.controls.Sector_Name.setValue(Details.Sector_Name);
+    this.SectorForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+  }
   }
   Canceltype()
   {
@@ -301,6 +326,12 @@ public CommentForm:FormGroup;
       this.ShowCommentEdit = false;
       this.CommentForm.controls.Comment.setValue("");
      // this.BranchForm.controls.Active.setValue("");
+    }
+    else if(this.masterType=="Sector")
+    {
+      this.ShowSectorEdit = false;
+      this.SectorForm.controls.Sector_Name.setValue("");
+      this.SectorForm.controls.Active.setValue("");
     }
     
 
@@ -346,6 +377,14 @@ createType()
     //this.CommentControl.setValue("");
     this.CommentForm.controls.Comment.setValue("");
   }
+  else if(this.masterType == "Sector")
+  {
+    this.ShowSectorEdit=true;
+    this._masterservice.createnewsectormodel();
+    this._masterservice.sectormodel._Sector_Id = 0;
+    this.SectorForm.controls.Sector_Name.setValue("");
+    this.SectorForm.controls.Active.setValue("");
+  }
 
 }
 //project Type Start
@@ -355,6 +394,7 @@ DomainId:number=0;
 Role_id:number=0;
 ShowRoleEdit:boolean=false;
 ShowBranchEdit:boolean=false;
+ShowSectorEdit:boolean=false;
 ShowCommentEdit:boolean=false;
 GetMstDomains()
 {
@@ -531,6 +571,43 @@ SubmitCommentType()
 		this._mesgBox.showSucess(Result[0].message);
     this.ShowCommentEdit = false;
     this.GetMstCommentType();
+  },
+  (error:HttpErrorResponse) =>{
+    this._mesgBox.showError(error.message);
+  });
+
+}
+
+//Sector Start
+
+GetMstSector()
+{
+  this._masterservice.GetMstSector().subscribe((Result)=>{
+    var res=JSON.parse(Result);
+    this.dashboardData=res.Table;
+    this.BindGridDetails();
+    this.displayedColumns=this.SectorColumn; 
+  },
+  (error:HttpErrorResponse) =>{
+
+  });
+}
+
+SubmitSectorType()
+{
+  if(this._masterservice.sectormodel._Sector_Id == null)
+  {
+    this._masterservice.sectormodel._Sector_Id =0;
+  }
+  this._masterservice.sectormodel._Sector_Name = this.SectorForm.controls.Sector_Name.value;
+  this._masterservice.sectormodel._active = this.SectorForm.controls.Active.value;
+  this._masterservice.sectormodel._user_id = localStorage.getItem('UserCode');
+
+  this._masterservice.Update_Mst_Sector(this._masterservice.sectormodel).subscribe((Result)=>{
+    Result = JSON.parse(Result);
+		this._mesgBox.showSucess(Result[0].message);
+    this.ShowSectorEdit = false;
+    this.GetMstSector();
   },
   (error:HttpErrorResponse) =>{
     this._mesgBox.showError(error.message);
