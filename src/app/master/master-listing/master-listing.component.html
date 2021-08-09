@@ -136,7 +136,7 @@
  <div>
   <mat-form-field appearance="fill" class="example-full-width">
     <mat-label>Select Privilege*</mat-label>
-    <mat-select formControlName="" >
+    <mat-select formControlName="privilege" multiple>
       <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
         {{privilege.viewValue}}
       </mat-option>
@@ -146,6 +146,7 @@
     </mat-error>
   </mat-form-field>
  </div>
+ 
  <div>
   <mat-form-field appearance="fill" class="example-full-width">
      <mat-label>Select Type</mat-label>

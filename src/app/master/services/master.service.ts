@@ -93,5 +93,15 @@ export class MasterService {
   Update_Mst_Roles(modeldata):Observable<any>{
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Roles",modeldata);  
   }
+
   //roles function
+  //Forms Function
+  GetMstForms():Observable<any>
+  {
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstForms",modeldata);  
+  }
+  //Forms Function
 }

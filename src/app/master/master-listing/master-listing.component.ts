@@ -26,13 +26,16 @@ export class MasterListingComponent implements OnInit {
 //FormGroup Declartaion
  public ProjectTypeForm:FormGroup;
  public PrivilegeForm:FormGroup;
-public RoleForm:FormGroup;
+ public RoleForm:FormGroup;
+ public Forms:FormGroup;
+
   constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
   ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
   PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
   RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','Active','ProjectTypeAction'];
+  formsColumn:string[]=['form_name','url','Active','ProjectTypeAction'];
   PrivilegeId:number=0;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -83,6 +86,17 @@ public RoleForm:FormGroup;
       Rolestatus:new FormControl("", [Validators.required]),
     });
     
+   }
+   else if( this.masterType=="Forms" )
+   {
+    this.Forms = new FormGroup({
+      // Validators.email,
+      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      privilege:new FormControl('', [Validators.required]),
+      Rolestatus:new FormControl("", [Validators.required]),
+    });
    }
   
   }
@@ -166,7 +180,10 @@ public RoleForm:FormGroup;
             this.GetMstRole();
             this.masterType="Roles";
             break;
-          
+            case "Forms":
+              this.GetMstForms();
+              this.masterType="Forms";
+              break;
        default:
          break;
      }
@@ -238,7 +255,8 @@ public RoleForm:FormGroup;
     }
     else if(this.masterType=="Roles")
     {
-     
+     this.ShowRoleEdit==false;
+
     }
     
 
@@ -381,4 +399,17 @@ SubmitRoleType()
 
 }
 //Roles End
+//Forms Start
+GetMstForms()
+{
+  this._masterservice.GetMstForms().subscribe((Result)=>{
+    console.log(Result);
+    var res=JSON.parse(Result);
+    this.dashboardData=res.Table;
+  
+    this.BindGridDetails();
+    this.displayedColumns=this.formsColumn;
+  })
+}
+//Forms End
 }
