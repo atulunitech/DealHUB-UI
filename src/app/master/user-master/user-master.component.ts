@@ -498,7 +498,9 @@ showhidebrranchfn_out()
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    maxWidth: "400px",
+    // maxWidth: "400px",
+    panelClass: 'custom-modalbox-as',
+      backdropClass: 'popupBackdropClass',
     data: dialogData
   });
 
@@ -560,7 +562,9 @@ showhidebrranchfn_out()
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    maxWidth: "400px",
+    // maxWidth: "400px",
+    panelClass: 'custom-modalbox-as',
+      backdropClass: 'popupBackdropClass',
     data: dialogData
   });
 
@@ -774,7 +778,9 @@ onToggleGroupChange(evt,data)
 const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
 const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-  maxWidth: "400px",
+  // maxWidth: "400px",
+  panelClass: 'custom-modalbox-as',
+      backdropClass: 'popupBackdropClass',
   data: dialogData
 });
 
