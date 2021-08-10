@@ -331,7 +331,7 @@ public pagesListForm:FormGroup;
     {
       this.ShowPrivilegeEdit=false;
       this.PrivilegeForm.controls.privilege_name.setValue("");
-
+      this.PrivilegeForm.controls.ProjectStatus.setValue("");
       this.GetMstPrivilege();
     }
     else if(this.masterType=="Roles")
