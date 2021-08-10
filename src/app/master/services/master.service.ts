@@ -46,6 +46,38 @@ export class mst_sector{
   _user_id:string;
 }
 
+export class mst_subsector{
+  _SubSector_Id:number;
+  _SubSector_Name:string;
+  _Sector_Id:string;
+  _user_id:string;
+}
+
+
+export class mst_solutioncategory{
+  _solutioncategory_Id:number;
+  _solutioncategory_name:string;
+  _active:string;
+  _user_id:string;
+}
+
+export class mst_solution{
+  _Solution_Id:number;
+  _Solution_Name:string;
+  _Solutioncategory_Id:number;
+  _function_id:number;
+  _domain_id:number;
+  _active:string;
+  _user_id:string;
+}
+
+export class mst_doa{
+  _DOA_Matrix_Id:number;
+  _Message:string;
+  _MessageFor:string;
+  _Prefix:string;
+  _user_id:string;
+}
 
 
 export class mst_commenttype{
@@ -97,6 +129,10 @@ export class MasterService {
    usermodel:users;
    branchmodel:mst_branch;
    sectormodel:mst_sector;
+   subsectormodel:mst_subsector;
+   solutioncategorymodel:mst_solutioncategory;
+   solutionmodel:mst_solution;
+   doamodel:mst_doa;
    commentmodel:mst_commenttype;
   private apiUrl = `https://jsonplaceholder.typicode.com/posts`;
   
@@ -119,6 +155,26 @@ export class MasterService {
   createnewsectormodel()
   {
     this.sectormodel = new mst_sector();
+  }
+
+  createnewsubsectormodel()
+  {
+    this.subsectormodel = new mst_subsector();
+  }
+
+  createnewsolutioncategorymodel()
+  {
+    this.solutioncategorymodel = new mst_solutioncategory();
+  }
+
+  createnewsolutionmodel()
+  {
+    this.solutionmodel = new mst_solution();
+  }
+
+  createnewdoamodel()
+  {
+    this.doamodel = new mst_doa();
   }
 
   createnewcommentmodel()
@@ -202,8 +258,16 @@ export class MasterService {
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Branch",modeldata);  
   }
 
+  Update_Mst_SolutionCategory(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/UpdateMstSolutionCategory",modeldata);  
+  }
+
   Update_Mst_Sector(modeldata):Observable<any>{
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/UpdateMstSector",modeldata);  
+  }
+
+  Update_Mst_SubSector(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Subsector",modeldata);  
   }
 
   GetMstCommentType():Observable<any>{
@@ -217,10 +281,46 @@ export class MasterService {
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_CommentType",modeldata);  
   }
 
+  Update_Mst_Solution(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_solution",modeldata);  
+  }
+
+  Update_Mst_DOA(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Doa_Matrix_Messages",modeldata);  
+  }
+
   GetMstSector():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
     modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSector",modeldata);  
+  }
+
+  GetMstSolutionCategory():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSolutionCategory",modeldata);  
+  }
+
+  GetMstSolution():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSolution",modeldata);  
+  }
+
+  GetMstDoaMsg():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstDoaMatrixMessages",modeldata);  
+  }
+
+  GetMstSubSector():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSubsector",modeldata);  
   }
 }

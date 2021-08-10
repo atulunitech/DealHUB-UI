@@ -5,10 +5,10 @@
       <div class="serch_box_ms">
       
           <div class="search_con">
-          <input type="text">
+          <input type="text" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()" />
       </div>
       <div class="search_icon"><img src="assets/images/search_icon.png"></div>
-      <div>
+      <div *ngIf="dontshowforDOA">
         <button  mat-flat-button 
         style="padding:0 20px 0 20px" (click)="createType()">         
         create </button>
@@ -178,7 +178,7 @@
 
 <div *ngIf="ShowBranchEdit">
   <form [formGroup]="BranchForm">
-    <div>Create Branch</div>
+    <div>{{createoredit}}</div>
     <div>
       <mat-form-field appearance="fill" class="example-full-width">
            <mat-label>Branch Name</mat-label>
@@ -220,10 +220,54 @@
   
   </div>
 
+  <div *ngIf="ShowSolutionCategoryEdit">
+    <form [formGroup]="SolutionCategoryForm">
+      <div>{{createoredit}}</div>
+      <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Solution Category Name</mat-label>
+             <input matInput  formControlName="SolutionCategory_Name">
+             <mat-error *ngIf="checkError('SolutionCategory_Name', 'required')">Solution Category Name is required</mat-error>
+             <mat-error *ngIf="SolutionCategoryForm.controls.SolutionCategory_Name.errors?.invalidservices">
+                 Black-Listed characters `<>'"&` are not allowed
+               </mat-error>
+           </mat-form-field>
+     </div>
+     
+    <div>
+    <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Select Active / Inactive*</mat-label>
+      <mat-select formControlName="Active" >
+        <mat-option  value="1"  >
+         Active
+        </mat-option>
+        <mat-option  value="0"  >
+          Inactive
+         </mat-option>
+      </mat-select>
+      <mat-error *ngIf="SolutionCategoryForm.controls.Active.errors?.required">
+        Please select Active / Inactive
+      </mat-error>
+    </mat-form-field>
+    </div>
+      <div>
+        <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="Canceltype()">
+       Cancel
+         </button>
+         <button  mat-flat-button 
+        style="padding:0 20px 0 20px" (click)="SubmitSolutionCategoryType()">
+         Submit
+         </button>
+      </div>
+    </form> 
+    
+    </div>
+
 
   <div *ngIf="ShowSectorEdit">
     <form [formGroup]="SectorForm">
-      <div>Create Sector</div>
+      <div>{{createoredit}}</div>
       <div>
         <mat-form-field appearance="fill" class="example-full-width">
              <mat-label>Sector Name</mat-label>
@@ -265,9 +309,184 @@
     
     </div>
 
+    <div *ngIf="ShowSubSectorEdit">
+      <form [formGroup]="SubSectorForm">
+        <div>{{createoredit}}</div>
+        <div>
+          <mat-form-field appearance="fill" class="example-full-width">
+               <mat-label>SubSector Name</mat-label>
+               <input matInput  formControlName="SubSector_Name">
+               <mat-error *ngIf="checkError('SubSector_Name', 'required')">SubSector Name is required</mat-error>
+               <mat-error *ngIf="SubSectorForm.controls.SubSector_Name.errors?.invalidservices">
+                   Black-Listed characters `<>'"&` are not allowed
+                 </mat-error>
+             </mat-form-field>
+       </div>
+       
+      <div>
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Select Sector*</mat-label>
+        <mat-select formControlName="Sector_Id" >
+          <mat-option *ngFor = "let data of Sectordropdown" [value]="data.value"  >
+           {{data.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="SubSectorForm.controls.Sector_Id.errors?.required">
+          Please select Sector
+        </mat-error>
+      </mat-form-field>
+      </div>
+        <div>
+          <button  mat-flat-button 
+          style="padding:0 20px 0 20px" (click)="Canceltype()">
+         Cancel
+           </button>
+           <button  mat-flat-button 
+          style="padding:0 20px 0 20px" (click)="SubmitSubSectorType()">
+           Submit
+           </button>
+        </div>
+      </form> 
+      
+      </div>
+
+      <div *ngIf="ShowDOAEdit">
+        <form [formGroup]="DOAForm">
+          <div>{{createoredit}}</div>
+          <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+                 <mat-label>Message</mat-label>
+                 <input matInput  formControlName="Message">
+                 <mat-error *ngIf="checkError('Message', 'required')">Message is required</mat-error>
+                 <mat-error *ngIf="DOAForm.controls.Message.errors?.invalidservices">
+                     Black-Listed characters `<>'"&` are not allowed
+                   </mat-error>
+               </mat-form-field>
+         </div>
+         
+         <div>
+          <mat-form-field appearance="fill" class="example-full-width">
+               <mat-label>Prefix</mat-label>
+               <input matInput  formControlName="Prefix">
+               <mat-error *ngIf="checkError('Prefix', 'required')">Prefix is required</mat-error>
+               <mat-error *ngIf="DOAForm.controls.Prefix.errors?.invalidservices">
+                   Black-Listed characters `<>'"&` are not allowed
+                 </mat-error>
+             </mat-form-field>
+       </div>
+
+       <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Message For</mat-label>
+             <input matInput  formControlName="MessageFor">
+             <mat-error *ngIf="checkError('MessageFor', 'required')">MessageFor is required</mat-error>
+             <mat-error *ngIf="DOAForm.controls.MessageFor.errors?.invalidservices">
+                 Black-Listed characters `<>'"&` are not allowed
+               </mat-error>
+           </mat-form-field>
+     </div>
+    
+    <div>
+          
+            <button  mat-flat-button 
+            style="padding:0 20px 0 20px" (click)="Canceltype()">
+           Cancel
+             </button>
+             <button  mat-flat-button 
+            style="padding:0 20px 0 20px" (click)="SubmitDOAMessages()">
+             Submit
+             </button>
+          </div>
+        </form> 
+        
+        </div>
+
+      <div *ngIf="ShowSolutionEdit">
+        <form [formGroup]="SolutionForm">
+          <div>{{createoredit}}</div>
+          <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+                 <mat-label>Solution Name</mat-label>
+                 <input matInput  formControlName="Solution_Name">
+                 <mat-error *ngIf="checkError('Solution_Name', 'required')">Solution Name is required</mat-error>
+                 <mat-error *ngIf="SolutionForm.controls.Solution_Name.errors?.invalidservices">
+                     Black-Listed characters `<>'"&` are not allowed
+                   </mat-error>
+               </mat-form-field>
+         </div>
+         
+        <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Select Solution Category*</mat-label>
+          <mat-select formControlName="SolutionCategory" >
+            <mat-option *ngFor = "let data of SolutionCategorydropdown" [value]="data.value"  >
+             {{data.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="SolutionForm.controls.SolutionCategory.errors?.required">
+            Please select Solution Category
+          </mat-error>
+        </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Select Function Type*</mat-label>
+            <mat-select formControlName="Function" >
+              <mat-option *ngFor = "let data of functiondropdown" [value]="data.value"  >
+               {{data.viewValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="SolutionForm.controls.Function.errors?.required">
+              Please select Function Type
+            </mat-error>
+          </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="fill" class="example-full-width">
+              <mat-label>Select Domain*</mat-label>
+              <mat-select formControlName="Domain" >
+                <mat-option *ngFor = "let data of domaindropdown" [value]="data.value"  >
+                 {{data.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="SolutionForm.controls.Domain.errors?.required">
+                Please select Domain
+              </mat-error>
+            </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Select Active / Inactive*</mat-label>
+                <mat-select formControlName="Active" >
+                  <mat-option  value="1"  >
+                   Active
+                  </mat-option>
+                  <mat-option  value="0"  >
+                    Inactive
+                   </mat-option>
+                </mat-select>
+                <mat-error *ngIf="SolutionForm.controls.Active.errors?.required">
+                  Please select Active / Inactive
+                </mat-error>
+              </mat-form-field>
+              </div>
+          <div>
+            <button  mat-flat-button 
+            style="padding:0 20px 0 20px" (click)="Canceltype()">
+           Cancel
+             </button>
+             <button  mat-flat-button 
+            style="padding:0 20px 0 20px" (click)="SubmitSolution()">
+             Submit
+             </button>
+          </div>
+        </form> 
+        
+        </div>
+
   <div *ngIf="ShowCommentEdit">
     <form [formGroup]="CommentForm">
-      <div>Comment Type</div>
+      <div>{{createoredit}}</div>
       <div>
         <mat-form-field appearance="fill" class="example-full-width">
              <mat-label>Comment Type</mat-label>
@@ -317,4 +536,8 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </table>
+<mat-paginator  style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length"
+                [pageSize]="7"
+                >
+        </mat-paginator>
 </div>
