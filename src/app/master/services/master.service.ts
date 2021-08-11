@@ -156,6 +156,14 @@ export class mst_doa{
   _user_id:string;
 }
 
+export class mst_business{
+  _function_id:number;
+  _function_code:string;
+  _function_name:string;
+  _active:number;
+  _user_id:string;
+}
+
 
 export class mst_commenttype{
   _comment_type_id:number;
@@ -210,6 +218,7 @@ export class MasterService {
    solutioncategorymodel:mst_solutioncategory;
    solutionmodel:mst_solution;
    doamodel:mst_doa;
+   businessmodel:mst_business;
    commentmodel:mst_commenttype;
   FunctionList:FunctionList[]=[];
   SectorList:SectorList[]=[];
@@ -258,6 +267,11 @@ export class MasterService {
   createnewdoamodel()
   {
     this.doamodel = new mst_doa();
+  }
+
+  createnewbusinessmodel()
+  {
+    this.businessmodel = new mst_business();
   }
 
   createnewcommentmodel()
@@ -337,6 +351,13 @@ export class MasterService {
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstBranch",modeldata);  
   }
 
+  GetMstBusiness():Observable<any>{
+    let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstFunctions",modeldata);  
+  }
+
   Update_Mst_Branch(modeldata):Observable<any>{
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/Update_Mst_Branch",modeldata);  
   }
@@ -347,6 +368,10 @@ export class MasterService {
 
   Update_Mst_Sector(modeldata):Observable<any>{
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/UpdateMstSector",modeldata);  
+  }
+
+  Update_Mst_Business(modeldata):Observable<any>{
+    return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/UpdateMstFunctions",modeldata);  
   }
 
   Update_Mst_SubSector(modeldata):Observable<any>{
