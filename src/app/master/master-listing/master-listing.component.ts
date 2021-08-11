@@ -558,6 +558,7 @@ dontshowforDOA:boolean = true;
     if( this.masterType=="Project Type")
     {
       this.ShowProjectTypeEdit=false;
+      this.GetMstDomains();
       this.ProjectTypeForm.controls.ProjectCode.setValue("");
       this.ProjectTypeForm.controls.ProjectName.setValue("");
       this.ProjectTypeForm.controls.ProjectStatus.setValue("");
@@ -565,19 +566,22 @@ dontshowforDOA:boolean = true;
     else if(this.masterType=="Privilege")
     {
       this.ShowPrivilegeEdit=false;
+      this.GetMstPrivilege();
       this.PrivilegeForm.controls.privilege_name.setValue("");
       this.PrivilegeForm.controls.ProjectStatus.setValue("");
-      this.GetMstPrivilege();
+      
     }
     else if(this.masterType=="Roles")
     {
-      this.ShowRoleEdit==false;
+      this.ShowRoleEdit=false;
+     this.GetMstRole();
+    
      this.Role_id=0;
      this.RoleForm.controls.Role_code.setValue("");
      this.RoleForm.controls.role_name.setValue("");
      this.RoleForm.controls.Rolestatus.setValue("");
      this.RoleForm.controls.equivalent_cassh_role_name.setValue("");
-     this.GetMstRole();
+   
     }
     else if(this.masterType=="Branch")
     {
@@ -600,6 +604,7 @@ dontshowforDOA:boolean = true;
     else if(this.masterType=="SubSector")
     {
       this.ShowSubSectorEdit = false;
+      
       this.SubSectorForm.controls.SubSector_Name.setValue("");
       this.SubSectorForm.controls.Sector_Id.setValue("");
     }
@@ -608,6 +613,7 @@ dontshowforDOA:boolean = true;
       this.ShowSolutionCategoryEdit = false;
       this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue("");
       this.SolutionCategoryForm.controls.Active.setValue("");
+
     }
     else if(this.masterType=="Solution")
     {
@@ -870,8 +876,8 @@ GetMstPrivilege()
     this.Canceltype();
     this._mesgBox.showSucess(Res[0].message);
    
-    this.ShowPrivilegeEdit=false;
-    this.GetMstPrivilege();
+  
+    
   });
 }
 //Privilege End
@@ -1065,7 +1071,7 @@ SubmitSubSectorType()
   this._masterservice.Update_Mst_SubSector(this._masterservice.subsectormodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
 		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSectorEdit = false;
+    this.ShowSubSectorEdit = false
     this.GetMstSubSector();
   },
   (error:HttpErrorResponse) =>{
