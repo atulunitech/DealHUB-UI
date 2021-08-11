@@ -21,12 +21,14 @@ import { BnNgIdleService } from 'bn-ng-idle';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatMenuModule } from '@angular/material/menu';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
-    BackendLayoutComponent
+    BackendLayoutComponent,
+    ConfirmDialogComponent
     
     
   ],

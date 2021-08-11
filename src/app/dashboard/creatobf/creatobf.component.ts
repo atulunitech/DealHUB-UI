@@ -1097,6 +1097,8 @@ downloadCoversheet(event)
     if(types == "coversheet")
        {
         this.editObfcoverbol = false;
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+        this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
         this._obfservices.ObfCreateForm.patchValue({coversheet: null});
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
@@ -1725,15 +1727,11 @@ downloadCoversheet(event)
     else{
       let branchname:string = ws.E7.w;
       let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
-      if(indexbranch == -1)
-      {
-        // this._mesgBox.showError("Branch location is not correct, kindly check");
-        //       this.coversheetfiles = [];
-        //       this.iscoversheet = !this.iscoversheet;
-        //       return false;
-        validmsg +="Branch location is not correct, kindly check ,";
-        validcount +=1;
-      }
+      // if(indexbranch == -1)
+      // {
+      //   validmsg +="Branch location is not correct, kindly check ,";
+      //   validcount +=1;
+      // }
       if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
@@ -2146,8 +2144,26 @@ downloadCoversheet(event)
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+          
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
-        //alert(error.message);
+      }
       })
     }
       }
@@ -2727,7 +2743,26 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+         
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
+      }
         //alert(error.message);
       });
     }

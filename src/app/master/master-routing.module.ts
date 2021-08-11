@@ -4,6 +4,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { MasterDataComponent } from './master-data/master-data.component';
 import { MasterListingComponent } from './master-listing/master-listing.component';
 import { ProjectTypeComponent } from './project-type/project-type.component';
+import { UserMasterComponent } from './user-master/user-master.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'ProjectType',
         component: ProjectTypeComponent
+      },
+      {
+        path: 'UserMaster',
+        component: UserMasterComponent
       }
     ]
   }
