@@ -1039,7 +1039,7 @@ SubmitSubSectorType()
   this._masterservice.Update_Mst_SubSector(this._masterservice.subsectormodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
 		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSectorEdit = false;
+    this.ShowSubSectorEdit = false;
     this.GetMstSubSector();
   },
   (error:HttpErrorResponse) =>{

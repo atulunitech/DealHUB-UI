@@ -740,7 +740,7 @@ Cancel
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </table>
-<mat-paginator  style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length"
+<mat-paginator  style-paginator showFirstLastButtons   [length]="listData.filteredData.length"
                 [pageSize]="7"
                 >
         </mat-paginator>
