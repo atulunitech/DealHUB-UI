@@ -1,12 +1,32 @@
-<h1 mat-dialog-title>
+<div class="con_icon_con">
+  <div class="conf_inn_con">
+    <img  src="/assets/images/tootltip_icon.png">
+  </div>
+</div>
+<mat-dialog-content class="mat-typography chan_pass_con con_from_new" >
+  
+  <div class="con_from_tex_con">
+    <div class="con_from_tex_con_titl">{{title}} ??</div>
+    <div class="con_from_disc_in">{{message}}</div>
+  </div>
+<!-- <h1 mat-dialog-title>
     {{title}}
   </h1>
   
   <div mat-dialog-content>
     <p>{{message}}</p>
+  </div> -->
+ 
+</mat-dialog-content> 
+  <mat-dialog-actions >
+    <div class="new_action_con">
+    <button class="no_bt_new" mat-dialog-close  (click)="onDismiss()">No</button>
+    <button mat-flat-button class="creat_bt bt_sp yes_bt_new" (click)="onConfirm()">Yes</button>
   </div>
-  
-  <div mat-dialog-actions>
+  </mat-dialog-actions>
+  <!-- <div mat-dialog-actions>
     <button mat-button (click)="onDismiss()">No</button>
     <button mat-raised-button color="primary" (click)="onConfirm()">Yes</button>
-  </div>
+  </div> -->
+
+  

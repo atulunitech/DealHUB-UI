@@ -35,6 +35,7 @@ public SubSectorForm:FormGroup;
 public SolutionCategoryForm:FormGroup;
 public SolutionForm:FormGroup;
 public DOAForm:FormGroup;
+public BusinessForm:FormGroup;
 public CommentForm:FormGroup;
 createoredit:string = "";
 dontshowforDOA:boolean = true;
@@ -54,6 +55,7 @@ dontshowforDOA:boolean = true;
   SolutionCategoryColumn: string[] = ['solutioncategory_name','Active','ProjectTypeAction'];
   SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Domain','Active','ProjectTypeAction'];
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
+  BusinessColumn: string[] = ['Business_Code','Business_Name','Active','ProjectTypeAction'];
   Sectordropdown:any[] = [];
   SolutionCategorydropdown:any[] = [];
   FormId:number=0;
@@ -191,6 +193,14 @@ dontshowforDOA:boolean = true;
 
     })
   }
+  else if(this.masterType == "Business Type")
+  {
+   this.BusinessForm = new FormGroup({
+     BusinessCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+     BusinessName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+     Active : new FormControl('', [Validators.required])
+   });
+  }
   }
   // Users Type Start
 
@@ -313,6 +323,10 @@ dontshowforDOA:boolean = true;
                     this.GetMstVerticals();
                     this.masterType="Vertical";
                     break;
+                    case "Business":
+                      this.GetMstBusiness();
+                      this.masterType="Business Type";
+                      break;
           default:
          break;
      }
@@ -372,6 +386,10 @@ dontshowforDOA:boolean = true;
   else if(this.masterType=="Vertical")
   {
     return this.VerticalForm.controls[controlName].hasError(errorName);
+  }
+  else if(this.masterType=="Business Type")
+  {
+    return this.BusinessForm.controls[controlName].hasError(errorName);
   }
   }
   ShowEditType(Details)
@@ -524,6 +542,16 @@ dontshowforDOA:boolean = true;
     this.VerticalForm.controls.Sector.patchValue(locationarray);
     }
   }
+  else if(this.masterType=="Business Type")
+  {
+    this._masterservice.createnewbusinessmodel();
+    this.ShowBusinessEdit=true;
+    this.createoredit = "Edit : "+Details.Business_Name;
+    this._masterservice.businessmodel._function_id = Details.function_id ;
+    this.BusinessForm.controls.BusinessCode.setValue(Details.Business_Code);
+    this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
+    this.BusinessForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+  }
   }
   Canceltype()
   {
@@ -617,6 +645,13 @@ dontshowforDOA:boolean = true;
       this.VerticalForm.controls.Sector.setValue("");
       this.VerticalForm.controls.VerticalStatus.setValue("");
       this.GetMstVerticals();
+    }
+    else if(this.masterType=="Business Type")
+    {
+      this.ShowBusinessEdit = false;
+      this.BusinessForm.controls.BusinessCode.setValue("");
+      this.BusinessForm.controls.BusinessName.setValue("");
+      this.BusinessForm.controls.Active.setValue("");
     }
 
     
@@ -746,6 +781,16 @@ createType()
     this.VerticalForm.controls.Sector.setValue("");
     this.VerticalForm.controls.VerticalStatus.setValue("");
   }
+  else if(this.masterType == "Business Type")
+  {
+    this.ShowBusinessEdit=true;
+    this.createoredit = "Create Business Type";
+    this._masterservice.createnewbusinessmodel();
+    this._masterservice.businessmodel._function_id = 0;
+    this.BusinessForm.controls.BusinessCode.setValue("");
+    this.BusinessForm.controls.BusinessName.setValue("");
+    this.BusinessForm.controls.Active.setValue("");
+  }
 }
 //project Type Start
 ShowProjectTypeEdit:boolean=false;
@@ -761,6 +806,7 @@ ShowSolutionEdit:boolean=false;
 ShowDOAEdit:boolean=false;
 ShowCommentEdit:boolean=false;
 ShowVerticalEdit:boolean=false;
+ShowBusinessEdit:boolean=false;
 VerticalId:number=0;
 ShowFormEdit:boolean=false;
 
@@ -1226,4 +1272,41 @@ Update_Mst_Verticals()
 
 }
 //Vertical End
+
+//Business Type start
+GetMstBusiness()
+{
+  this._masterservice.GetMstBusiness().subscribe((Result)=>{
+    var res=JSON.parse(Result);
+    this.dashboardData=res.Table;
+    this.BindGridDetails();
+    this.displayedColumns=this.BusinessColumn; 
+  },
+  (error:HttpErrorResponse) =>{
+
+  });
+}
+
+SubmitBusinessType()
+{
+  if(this._masterservice.businessmodel._function_id == null)
+  {
+    this._masterservice.businessmodel._function_id =0;
+  }
+  this._masterservice.businessmodel._function_name = this.BusinessForm.controls.BusinessName.value;
+  this._masterservice.businessmodel._function_code = this.BusinessForm.controls.BusinessCode.value;
+  this._masterservice.businessmodel._active = this.BusinessForm.controls.Active.value;
+  this._masterservice.businessmodel._user_id = localStorage.getItem('UserCode');
+
+  this._masterservice.Update_Mst_Business(this._masterservice.businessmodel).subscribe((Result)=>{
+    Result = JSON.parse(Result);
+		this._mesgBox.showSucess(Result[0].message);
+    this.ShowBusinessEdit = false;
+    this.GetMstBusiness();
+  },
+  (error:HttpErrorResponse) =>{
+    this._mesgBox.showError(error.message);
+  });
+}
+//Business Type end
 }
