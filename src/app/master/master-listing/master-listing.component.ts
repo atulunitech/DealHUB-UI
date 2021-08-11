@@ -42,7 +42,7 @@ dontshowforDOA:boolean = true;
   constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
-  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','ProjectTypeAction'];
+  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
   formsColumn:string[]=['form_name','url','Active','ProjectTypeAction'];
   VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Active','ProjectTypeAction'];
   PrivilegeColumn:string[]=['privilege_name','Active','ProjectTypeAction'];
@@ -398,7 +398,7 @@ dontshowforDOA:boolean = true;
   {
     this.ShowProjectTypeEdit=true;
     this.DomainId=Details.domain_id;
-  
+    this.createoredit = "Edit : "+Details.Project_Name;
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
     this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
@@ -407,7 +407,7 @@ dontshowforDOA:boolean = true;
   {
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
-  
+    this.createoredit = "Edit : "+Details.privilege_name;
     this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
     
@@ -417,6 +417,7 @@ dontshowforDOA:boolean = true;
 
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
+    this.createoredit = "Edit : "+Details.role_name;
     this.RoleForm.controls.Role_code.setValue(Details.role_code);
     this.RoleForm.controls.role_name.setValue(Details.role_name);
     this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
@@ -511,7 +512,7 @@ dontshowforDOA:boolean = true;
   {
     this.ShowFormEdit=true;
     this.FormId=Details.id;
-  
+    this.createoredit = "Edit : "+Details.form_name;
     this.pagesListForm.controls.Form_name.setValue(Details.form_name);
     this.pagesListForm.controls.Form_Url.setValue(Details.url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
@@ -520,6 +521,7 @@ dontshowforDOA:boolean = true;
   {
     this.ShowVerticalEdit=true;
     this.VerticalId=Details.Vertical_id
+    this.createoredit = "Edit : "+Details.Vertical_name;
     this.VerticalForm.controls.VerticalName.setValue(Details.Vertical_name);
     this.VerticalForm.controls.VerticalCode.setValue(Details.Vertical_code);
     this.VerticalForm.controls.Function.setValue(Details.Function_id);
@@ -556,6 +558,7 @@ dontshowforDOA:boolean = true;
     if( this.masterType=="Project Type")
     {
       this.ShowProjectTypeEdit=false;
+      this.GetMstDomains();
       this.ProjectTypeForm.controls.ProjectCode.setValue("");
       this.ProjectTypeForm.controls.ProjectName.setValue("");
       this.ProjectTypeForm.controls.ProjectStatus.setValue("");
@@ -563,19 +566,22 @@ dontshowforDOA:boolean = true;
     else if(this.masterType=="Privilege")
     {
       this.ShowPrivilegeEdit=false;
+      this.GetMstPrivilege();
       this.PrivilegeForm.controls.privilege_name.setValue("");
       this.PrivilegeForm.controls.ProjectStatus.setValue("");
-      this.GetMstPrivilege();
+      
     }
     else if(this.masterType=="Roles")
     {
-      this.ShowRoleEdit==false;
+      this.ShowRoleEdit=false;
+     this.GetMstRole();
+    
      this.Role_id=0;
      this.RoleForm.controls.Role_code.setValue("");
      this.RoleForm.controls.role_name.setValue("");
      this.RoleForm.controls.Rolestatus.setValue("");
      this.RoleForm.controls.equivalent_cassh_role_name.setValue("");
-     this.GetMstRole();
+   
     }
     else if(this.masterType=="Branch")
     {
@@ -598,6 +604,7 @@ dontshowforDOA:boolean = true;
     else if(this.masterType=="SubSector")
     {
       this.ShowSubSectorEdit = false;
+      
       this.SubSectorForm.controls.SubSector_Name.setValue("");
       this.SubSectorForm.controls.Sector_Id.setValue("");
     }
@@ -606,6 +613,7 @@ dontshowforDOA:boolean = true;
       this.ShowSolutionCategoryEdit = false;
       this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue("");
       this.SolutionCategoryForm.controls.Active.setValue("");
+
     }
     else if(this.masterType=="Solution")
     {
@@ -667,16 +675,30 @@ createType()
   {
     this.ShowProjectTypeEdit=true;
     this.DomainId=0;
+    this.createoredit = "Create Project Type";
+    this.ProjectTypeForm.controls.ProjectCode.setValue("");
+      this.ProjectTypeForm.controls.ProjectName.setValue("");
+      this.ProjectTypeForm.controls.ProjectStatus.setValue("");
+    
+
   }
   else if(this.masterType=="Privilege")
   {
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=0;
+    this.createoredit = "Create Privilege Type";
+    this.PrivilegeForm.controls.privilege_name.setValue("");
+    this.PrivilegeForm.controls.ProjectStatus.setValue("");
   }
   else if(this.masterType=="Roles")
   {
     this.ShowRoleEdit=true;
     this.Role_id=0;
+    this.createoredit = "Create Roles Type";
+    this.RoleForm.controls.Role_code.setValue("");
+     this.RoleForm.controls.role_name.setValue("");
+     this.RoleForm.controls.Rolestatus.setValue("");
+     this.RoleForm.controls.equivalent_cassh_role_name.setValue("");
   }
   else if(this.masterType == "Branch")
   {
@@ -749,11 +771,21 @@ createType()
   {
     this.ShowFormEdit=true;
     this.FormId=0;
+    this.createoredit = "Create Forms Type";
+    this.pagesListForm.controls.Form_name.setValue("");
+    this.pagesListForm.controls.Form_Url.setValue("");
+    this.pagesListForm.controls.FormStatus.setValue("");
   }
   else if(this.masterType=="Vertical")
   {
     this.ShowVerticalEdit=true;
     this.VerticalId=0;
+    this.createoredit = "Create Vertical Type";
+    this.VerticalForm.controls.VerticalName.setValue("");
+    this.VerticalForm.controls.VerticalCode.setValue("");
+    this.VerticalForm.controls.Function.setValue("");
+    this.VerticalForm.controls.Sector.setValue("");
+    this.VerticalForm.controls.VerticalStatus.setValue("");
   }
   else if(this.masterType == "Business Type")
   {
@@ -844,8 +876,8 @@ GetMstPrivilege()
     this.Canceltype();
     this._mesgBox.showSucess(Res[0].message);
    
-    this.ShowPrivilegeEdit=false;
-    this.GetMstPrivilege();
+  
+    
   });
 }
 //Privilege End
