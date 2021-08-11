@@ -26,6 +26,7 @@ export class MasterListingComponent implements OnInit {
  displayedColumns:Array<any>;
 //FormGroup Declartaion
  public ProjectTypeForm:FormGroup;
+ public pagesListForm:FormGroup;
  public PrivilegeForm:FormGroup;
 public RoleForm:FormGroup;
 public BranchForm:FormGroup;
@@ -41,7 +42,10 @@ dontshowforDOA:boolean = true;
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
   ProjectTypeColumn: string[] = ['Project_Code','Project_Name','ProjectTypeAction'];
-  PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
+  formsColumn:string[]=['form_name','url','Active','ProjectTypeAction'];
+  VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Active','ProjectTypeAction'];
+  PrivilegeColumn:string[]=['privilege_name','Active','ProjectTypeAction'];
+  //PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
   RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','active','ProjectTypeAction'];
   BranchColumn: string[] = ['Branch_Name','Active','ProjectTypeAction'];
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
@@ -52,6 +56,8 @@ dontshowforDOA:boolean = true;
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
   Sectordropdown:any[] = [];
   SolutionCategorydropdown:any[] = [];
+  FormId:number=0;
+  public VerticalForm:FormGroup;
   functiondropdown:any[] = [];
   domaindropdown:any[] = [];
   PrivilegeId:number=0;
@@ -97,8 +103,7 @@ dontshowforDOA:boolean = true;
     this.PrivilegeForm = new FormGroup({
       // Validators.email,
       privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      PrivilegeStatus:new FormControl("", [Validators.required])
 
     });
    }
@@ -110,7 +115,7 @@ dontshowforDOA:boolean = true;
       role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       privilege:new FormControl('', [Validators.required]),
-      Rolestatus:new FormControl("", [Validators.required]),
+      Rolestatus:new FormControl("", [Validators.required])
     });
     
    }
@@ -166,6 +171,26 @@ dontshowforDOA:boolean = true;
       MessageFor : new FormControl('', [Validators.required,this.NoInvalidCharacters])
     });
    }
+   else if( this.masterType=="Forms" )
+   {
+    this.pagesListForm = new FormGroup({
+      // Validators.email,
+      Form_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Form_Url:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      FormStatus:new FormControl("", [Validators.required]),
+    });
+   }
+  else if(this.masterType=="Vertical")
+  {
+    this.VerticalForm=new FormGroup({
+      VerticalName:new FormControl('',[Validators.required,this.NoInvalidCharacters]),
+      VerticalCode: new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Function:new FormControl('', [Validators.required]),
+      Sector:new FormControl("", [Validators.required]),
+      VerticalStatus:new FormControl("", [Validators.required])
+
+    })
+  }
   }
   // Users Type Start
 
@@ -280,8 +305,15 @@ dontshowforDOA:boolean = true;
                 this.GetMstDoa();
                 this.masterType="DOA Matrix Messages";
                 break;
-          
-       default:
+                case "Forms":
+                  this.GetMstForms();
+                  this.masterType="Forms";
+                  break;
+                case "Vertical":
+                    this.GetMstVerticals();
+                    this.masterType="Vertical";
+                    break;
+          default:
          break;
      }
   }
@@ -333,7 +365,14 @@ dontshowforDOA:boolean = true;
   {
     return this.DOAForm.controls[controlName].hasError(errorName);
   }
-    
+  else if(this.masterType=="Forms")
+  {
+    return this.pagesListForm.controls[controlName].hasError(errorName);
+  }
+  else if(this.masterType=="Vertical")
+  {
+    return this.VerticalForm.controls[controlName].hasError(errorName);
+  }
   }
   ShowEditType(Details)
 {
@@ -344,7 +383,7 @@ dontshowforDOA:boolean = true;
   
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
-    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active);
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Privilege")
   {
@@ -352,6 +391,8 @@ dontshowforDOA:boolean = true;
     this.PrivilegeId=Details.privilege_Id;
   
     this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
+    this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
+    
   }
   else if(this.masterType=="Roles")
   {
@@ -360,8 +401,26 @@ dontshowforDOA:boolean = true;
     this.Role_id=Details. id;
     this.RoleForm.controls.Role_code.setValue(Details.role_code);
     this.RoleForm.controls.role_name.setValue(Details.role_name);
-    this.RoleForm.controls.Rolestatus.setValue(Details.active);
+    this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
+    
     this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
+
+    if(this._masterservice.map_privilege_role.length != null)
+    {
+      let locationarray=[];
+   for(var i=0;i<this._masterservice.map_privilege_role.length;i++)
+   {
+
+      if(this._masterservice.map_privilege_role[i].role_id== this.Role_id)
+      {
+        locationarray.push(this._masterservice.map_privilege_role[i].Previlege_Id);
+      
+      }
+  
+    } 
+    this.RoleForm.controls.privilege.patchValue(locationarray);
+    }
+  
   }
   else if(this.masterType=="Branch")
   {
@@ -430,6 +489,39 @@ dontshowforDOA:boolean = true;
     this.DOAForm.controls.Prefix.setValue(Details.Prefix);
     this.DOAForm.controls.MessageFor.setValue(Details.Message_For);
   }
+  else if(this.masterType=="Forms")
+  {
+    this.ShowFormEdit=true;
+    this.FormId=Details.id;
+  
+    this.pagesListForm.controls.Form_name.setValue(Details.form_name);
+    this.pagesListForm.controls.Form_Url.setValue(Details.url);
+    this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
+  }
+  else if(this.masterType=="Vertical")
+  {
+    this.ShowVerticalEdit=true;
+    this.VerticalId=Details.Vertical_id
+    this.VerticalForm.controls.VerticalName.setValue(Details.Vertical_name);
+    this.VerticalForm.controls.VerticalCode.setValue(Details.Vertical_code);
+    this.VerticalForm.controls.Function.setValue(Details.Function_id);
+    this.VerticalForm.controls.VerticalStatus.setValue(Details.Active=="Active"?"1":"0");
+    if(this._masterservice.map_vertical_sector.length != null)
+    {
+      let locationarray=[];
+   for(var i=0;i<this._masterservice.map_vertical_sector.length;i++)
+   {
+
+      if(this._masterservice.map_vertical_sector[i].vertical_id== this.VerticalId)
+      {
+        locationarray.push(this._masterservice.map_vertical_sector[i].sector_id);
+      
+      }
+  
+    } 
+    this.VerticalForm.controls.Sector.patchValue(locationarray);
+    }
+  }
   }
   Canceltype()
   {
@@ -444,10 +536,18 @@ dontshowforDOA:boolean = true;
     {
       this.ShowPrivilegeEdit=false;
       this.PrivilegeForm.controls.privilege_name.setValue("");
+      this.PrivilegeForm.controls.ProjectStatus.setValue("");
+      this.GetMstPrivilege();
     }
     else if(this.masterType=="Roles")
     {
-     
+      this.ShowRoleEdit==false;
+     this.Role_id=0;
+     this.RoleForm.controls.Role_code.setValue("");
+     this.RoleForm.controls.role_name.setValue("");
+     this.RoleForm.controls.Rolestatus.setValue("");
+     this.RoleForm.controls.equivalent_cassh_role_name.setValue("");
+     this.GetMstRole();
     }
     else if(this.masterType=="Branch")
     {
@@ -494,6 +594,27 @@ dontshowforDOA:boolean = true;
       this.DOAForm.controls.Message.setValue("");
       this.DOAForm.controls.Prefix.setValue("");
       this.DOAForm.controls.MessageFor.setValue("");
+    }
+    else if(this.masterType=="Forms")
+    {
+     this.ShowFormEdit=false;
+     this.FormId=0;
+     this.pagesListForm.controls.Form_name.setValue("");
+     this.pagesListForm.controls.Form_Url.setValue("");
+     this.pagesListForm.controls.FormStatus.setValue("");
+     this.GetMstForms();
+     
+    }
+    else if(this.masterType=="Vertical")
+    {
+      this.ShowVerticalEdit=false;
+      this.VerticalId=0;
+      this.VerticalForm.controls.VerticalName.setValue("");
+      this.VerticalForm.controls.VerticalCode.setValue("");
+      this.VerticalForm.controls.Function.setValue("");
+      this.VerticalForm.controls.Sector.setValue("");
+      this.VerticalForm.controls.VerticalStatus.setValue("");
+      this.GetMstVerticals();
     }
 
     
@@ -589,6 +710,16 @@ createType()
     this.DOAForm.controls.Prefix.setValue("");
     this.DOAForm.controls.MessageFor.setValue("");
   }
+  else if(this.masterType=="Forms")
+  {
+    this.ShowFormEdit=true;
+    this.FormId=0;
+  }
+  else if(this.masterType=="Vertical")
+  {
+    this.ShowVerticalEdit=true;
+    this.VerticalId=0;
+  }
 }
 //project Type Start
 ShowProjectTypeEdit:boolean=false;
@@ -603,6 +734,10 @@ ShowSolutionCategoryEdit:boolean=false;
 ShowSolutionEdit:boolean=false;
 ShowDOAEdit:boolean=false;
 ShowCommentEdit:boolean=false;
+ShowVerticalEdit:boolean=false;
+VerticalId:number=0;
+ShowFormEdit:boolean=false;
+
 GetMstDomains()
 {
  
@@ -632,23 +767,10 @@ SubmitProjectType(ProjectTypeForm)
     console.log(Result);
     var Res=JSON.parse(Result);
     this._mesgBox.showSucess(Res[0].message);
-    this.clearProjectTypedata();
+    this.Canceltype();
     this.ShowProjectTypeEdit=false;
     this.GetMstDomains();
   });
-}
-clearProjectTypedata()
-{
-  this._masterservice.Mst_Domains._active=0;
-  this._masterservice.Mst_Domains._domain_name="";
-  this._masterservice.Mst_Domains._domain_code="";
-  this._masterservice.Mst_Domains._domain_id=0;
-  this._masterservice.Mst_Domains._user_id="";
- this.DomainId=0;
- this.ProjectTypeForm.controls.ProjectCode.setValue("");
- this.ProjectTypeForm.controls.ProjectName.setValue("");
- this.ProjectTypeForm.controls.ProjectStatus.setValue("");
-
 }
 //Project Type End
 
@@ -668,13 +790,14 @@ GetMstPrivilege()
 {
   this._masterservice.Mst_privilege._privilege_Id=this.PrivilegeId;
   this._masterservice.Mst_privilege._privilege_name=this.PrivilegeForm.controls.privilege_name.value;
-  
+  this._masterservice.Mst_privilege._active=this.PrivilegeForm.controls.PrivilegeStatus.value;
   this._masterservice.Mst_privilege._user_id=localStorage.getItem("UserCode");
   this._masterservice.Update_Mst_Privilege( this._masterservice.Mst_privilege).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
-    this._mesgBox.showSucess(Res[0].message);
     this.Canceltype();
+    this._mesgBox.showSucess(Res[0].message);
+   
     this.ShowPrivilegeEdit=false;
     this.GetMstPrivilege();
   });
@@ -689,25 +812,43 @@ GetMstRole()
   var res=JSON.parse(Result);
   this.dashboardData=res.mst_roles;
 this._masterservice.PrivilegeList=res.mst_privilege;
+this._masterservice.map_privilege_role=res.map_privilege_role;
   this.BindGridDetails();
   this.displayedColumns=this.RolesColumn;
   });
 }
-
-
 SubmitRoleType()
 {
   this._masterservice.mst_roles._id=this.Role_id;
   this._masterservice.mst_roles._role_name=this.RoleForm.controls.role_name.value;
   this._masterservice.mst_roles._role_code=this.RoleForm.controls.Role_code.value;
   this._masterservice.mst_roles._equivalent_cassh_role_name=this.RoleForm.controls.equivalent_cassh_role_name.value;
-  this._masterservice.mst_roles._Previlege_Id=this.RoleForm.controls.privilege.value;
+  
   this._masterservice.mst_roles._active=this.RoleForm.controls.Rolestatus.value;
+  var tempservicecat="";
+  if(this.RoleForm.controls.privilege.value.length!=0)
+  {
+    tempservicecat += this.RoleForm.controls.privilege.value;
+    
+  }
+  this._masterservice.mst_roles._Previlege_Id=tempservicecat;
+  this._masterservice.mst_roles._user_id=localStorage.getItem("UserCode");
+
   this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
     console.log(Result);
+    var res=JSON.parse(Result);
+    this.Canceltype();
+    if(res[0].status=="success")
+    {
+      this._mesgBox.showSucess(res[0].message);
+    }
+    else 
+    {
+      this._mesgBox.showError(res[0].message);
+    }
+  
   });
   
-
 
 }
 //Roles End
@@ -978,4 +1119,85 @@ SubmitDOAMessages()
 }
 
 //DOA messages end
+
+//Forms Start
+GetMstForms()
+{
+  this._masterservice.GetMstForms().subscribe((Result)=>{
+    console.log(Result);
+    var res=JSON.parse(Result);
+    this.dashboardData=res.Table;
+  
+    this.BindGridDetails();
+    this.displayedColumns=this.formsColumn;
+  })
+}
+SubmitFormList()
+{
+  this._masterservice.mst_Forms._form_name=this.pagesListForm.controls.Form_name.value;
+  this._masterservice.mst_Forms._url=this.pagesListForm.controls.Form_Url.value;
+  this._masterservice.mst_Forms._active=this.pagesListForm.controls.FormStatus.value;
+  this._masterservice.mst_Forms._id=this.FormId;
+  this._masterservice.mst_Forms. _user_id=localStorage.getItem("UserCode");
+  this._masterservice.Update_Mst_Forms(this._masterservice.mst_Forms).subscribe((Result)=>{
+    var res=JSON.parse(Result);
+    this.Canceltype();
+    if(res[0].status=="success")
+    {
+      this._mesgBox.showSucess(res[0].message);
+    }
+    else 
+    {
+      this._mesgBox.showError(res[0].message);
+    }
+   
+  })
+  
+}
+//Forms End
+
+//Vertical start
+GetMstVerticals()
+{
+  this._masterservice.GetMstVerticals().subscribe((Result)=>{
+    console.log(Result);
+    var res=JSON.parse(Result);
+    this.dashboardData=res.mst_verticals;
+    this._masterservice.FunctionList=res.mst_functions;
+    this._masterservice.SectorList=res.mst_sector;
+    this._masterservice.map_vertical_sector=res.map_vertical_sector;
+    this.BindGridDetails();
+    this.displayedColumns=this.VerticalColumn;
+  })
+}
+Update_Mst_Verticals()
+{
+  var tempservicecat="";
+  if(this.VerticalForm.controls.Sector.value.length!=0)
+  {
+    tempservicecat += this.VerticalForm.controls.Sector.value;
+    
+  }
+  this._masterservice.mst_verticals._vertical_id=this.VerticalId;
+  this._masterservice.mst_verticals._vertical_name=this.VerticalForm.controls.VerticalName.value;
+  this._masterservice.mst_verticals._vertical_code=this.VerticalForm.controls.VerticalCode.value;
+  this._masterservice.mst_verticals._function_id=this.VerticalForm.controls.Function.value;
+  this._masterservice.mst_verticals._active=this.VerticalForm.controls.VerticalStatus.value;
+  this._masterservice.mst_verticals._Sector_Id=tempservicecat;
+  this._masterservice.mst_verticals._user_id=localStorage.getItem("UserCode");
+  this._masterservice.Update_Mst_Verticals(this._masterservice.mst_verticals).subscribe((Result)=>{
+    var res=JSON.parse(Result);
+    this.Canceltype();
+    if(res[0].status=="success")
+    {
+      this._mesgBox.showSucess(res[0].message);
+    }
+    else 
+    {
+      this._mesgBox.showError(res[0].message);
+    }
+  })
+
+}
+//Vertical End
 }

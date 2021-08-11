@@ -20,160 +20,309 @@
 </div>
 
 <div *ngIf="ShowProjectTypeEdit">
- <form [formGroup]="ProjectTypeForm">
-    <div>Create Project Type</div>
+  <form [formGroup]="ProjectTypeForm">
+     <div>Create Project Type</div>
+     <div>
+        <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Project Code</mat-label>
+             <input matInput  formControlName="ProjectCode">
+             <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
+             <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
+                 Black-Listed characters `<>'"&` are not allowed
+               </mat-error>
+           </mat-form-field>
+     </div>
+     <div>
+     <mat-form-field appearance="fill" class="example-full-width">
+     <mat-label>Project Name</mat-label>
+     <input matInput  formControlName="ProjectName">
+     <mat-error *ngIf="checkError('ProjectName', 'required')">Project Name is required</mat-error>
+     <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
+       Black-Listed characters `<>'"&` are not allowed
+     </mat-error>
+     </mat-form-field>
+     </div>
+      <div>
+          <mat-form-field appearance="fill" class="example-full-width">
+             <mat-label>Select Type</mat-label>
+             <mat-select formControlName="ProjectStatus">
+               <mat-option value="1"  >
+                 Active
+               </mat-option>
+               <mat-option value="0">
+                 Inactive
+               </mat-option>
+             
+             </mat-select>
+             <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Status is required</mat-error>
+           
+            
+           </mat-form-field>
+     </div>
+     <div>
+       <button  mat-flat-button 
+       style="padding:0 20px 0 20px" (click)="Canceltype()">
+      Cancel
+        </button>
+        <button  mat-flat-button 
+       style="padding:0 20px 0 20px" (click)="SubmitProjectType(ProjectTypeForm)">
+        Submit
+        </button>
+     </div>
+ </form> 
+
+</div>
+<div *ngIf="ShowPrivilegeEdit">
+ 
+     <form [formGroup]="PrivilegeForm">
+
+    <div>Create Privilege</div>
     <div>
        <mat-form-field appearance="fill" class="example-full-width">
-            <mat-label>Project Code</mat-label>
-            <input matInput  formControlName="ProjectCode">
-            <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
-            <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
+            <mat-label>Privilege Name</mat-label>
+            <input matInput  formControlName="privilege_name">
+            <mat-error *ngIf="checkError('privilege_name', 'required')">Privilege Name is required</mat-error>
+            <mat-error *ngIf="PrivilegeForm.controls.privilege_name.errors?.invalidservices">
                 Black-Listed characters `<>'"&` are not allowed
               </mat-error>
           </mat-form-field>
     </div>
     <div>
-    <mat-form-field appearance="fill" class="example-full-width">
-    <mat-label>Project Name</mat-label>
-    <input matInput  formControlName="ProjectName">
-    <mat-error *ngIf="checkError('ProjectName', 'required')">Project Name is required</mat-error>
-    <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
-      Black-Listed characters `<>'"&` are not allowed
-    </mat-error>
-    </mat-form-field>
-    </div>
-     <div>
-         <mat-form-field appearance="fill" class="example-full-width">
-            <mat-label>Select Type</mat-label>
-            <mat-select formControlName="ProjectStatus">
-              <mat-option value="1"  >
-                Active
-              </mat-option>
-              <mat-option value="0">
-                Inactive
-              </mat-option>
-            
-            </mat-select>
-            <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Status is required</mat-error>
-          
-           
-          </mat-form-field>
-    </div>
+     <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Select Type</mat-label>
+        <mat-select formControlName="PrivilegeStatus">
+          <mat-option value="1"  >
+            Active
+          </mat-option>
+          <mat-option value="0">
+            Inactive
+          </mat-option>
+        
+        </mat-select>
+        <mat-error *ngIf="checkError('PrivilegeStatus', 'required')">Privilege Status is required</mat-error>
+      
+       
+      </mat-form-field>
+ </div>
     <div>
       <button  mat-flat-button 
       style="padding:0 20px 0 20px" (click)="Canceltype()">
      Cancel
        </button>
        <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="SubmitProjectType(ProjectTypeForm)">
+      style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType()">
        Submit
        </button>
     </div>
 </form> 
 
 </div>
-<div *ngIf="ShowPrivilegeEdit">
-<form [formGroup]="PrivilegeForm">
-   <div>Create Privilege</div>
+<div *ngIf="ShowRoleEdit">
+ <form [formGroup]="RoleForm">
+   <div>Create Role</div>
    <div>
       <mat-form-field appearance="fill" class="example-full-width">
-           <mat-label>Privilege Name</mat-label>
-           <input matInput  formControlName="privilege_name">
-           <mat-error *ngIf="checkError('privilege_name', 'required')">Privilege Name is required</mat-error>
-           <mat-error *ngIf="PrivilegeForm.controls.privilege_name.errors?.invalidservices">
+           <mat-label>Role Code</mat-label>
+           <input matInput  formControlName="Role_code">
+           <mat-error *ngIf="checkError('Role_code', 'required')">Role code is required</mat-error>
+           <mat-error *ngIf="RoleForm.controls.Role_code.errors?.invalidservices">
                Black-Listed characters `<>'"&` are not allowed
              </mat-error>
          </mat-form-field>
    </div>
-  
+   <div>
+     <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Role Name</mat-label>
+          <input matInput  formControlName="role_name">
+          <mat-error *ngIf="checkError('role_name', 'required')">Role Name is required</mat-error>
+          <mat-error *ngIf="RoleForm.controls.role_name.errors?.invalidservices">
+              Black-Listed characters `<>'"&` are not allowed
+            </mat-error>
+        </mat-form-field>
+  </div>
+  <div>
+   <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Equivalent cash role name</mat-label>
+        <input matInput  formControlName="equivalent_cassh_role_name">
+        <mat-error *ngIf="checkError('equivalent_cassh_role_name', 'required')">Equivalent cash role name is required</mat-error>
+        <mat-error *ngIf="RoleForm.controls.equivalent_cassh_role_name.errors?.invalidservices">
+            Black-Listed characters `<>'"&` are not allowed
+          </mat-error>
+      </mat-form-field>
+</div>
+
+<div>
+ <mat-form-field appearance="fill" class="example-full-width">
+   <mat-label>Select Privilege*</mat-label>
+   <mat-select formControlName="privilege" multiple>
+     <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
+       {{privilege.viewValue}}
+     </mat-option>
+   </mat-select>
+   <mat-error *ngIf="RoleForm.controls.privilege.errors?.required">
+     privilege  is <strong>required</strong>
+   </mat-error>
+ </mat-form-field>
+</div>
+
+<div>
+ <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Select Type</mat-label>
+    <mat-select formControlName="Rolestatus">
+      <mat-option value="1"  >
+        Active
+      </mat-option>
+      <mat-option value="0">
+        Inactive
+      </mat-option>
+    
+    </mat-select>
+    <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
+  </mat-form-field>
+</div>
+
    <div>
      <button  mat-flat-button 
      style="padding:0 20px 0 20px" (click)="Canceltype()">
     Cancel
       </button>
       <button  mat-flat-button 
-     style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType()">
+     style="padding:0 20px 0 20px" (click)="SubmitRoleType()">
       Submit
       </button>
    </div>
 </form> 
 
 </div>
-<div *ngIf="ShowRoleEdit">
-<form [formGroup]="RoleForm">
-  <div>Create Role</div>
-  <div>
+<div *ngIf="ShowFormEdit">
+ <form [formGroup]="pagesListForm">
+    <div>Create Form</div>
+    <div>
+       <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Form Name</mat-label>
+            <input matInput  formControlName="Form_name">
+            <mat-error *ngIf="checkError('Form_name', 'required')">Form Name is required</mat-error>
+            <mat-error *ngIf="pagesListForm.controls.Form_name.errors?.invalidservices">
+                Black-Listed characters `<>'"&` are not allowed
+              </mat-error>
+          </mat-form-field>
+    </div>
+    <div>
      <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Role Code</mat-label>
-          <input matInput  formControlName="Role_code">
-          <mat-error *ngIf="checkError('Role_code', 'required')">Role code is required</mat-error>
-          <mat-error *ngIf="RoleForm.controls.Role_code.errors?.invalidservices">
+          <mat-label>URL</mat-label>
+          <input matInput  formControlName="Form_Url">
+          <mat-error *ngIf="checkError('Form_Url', 'required')">Form Url is required</mat-error>
+          <mat-error *ngIf="pagesListForm.controls.Form_Url.errors?.invalidservices">
+              Black-Listed characters `<>'"&` are not allowed
+            </mat-error>
+     </mat-form-field>
+  </div>
+  <div>
+   <mat-form-field appearance="fill" class="example-full-width">
+      <mat-label>Select Type</mat-label>
+      <mat-select formControlName="FormStatus">
+        <mat-option value="1"  >
+          Active
+        </mat-option>
+        <mat-option value="0">
+          Inactive
+        </mat-option>
+      
+      </mat-select>
+      <mat-error *ngIf="checkError('FormStatus', 'required')">Form Status is required</mat-error>
+    
+     
+    </mat-form-field>
+</div>
+    <div>
+      <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="Canceltype()">
+     Cancel
+       </button>
+       <button  mat-flat-button 
+      style="padding:0 20px 0 20px" (click)="SubmitFormList()">
+       Submit
+       </button>
+    </div>
+</form> 
+
+</div>
+<div *ngIf="ShowVerticalEdit">
+ <form [formGroup]="VerticalForm">
+   <div>
+     <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Vertical Name</mat-label>
+          <input matInput  formControlName="VerticalName">
+          <mat-error *ngIf="checkError('VerticalName', 'required')">Vertical Name is required</mat-error>
+          <mat-error *ngIf="VerticalForm.controls.VerticalName.errors?.invalidservices">
               Black-Listed characters `<>'"&` are not allowed
             </mat-error>
         </mat-form-field>
   </div>
   <div>
-    <mat-form-field appearance="fill" class="example-full-width">
-         <mat-label>Role Name</mat-label>
-         <input matInput  formControlName="role_name">
-         <mat-error *ngIf="checkError('role_name', 'required')">Role Name is required</mat-error>
-         <mat-error *ngIf="RoleForm.controls.role_name.errors?.invalidservices">
-             Black-Listed characters `<>'"&` are not allowed
-           </mat-error>
-       </mat-form-field>
- </div>
- <div>
-  <mat-form-field appearance="fill" class="example-full-width">
-       <mat-label>Equivalent cash role name</mat-label>
-       <input matInput  formControlName="equivalent_cassh_role_name">
-       <mat-error *ngIf="checkError('equivalent_cassh_role_name', 'required')">Equivalent cash role name is required</mat-error>
-       <mat-error *ngIf="RoleForm.controls.equivalent_cassh_role_name.errors?.invalidservices">
-           Black-Listed characters `<>'"&` are not allowed
-         </mat-error>
-     </mat-form-field>
-</div>
-
-<div>
-<mat-form-field appearance="fill" class="example-full-width">
-  <mat-label>Select Privilege*</mat-label>
-  <mat-select formControlName="" >
-    <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
-      {{privilege.viewValue}}
-    </mat-option>
-  </mat-select>
-  <mat-error *ngIf="RoleForm.controls.privilege.errors?.required">
-    privilege  is <strong>required</strong>
-  </mat-error>
-</mat-form-field>
+   <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Vertical Code</mat-label>
+        <input matInput  formControlName="VerticalCode">
+        <mat-error *ngIf="checkError('VerticalCode', 'required')">Vertical Code is required</mat-error>
+        <mat-error *ngIf="VerticalForm.controls.VerticalCode.errors?.invalidservices">
+            Black-Listed characters `<>'"&` are not allowed
+          </mat-error>
+      </mat-form-field>
 </div>
 <div>
-<mat-form-field appearance="fill" class="example-full-width">
-   <mat-label>Select Type</mat-label>
-   <mat-select formControlName="Rolestatus">
-     <mat-option value="1"  >
-       Active
+ <mat-form-field appearance="fill" class="example-full-width">
+   <mat-label>Select Function*</mat-label>
+   <mat-select formControlName="Function" >
+     <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
+       {{Function.viewValue}}
      </mat-option>
-     <mat-option value="0">
-       Inactive
-     </mat-option>
-   
    </mat-select>
-   <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
+   <mat-error *ngIf="VerticalForm.controls.Function.errors?.required">
+     Function  is <strong>required</strong>
+   </mat-error>
  </mat-form-field>
 </div>
-
-  <div>
-    <button  mat-flat-button 
-    style="padding:0 20px 0 20px" (click)="Canceltype()">
-   Cancel
-     </button>
-     <button  mat-flat-button 
-    style="padding:0 20px 0 20px" (click)="SubmitRoleType()">
-     Submit
-     </button>
-  </div>
-</form> 
-
+<div>
+ <mat-form-field appearance="fill" class="example-full-width">
+   <mat-label>Select Sector*</mat-label>
+   <mat-select formControlName="Sector" multiple>
+     <mat-option *ngFor="let Sector of _masterservice.SectorList" [value]="Sector.value"  >
+       {{Sector.viewValue}}
+     </mat-option>
+   </mat-select>
+   <mat-error *ngIf="VerticalForm.controls.Sector.errors?.required">
+     Sector  is <strong>required</strong>
+   </mat-error>
+ </mat-form-field>
+</div>
+<div>
+ <mat-form-field appearance="fill" class="example-full-width">
+    <mat-label>Select Type</mat-label>
+    <mat-select formControlName="VerticalStatus">
+      <mat-option value="1"  >
+        Active
+      </mat-option>
+      <mat-option value="0">
+        Inactive
+      </mat-option>
+    
+    </mat-select>
+    <mat-error *ngIf="checkError('VerticalStatus', 'required')">VerticalStatus is required</mat-error>
+  
+   
+  </mat-form-field>
+</div>
+<div>
+ <button  mat-flat-button 
+ style="padding:0 20px 0 20px" (click)="Canceltype()">
+Cancel
+  </button>
+  <button  mat-flat-button 
+ style="padding:0 20px 0 20px" (click)="Update_Mst_Verticals()">
+  Submit
+  </button>
+</div>
+   </form>
 </div>
 
 <div *ngIf="ShowBranchEdit">

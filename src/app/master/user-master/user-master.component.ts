@@ -74,6 +74,7 @@ export class UserMasterComponent implements OnInit {
   branchchipstodisplay = [];
   verticalchips = [];
   verticalchipstodisplay = [];
+  userfilter = [];
   userlabel:string = "Create User";
   branchSearchControl = new FormControl();
   vericalSearchControl = new FormControl();
@@ -624,6 +625,7 @@ showhidebrranchfn_out()
       console.log(res);
       res =JSON.parse(res);
       this.dashboardData = res.mst_users;
+      this.userfilter = this.dashboardData;
       this.mst_roles_array = res.mst_roles;
       this.mst_branches_array = res.mst_branch;
       this.edit_branches_array = res.map_users_branch;
@@ -817,6 +819,7 @@ allbranchselected:boolean = false;
 allverticalselected:boolean = false;
 getusereditdetails(data)
 {
+  this._masterservice.createusermasterform();
   this.allbranchselected = true;
   this.allverticalselected = true;
   this.displaydiv = true;
