@@ -1,0 +1,73 @@
+.con_icon_con
+{
+    position: fixed;
+    text-align: center;
+    width: 270px;
+    margin-top: -35px;
+    .conf_inn_con
+    {
+        position: relative;
+  background-color: #2258bf;
+  top: -41px;
+  display: inline-block;
+  padding: 20px;
+  border-radius: 50px;
+  width: 92px;
+  img{width: 40px;}
+    }
+}
+
+.con_from_new
+{
+    margin-top: 25px;margin-bottom: 10px;
+    .con_from_tex_con
+    {
+        text-align: center;
+        .con_from_tex_con_titl
+        {
+            font-weight: 700;font-size: 1.0100rem;color: #101010;
+        }
+        .con_from_disc_in
+        {
+            font-weight: 500;
+    font-size: 0.90rem;
+    color: #6e6e6e;
+    width: 270px;
+    text-align: center;
+    margin: 0 auto;
+    line-height: initial;
+    margin-top: 5px;
+        }
+    }
+}
+
+.new_action_con
+{
+    margin: 0 auto;
+    width: 270px;
+    padding-bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .no_bt_new
+    {
+        color: #2258bf;
+    background: transparent;
+    background-color: transparent;
+    width: 120px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 20px;
+    padding-top: 0px;
+    padding-right: 30px;
+    padding-bottom: 0px;
+    padding-left: 30px;
+    height: 35px;outline: none;
+    }
+    .yes_bt_new
+    {
+        width: 120px;
+    }
+}
