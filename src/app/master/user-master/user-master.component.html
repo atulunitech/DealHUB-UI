@@ -231,7 +231,7 @@
         <ng-container  matColumnDef="userlocked" >
             <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
           <mat-cell  *matCellDef="let row" >
-            <img style="width: 18px;" [src]="row.islocked == 1 ? 'assets/images/unlock-alt.png' : 'assets/images/lock_icon.png'" (click)="lockunlockuser($event,row)">
+            <img style="width: 18px;" [src]="row.islocked == 1 ? 'assets/images/lock_icon.png' : 'assets/images/unlock-alt.png'" (click)="lockunlockuser($event,row)">
           </mat-cell>
           <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
            </ng-container>

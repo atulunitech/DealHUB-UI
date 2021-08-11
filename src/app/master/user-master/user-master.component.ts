@@ -666,6 +666,8 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    this.allbranchselected = false;
+  this.allverticalselected = false;
     this._masterservice.createusermasterform();
     this.barnch_array_selected.forEach(elt =>{
        elt.selected = false;
