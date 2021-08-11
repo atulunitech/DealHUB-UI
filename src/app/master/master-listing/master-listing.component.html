@@ -1,4 +1,23 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
+  
+  <div class="com_title"> {{pageTitle() }} </div>
+  
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
+      <div class="serch_box_ms">
+      
+          <div class="search_con">
+          <input type="text"  [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+      </div>
+      <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+
+     
+      </div>
+      <div> <button mat-flat-button class="creat_bt cu_width" (click)="createType()" style="margin-left: 20px;" >Create</button></div>
+  </div>
+  
+</div>
+
+<!-- <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
   <div class="com_title">{{pageTitle() }} </div>
   
   <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
@@ -17,732 +36,825 @@
       </div>
   </div>
 
-</div>
+</div> -->
 
-<div *ngIf="ShowProjectTypeEdit">
-  <form [formGroup]="ProjectTypeForm">
-    <div>{{createoredit}}</div>
-     <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Project Code</mat-label>
-             <input matInput  formControlName="ProjectCode">
-             <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
-             <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-     <div>
-     <mat-form-field appearance="fill" class="example-full-width">
-     <mat-label>Project Name</mat-label>
-     <input matInput  formControlName="ProjectName">
-     <mat-error *ngIf="checkError('ProjectName', 'required')">Project Name is required</mat-error>
-     <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
-       Black-Listed characters `<>'"&` are not allowed
-     </mat-error>
-     </mat-form-field>
-     </div>
-      <div>
-          <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Select Type</mat-label>
-             <mat-select formControlName="ProjectStatus">
-               <mat-option value="1"  >
-                 Active
-               </mat-option>
-               <mat-option value="0">
-                 Inactive
-               </mat-option>
-             
-             </mat-select>
-             <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Status is required</mat-error>
-           
-            
-           </mat-form-field>
-     </div>
-     <div>
-       <button  mat-flat-button 
-       style="padding:0 20px 0 20px" (click)="Canceltype()">
-      Cancel
-        </button>
-        <button  mat-flat-button 
-       style="padding:0 20px 0 20px" (click)="SubmitProjectType(ProjectTypeForm)">
-        Submit
-        </button>
-     </div>
- </form> 
+<div  fxLayout="column" fxLayoutAlign=" none"  class="con_data"  >
 
-</div>
-<div *ngIf="ShowPrivilegeEdit">
- 
-     <form [formGroup]="PrivilegeForm">
-
-      <div>{{createoredit}}</div>
-    <div>
-       <mat-form-field appearance="fill" class="example-full-width">
-            <mat-label>Privilege Name</mat-label>
-            <input matInput  formControlName="privilege_name">
-            <mat-error *ngIf="checkError('privilege_name', 'required')">Privilege Name is required</mat-error>
-            <mat-error *ngIf="PrivilegeForm.controls.privilege_name.errors?.invalidservices">
-                Black-Listed characters `<>'"&` are not allowed
-              </mat-error>
-          </mat-form-field>
+  <div *ngIf="ShowProjectTypeEdit" class="edit_masters">
+    <div class="edit_heda">
+      {{createoredit}}
     </div>
-    <div>
-     <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Select Type</mat-label>
-        <mat-select formControlName="PrivilegeStatus">
-          <mat-option value="1"  >
-            Active
-          </mat-option>
-          <mat-option value="0">
-            Inactive
-          </mat-option>
-        
-        </mat-select>
-        <mat-error *ngIf="checkError('PrivilegeStatus', 'required')">Privilege Status is required</mat-error>
-      
-       
-      </mat-form-field>
- </div>
-    <div>
-      <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="Canceltype()">
-     Cancel
-       </button>
-       <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="SubmitPrivilegeType()">
-       Submit
-       </button>
-    </div>
-</form> 
-
-</div>
-<div *ngIf="ShowRoleEdit">
- <form [formGroup]="RoleForm">
-  <div>{{createoredit}}</div>
-   <div>
-      <mat-form-field appearance="fill" class="example-full-width">
-           <mat-label>Role Code</mat-label>
-           <input matInput  formControlName="Role_code">
-           <mat-error *ngIf="checkError('Role_code', 'required')">Role code is required</mat-error>
-           <mat-error *ngIf="RoleForm.controls.Role_code.errors?.invalidservices">
-               Black-Listed characters `<>'"&` are not allowed
-             </mat-error>
-         </mat-form-field>
-   </div>
-   <div>
-     <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Role Name</mat-label>
-          <input matInput  formControlName="role_name">
-          <mat-error *ngIf="checkError('role_name', 'required')">Role Name is required</mat-error>
-          <mat-error *ngIf="RoleForm.controls.role_name.errors?.invalidservices">
-              Black-Listed characters `<>'"&` are not allowed
-            </mat-error>
-        </mat-form-field>
-  </div>
-  <div>
-   <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Equivalent cash role name</mat-label>
-        <input matInput  formControlName="equivalent_cassh_role_name">
-        <mat-error *ngIf="checkError('equivalent_cassh_role_name', 'required')">Equivalent cash role name is required</mat-error>
-        <mat-error *ngIf="RoleForm.controls.equivalent_cassh_role_name.errors?.invalidservices">
-            Black-Listed characters `<>'"&` are not allowed
-          </mat-error>
-      </mat-form-field>
-</div>
-
-<div>
- <mat-form-field appearance="fill" class="example-full-width">
-   <mat-label>Select Privilege*</mat-label>
-   <mat-select formControlName="privilege" multiple>
-     <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
-       {{privilege.viewValue}}
-     </mat-option>
-   </mat-select>
-   <mat-error *ngIf="RoleForm.controls.privilege.errors?.required">
-     privilege  is <strong>required</strong>
-   </mat-error>
- </mat-form-field>
-</div>
-
-<div>
- <mat-form-field appearance="fill" class="example-full-width">
-    <mat-label>Select Type</mat-label>
-    <mat-select formControlName="Rolestatus">
-      <mat-option value="1"  >
-        Active
-      </mat-option>
-      <mat-option value="0">
-        Inactive
-      </mat-option>
-    
-    </mat-select>
-    <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
-  </mat-form-field>
-</div>
-
-   <div>
-     <button  mat-flat-button 
-     style="padding:0 20px 0 20px" (click)="Canceltype()">
-    Cancel
-      </button>
-      <button  mat-flat-button 
-     style="padding:0 20px 0 20px" (click)="SubmitRoleType()">
-      Submit
-      </button>
-   </div>
-</form> 
-
-</div>
-<div *ngIf="ShowFormEdit">
- <form [formGroup]="pagesListForm">
-  <div>{{createoredit}}</div>
-    <div>
-       <mat-form-field appearance="fill" class="example-full-width">
-            <mat-label>Form Name</mat-label>
-            <input matInput  formControlName="Form_name">
-            <mat-error *ngIf="checkError('Form_name', 'required')">Form Name is required</mat-error>
-            <mat-error *ngIf="pagesListForm.controls.Form_name.errors?.invalidservices">
-                Black-Listed characters `<>'"&` are not allowed
-              </mat-error>
-          </mat-form-field>
-    </div>
-    <div>
-     <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>URL</mat-label>
-          <input matInput  formControlName="Form_Url">
-          <mat-error *ngIf="checkError('Form_Url', 'required')">Form Url is required</mat-error>
-          <mat-error *ngIf="pagesListForm.controls.Form_Url.errors?.invalidservices">
-              Black-Listed characters `<>'"&` are not allowed
-            </mat-error>
-     </mat-form-field>
-  </div>
-  <div>
-   <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Select Type</mat-label>
-      <mat-select formControlName="FormStatus">
-        <mat-option value="1"  >
-          Active
-        </mat-option>
-        <mat-option value="0">
-          Inactive
-        </mat-option>
-      
-      </mat-select>
-      <mat-error *ngIf="checkError('FormStatus', 'required')">Form Status is required</mat-error>
-    
-     
-    </mat-form-field>
-</div>
-    <div>
-      <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="Canceltype()">
-     Cancel
-       </button>
-       <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="SubmitFormList()">
-       Submit
-       </button>
-    </div>
-</form> 
-
-</div>
-<div *ngIf="ShowVerticalEdit">
- <form [formGroup]="VerticalForm">
-  <div>{{createoredit}}</div>
-   <div>
-     <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Vertical Name</mat-label>
-          <input matInput  formControlName="VerticalName">
-          <mat-error *ngIf="checkError('VerticalName', 'required')">Vertical Name is required</mat-error>
-          <mat-error *ngIf="VerticalForm.controls.VerticalName.errors?.invalidservices">
-              Black-Listed characters `<>'"&` are not allowed
-            </mat-error>
-        </mat-form-field>
-  </div>
-  <div>
-   <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Vertical Code</mat-label>
-        <input matInput  formControlName="VerticalCode">
-        <mat-error *ngIf="checkError('VerticalCode', 'required')">Vertical Code is required</mat-error>
-        <mat-error *ngIf="VerticalForm.controls.VerticalCode.errors?.invalidservices">
-            Black-Listed characters `<>'"&` are not allowed
-          </mat-error>
-      </mat-form-field>
-</div>
-<div>
- <mat-form-field appearance="fill" class="example-full-width">
-   <mat-label>Select Function*</mat-label>
-   <mat-select formControlName="Function" >
-     <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
-       {{Function.viewValue}}
-     </mat-option>
-   </mat-select>
-   <mat-error *ngIf="VerticalForm.controls.Function.errors?.required">
-     Function  is <strong>required</strong>
-   </mat-error>
- </mat-form-field>
-</div>
-<div>
- <mat-form-field appearance="fill" class="example-full-width">
-   <mat-label>Select Sector*</mat-label>
-   <mat-select formControlName="Sector" multiple>
-     <mat-option *ngFor="let Sector of _masterservice.SectorList" [value]="Sector.value"  >
-       {{Sector.viewValue}}
-     </mat-option>
-   </mat-select>
-   <mat-error *ngIf="VerticalForm.controls.Sector.errors?.required">
-     Sector  is <strong>required</strong>
-   </mat-error>
- </mat-form-field>
-</div>
-<div>
- <mat-form-field appearance="fill" class="example-full-width">
-    <mat-label>Select Type</mat-label>
-    <mat-select formControlName="VerticalStatus">
-      <mat-option value="1"  >
-        Active
-      </mat-option>
-      <mat-option value="0">
-        Inactive
-      </mat-option>
-    
-    </mat-select>
-    <mat-error *ngIf="checkError('VerticalStatus', 'required')">VerticalStatus is required</mat-error>
-  
-   
-  </mat-form-field>
-</div>
-<div>
- <button  mat-flat-button 
- style="padding:0 20px 0 20px" (click)="Canceltype()">
-Cancel
-  </button>
-  <button  mat-flat-button 
- style="padding:0 20px 0 20px" (click)="Update_Mst_Verticals()">
-  Submit
-  </button>
-</div>
-   </form>
-</div>
-
-<div *ngIf="ShowBranchEdit">
-  <form [formGroup]="BranchForm">
-    <div>{{createoredit}}</div>
-    <div>
-      <mat-form-field appearance="fill" class="example-full-width">
-           <mat-label>Branch Name</mat-label>
-           <input matInput  formControlName="Branch_Name">
-           <mat-error *ngIf="checkError('Branch_Name', 'required')">Branch Name is required</mat-error>
-           <mat-error *ngIf="BranchForm.controls.Branch_Name.errors?.invalidservices">
-               Black-Listed characters `<>'"&` are not allowed
-             </mat-error>
-         </mat-form-field>
-   </div>
-   
-  <div>
-  <mat-form-field appearance="fill" class="example-full-width">
-    <mat-label>Select Active / Inactive*</mat-label>
-    <mat-select formControlName="Active" >
-      <mat-option  value="1"  >
-       Active
-      </mat-option>
-      <mat-option  value="0"  >
-        Inactive
-       </mat-option>
-    </mat-select>
-    <mat-error *ngIf="BranchForm.controls.Active.errors?.required">
-      Please select Active / Inactive
-    </mat-error>
-  </mat-form-field>
-  </div>
-    <div>
-      <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="Canceltype()">
-     Cancel
-       </button>
-       <button  mat-flat-button 
-      style="padding:0 20px 0 20px" (click)="SubmitBranchType()">
-       Submit
-       </button>
-    </div>
-  </form> 
-  
-  </div>
-
-  <div *ngIf="ShowBusinessEdit">
-    <form [formGroup]="BusinessForm">
-      <div>{{createoredit}}</div>
-      <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Business Code</mat-label>
-             <input matInput  formControlName="BusinessCode">
-             <mat-error *ngIf="checkError('BusinessCode', 'required')">Branch Code is required</mat-error>
-             <mat-error *ngIf="BusinessForm.controls.BusinessCode.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-
-     <div>
-      <mat-form-field appearance="fill" class="example-full-width">
-           <mat-label>Business Name</mat-label>
-           <input matInput  formControlName="BusinessName">
-           <mat-error *ngIf="checkError('BusinessName', 'required')">Branch Name is required</mat-error>
-           <mat-error *ngIf="BusinessForm.controls.BusinessName.errors?.invalidservices">
-               Black-Listed characters `<>'"&` are not allowed
-             </mat-error>
-         </mat-form-field>
-   </div>
-     
-    <div>
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Select Active / Inactive*</mat-label>
-      <mat-select formControlName="Active" >
-        <mat-option  value="1"  >
-         Active
-        </mat-option>
-        <mat-option  value="0"  >
-          Inactive
-         </mat-option>
-      </mat-select>
-      <mat-error *ngIf="BusinessForm.controls.Active.errors?.required">
-        Please select Active / Inactive
-      </mat-error>
-    </mat-form-field>
-    </div>
-      <div>
-        <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="Canceltype()">
-       Cancel
-         </button>
-         <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="SubmitBusinessType()">
-         Submit
-         </button>
-      </div>
-    </form> 
-    
-    </div>
-
-  <div *ngIf="ShowSolutionCategoryEdit">
-    <form [formGroup]="SolutionCategoryForm">
-      <div>{{createoredit}}</div>
-      <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Solution Category Name</mat-label>
-             <input matInput  formControlName="SolutionCategory_Name">
-             <mat-error *ngIf="checkError('SolutionCategory_Name', 'required')">Solution Category Name is required</mat-error>
-             <mat-error *ngIf="SolutionCategoryForm.controls.SolutionCategory_Name.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-     
-    <div>
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Select Active / Inactive*</mat-label>
-      <mat-select formControlName="Active" >
-        <mat-option  value="1"  >
-         Active
-        </mat-option>
-        <mat-option  value="0"  >
-          Inactive
-         </mat-option>
-      </mat-select>
-      <mat-error *ngIf="SolutionCategoryForm.controls.Active.errors?.required">
-        Please select Active / Inactive
-      </mat-error>
-    </mat-form-field>
-    </div>
-      <div>
-        <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="Canceltype()">
-       Cancel
-         </button>
-         <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="SubmitSolutionCategoryType()">
-         Submit
-         </button>
-      </div>
-    </form> 
-    
-    </div>
-
-
-  <div *ngIf="ShowSectorEdit">
-    <form [formGroup]="SectorForm">
-      <div>{{createoredit}}</div>
-      <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Sector Name</mat-label>
-             <input matInput  formControlName="Sector_Name">
-             <mat-error *ngIf="checkError('Sector_Name', 'required')">Sector Name is required</mat-error>
-             <mat-error *ngIf="SectorForm.controls.Sector_Name.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-     
-    <div>
-    <mat-form-field appearance="fill" class="example-full-width">
-      <mat-label>Select Active / Inactive*</mat-label>
-      <mat-select formControlName="Active" >
-        <mat-option  value="1"  >
-         Active
-        </mat-option>
-        <mat-option  value="0"  >
-          Inactive
-         </mat-option>
-      </mat-select>
-      <mat-error *ngIf="SectorForm.controls.Active.errors?.required">
-        Please select Active / Inactive
-      </mat-error>
-    </mat-form-field>
-    </div>
-      <div>
-        <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="Canceltype()">
-       Cancel
-         </button>
-         <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="SubmitSectorType()">
-         Submit
-         </button>
-      </div>
-    </form> 
-    
-    </div>
-
-    <div *ngIf="ShowSubSectorEdit">
-      <form [formGroup]="SubSectorForm">
-        <div>{{createoredit}}</div>
-        <div>
-          <mat-form-field appearance="fill" class="example-full-width">
-               <mat-label>SubSector Name</mat-label>
-               <input matInput  formControlName="SubSector_Name">
-               <mat-error *ngIf="checkError('SubSector_Name', 'required')">SubSector Name is required</mat-error>
-               <mat-error *ngIf="SubSectorForm.controls.SubSector_Name.errors?.invalidservices">
-                   Black-Listed characters `<>'"&` are not allowed
-                 </mat-error>
-             </mat-form-field>
-       </div>
-       
-      <div>
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Select Sector*</mat-label>
-        <mat-select formControlName="Sector_Id" >
-          <mat-option *ngFor = "let data of Sectordropdown" [value]="data.value"  >
-           {{data.viewValue}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="SubSectorForm.controls.Sector_Id.errors?.required">
-          Please select Sector
-        </mat-error>
-      </mat-form-field>
-      </div>
-        <div>
-          <button  mat-flat-button 
-          style="padding:0 20px 0 20px" (click)="Canceltype()">
-         Cancel
-           </button>
-           <button  mat-flat-button 
-          style="padding:0 20px 0 20px" (click)="SubmitSubSectorType()">
-           Submit
-           </button>
-        </div>
-      </form> 
-      
-      </div>
-
-      <div *ngIf="ShowDOAEdit">
-        <form [formGroup]="DOAForm">
-          <div>{{createoredit}}</div>
-          <div>
-            <mat-form-field appearance="fill" class="example-full-width">
-                 <mat-label>Message</mat-label>
-                 <input matInput  formControlName="Message">
-                 <mat-error *ngIf="checkError('Message', 'required')">Message is required</mat-error>
-                 <mat-error *ngIf="DOAForm.controls.Message.errors?.invalidservices">
-                     Black-Listed characters `<>'"&` are not allowed
-                   </mat-error>
-               </mat-form-field>
-         </div>
-         
-         <div>
-          <mat-form-field appearance="fill" class="example-full-width">
-               <mat-label>Prefix</mat-label>
-               <input matInput  formControlName="Prefix">
-               <mat-error *ngIf="checkError('Prefix', 'required')">Prefix is required</mat-error>
-               <mat-error *ngIf="DOAForm.controls.Prefix.errors?.invalidservices">
-                   Black-Listed characters `<>'"&` are not allowed
-                 </mat-error>
-             </mat-form-field>
-       </div>
-
-       <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Message For</mat-label>
-             <input matInput  formControlName="MessageFor">
-             <mat-error *ngIf="checkError('MessageFor', 'required')">MessageFor is required</mat-error>
-             <mat-error *ngIf="DOAForm.controls.MessageFor.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-    
-    <div>
-          
-            <button  mat-flat-button 
-            style="padding:0 20px 0 20px" (click)="Canceltype()">
-           Cancel
-             </button>
-             <button  mat-flat-button 
-            style="padding:0 20px 0 20px" (click)="SubmitDOAMessages()">
-             Submit
-             </button>
-          </div>
-        </form> 
-        
-        </div>
-
-      <div *ngIf="ShowSolutionEdit">
-        <form [formGroup]="SolutionForm">
-          <div>{{createoredit}}</div>
-          <div>
-            <mat-form-field appearance="fill" class="example-full-width">
-                 <mat-label>Solution Name</mat-label>
-                 <input matInput  formControlName="Solution_Name">
-                 <mat-error *ngIf="checkError('Solution_Name', 'required')">Solution Name is required</mat-error>
-                 <mat-error *ngIf="SolutionForm.controls.Solution_Name.errors?.invalidservices">
-                     Black-Listed characters `<>'"&` are not allowed
-                   </mat-error>
-               </mat-form-field>
-         </div>
-         
-        <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Solution Category*</mat-label>
-          <mat-select formControlName="SolutionCategory" >
-            <mat-option *ngFor = "let data of SolutionCategorydropdown" [value]="data.value"  >
-             {{data.viewValue}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="SolutionForm.controls.SolutionCategory.errors?.required">
-            Please select Solution Category
-          </mat-error>
-        </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field appearance="fill" class="example-full-width">
-            <mat-label>Select Function Type*</mat-label>
-            <mat-select formControlName="Function" >
-              <mat-option *ngFor = "let data of functiondropdown" [value]="data.value"  >
-               {{data.viewValue}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="SolutionForm.controls.Function.errors?.required">
-              Please select Function Type
-            </mat-error>
-          </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field appearance="fill" class="example-full-width">
-              <mat-label>Select Domain*</mat-label>
-              <mat-select formControlName="Domain" >
-                <mat-option *ngFor = "let data of domaindropdown" [value]="data.value"  >
-                 {{data.viewValue}}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="SolutionForm.controls.Domain.errors?.required">
-                Please select Domain
-              </mat-error>
-            </mat-form-field>
-            </div>
-            <div>
+    <form [formGroup]="ProjectTypeForm">
+      <div class="edit_body">
+        <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" >
+          <div fxFlex="30" class="edit_body_in">
+            <div class="mt-cust-fd">
               <mat-form-field appearance="fill" class="example-full-width">
-                <mat-label>Select Active / Inactive*</mat-label>
-                <mat-select formControlName="Active" >
-                  <mat-option  value="1"  >
-                   Active
-                  </mat-option>
-                  <mat-option  value="0"  >
-                    Inactive
-                   </mat-option>
-                </mat-select>
-                <mat-error *ngIf="SolutionForm.controls.Active.errors?.required">
-                  Please select Active / Inactive
-                </mat-error>
+                <mat-label>Project Code</mat-label>
+                <input matInput  formControlName="ProjectCode">
+                <mat-error *ngIf="checkError('ProjectCode', 'required')">Project Code is required</mat-error>
+                <mat-error *ngIf="ProjectTypeForm.controls.ProjectCode.errors?.invalidservices">
+                    Black-Listed characters `<>'"&` are not allowed
+                  </mat-error>
               </mat-form-field>
-              </div>
-          <div>
-            <button  mat-flat-button 
-            style="padding:0 20px 0 20px" (click)="Canceltype()">
-           Cancel
-             </button>
-             <button  mat-flat-button 
-            style="padding:0 20px 0 20px" (click)="SubmitSolution()">
-             Submit
-             </button>
+            </div>
           </div>
-        </form> 
-        
-        </div>
-
-  <div *ngIf="ShowCommentEdit">
-    <form [formGroup]="CommentForm">
-      <div>{{createoredit}}</div>
-      <div>
-        <mat-form-field appearance="fill" class="example-full-width">
-             <mat-label>Comment Type</mat-label>
-             <input matInput  formControlName="Comment">
-             <mat-error *ngIf="checkError('Comment', 'required')">Comment Type is required</mat-error>
-             <mat-error *ngIf="CommentForm.controls.Comment.errors?.invalidservices">
-                 Black-Listed characters `<>'"&` are not allowed
-               </mat-error>
-           </mat-form-field>
-     </div>
-    
-      <div>
-        <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="Canceltype()">
-       Cancel
-         </button>
-         <button  mat-flat-button 
-        style="padding:0 20px 0 20px" (click)="SubmitCommentType()">
-         Submit
-         </button>
+          <div fxFlex="30" class="edit_body_in">
+            <div class="mt-cust-fd">
+              <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Project Name</mat-label>
+                <input matInput  formControlName="ProjectName">
+                <mat-error *ngIf="checkError('ProjectName', 'required')">Project Name is required</mat-error>
+                <mat-error *ngIf="ProjectTypeForm.controls.ProjectName.errors?.invalidservices">
+                  Black-Listed characters `<>'"&` are not allowed
+                </mat-error>
+                </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="30" class="edit_body_in">
+            <div class="mt-cust-fd">
+              <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Select Type</mat-label>
+                <mat-select formControlName="ProjectStatus">
+                  <mat-option value="1"  >
+                    Active
+                  </mat-option>
+                  <mat-option value="0">
+                    Inactive
+                  </mat-option>
+                
+                </mat-select>
+                <mat-error *ngIf="checkError('ProjectStatus', 'required')">Project Status is required</mat-error>
+              
+               
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
       </div>
-    </form> 
-    
+      <div class="edit_footr">
+        <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+        <button mat-flat-button class="creat_bt cu_width" (click)="SubmitProjectType(ProjectTypeForm)">Save</button>
+        
+      </div>
+      </form>
+  </div>
+
+  <div *ngIf="ShowPrivilegeEdit" class="edit_masters">
+    <div class="edit_heda">
+      {{createoredit}}
+    </div>
+    <form [formGroup]="PrivilegeForm">
+      <div class="edit_body">
+        <div class="edit_body_out" fxLayout="row" fxLayoutAlign=" center" fxFlex="100" >
+          <div fxFlex="30" class="edit_body_in">
+            <div class="mt-cust-fd">
+              <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Privilege Name</mat-label>
+                <input matInput  formControlName="privilege_name">
+                <mat-error *ngIf="checkError('privilege_name', 'required')">Privilege Name is required</mat-error>
+                <mat-error *ngIf="PrivilegeForm.controls.privilege_name.errors?.invalidservices">
+                    Black-Listed characters `<>'"&` are not allowed
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Type</mat-label>
+                  <mat-select formControlName="PrivilegeStatus">
+                    <mat-option value="1"  >
+                      Active
+                    </mat-option>
+                    <mat-option value="0">
+                      Inactive
+                    </mat-option>
+                  
+                  </mat-select>
+                  <mat-error *ngIf="checkError('PrivilegeStatus', 'required')">Privilege Status is required</mat-error>
+                
+                 
+                </mat-form-field>
+              </div>
+              </div>
+        </div>
+      </div>
+      <div class="edit_footr">
+        <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+        <button mat-flat-button class="creat_bt cu_width" (click)="SubmitPrivilegeType()">Save</button>
+      </div>
+      </form>
     </div>
 
-<div>
-<table style="width: 100%;" mat-table [dataSource]="listData" class="ms_table" matSort>
-    <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
-        
-            <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
-            <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
-    </ng-container>
-    <ng-container  matColumnDef="useractive" >
-        <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
-      <mat-cell  *matCellDef="let row" >
-        <mat-slide-toggle (change)="casshChange()" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
-      </mat-cell>
-      <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
-    </ng-container>
-    <ng-container  matColumnDef="ProjectTypeAction" >
-        <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
-      <mat-cell  *matCellDef="let row" >
-        <button mat-flat-button  (click)="ShowEditType(row)">Edit</button>
-      </mat-cell>
-    </ng-container>
+    <div *ngIf="ShowRoleEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="RoleForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Role Code</mat-label>
+                  <input matInput  formControlName="Role_code">
+                  <mat-error *ngIf="checkError('Role_code', 'required')">Role code is required</mat-error>
+                  <mat-error *ngIf="RoleForm.controls.Role_code.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Role Name</mat-label>
+                  <input matInput  formControlName="role_name">
+                  <mat-error *ngIf="checkError('role_name', 'required')">Role Name is required</mat-error>
+                  <mat-error *ngIf="RoleForm.controls.role_name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+            <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Equivalent cash role name</mat-label>
+                    <input matInput  formControlName="equivalent_cassh_role_name">
+                    <mat-error *ngIf="checkError('equivalent_cassh_role_name', 'required')">Equivalent cash role name is required</mat-error>
+                    <mat-error *ngIf="RoleForm.controls.equivalent_cassh_role_name.errors?.invalidservices">
+                        Black-Listed characters `<>'"&` are not allowed
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Privilege*</mat-label>
+                    <mat-select formControlName="privilege" multiple>
+                      <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
+                        {{privilege.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="RoleForm.controls.privilege.errors?.required">
+                      privilege  is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              </div>
+              <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+                <div fxFlex="100" class="edit_body_in">
+                  <div class="mt-cust-fd">
+                    <mat-form-field appearance="fill" class="example-full-width">
+                      <mat-label>Select Type</mat-label>
+                      <mat-select formControlName="Rolestatus">
+                        <mat-option value="1"  >
+                          Active
+                        </mat-option>
+                        <mat-option value="0">
+                          Inactive
+                        </mat-option>
+                      
+                      </mat-select>
+                      <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitRoleType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</table>
-<mat-paginator  style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length"
-                [pageSize]="7"
-                >
-        </mat-paginator>
+    <div *ngIf="ShowFormEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="pagesListForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" >
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Form Name</mat-label>
+                  <input matInput  formControlName="Form_name">
+                  <mat-error *ngIf="checkError('Form_name', 'required')">Form Name is required</mat-error>
+                  <mat-error *ngIf="pagesListForm.controls.Form_name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>URL</mat-label>
+                  <input matInput  formControlName="Form_Url">
+                  <mat-error *ngIf="checkError('Form_Url', 'required')">Form Url is required</mat-error>
+                  <mat-error *ngIf="pagesListForm.controls.Form_Url.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+             </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Type</mat-label>
+                  <mat-select formControlName="FormStatus">
+                    <mat-option value="1"  >
+                      Active
+                    </mat-option>
+                    <mat-option value="0">
+                      Inactive
+                    </mat-option>
+                  
+                  </mat-select>
+                  <mat-error *ngIf="checkError('FormStatus', 'required')">Form Status is required</mat-error>
+                
+                 
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitFormList()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowVerticalEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="VerticalForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Vertical Name</mat-label>
+                  <input matInput  formControlName="VerticalName">
+                  <mat-error *ngIf="checkError('VerticalName', 'required')">Vertical Name is required</mat-error>
+                  <mat-error *ngIf="VerticalForm.controls.VerticalName.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Vertical Code</mat-label>
+                  <input matInput  formControlName="VerticalCode">
+                  <mat-error *ngIf="checkError('VerticalCode', 'required')">Vertical Code is required</mat-error>
+                  <mat-error *ngIf="VerticalForm.controls.VerticalCode.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+            <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Function*</mat-label>
+                    <mat-select formControlName="Function" >
+                      <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
+                        {{Function.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="VerticalForm.controls.Function.errors?.required">
+                      Function  is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Sector*</mat-label>
+                    <mat-select formControlName="Sector" multiple>
+                      <mat-option *ngFor="let Sector of _masterservice.SectorList" [value]="Sector.value"  >
+                        {{Sector.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="VerticalForm.controls.Sector.errors?.required">
+                      Sector  is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+                  </div>
+
+                  <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" >
+                    <div fxFlex="100" class="edit_body_in">
+                      <div class="mt-cust-fd">
+                        <mat-form-field appearance="fill" class="example-full-width">
+                          <mat-label>Select Type</mat-label>
+                          <mat-select formControlName="VerticalStatus">
+                            <mat-option value="1"  >
+                              Active
+                            </mat-option>
+                            <mat-option value="0">
+                              Inactive
+                            </mat-option>
+                          
+                          </mat-select>
+                          <mat-error *ngIf="checkError('VerticalStatus', 'required')">VerticalStatus is required</mat-error>
+                        
+                         
+                        </mat-form-field>
+                        </div>
+                        </div>
+                        </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="Update_Mst_Verticals()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowBranchEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="BranchForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Branch Name</mat-label>
+                  <input matInput  formControlName="Branch_Name">
+                  <mat-error *ngIf="checkError('Branch_Name', 'required')">Branch Name is required</mat-error>
+                  <mat-error *ngIf="BranchForm.controls.Branch_Name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Active / Inactive*</mat-label>
+                  <mat-select formControlName="Active" >
+                    <mat-option  value="1"  >
+                     Active
+                    </mat-option>
+                    <mat-option  value="0"  >
+                      Inactive
+                     </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="BranchForm.controls.Active.errors?.required">
+                    Please select Active / Inactive
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+           
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitBranchType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowBusinessEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="BusinessForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" >
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Business Code</mat-label>
+                  <input matInput  formControlName="BusinessCode">
+                  <mat-error *ngIf="checkError('BusinessCode', 'required')">Branch Code is required</mat-error>
+                  <mat-error *ngIf="BusinessForm.controls.BusinessCode.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Business Name</mat-label>
+                  <input matInput  formControlName="BusinessName">
+                  <mat-error *ngIf="checkError('BusinessName', 'required')">Branch Name is required</mat-error>
+                  <mat-error *ngIf="BusinessForm.controls.BusinessName.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Active / Inactive*</mat-label>
+                  <mat-select formControlName="Active" >
+                    <mat-option  value="1"  >
+                     Active
+                    </mat-option>
+                    <mat-option  value="0"  >
+                      Inactive
+                     </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="BusinessForm.controls.Active.errors?.required">
+                    Please select Active / Inactive
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitBusinessType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowSolutionCategoryEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="SolutionCategoryForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Solution Category Name</mat-label>
+                  <input matInput  formControlName="SolutionCategory_Name">
+                  <mat-error *ngIf="checkError('SolutionCategory_Name', 'required')">Solution Category Name is required</mat-error>
+                  <mat-error *ngIf="SolutionCategoryForm.controls.SolutionCategory_Name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Active / Inactive*</mat-label>
+                  <mat-select formControlName="Active" >
+                    <mat-option  value="1"  >
+                     Active
+                    </mat-option>
+                    <mat-option  value="0"  >
+                      Inactive
+                     </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="SolutionCategoryForm.controls.Active.errors?.required">
+                    Please select Active / Inactive
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSolutionCategoryType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowSectorEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="SectorForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Sector Name</mat-label>
+                  <input matInput  formControlName="Sector_Name">
+                  <mat-error *ngIf="checkError('Sector_Name', 'required')">Sector Name is required</mat-error>
+                  <mat-error *ngIf="SectorForm.controls.Sector_Name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Active / Inactive*</mat-label>
+                  <mat-select formControlName="Active" >
+                    <mat-option  value="1"  >
+                     Active
+                    </mat-option>
+                    <mat-option  value="0"  >
+                      Inactive
+                     </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="SectorForm.controls.Active.errors?.required">
+                    Please select Active / Inactive
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSectorType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowSubSectorEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="SubSectorForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>SubSector Name</mat-label>
+                  <input matInput  formControlName="SubSector_Name">
+                  <mat-error *ngIf="checkError('SubSector_Name', 'required')">SubSector Name is required</mat-error>
+                  <mat-error *ngIf="SubSectorForm.controls.SubSector_Name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Sector*</mat-label>
+                  <mat-select formControlName="Sector_Id" >
+                    <mat-option *ngFor = "let data of Sectordropdown" [value]="data.value"  >
+                     {{data.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="SubSectorForm.controls.Sector_Id.errors?.required">
+                    Please select Sector
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSubSectorType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowDOAEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="DOAForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" >
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Message</mat-label>
+                  <input matInput  formControlName="Message">
+                  <mat-error *ngIf="checkError('Message', 'required')">Message is required</mat-error>
+                  <mat-error *ngIf="DOAForm.controls.Message.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Prefix</mat-label>
+                  <input matInput  formControlName="Prefix">
+                  <mat-error *ngIf="checkError('Prefix', 'required')">Prefix is required</mat-error>
+                  <mat-error *ngIf="DOAForm.controls.Prefix.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="30" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Message For</mat-label>
+                  <input matInput  formControlName="MessageFor">
+                  <mat-error *ngIf="checkError('MessageFor', 'required')">MessageFor is required</mat-error>
+                  <mat-error *ngIf="DOAForm.controls.MessageFor.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitDOAMessages()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowSolutionEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="SolutionForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Solution Name</mat-label>
+                  <input matInput  formControlName="Solution_Name">
+                  <mat-error *ngIf="checkError('Solution_Name', 'required')">Solution Name is required</mat-error>
+                  <mat-error *ngIf="SolutionForm.controls.Solution_Name.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Solution Category*</mat-label>
+                  <mat-select formControlName="SolutionCategory" >
+                    <mat-option *ngFor = "let data of SolutionCategorydropdown" [value]="data.value"  >
+                     {{data.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="SolutionForm.controls.SolutionCategory.errors?.required">
+                    Please select Solution Category
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
+            <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Function Type*</mat-label>
+                    <mat-select formControlName="Function" >
+                      <mat-option *ngFor = "let data of functiondropdown" [value]="data.value"  >
+                       {{data.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="SolutionForm.controls.Function.errors?.required">
+                      Please select Function Type
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="50" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Domain*</mat-label>
+                    <mat-select formControlName="Domain" >
+                      <mat-option *ngFor = "let data of domaindropdown" [value]="data.value"  >
+                       {{data.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="SolutionForm.controls.Domain.errors?.required">
+                      Please select Domain
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+              <div fxFlex="100" class="edit_body_in">
+                <div class="mt-cust-fd">
+                  <mat-form-field appearance="fill" class="example-full-width">
+                    <mat-label>Select Active / Inactive*</mat-label>
+                    <mat-select formControlName="Active" >
+                      <mat-option  value="1"  >
+                       Active
+                      </mat-option>
+                      <mat-option  value="0"  >
+                        Inactive
+                       </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="SolutionForm.controls.Active.errors?.required">
+                      Please select Active / Inactive
+                    </mat-error>
+                  </mat-form-field>
+                  </div>
+              </div>
+              </div>
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSolution()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+
+    <div *ngIf="ShowCommentEdit" class="edit_masters">
+      <div class="edit_heda">
+        {{createoredit}}
+      </div>
+      <form [formGroup]="CommentForm">
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="50" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Comment Type</mat-label>
+                  <input matInput  formControlName="Comment">
+                  <mat-error *ngIf="checkError('Comment', 'required')">Comment Type is required</mat-error>
+                  <mat-error *ngIf="CommentForm.controls.Comment.errors?.invalidservices">
+                      Black-Listed characters `<>'"&` are not allowed
+                    </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+           
+            </div>
+            
+            
+        </div>
+        <div class="edit_footr">
+          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitCommentType()">Save</button>
+          
+        </div>
+        </form>
+    </div>
+    <div class="fl_table_con">
+      <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 183px);
+            background-color: white;
+            height: 100vh;" >
+            <table  mat-table [dataSource]="listData" class="ms_table" matSort>
+              <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+                  
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                      <mat-cell  *matCellDef="let row" >{{ column.cell(row) }}</mat-cell>   
+              </ng-container>
+              <ng-container  matColumnDef="useractive" >
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Cassh User</mat-header-cell>
+                <mat-cell  *matCellDef="let row" >
+                  <mat-slide-toggle (change)="casshChange()" [checked]="row.is_cassh_user == 1" color="primary" ></mat-slide-toggle> 
+                </mat-cell>
+                <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
+              </ng-container>
+              <ng-container  matColumnDef="ProjectTypeAction" >
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                <mat-cell  *matCellDef="let row" >
+                  <button mat-flat-button class="creat_bt view_bt"   (click)="ShowEditType(row)">Edit</button>
+                </mat-cell>
+              </ng-container>
+          
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </table>
+            </perfect-scrollbar>
+            <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length"
+                    [pageSize]="7"
+                    >
+            </mat-paginator>
+            </div>
+</div>
+
+
+ 
+
+<div>
+
+ 
 </div>
