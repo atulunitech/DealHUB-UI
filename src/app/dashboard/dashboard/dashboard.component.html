@@ -911,7 +911,7 @@
       <mat-dialog-content class="mat-typography chan_pass_con">
         <div class="chang_pass_box_popup">
           <div class="pass_logo_title">
-            <a mat-dialog-close href="javascript:void(0)" class="close"></a>
+            <a mat-dialog-close href="javascript:void(0)" [class.disabled]="commonService.disabledresetclose" class="close"></a>
             <img src="assets/images/change_pass.png">
             <h3>Change Password</h3>
             <p>You are almost there now, enter your new password and 
@@ -972,7 +972,7 @@
       </mat-dialog-content>
       <mat-dialog-actions align="end">
         <div style="margin: 0 auto;width: 360px;padding-bottom: 20px;">
-        <button style="color:#2258bf;" mat-flat-button mat-dialog-close>Cancel</button>
+        <button style="color:#2258bf;" [disabled]="commonService.disabledresetclose" mat-flat-button mat-dialog-close>Cancel</button>
         <button mat-flat-button class="creat_bt bt_sp" [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
       </div>
       </mat-dialog-actions>

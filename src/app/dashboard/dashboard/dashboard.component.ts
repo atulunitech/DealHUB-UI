@@ -777,6 +777,13 @@ else
     this.Dashboardvalid = new FormGroup({
      
     });
+
+    this.loginvalid = new FormGroup({
+     
+      CurrentPassword : new FormControl('', [Validators.required,this.commonService.NoInvalidCharacters]),
+      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
+      confirmpassword : new FormControl('')
+    }, { validators: this.checkPasswords });
   
     if(localStorage.getItem("privilege_name")!= null)
     {
@@ -792,20 +799,8 @@ else
       map(value => value != null && value.length >= 1?this._filter(value):[])
       // map(value => value?this._filter(value): this.nonFilteredSearchData.slice())
     );
-    this.commonService.getresetclickedevent().subscribe(res =>{
-      //alert(res);
-      if(res == true)
-      this.ResetModel();
-
-    });
-    this.loginvalid = new FormGroup({
-     
-      CurrentPassword : new FormControl('', [Validators.required,this.commonService.NoInvalidCharacters]),
-      NewPassword : new FormControl('', [Validators.required,Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}'),this.commonService.NoInvalidCharacters]),
-      confirmpassword : new FormControl('')
-    }, { validators: this.checkPasswords });
-
- 
+    
+    
   }
   
   getClientKey()
@@ -830,23 +825,34 @@ else
   {
     let encryptedpwd="";
     let encryptedcurrentpwd="";
+    let encryptedusercode = "";
          //alert(this.key);
           encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
           encryptedcurrentpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('CurrentPassword').value);
           this.loginvalid.get('NewPassword').setValue(encryptedpwd);
           this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
+          encryptedusercode = this.commonService.setEncryption(this.key,localStorage.getItem("UserCode"));
           //this.loginmodel._SecretKey = this.key;
-    this.loginmodel._user_code=localStorage.getItem("UserCode");
+   // this.loginmodel._user_code=localStorage.getItem("UserCode");
+   this.loginmodel._user_code = encryptedusercode;
     this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
     this.loginmodel._CurrentPassword = encryptedcurrentpwd;
     
      
     this._loginservice.ResetPasswordDashboard(this.loginmodel).subscribe(Result=>{
      // alert("Password Changed Successfully.");
+     this.commonService.disabledresetclose = false;
      this._mesgBox.showSucess("Password Changed Successfully.");
      this.router.navigateByUrl('/login');
      
-    });
+    },
+    (error:HttpErrorResponse)=>{
+      setTimeout(() => {
+        this.ResetModel();
+      },1000 );
+      
+    }
+    );
   }
 
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
@@ -879,7 +885,8 @@ else
   
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
+    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    this._obfservices.GetCreateOBFMasters(encryptedusercode).subscribe(data =>{
       let res = JSON.parse(data);
        console.log(Object.keys(res) );
        console.log(res.sectors);
@@ -988,7 +995,8 @@ else
 
   getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
+  let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -1478,6 +1486,7 @@ onchange(evt,solutioncategory)
     let dialogRef = this.dialog.open(this.resetDialog, {
         //  width: '880px',
          // data: { name: this.name, animal: this.animal }
+         disableClose: true,
          panelClass: 'custom-modalbox',
         backdropClass: 'popupBackdropClass',
     });
@@ -1670,6 +1679,15 @@ downloaddetailFinalAgg(row)
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
       console.log("DashBoardData");
+      this.commonService.getresetclickedevent().subscribe(res =>{
+        //alert(res);
+        if(res == true)
+        {
+          setTimeout(() => {
+            this.ResetModel();
+          },500 );
+        }
+      });
       console.log(Result);
       var loginresult =Result;
       this.dashboardData=JSON.parse(Result);
@@ -2764,7 +2782,7 @@ editSubmit()
   this._obfservices.obfmodel._status ="A";
   this._obfservices.obfmodel._is_saved =1;
   this._obfservices.obfmodel._is_submitted = 0;
-  this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+  this._obfservices.obfmodel._created_by =  this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   this._obfservices.obfmodel._mode = "edit";
   this._obfservices.obfmodel._service_category = "";
   this._obfservices.obfmodel.save_with_solution_sector = "Y";
