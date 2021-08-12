@@ -25,6 +25,8 @@ export class notificationDetails
 })
 export class CommonService {
 
+  public disabledresetclose:boolean = false;
+  public commonkey = "0c24f9de!b855915";
   private _loading = new BehaviorSubject<boolean>(false);
   qryparamssecretkey:string = "dealhubsecretkey$123";
   public resetclicked = new BehaviorSubject<boolean>(false);

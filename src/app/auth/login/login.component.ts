@@ -8,6 +8,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import * as CryptoJS from 'crypto-js'; 
 import { Token } from '@angular/compiler/src/ml_parser/lexer';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from 'src/app/services/common.service';
 
 //region model
 export class LoginModel
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
   disablebutton:boolean=false;
 
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent,public dialog:MatDialog) { }
+    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent,public dialog:MatDialog,private _commomservices:CommonService) { }
 
 
   ngOnInit(): void {
@@ -216,6 +217,16 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("RequestId",Result.user.AntiforgeryKey);
         console.log(Result.user.UserName);
         
+        if(Result.user.ispasswordchanged == 0)
+        {
+          this._commomservices.resetclicked.next(true);
+          this._commomservices.disabledresetclose = true;
+        }
+        else
+        {
+          this._commomservices.resetclicked.next(false);
+          this._commomservices.disabledresetclose = false;
+        }
         
         //alert("Login Sucess");
         this.router.navigate(['/DealHUB/dashboard']);

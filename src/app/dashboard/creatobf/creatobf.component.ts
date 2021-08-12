@@ -625,7 +625,8 @@ export class CreatobfComponent implements OnInit {
 
 getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
+  let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
+this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
   let res = JSON.parse(data);
   console.log("get solution masters");
   console.log(res);
@@ -645,7 +646,8 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
+    let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
+    this._obfservices.GetCreateOBFMasters(encryptedusercode).subscribe(data =>{
       let res = JSON.parse(data);
        console.log(Object.keys(res) );
        console.log(res.sectors);
@@ -2097,7 +2099,7 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 0;
-    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+    this._obfservices.obfmodel._created_by = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
@@ -2692,7 +2694,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 1;
-    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+    this._obfservices.obfmodel._created_by =  this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
