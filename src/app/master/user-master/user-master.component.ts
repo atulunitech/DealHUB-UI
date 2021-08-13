@@ -82,7 +82,7 @@ export class UserMasterComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   addOnBlur = true;
-  UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','usercash','userlocked','userstatus','useraction'];
+  UsersColumn: string[] = ['User_Code', 'First_Name', 'Last_Name', 'Mobile_No','Email_Id','usercash','userlocked','userstatus','useraction'];
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('branchinput') branchinput: ElementRef;
   @ViewChild('allbranchchck') allbranchchck: ElementRef;

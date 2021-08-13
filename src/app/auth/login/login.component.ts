@@ -208,12 +208,20 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("rememberCurrentUser","false");
 
         }
-        localStorage.setItem("UserCode",Result.user.UserCode);
-        localStorage.setItem("privilege_name",Result.user.privilege_name);
+        let privilege = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.privilege_name);
+        let usercode = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.UserCode);
+        let role_name = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.role_name);
+        let userid = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.UserId);
+        // localStorage.setItem("UserCode",Result.user.UserCode);
+        localStorage.setItem("UserCode",usercode);
+        // localStorage.setItem("privilege_name",Result.user.privilege_name);
+        localStorage.setItem("privilege_name",privilege);
         localStorage.setItem("userToken",Result.user.Api_Key);
-        localStorage.setItem("role_name",Result.user.role_name);
+        // localStorage.setItem("role_name",Result.user.role_name);
+        localStorage.setItem("role_name",role_name);
         localStorage.setItem("UserName",Result.user.UserName);
-        localStorage.setItem("User_Id",Result.user.UserId);
+        // localStorage.setItem("User_Id",Result.user.UserId);
+        localStorage.setItem("User_Id",userid);
         localStorage.setItem("RequestId",Result.user.AntiforgeryKey);
         console.log(Result.user.UserName);
         
