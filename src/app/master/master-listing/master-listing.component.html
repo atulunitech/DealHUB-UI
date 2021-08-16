@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
-  
+  <div class="back_rout" routerLink="/DealHUB/master"> <button mat-flat-button class="creat_bt cu_width" style="margin-left: 20px;" >Back</button></div>
   <div class="com_title"> {{pageTitle() }} </div>
   
   <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
@@ -94,7 +94,7 @@
       </div>
       <div class="edit_footr">
         <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-        <button mat-flat-button class="creat_bt cu_width" (click)="SubmitProjectType(ProjectTypeForm)">Save</button>
+        <button mat-flat-button class="creat_bt cu_width" [disabled]="ProjectTypeForm.invalid" (click)="SubmitProjectType(ProjectTypeForm)">Save</button>
         
       </div>
       </form>
@@ -142,7 +142,7 @@
       </div>
       <div class="edit_footr">
         <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-        <button mat-flat-button class="creat_bt cu_width" (click)="SubmitPrivilegeType()">Save</button>
+        <button mat-flat-button class="creat_bt cu_width"  [disabled]="PrivilegeForm.invalid" (click)="SubmitPrivilegeType()">Save</button>
       </div>
       </form>
     </div>
@@ -230,7 +230,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitRoleType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="RoleForm.invalid" (click)="SubmitRoleType()">Save</button>
           
         </div>
         </form>
@@ -290,7 +290,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitFormList()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width"   [disabled]="pagesListForm.invalid" (click)="SubmitFormList()">Save</button>
           
         </div>
         </form>
@@ -385,7 +385,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="Update_Mst_Verticals()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="VerticalForm.invalid"  (click)="Update_Mst_Verticals()">Save</button>
           
         </div>
         </form>
@@ -433,7 +433,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitBranchType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="BranchForm.invalid" (click)="SubmitBranchType()">Save</button>
           
         </div>
         </form>
@@ -492,7 +492,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitBusinessType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="BusinessForm.invalid"  (click)="SubmitBusinessType()">Save</button>
           
         </div>
         </form>
@@ -539,7 +539,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSolutionCategoryType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="SolutionCategoryForm.invalid" (click)="SubmitSolutionCategoryType()">Save</button>
           
         </div>
         </form>
@@ -586,7 +586,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSectorType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="SectorForm.invalid" (click)="SubmitSectorType()">Save</button>
           
         </div>
         </form>
@@ -630,7 +630,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSubSectorType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="SubSectorForm.invalid" (click)="SubmitSubSectorType()">Save</button>
           
         </div>
         </form>
@@ -683,7 +683,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitDOAMessages()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="DOAForm.invalid" (click)="SubmitDOAMessages()">Save</button>
           
         </div>
         </form>
@@ -693,7 +693,7 @@
       <div class="edit_heda">
         {{createoredit}}
       </div>
-      <form [formGroup]="SolutionForm">
+      <form [formGroup]="SolutionForm"> 
         <div class="edit_body">
           <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
             <div fxFlex="50" class="edit_body_in">
@@ -779,7 +779,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitSolution()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="SolutionForm.invalid" (click)="SubmitSolution()">Save</button>
           
         </div>
         </form>
@@ -811,7 +811,7 @@
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SubmitCommentType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="CommentForm.invalid" (click)="SubmitCommentType()">Save</button>
           
         </div>
         </form>
