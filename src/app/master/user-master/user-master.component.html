@@ -34,6 +34,9 @@
       <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.required">
         User Code is <strong>required</strong>
       </mat-error>
+      <mat-error *ngIf="_masterservice.usermasterform.controls.usercode.errors?.invalidservices">
+        Black-Listed characters are not allowed
+      </mat-error>
     </mat-form-field>
   </div>
 </div>
@@ -44,6 +47,9 @@
         <input matInput formControlName="firstname" />
         <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.required">
           First Name is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="_masterservice.usermasterform.controls.firstname.errors?.invalidservices">
+          Black-Listed characters are not allowed
         </mat-error>
       </mat-form-field>
     </div>
@@ -57,6 +63,9 @@
               <input matInput formControlName="lastname" />
               <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.required">
                 Last Name is <strong>required</strong>
+              </mat-error>
+              <mat-error *ngIf="_masterservice.usermasterform.controls.lastname.errors?.invalidservices">
+                Black-Listed characters are not allowed
               </mat-error>
             </mat-form-field>
           </div>
