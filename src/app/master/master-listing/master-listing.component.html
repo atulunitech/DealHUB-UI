@@ -1,14 +1,16 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
   <div class="back_rout" routerLink="/DealHUB/master"> <button mat-flat-button class="creat_bt cu_width" style="margin-left: 20px;" >Back</button></div>
-  <div class="com_title"> {{pageTitle() }} </div>
+  
+  
+  <div class="com_title"> <a class="back_link_view" routerLink="/DealHUB/master"><img src="assets/images/left_arrow.png"></a> {{pageTitle() }} </div>
   
   <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
       <div class="serch_box_ms">
       
-          <div class="search_con">
-          <input type="text"  [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+          <div class="search_con" style="width: 260px;">
+          <input type="text" placeholder="Search "  [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
       </div>
-      <div class="search_icon"><img src="assets/images/search_icon.png"></div>
+      <div class="search_icon" ><img src="assets/images/search_icon.png"></div>
 
      
       </div>
@@ -75,7 +77,7 @@
             <div class="mt-cust-fd">
               <mat-form-field appearance="fill" class="example-full-width">
                 <mat-label>Select Type</mat-label>
-                <mat-select formControlName="ProjectStatus">
+                <mat-select formControlName="ProjectStatus" disableOptionCentering>
                   <mat-option value="1"  >
                     Active
                   </mat-option>
@@ -93,7 +95,7 @@
           </div>
       </div>
       <div class="edit_footr">
-        <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+         <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
         <button mat-flat-button class="creat_bt cu_width" [disabled]="ProjectTypeForm.invalid" (click)="SubmitProjectType(ProjectTypeForm)">Save</button>
         
       </div>
@@ -123,7 +125,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Type</mat-label>
-                  <mat-select formControlName="PrivilegeStatus">
+                  <mat-select formControlName="PrivilegeStatus" disableOptionCentering>
                     <mat-option value="1"  >
                       Active
                     </mat-option>
@@ -141,7 +143,7 @@
         </div>
       </div>
       <div class="edit_footr">
-        <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+        <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
         <button mat-flat-button class="creat_bt cu_width"  [disabled]="PrivilegeForm.invalid" (click)="SubmitPrivilegeType()">Save</button>
       </div>
       </form>
@@ -196,7 +198,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Privilege*</mat-label>
-                    <mat-select formControlName="privilege" multiple>
+                    <mat-select formControlName="privilege" multiple disableOptionCentering>
                       <mat-option *ngFor="let privilege of _masterservice.PrivilegeList" [value]="privilege.value"  >
                         {{privilege.viewValue}}
                       </mat-option>
@@ -213,7 +215,7 @@
                   <div class="mt-cust-fd">
                     <mat-form-field appearance="fill" class="example-full-width">
                       <mat-label>Select Type</mat-label>
-                      <mat-select formControlName="Rolestatus">
+                      <mat-select formControlName="Rolestatus" disableOptionCentering>
                         <mat-option value="1"  >
                           Active
                         </mat-option>
@@ -229,8 +231,8 @@
                 </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width"  [disabled]="RoleForm.invalid" (click)="SubmitRoleType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="RoleForm.invalid"  (click)="SubmitRoleType()">Save</button>
           
         </div>
         </form>
@@ -271,7 +273,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Type</mat-label>
-                  <mat-select formControlName="FormStatus">
+                  <mat-select formControlName="FormStatus" disableOptionCentering>
                     <mat-option value="1"  >
                       Active
                     </mat-option>
@@ -289,8 +291,8 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width"   [disabled]="pagesListForm.invalid" (click)="SubmitFormList()">Save</button>
+         <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="pagesListForm.invalid"  (click)="SubmitFormList()">Save</button>
           
         </div>
         </form>
@@ -333,7 +335,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Function*</mat-label>
-                    <mat-select formControlName="Function" >
+                    <mat-select formControlName="Function" disableOptionCentering>
                       <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
                         {{Function.viewValue}}
                       </mat-option>
@@ -348,7 +350,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Sector*</mat-label>
-                    <mat-select formControlName="Sector" multiple>
+                    <mat-select formControlName="Sector" multiple disableOptionCentering>
                       <mat-option *ngFor="let Sector of _masterservice.SectorList" [value]="Sector.value"  >
                         {{Sector.viewValue}}
                       </mat-option>
@@ -366,7 +368,7 @@
                       <div class="mt-cust-fd">
                         <mat-form-field appearance="fill" class="example-full-width">
                           <mat-label>Select Type</mat-label>
-                          <mat-select formControlName="VerticalStatus">
+                          <mat-select formControlName="VerticalStatus" disableOptionCentering>
                             <mat-option value="1"  >
                               Active
                             </mat-option>
@@ -384,8 +386,8 @@
                         </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" [disabled]="VerticalForm.invalid"  (click)="Update_Mst_Verticals()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="VerticalForm.invalid" (click)="Update_Mst_Verticals()">Save</button>
           
         </div>
         </form>
@@ -414,7 +416,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Active / Inactive*</mat-label>
-                  <mat-select formControlName="Active" >
+                  <mat-select formControlName="Active" disableOptionCentering>
                     <mat-option  value="1"  >
                      Active
                     </mat-option>
@@ -432,8 +434,8 @@
            
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width"  [disabled]="BranchForm.invalid" (click)="SubmitBranchType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="BranchForm.invalid"  (click)="SubmitBranchType()">Save</button>
           
         </div>
         </form>
@@ -474,7 +476,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Active / Inactive*</mat-label>
-                  <mat-select formControlName="Active" >
+                  <mat-select formControlName="Active" disableOptionCentering>
                     <mat-option  value="1"  >
                      Active
                     </mat-option>
@@ -491,8 +493,8 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" [disabled]="BusinessForm.invalid"  (click)="SubmitBusinessType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="BusinessForm.invalid"  (click)="SubmitBusinessType()">Save</button>
           
         </div>
         </form>
@@ -521,7 +523,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Active / Inactive*</mat-label>
-                  <mat-select formControlName="Active" >
+                  <mat-select formControlName="Active" disableOptionCentering>
                     <mat-option  value="1"  >
                      Active
                     </mat-option>
@@ -538,8 +540,8 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width"  [disabled]="SolutionCategoryForm.invalid" (click)="SubmitSolutionCategoryType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="SolutionCategoryForm.invalid"  (click)="SubmitSolutionCategoryType()">Save</button>
           
         </div>
         </form>
@@ -568,7 +570,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Active / Inactive*</mat-label>
-                  <mat-select formControlName="Active" >
+                  <mat-select formControlName="Active" disableOptionCentering>
                     <mat-option  value="1"  >
                      Active
                     </mat-option>
@@ -585,8 +587,8 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" [disabled]="SectorForm.invalid" (click)="SubmitSectorType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="SectorForm.invalid" (click)="SubmitSectorType()">Save</button>
           
         </div>
         </form>
@@ -615,7 +617,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Sector*</mat-label>
-                  <mat-select formControlName="Sector_Id" >
+                  <mat-select formControlName="Sector_Id" disableOptionCentering>
                     <mat-option *ngFor = "let data of Sectordropdown" [value]="data.value"  >
                      {{data.viewValue}}
                     </mat-option>
@@ -629,8 +631,8 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" [disabled]="SubSectorForm.invalid" (click)="SubmitSubSectorType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width"  [disabled]="SubSectorForm.invalid" (click)="SubmitSubSectorType()">Save</button>
           
         </div>
         </form>
@@ -682,7 +684,7 @@
             </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
           <button mat-flat-button class="creat_bt cu_width" [disabled]="DOAForm.invalid" (click)="SubmitDOAMessages()">Save</button>
           
         </div>
@@ -712,7 +714,7 @@
               <div class="mt-cust-fd">
                 <mat-form-field appearance="fill" class="example-full-width">
                   <mat-label>Select Solution Category*</mat-label>
-                  <mat-select formControlName="SolutionCategory" >
+                  <mat-select formControlName="SolutionCategory" disableOptionCentering>
                     <mat-option *ngFor = "let data of SolutionCategorydropdown" [value]="data.value"  >
                      {{data.viewValue}}
                     </mat-option>
@@ -729,7 +731,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Function Type*</mat-label>
-                    <mat-select formControlName="Function" >
+                    <mat-select formControlName="Function" disableOptionCentering>
                       <mat-option *ngFor = "let data of functiondropdown" [value]="data.value"  >
                        {{data.viewValue}}
                       </mat-option>
@@ -744,7 +746,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Domain*</mat-label>
-                    <mat-select formControlName="Domain" >
+                    <mat-select formControlName="Domain" disableOptionCentering>
                       <mat-option *ngFor = "let data of domaindropdown" [value]="data.value"  >
                        {{data.viewValue}}
                       </mat-option>
@@ -761,7 +763,7 @@
                 <div class="mt-cust-fd">
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Active / Inactive*</mat-label>
-                    <mat-select formControlName="Active" >
+                    <mat-select formControlName="Active" disableOptionCentering>
                       <mat-option  value="1"  >
                        Active
                       </mat-option>
@@ -778,8 +780,8 @@
               </div>
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" [disabled]="SolutionForm.invalid" (click)="SubmitSolution()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="SolutionForm.invalid"  (click)="SubmitSolution()">Save</button>
           
         </div>
         </form>
@@ -810,8 +812,8 @@
             
         </div>
         <div class="edit_footr">
-          <button mat-flat-button class="creat_bt cu_width" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width"  [disabled]="CommentForm.invalid" (click)="SubmitCommentType()">Save</button>
+          <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
+          <button mat-flat-button class="creat_bt cu_width" [disabled]="CommentForm.invalid"  (click)="SubmitCommentType()">Save</button>
           
         </div>
         </form>
@@ -844,7 +846,7 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </table>
             </perfect-scrollbar>
-            <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length"
+            <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length" style="margin-bottom: 10px;"
                     [pageSize]="7"
                     >
             </mat-paginator>
