@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MasterModule } from '../master.module';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from 'src/app/services/common.service';
 
 export class CommonParameters
@@ -279,14 +279,22 @@ export class MasterService {
   {
     this.commentmodel = new mst_commenttype();
   }
+
+  NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
+    var format = /[<>'"&]/;
+    if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
+      return { 'invalidservices': true };
+    }
+    return null;
+  }
   createusermasterform()
   {
     this.usermasterform = new FormGroup({
-      usercode : new FormControl("",Validators.required),
-      firstname : new FormControl("",Validators.required),
-      lastname : new FormControl("",Validators.required),
+      usercode : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
+      firstname : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
+      lastname : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
       role : new FormControl("",Validators.required),
-      email : new FormControl("",[Validators.required,Validators.email]),
+      email : new FormControl("",[Validators.required,Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")]),
       mobile : new FormControl("",[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
       branch : new FormControl("",Validators.required),
       verticals : new FormControl("",Validators.required)

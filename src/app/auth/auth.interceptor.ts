@@ -28,10 +28,12 @@ export class AuthInterceptor implements HttpInterceptor {
         }
         else
         {
+          let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
             if (localStorage.getItem('userToken') != null) {
                 const headers = new HttpHeaders({
                     'Authorization': "Bearer " + localStorage.getItem('Token'),
-                    '_user_login': localStorage.getItem("UserCode"),
+                    // '_user_login': localStorage.getItem("UserCode"),
+                    '_user_login':encryptedusercode,
                     '_RequestId': localStorage.getItem("RequestId"),
                     'Content-Type': 'application/json'
                   });

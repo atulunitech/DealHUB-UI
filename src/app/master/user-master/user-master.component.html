@@ -90,7 +90,7 @@
           <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.required">
             Email is <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.email">
+          <mat-error *ngIf="_masterservice.usermasterform.controls.email.errors?.pattern">
             Email is not <strong>correct</strong>
           </mat-error>
         </mat-form-field>

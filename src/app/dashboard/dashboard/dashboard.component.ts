@@ -760,6 +760,8 @@ else
   }
 
   ngOnInit() {
+    let abcencrypted =  this.commonService.encryptalpha(this.commonService.commonkey,"abc");
+    abcencrypted = this.commonService.decryptalpha(this.commonService.commonkey,abcencrypted);
     this.commonService.menu_status=false;
     this.commonService.notification_view=false;
 
