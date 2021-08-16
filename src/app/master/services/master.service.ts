@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { MasterModule } from '../master.module';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CommonService } from 'src/app/services/common.service';
 
 export class CommonParameters
 {
@@ -233,7 +234,7 @@ export class MasterService {
       'Content-Type': 'application/json'
     })
   };
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,public commonService:CommonService) { }
   // getMaster(): Observable<MasterModule[]> {
   //   return this.http.get<MasterModule[]>(`${this.apiUrl}`)
    
@@ -354,15 +355,15 @@ export class MasterService {
 
   GetMstBranch():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstBranch",modeldata);  
   }
 
   GetMstBusiness():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
-    
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstFunctions",modeldata);  
   }
 
@@ -388,8 +389,8 @@ export class MasterService {
 
   GetMstCommentType():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
-    
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstCommentType",modeldata);  
   }
 
@@ -407,35 +408,35 @@ export class MasterService {
 
   GetMstSector():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSector",modeldata);  
   }
 
   GetMstSolutionCategory():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
-    
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSolutionCategory",modeldata);  
   }
 
   GetMstSolution():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
-    
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSolution",modeldata);  
   }
 
   GetMstDoaMsg():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstDoaMatrixMessages",modeldata);  
   }
 
   GetMstSubSector():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstSubsector",modeldata);  
   }
@@ -452,7 +453,7 @@ export class MasterService {
   }
   GetMstDomains():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstDomains",modeldata);  
   }
@@ -462,7 +463,7 @@ export class MasterService {
   //privilege function
   GetMstPrivilege():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstPrivilege",modeldata);  
   }
@@ -474,8 +475,8 @@ export class MasterService {
   //Roles function
   GetMstRole():Observable<any>{
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
-    
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstRole",modeldata);  
   }
   Update_Mst_Roles(modeldata):Observable<any>{
@@ -487,7 +488,7 @@ export class MasterService {
   GetMstForms():Observable<any>
   {
     let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstForms",modeldata);  
   }
@@ -499,8 +500,8 @@ export class MasterService {
   //Vertical Function 
   GetMstVerticals():Observable<any>
   {
-    let modeldata:CommonParameters  = new CommonParameters();
-    modeldata._user_id=parseInt(localStorage.getItem("UserCode"));
+   let modeldata:CommonParameters  = new CommonParameters();
+    modeldata._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     return this.http.post<any>(environment.apiUrl+"Api/MasterUpdation/GetMstVerticals",modeldata);  
   }

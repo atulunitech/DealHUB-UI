@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { MasterService } from '../services/master.service';
 
@@ -39,7 +40,8 @@ public BusinessForm:FormGroup;
 public CommentForm:FormGroup;
 createoredit:string = "";
 dontshowforDOA:boolean = true;
-  constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
+  constructor(private router: Router,private route:ActivatedRoute,public commonService:CommonService,
+    public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
   ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
@@ -840,7 +842,7 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_code=this.ProjectTypeForm.controls.ProjectCode.value;
   this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
-  this._masterservice.Mst_Domains._user_id=localStorage.getItem("UserCode");
+  this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
@@ -869,7 +871,7 @@ GetMstPrivilege()
   this._masterservice.Mst_privilege._privilege_Id=this.PrivilegeId;
   this._masterservice.Mst_privilege._privilege_name=this.PrivilegeForm.controls.privilege_name.value;
   this._masterservice.Mst_privilege._active=this.PrivilegeForm.controls.PrivilegeStatus.value;
-  this._masterservice.Mst_privilege._user_id=localStorage.getItem("UserCode");
+  this._masterservice.Mst_privilege._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   this._masterservice.Update_Mst_Privilege( this._masterservice.Mst_privilege).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
@@ -910,7 +912,7 @@ SubmitRoleType()
     
   }
   this._masterservice.mst_roles._Previlege_Id=tempservicecat;
-  this._masterservice.mst_roles._user_id=localStorage.getItem("UserCode");
+  this._masterservice.mst_roles._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
     console.log(Result);
@@ -953,7 +955,7 @@ SubmitBranchType()
   }
   this._masterservice.branchmodel._branchname = this.BranchForm.controls.Branch_Name.value;
   this._masterservice.branchmodel._active = this.BranchForm.controls.Active.value;
-  this._masterservice.branchmodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.branchmodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Branch(this._masterservice.branchmodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -990,7 +992,7 @@ SubmitCommentType()
   }
   this._masterservice.commentmodel._comment_type = this.CommentForm.controls.Comment.value;
   //this._masterservice.branchmodel._active = this.BranchForm.controls.Active.value;
-  this._masterservice.commentmodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.commentmodel._user_id =this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Comment(this._masterservice.commentmodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1027,7 +1029,7 @@ SubmitSectorType()
   }
   this._masterservice.sectormodel._Sector_Name = this.SectorForm.controls.Sector_Name.value;
   this._masterservice.sectormodel._active = this.SectorForm.controls.Active.value;
-  this._masterservice.sectormodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.sectormodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Sector(this._masterservice.sectormodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1066,7 +1068,7 @@ SubmitSubSectorType()
   }
   this._masterservice.subsectormodel._SubSector_Name = this.SubSectorForm.controls.SubSector_Name.value;
   this._masterservice.subsectormodel._Sector_Id = this.SubSectorForm.controls.Sector_Id.value;
-  this._masterservice.subsectormodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.subsectormodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_SubSector(this._masterservice.subsectormodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1103,7 +1105,7 @@ SubmitSolutionCategoryType()
   }
   this._masterservice.solutioncategorymodel._solutioncategory_name = this.SolutionCategoryForm.controls.SolutionCategory_Name.value;
   this._masterservice.solutioncategorymodel._active = this.SolutionCategoryForm.controls.Active.value;
-  this._masterservice.solutioncategorymodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.solutioncategorymodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_SolutionCategory(this._masterservice.solutioncategorymodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1145,7 +1147,7 @@ SubmitSolution()
   this._masterservice.solutionmodel._function_id = this.SolutionForm.controls.Function.value;
   this._masterservice.solutionmodel._domain_id = this.SolutionForm.controls.Domain.value;
   this._masterservice.solutionmodel._active = this.SolutionForm.controls.Active.value;
-  this._masterservice.solutionmodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.solutionmodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Solution(this._masterservice.solutionmodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1182,7 +1184,7 @@ SubmitDOAMessages()
   this._masterservice.doamodel._Message = this.DOAForm.controls.Message.value;
   this._masterservice.doamodel._Prefix = this.DOAForm.controls.Prefix.value;
   this._masterservice.doamodel._MessageFor = this.DOAForm.controls.MessageFor.value;
-  this._masterservice.doamodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.doamodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_DOA(this._masterservice.doamodel).subscribe((Result)=>{
     Result = JSON.parse(Result);
@@ -1216,7 +1218,7 @@ SubmitFormList()
   this._masterservice.mst_Forms._url=this.pagesListForm.controls.Form_Url.value;
   this._masterservice.mst_Forms._active=this.pagesListForm.controls.FormStatus.value;
   this._masterservice.mst_Forms._id=this.FormId;
-  this._masterservice.mst_Forms. _user_id=localStorage.getItem("UserCode");
+  this._masterservice.mst_Forms. _user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   this._masterservice.Update_Mst_Forms(this._masterservice.mst_Forms).subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.Canceltype();
@@ -1262,7 +1264,7 @@ Update_Mst_Verticals()
   this._masterservice.mst_verticals._function_id=this.VerticalForm.controls.Function.value;
   this._masterservice.mst_verticals._active=this.VerticalForm.controls.VerticalStatus.value;
   this._masterservice.mst_verticals._Sector_Id=tempservicecat;
-  this._masterservice.mst_verticals._user_id=localStorage.getItem("UserCode");
+  this._masterservice.mst_verticals._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   this._masterservice.Update_Mst_Verticals(this._masterservice.mst_verticals).subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.Canceltype();
@@ -1302,7 +1304,7 @@ SubmitBusinessType()
   this._masterservice.businessmodel._function_name = this.BusinessForm.controls.BusinessName.value;
   this._masterservice.businessmodel._function_code = this.BusinessForm.controls.BusinessCode.value;
   this._masterservice.businessmodel._active = this.BusinessForm.controls.Active.value;
-  this._masterservice.businessmodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.businessmodel._user_id =this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
   this._masterservice.Update_Mst_Business(this._masterservice.businessmodel).subscribe((Result)=>{
     Result = JSON.parse(Result);

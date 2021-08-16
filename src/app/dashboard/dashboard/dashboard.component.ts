@@ -283,7 +283,9 @@ export class DashboardComponent implements OnInit {
   // };
   loading$ = this.commonService.loading$;
   public loginvalid: FormGroup;
-  constructor(private _dashboardservice:DashboardService,private fb: FormBuilder,private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
+  constructor(private _dashboardservice:DashboardService,private fb: FormBuilder,
+    private router: Router,public _obfservices:OBFServices,public dialog: MatDialog,
+    private _mesgBox: MessageBoxComponent,public commonService:CommonService,private _loginservice:loginservices,private datepipe: DatePipe) { 
     this._obfservices.createform();
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.myForm1 = this.fb.group({
@@ -1677,7 +1679,10 @@ downloaddetailFinalAgg(row)
 
   CallDashBoardService()
   {
-    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
+    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+   // this._dashboardmodel._user_code=localStorage.getItem("UserCode");
+   this._dashboardmodel._user_code=encryptedusercode;
+
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
       console.log("DashBoardData");
@@ -2210,7 +2215,9 @@ downloaddetailFinalAgg(row)
 
   GetDatabaseCount()
   {
-    this._dashboardmodel._user_code=localStorage.getItem("UserCode");
+    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+  //  this._dashboardmodel._user_code=localStorage.getItem("UserCode");
+  this._dashboardmodel._user_code=encryptedusercode;
     this._dashboardservice.GetDashboardCount(this._dashboardmodel).subscribe(Result=>{
     
       

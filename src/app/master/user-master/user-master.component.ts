@@ -12,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, startWith } from 'rxjs/operators';
+import { CommonService } from 'src/app/services/common.service';
 import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MessageBoxComponent } from 'src/app/shared/MessageBox/MessageBox.Component';
 import { MasterService, userdashboardupdate } from '../services/master.service';
@@ -53,7 +54,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class UserMasterComponent implements OnInit {
 @Input() masterType : any;
 
-  constructor(private router: Router,private route:ActivatedRoute,public _masterservice:MasterService,private _mesgBox: MessageBoxComponent,public dialog: MatDialog) { }
+  constructor(private router: Router,private route:ActivatedRoute,
+    public _masterservice:MasterService,private _mesgBox: MessageBoxComponent,public commonService:CommonService,
+    public dialog: MatDialog) { }
   userdetails :Mstcommonparameters;
   mst_roles_array = [];
   mst_branches_array = [];
@@ -492,7 +495,7 @@ showhidebrranchfn_out()
     model._id = data.id;
     model._active = data.active;
     model._islocked = data.islocked == 0 ? 1: 0;
-    model._user_id = localStorage.getItem('UserCode');
+    model._user_id =   this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     
     const message = data.islocked == 0? "Are you sure you want to lock this user?":"Are you sure you want to unlock this user?";
    let result = false;
@@ -553,7 +556,7 @@ showhidebrranchfn_out()
     model._id = data.id;
     model._active = data.active;
     model._islocked = data.islocked;
-    model._user_id = localStorage.getItem('UserCode');
+    model._user_id =  this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     //alert(evt.checked);
     //let res =  this.confirmDialog("Are you sure to change to cash users?");
     
@@ -964,7 +967,7 @@ SaveUsers()
   
   this._masterservice.usermodel._mappedverticals =  this._masterservice.usermasterform.controls.verticals.value;
   this._masterservice.usermodel._mappedbranches =  this._masterservice.usermasterform.controls.branch.value;
-  this._masterservice.usermodel._user_id = localStorage.getItem('UserCode');
+  this._masterservice.usermodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
  
   this._masterservice.updateusermaster(this._masterservice.usermodel).subscribe(res =>{
     res = JSON.parse(res);

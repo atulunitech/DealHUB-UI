@@ -120,7 +120,7 @@
                 <div class="search_select_chip"  [ngStyle]="{'display': (branchchips.length > 0) ? 'block' : 'none'}">
                   <perfect-scrollbar class="perfect_scroll_com">
                    <div fxLayout="row" fxLayoutAlign=" none">
-                    <div class="search_chip_box"  *ngFor="let branch of branchchips" > {{branch.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
+                    <div class="search_chip_box"  *ngFor="let branch of branchchips" > {{branch.viewValue}}<img src="assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
                     </div>
                   </perfect-scrollbar>
                   
@@ -130,7 +130,7 @@
                 <div class="search_select_list_in">
                   <div class="search_con_lis">
                     <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="branchSearchControl" />
-                    <img src="../../../assets/images/auto_search.png">
+                    <img src="assets/images/auto_search.png">
                   </div>
                   <div class="select_all_con cus_check" *ngIf="(filteredSearchData | async)?.length == barnch_array_selected.length">
                     <mat-checkbox [checked]="allbranchselected" #allbranchchck  (change)="selectallbranch($event)" (click)="$event.stopPropagation()">
@@ -165,7 +165,7 @@
               <div class="search_select_chip"  [ngStyle]="{'display': (verticalchips.length > 0) ? 'block' : 'none'}">
                 <perfect-scrollbar class="perfect_scroll_com">
                  <div fxLayout="row" fxLayoutAlign=" none">
-                  <div class="search_chip_box"  *ngFor="let vertical of verticalchips" > {{vertical.viewValue}}<img src="../../../assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
+                  <div class="search_chip_box"  *ngFor="let vertical of verticalchips" > {{vertical.viewValue}}<img src="assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
                   </div>
                 </perfect-scrollbar>
                 
@@ -175,7 +175,7 @@
               <div class="search_select_list_in">
                 <div class="search_con_lis">
                   <input matInput  autocomplete="off" matInput placeholder="Search" [formControl]="vericalSearchControl" />
-                  <img src="../../../assets/images/auto_search.png">
+                  <img src="assets/images/auto_search.png">
                 </div>
                 <div class="select_all_con cus_check" *ngIf="(filteredSearchDatavertical | async)?.length == vertical_array_selected.length">
                   <mat-checkbox #allverticalchck [checked]="allverticalselected"  (change)="selectallvertical($event)" (click)="$event.stopPropagation()">

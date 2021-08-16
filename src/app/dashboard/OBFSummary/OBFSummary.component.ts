@@ -25,6 +25,7 @@ import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import { CommonService } from 'src/app/services/common.service';
  
  class SaveAttachmentParameter{
   _dh_id:number;
@@ -134,7 +135,8 @@ class filesdetail
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
         public _dashboardservice:DashboardService,
-        private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
+        private _mesgBox: MessageBoxComponent,public commonService:CommonService,
+        private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
       { 
 
       }
@@ -776,7 +778,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -823,7 +825,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -873,7 +875,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
@@ -1319,7 +1321,7 @@ class filesdetail
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
-     
+      //let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
       }
       },
       (err:any)=>{
@@ -1669,7 +1671,8 @@ class filesdetail
     }
     sendDetails()
     {
-     var UserCode= localStorage.getItem("UserCode");
+//var UserCode= localStorage.getItem("UserCode");
+     let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
      var _ToEmailId=this.EmailAddress.value;
 
       if(_ToEmailId != null)
@@ -1677,7 +1680,7 @@ class filesdetail
         var result=this.validateEmail(_ToEmailId);
         if(result)
         {
-          this._obfservices.ShareOBF(this.dh_header_id,UserCode,_ToEmailId).subscribe(data=>{
+          this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);
             if(result[0].status=="Success")
