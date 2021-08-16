@@ -1,12 +1,12 @@
 <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
   
-    <div class="com_title"> User Master </div>
+    <div class="com_title"><a class="back_link_view" routerLink="/DealHUB/master"><img src="assets/images/left_arrow.png"></a> User Master </div>
     
     <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
         <div class="serch_box_ms">
         
-            <div class="search_con">
-            <input type="text" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+            <div class="search_con" style="width: 260px;">
+            <input type="text" placeholder="search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
         </div>
         <div class="search_icon"><img src="assets/images/search_icon.png"></div>
 
@@ -207,8 +207,10 @@
        </div>
         <div>
           <div class="edit_footr">
+          
+          <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" style="margin-left: 10px;color: #2258bf ;
+          background-color: transparent; " >Cancel</button>
           <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">Save</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" style="margin-left: 10px;" >Cancel</button>
         </div>
         </div>
     </form>
@@ -216,7 +218,7 @@
   </div>
   
   <div class="fl_table_con">
-    <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 183px);
+    <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 201px);
           background-color: white;
           height: 100vh;" >
     <table mat-table [dataSource]="listData" class="ms_table"  matSort>
@@ -267,7 +269,7 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </table>
     </perfect-scrollbar>
-    <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="userfilter.length"
+    <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="userfilter.length" style="margin-bottom: 10px;"
                 [pageSize]="10"
                 >
         </mat-paginator> 
