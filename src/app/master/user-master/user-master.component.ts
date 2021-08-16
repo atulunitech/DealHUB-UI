@@ -834,18 +834,18 @@ getusereditdetails(data)
   this.allbranchselected = true;
   this.allverticalselected = true;
   this.displaydiv = true;
-  this.userlabel = "Edit :"+data.first_name+" "+data.last_name;
+  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name;
   this.branchchips =[];
   this.verticalchips = [];
   this.verticalchipstodisplay = [];
   this.branchchipstodisplay = [];
   console.log(data);
-  this._masterservice.usermasterform.controls.usercode.setValue(data.user_code);
-  this._masterservice.usermasterform.controls.firstname.setValue(data.first_name);
-  this._masterservice.usermasterform.controls.lastname.setValue(data.last_name);
+  this._masterservice.usermasterform.controls.usercode.setValue(data.User_Code);
+  this._masterservice.usermasterform.controls.firstname.setValue(data.First_Name);
+  this._masterservice.usermasterform.controls.lastname.setValue(data.Last_Name);
   this._masterservice.usermasterform.controls.role.setValue(data.role_id);
-  this._masterservice.usermasterform.controls.email.setValue(data.email_id);
-  this._masterservice.usermasterform.controls.mobile.setValue(data.mobile_no);
+  this._masterservice.usermasterform.controls.email.setValue(data.Email_Id);
+  this._masterservice.usermasterform.controls.mobile.setValue(data.Mobile_No);
   
   this._masterservice.usermodel._id = data.id;
   this._masterservice.usermodel._is_cassh_user = data.is_cassh_user;
