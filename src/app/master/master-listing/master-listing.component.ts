@@ -46,11 +46,11 @@ dontshowforDOA:boolean = true;
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
   ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
-  formsColumn:string[]=['form_name','url','Active','ProjectTypeAction'];
+  formsColumn:string[]=['Form_name','Url','Active','ProjectTypeAction'];
   VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Active','ProjectTypeAction'];
-  PrivilegeColumn:string[]=['privilege_name','Active','ProjectTypeAction'];
+  PrivilegeColumn:string[]=['Privilege_name','Active','ProjectTypeAction'];
   //PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
-  RolesColumn:string[]=['role_code','role_name','equivalent_cassh_role_name','Active','ProjectTypeAction'];
+  RolesColumn:string[]=['Role_Code','Role_Name','Equivalent_Cassh_Role_Name','Active','ProjectTypeAction'];
   BranchColumn: string[] = ['Branch_Name','Active','ProjectTypeAction'];
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
   SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
@@ -335,7 +335,7 @@ dontshowforDOA:boolean = true;
      }
   }
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&]/;
+    var format = /[<>'"& $ % @ # ]/;
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
