@@ -397,7 +397,7 @@ dontshowforDOA:boolean = true;
   }
   ShowEditType(Details)
 { 
-  this.enablecreate = false;
+ 
   if( this.masterType=="Project Type")
   {
     this.ShowProjectTypeEdit=true;
@@ -447,6 +447,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Branch")
   {
+    if(this.enablecreate && (this.BranchForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewbranchmodel();
     this.ShowBranchEdit=true;
     this.createoredit = "Edit : "+Details.Branch_Name;
@@ -456,6 +466,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Comment Type")
   {
+    if(this.enablecreate && (this.CommentForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewcommentmodel();
     this.ShowCommentEdit=true;
     this.createoredit = "Edit : "+Details.Comment_Type;
@@ -556,6 +576,7 @@ dontshowforDOA:boolean = true;
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
     this.BusinessForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
+  this.enablecreate = false;
   }
   Canceltype()
   {
