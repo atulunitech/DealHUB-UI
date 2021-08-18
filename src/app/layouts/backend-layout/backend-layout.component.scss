@@ -23,7 +23,8 @@
     @include position(absolute,0,0,initial,initial);
     @include transition(all 0.3s);
     // background-color: $thm-dash-bg; 
-    background-color: #EAF2FF;
+    // background-color: #EAF2FF;
+    background-color: #EFF5FF;
     z-index: 0; 
     &.open
     {

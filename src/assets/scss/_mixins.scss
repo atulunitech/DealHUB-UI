@@ -1085,7 +1085,8 @@ $animation-duration: 2.5s;
 //end loader
 
 
-.cus_check {
+.cus_check 
+{
   font-size: 0.84rem;
   font-weight: bold;
   ::ng-deep
@@ -1100,6 +1101,34 @@ $animation-duration: 2.5s;
   .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: #2258bf;
   }
+  ::ng-deep .mat-checkbox-inner-container {
+    margin-right: 5px;
+  }
+}
+
+
+.cus_check_ms_list
+{
+  font-size: 0.84rem;
+  font-weight: bold;
+  ::ng-deep .mat-checkbox-frame { 
+    border-color: #1c68c1;
+    border-width: 1px;
+}
+  ::ng-deep
+    .mat-checkbox-checked.mat-accent
+    .mat-checkbox-ripple
+    .mat-ripple-element {
+    opacity: 0.03 !important;
+    background-color: #1c68c1 !important;
+    
+  }
+
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #1c68c1;
+  }
+  
   ::ng-deep .mat-checkbox-inner-container {
     margin-right: 5px;
   }
