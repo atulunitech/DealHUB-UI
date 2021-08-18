@@ -38,6 +38,7 @@ public SolutionForm:FormGroup;
 public DOAForm:FormGroup;
 public BusinessForm:FormGroup;
 public CommentForm:FormGroup;
+enablecreate:boolean = false;
 createoredit:string = "";
 dontshowforDOA:boolean = true;
   constructor(private router: Router,private route:ActivatedRoute,public commonService:CommonService,
@@ -395,7 +396,8 @@ dontshowforDOA:boolean = true;
   }
   }
   ShowEditType(Details)
-{
+{ 
+  this.enablecreate = false;
   if( this.masterType=="Project Type")
   {
     this.ShowProjectTypeEdit=true;
@@ -673,6 +675,7 @@ dontshowforDOA:boolean = true;
   
 createType()
 {
+  this.enablecreate = true;
   if(this.masterType=="Project Type")
   {
     this.ShowProjectTypeEdit=true;

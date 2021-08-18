@@ -4,6 +4,10 @@
 .filter_cont {
     @include padding(15px,50px,15px,50px);
 }
+
+.displaynone{
+    display: none !important;
+}
 .com_title
 {
     display: inline-block;
