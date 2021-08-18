@@ -862,6 +862,7 @@ getusereditdetails(data)
   this._masterservice.usermasterform.controls.role.setValue(data.role_id);
   this._masterservice.usermasterform.controls.email.setValue(data.Email_Id);
   this._masterservice.usermasterform.controls.mobile.setValue(data.Mobile_No);
+  this._masterservice.usermasterform.controls.Active.setValue(data.active);
   
   this._masterservice.usermodel._id = data.id;
   this._masterservice.usermodel._is_cassh_user = data.is_cassh_user;
@@ -969,7 +970,7 @@ SaveUsers()
   {
   this._masterservice.usermodel._id = 0;
   this._masterservice.usermodel._is_cassh_user = 0;
-  this._masterservice.usermodel._active = "0";
+  //this._masterservice.usermodel._active = "0";
   this._masterservice.usermodel._islocked = 0;
 }
 
@@ -980,6 +981,8 @@ SaveUsers()
   this._masterservice.usermodel._mobile_no = this._masterservice.usermasterform.controls.mobile.value;
   this._masterservice.usermodel._email_id = this._masterservice.usermasterform.controls.email.value;
   this._masterservice.usermodel._role_id = this._masterservice.usermasterform.controls.role.value;
+
+  this._masterservice.usermodel._active = this._masterservice.usermasterform.controls.Active.value;
   
   this._masterservice.usermodel._mappedverticals =  this._masterservice.usermasterform.controls.verticals.value;
   this._masterservice.usermodel._mappedbranches =  this._masterservice.usermasterform.controls.branch.value;
