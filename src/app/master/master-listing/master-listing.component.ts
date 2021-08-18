@@ -410,7 +410,7 @@ dontshowforDOA:boolean = true;
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
     this.createoredit = "Edit : "+Details.privilege_name;
-    this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
+    this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
     
   }
@@ -420,11 +420,11 @@ dontshowforDOA:boolean = true;
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
     this.createoredit = "Edit : "+Details.role_name;
-    this.RoleForm.controls.Role_code.setValue(Details.role_code);
-    this.RoleForm.controls.role_name.setValue(Details.role_name);
+    this.RoleForm.controls.Role_code.setValue(Details.Role_code);
+    this.RoleForm.controls.role_name.setValue(Details.Role_name);
     this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
     
-    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
+    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
 
     if(this._masterservice.map_privilege_role.length != null)
     {
@@ -485,7 +485,7 @@ dontshowforDOA:boolean = true;
     this.ShowSolutionCategoryEdit=true;
     this.createoredit = "Edit : "+Details.solutioncategory_name;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
-    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.solutioncategory_name);
+    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
     this.SolutionCategoryForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
   else if(this.masterType=="Solution")
@@ -515,8 +515,8 @@ dontshowforDOA:boolean = true;
     this.ShowFormEdit=true;
     this.FormId=Details.id;
     this.createoredit = "Edit : "+Details.form_name;
-    this.pagesListForm.controls.Form_name.setValue(Details.form_name);
-    this.pagesListForm.controls.Form_Url.setValue(Details.url);
+    this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
+    this.pagesListForm.controls.Form_Url.setValue(Details.Url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Vertical")
@@ -843,6 +843,8 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
   this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+//  this.listData.filter = this.ProjectTypeForm.controls.ProjectCode.value;
+ 
   this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
