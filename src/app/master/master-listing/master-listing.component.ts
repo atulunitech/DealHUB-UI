@@ -412,7 +412,7 @@ dontshowforDOA:boolean = true;
     }
     this.ShowProjectTypeEdit=true;
     this.DomainId=Details.domain_id;
-    this.createoredit = "Edit : "+Details.Project_Name;
+    this.createoredit = "Edit : "+Details.Project_Name + " ("+Details.Project_Code+")";
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
     this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
