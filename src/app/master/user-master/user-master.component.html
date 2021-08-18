@@ -129,7 +129,8 @@
                 <div class="search_select_chip"  [ngStyle]="{'display': (branchchips.length > 0) ? 'block' : 'none'}">
                   <perfect-scrollbar class="perfect_scroll_com">
                    <div fxLayout="row" fxLayoutAlign=" none">
-                    <div class="search_chip_box"  *ngFor="let branch of branchchips" > {{branch.viewValue}}<img src="assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
+                    <div class="search_chip_box" [class.displaynone] = "i >= 4" *ngFor="let branch of branchchips;index as i" > {{i < 4?branch.viewValue:''}}<img *ngIf="i < 4" src="assets/images/chip_cross.png" (click)="removesearch(branch)"></div>
+                    <span *ngIf="branchchips.length > 4">{{branchchips.length}}</span>
                     </div>
                   </perfect-scrollbar>
                   
@@ -174,7 +175,8 @@
               <div class="search_select_chip"  [ngStyle]="{'display': (verticalchips.length > 0) ? 'block' : 'none'}">
                 <perfect-scrollbar class="perfect_scroll_com">
                  <div fxLayout="row" fxLayoutAlign=" none">
-                  <div class="search_chip_box"  *ngFor="let vertical of verticalchips" > {{vertical.viewValue}}<img src="assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
+                  <div class="search_chip_box" [class.displaynone] = "i >= 4"  *ngFor="let vertical of verticalchips;index as i" > {{i < 4?vertical.viewValue:''}}<img *ngIf="i < 4" src="assets/images/chip_cross.png" (click)="removesearchvertical(vertical)"></div>
+                  <span *ngIf="verticalchips.length > 4">{{verticalchips.length}}</span>
                   </div>
                 </perfect-scrollbar>
                 
@@ -210,7 +212,7 @@
           
           <button mat-flat-button class="creat_bt cu_width" (click)="hidediv()" style="margin-left: 10px;color: #2258bf ;
           background-color: transparent; " >Cancel</button>
-          <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">Save</button>
+          <button mat-flat-button class="creat_bt cu_width" (click)="SaveUsers()" [disabled]="_masterservice.usermasterform.invalid">{{enablecreate?'Save':'Update'}}</button>
         </div>
         </div>
     </form>
