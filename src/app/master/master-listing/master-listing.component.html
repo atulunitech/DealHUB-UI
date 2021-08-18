@@ -843,7 +843,7 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </table>
             </perfect-scrollbar>
-            <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="this.listData.filteredData.length" style="margin-bottom: 10px;"
+            <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="listData.filteredData.length" style="margin-bottom: 10px;"
                     [pageSize]="7"
                     >
             </mat-paginator>
