@@ -1,4 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
@@ -987,12 +988,17 @@ SaveUsers()
   this._masterservice.updateusermaster(this._masterservice.usermodel).subscribe(res =>{
     res = JSON.parse(res);
 		this._mesgBox.showSucess(res[0].message);
+    setTimeout(() => {
+      window.location.reload();
+    },2000);
+    // this.displaydiv = false;
+    // this.getdataforusers();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
-    window.location.reload();
+   // window.location.reload();
  },
-  error =>
+  (error:HttpErrorResponse) =>
      {
-      this._mesgBox.showError(error.message);
+      this._mesgBox.showError(error.error.Record.MESSAGE);
      });
 }
 
