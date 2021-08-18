@@ -1,4 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
@@ -60,6 +61,7 @@ export class UserMasterComponent implements OnInit {
   userdetails :Mstcommonparameters;
   mst_roles_array = [];
   mst_branches_array = [];
+  enablecreate:boolean = false;
   edit_branches_array = [];
   mst_verical_array = [];
   edit_vertical_array = [];
@@ -177,9 +179,9 @@ showhidebrranchfn_out()
       this.branchchipstodisplay.splice(index, 1);
     }
      
-    if(this.branchchips.length >= 2)
+    if(this.branchchips.length >= 4)
       {
-        if(this.branchchipstodisplay.length < 2)
+        if(this.branchchipstodisplay.length < 4)
       {
         if(index == 0)
         {
@@ -217,9 +219,9 @@ showhidebrranchfn_out()
       this.verticalchipstodisplay.splice(index, 1);
     }
     
-    if(this.verticalchips.length >= 2)
+    if(this.verticalchips.length >= 4)
     {
-      if(this.verticalchipstodisplay.length < 2)
+      if(this.verticalchipstodisplay.length < 4)
     {
       if(index == 0)
       {
@@ -258,7 +260,7 @@ showhidebrranchfn_out()
       this.allbranchselected = this.barnch_array_selected.every(function(item:any) {
         return item.selected == true;
       });
-      if(this.branchchipstodisplay.length < 2)
+      if(this.branchchipstodisplay.length < 4)
       {
       this.branchchipstodisplay = [...this.branchchipstodisplay, option];
       }
@@ -273,9 +275,9 @@ showhidebrranchfn_out()
         option.selected = false;
       }
 
-      if(this.branchchips.length >= 2)
+      if(this.branchchips.length >= 4)
       {
-        if(this.branchchipstodisplay.length < 2)
+        if(this.branchchipstodisplay.length < 4)
       {
         if(index == 0)
         {
@@ -315,7 +317,7 @@ showhidebrranchfn_out()
       this.allverticalselected = this.vertical_array_selected.every(function(item:any) {
         return item.selected == true;
       });
-      if(this.verticalchipstodisplay.length < 2)
+      if(this.verticalchipstodisplay.length < 4)
       {
       this.verticalchipstodisplay = [...this.verticalchipstodisplay, option];
       }
@@ -330,9 +332,9 @@ showhidebrranchfn_out()
         option.selected = false;
       }
 
-      if(this.verticalchips.length >= 2)
+      if(this.verticalchips.length >= 4)
     {
-      if(this.verticalchipstodisplay.length < 2)
+      if(this.verticalchipstodisplay.length < 4)
     {
       if(index == 0)
       {
@@ -373,7 +375,7 @@ showhidebrranchfn_out()
       });
       this.branchchips = this.barnch_array_selected.slice();
       this.branchchips.forEach(elt =>{
-         if(this.branchchipstodisplay.length < 2)
+         if(this.branchchipstodisplay.length < 4)
          {
            this.branchchipstodisplay.push(elt);
          }
@@ -430,7 +432,7 @@ showhidebrranchfn_out()
       });
       this.verticalchips = this.vertical_array_selected.slice();
       this.verticalchips.forEach(elt =>{
-        if(this.verticalchipstodisplay.length < 2)
+        if(this.verticalchipstodisplay.length < 4)
         {
           this.verticalchipstodisplay.push(elt);
         }
@@ -669,6 +671,7 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    this.enablecreate = true;
     this.allbranchselected = false;
   this.allverticalselected = false;
     this._masterservice.createusermasterform();
@@ -830,6 +833,19 @@ allbranchselected:boolean = false;
 allverticalselected:boolean = false;
 getusereditdetails(data)
 {
+ // let abc = JSON.stringify(this._masterservice.intialformvalue) != JSON.stringify(this._masterservice.usermasterform.value);
+   if(this.enablecreate && (JSON.stringify(this._masterservice.intialformvalue) != JSON.stringify(this._masterservice.usermasterform.value)))
+ // if(this.enablecreate && (this._masterservice.usermasterform.dirty))
+  {
+    if(confirm("Current Form is unsaved,Do you wish to continue?"))
+    {
+
+    }
+    else{
+      return false;
+    }
+  }
+  this.enablecreate = false;
   this._masterservice.createusermasterform();
   this.allbranchselected = true;
   this.allverticalselected = true;
@@ -870,7 +886,7 @@ getusereditdetails(data)
         {
           elt.selected = true;
           this.branchchips.push(elt);
-          if(this.branchchipstodisplay.length < 2)
+          if(this.branchchipstodisplay.length < 4)
           {
             this.branchchipstodisplay.push(elt);
           }
@@ -890,7 +906,7 @@ getusereditdetails(data)
         {
           elt.selected = true;
           this.verticalchips.push(elt);
-          if(this.verticalchipstodisplay.length < 2)
+          if(this.verticalchipstodisplay.length < 4)
           {
             this.verticalchipstodisplay.push(elt);
           }
@@ -972,12 +988,17 @@ SaveUsers()
   this._masterservice.updateusermaster(this._masterservice.usermodel).subscribe(res =>{
     res = JSON.parse(res);
 		this._mesgBox.showSucess(res[0].message);
+    setTimeout(() => {
+      window.location.reload();
+    },2000);
+    // this.displaydiv = false;
+    // this.getdataforusers();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
-    window.location.reload();
+   // window.location.reload();
  },
-  error =>
+  (error:HttpErrorResponse) =>
      {
-      this._mesgBox.showError(error.message);
+      this._mesgBox.showError(error.error.Record.MESSAGE);
      });
 }
 
