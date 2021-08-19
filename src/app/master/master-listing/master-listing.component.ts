@@ -1097,7 +1097,7 @@ SubmitBranchType()
     this.GetMstBranch();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+   // this._mesgBox.showError(error.message);
   });
 
 }
@@ -1134,7 +1134,7 @@ SubmitCommentType()
     this.GetMstCommentType();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+    //this._mesgBox.showError(error.message);
   });
 
 }
@@ -1171,7 +1171,7 @@ SubmitSectorType()
     this.GetMstSector();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+    //this._mesgBox.showError(error.message);
   });
 
 }
@@ -1210,7 +1210,7 @@ SubmitSubSectorType()
     this.GetMstSubSector();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+    //this._mesgBox.showError(error.message);
   });
 
 }
@@ -1247,7 +1247,7 @@ SubmitSolutionCategoryType()
     this.GetMstSolutionCategory();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+   // this._mesgBox.showError(error.message);
   });
 
 }
@@ -1289,7 +1289,7 @@ SubmitSolution()
     this.GetMstSolution();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+   // this._mesgBox.showError(error.message);
   });
 
 }
@@ -1326,7 +1326,7 @@ SubmitDOAMessages()
     this.GetMstDoa();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+    //this._mesgBox.showError(error.message);
   });
 
 }
@@ -1446,7 +1446,7 @@ SubmitBusinessType()
     this.GetMstBusiness();
   },
   (error:HttpErrorResponse) =>{
-    this._mesgBox.showError(error.message);
+    //this._mesgBox.showError(error.message);
   });
 }
 //Business Type end
