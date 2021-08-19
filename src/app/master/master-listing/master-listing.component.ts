@@ -1100,6 +1100,10 @@ SubmitRoleType()
   
 
 }
+PrivilegeChange(event,privilegeName)
+{
+  
+}
 //Roles End
 
 // Branch Start
