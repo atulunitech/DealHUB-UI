@@ -39,13 +39,13 @@ export class SideNaveComponent implements OnInit {
         url:"/DealHUB/dashboard",
         active: true,
       },
-      // { 
-      //   name: "Masters",
-      //   Role:null,
-      //   iconClass: 'masters.png',
-      //   url:"/DealHUB/master",
-      //   active: false,
-      // },
+      { 
+        name: "Masters",
+        Role:null,
+        iconClass: 'masters.png',
+        url:"/DealHUB/master",
+        active: false,
+      },
       { 
        name: 'Change Password',
        Role:null,
