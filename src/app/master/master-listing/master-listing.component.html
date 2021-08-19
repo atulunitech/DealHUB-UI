@@ -850,11 +850,12 @@
           width: 100%;
           top: 50%;
           transform: translate(-50%, 3%);
-          left: 50%;" *ngIf="this.dashboardData.length == 0">
+          left: 50%;" *ngIf="this.listData.filteredData.length == 0">
             <img src="assets/images/no-data1.jpg" style="
             width: 270px;
         ">
           </div>
+         
             </perfect-scrollbar>
             <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="listData.filteredData.length" style="margin-bottom: 10px;"
                     [pageSize]="7"

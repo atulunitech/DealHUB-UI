@@ -961,16 +961,20 @@ GetMstDomains()
    
      
     this.dashboardData=res.domains;
-    if(this.dashboardData.length > 0)
+    if( this.dashboardData != undefined)
     {
      this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
     }
     else
     {
+      this.dashboardData=[];
       this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
     }
    // this.BindGridDetails();
-    this.displayedColumns=this.ProjectTypeColumn;
+   
    
   })
   
@@ -1003,13 +1007,17 @@ GetMstPrivilege()
       console.log(Result);
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_privilege;
-    if(this.dashboardData.length > 0)
+    if( this.dashboardData != undefined)
     {
      this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
     }
     else
     {
+      this.dashboardData=[];
       this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
     }
    // this.BindGridDetails();
     this.displayedColumns=this.PrivilegeColumn;
@@ -1042,13 +1050,17 @@ GetMstRole()
   this.dashboardData=res.mst_roles;
 this._masterservice.PrivilegeList=res.mst_privilege;
 this._masterservice.map_privilege_role=res.map_privilege_role;
-if(this.dashboardData.length > 0)
+if( this.dashboardData != undefined)
 {
  this.BindGridDetails();
+ this.displayedColumns=this.ProjectTypeColumn;
 }
 else
 {
+  this.dashboardData=[];
   this.listData = new MatTableDataSource(this.dashboardData);
+//  this.listData.filteredData.length=0;
+ 
 }
  // this.BindGridDetails();
   this.displayedColumns=this.RolesColumn;
@@ -1096,13 +1108,17 @@ GetMstBranch()
   this._masterservice.GetMstBranch().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    if(this.dashboardData.length > 0)
+    if( this.dashboardData != undefined)
     {
      this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
     }
     else
     {
+      this.dashboardData=[];
       this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
     }
     this.displayedColumns=this.BranchColumn; 
   },
@@ -1140,7 +1156,17 @@ GetMstCommentType()
   this._masterservice.GetMstCommentType().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_comment_type;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
+   
     this.displayedColumns=this.CommentTypeColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1177,6 +1203,16 @@ GetMstSector()
   this._masterservice.GetMstSector().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.BindGridDetails();
     this.displayedColumns=this.SectorColumn; 
   },
@@ -1216,7 +1252,16 @@ GetMstSubSector()
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_subsector;
     this.Sectordropdown = res.mst_sector;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SubSectorColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1253,7 +1298,16 @@ GetMstSolutionCategory()
   this._masterservice.GetMstSolutionCategory().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SolutionCategoryColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1292,7 +1346,16 @@ GetMstSolution()
     this.SolutionCategorydropdown = res.mst_solutioncategory;
     this.functiondropdown = res.mst_functions;
     this.domaindropdown = res.mst_domains;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SolutionColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1331,7 +1394,16 @@ GetMstDoa()
   this._masterservice.GetMstDoaMsg().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.DOAColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1372,7 +1444,16 @@ GetMstForms()
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
   
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.formsColumn;
   })
 }
@@ -1410,7 +1491,16 @@ GetMstVerticals()
     this._masterservice.FunctionList=res.mst_functions;
     this._masterservice.SectorList=res.mst_sector;
     this._masterservice.map_vertical_sector=res.map_vertical_sector;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.VerticalColumn;
   })
 }
@@ -1458,7 +1548,16 @@ GetMstBusiness()
   this._masterservice.GetMstBusiness().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.BusinessColumn; 
   },
   (error:HttpErrorResponse) =>{
