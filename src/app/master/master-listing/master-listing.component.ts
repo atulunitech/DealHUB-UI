@@ -961,8 +961,15 @@ GetMstDomains()
    
      
     this.dashboardData=res.domains;
-  
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
+   // this.BindGridDetails();
     this.displayedColumns=this.ProjectTypeColumn;
    
   })
@@ -996,8 +1003,15 @@ GetMstPrivilege()
       console.log(Result);
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_privilege;
-  
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
+   // this.BindGridDetails();
     this.displayedColumns=this.PrivilegeColumn;
     });
   }
@@ -1028,7 +1042,15 @@ GetMstRole()
   this.dashboardData=res.mst_roles;
 this._masterservice.PrivilegeList=res.mst_privilege;
 this._masterservice.map_privilege_role=res.map_privilege_role;
-  this.BindGridDetails();
+if(this.dashboardData.length > 0)
+{
+ this.BindGridDetails();
+}
+else
+{
+  this.listData = new MatTableDataSource(this.dashboardData);
+}
+ // this.BindGridDetails();
   this.displayedColumns=this.RolesColumn;
   });
 }
@@ -1074,7 +1096,14 @@ GetMstBranch()
   this._masterservice.GetMstBranch().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
     this.displayedColumns=this.BranchColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1414,6 +1443,13 @@ Update_Mst_Verticals()
   })
 
 }
+// FunctionSelect(event,functionid)
+// {
+//   if(functionid !=0)
+//   {
+//     this._masterservice.SectorList.filter(x=>x.vertical_id==functionid)
+//   }
+// }
 //Vertical End
 
 //Business Type start

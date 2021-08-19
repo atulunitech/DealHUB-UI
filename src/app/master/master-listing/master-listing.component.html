@@ -333,7 +333,7 @@
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Function*</mat-label>
                     <mat-select formControlName="Function" disableOptionCentering>
-                      <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
+                      <mat-option *ngFor="let Function of _masterservice.FunctionList"  [value]="Function.value"  >
                         {{Function.viewValue}}
                       </mat-option>
                     </mat-select>
@@ -842,6 +842,19 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </table>
+          <div style="    display: flex;
+          justify-content: center;
+          flex-direction: inherit;
+          position: fixed;
+          height: auto;
+          width: 100%;
+          top: 50%;
+          transform: translate(-50%, 3%);
+          left: 50%;" *ngIf="this.dashboardData.length == 0">
+            <img src="assets/images/no-data1.jpg" style="
+            width: 270px;
+        ">
+          </div>
             </perfect-scrollbar>
             <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="listData.filteredData.length" style="margin-bottom: 10px;"
                     [pageSize]="7"
