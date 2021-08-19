@@ -773,6 +773,9 @@
                     min-height: 53px;
                     padding-left: 12px;
                     padding-right: 12px;
+                    div{
+                        color: #9a9a9a;
+                    }
                     &::after
                     {
                         content: "";
