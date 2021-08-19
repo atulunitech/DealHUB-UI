@@ -608,24 +608,27 @@
 {
     background-color: #fff;
     margin-bottom: 20px;
+    form
+    {background-color: #f1f1f1;padding-top: 10px;}
     .edit_heda
     {
         @include padding(15px, 20px, 15px, 20px);
-        @include margin(0, 0, 20px, 0);
+        @include margin(0, 0, 0px, 0);
         border-bottom: solid 1px rgba(0, 0, 0, 0.1);
-        color: #101010;
+        color: #0e2c65;
         font-weight: 600;
         font-size: 1rem;
     }
     .edit_footr
     {
-        @include padding(15px, 20px, 15px, 20px);
+        @include padding(10px, 20px, 10px, 20px);
         @include margin(15px, 0, 0px, 0);
         border-top: solid 1px rgba(0, 0, 0, 0.1);
         color: #101010;
         font-weight: 600;
         font-size: 1rem;
         text-align: right;
+        background-color: #fff;
     }
     .edit_body
     {

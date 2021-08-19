@@ -451,8 +451,8 @@ dontshowforDOA:boolean = true;
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
     this.createoredit = "Edit : "+Details.role_name;
-    this.RoleForm.controls.Role_code.setValue(Details.Role_code);
-    this.RoleForm.controls.role_name.setValue(Details.Role_name);
+    this.RoleForm.controls.Role_code.setValue(Details.Role_Code);
+    this.RoleForm.controls.role_name.setValue(Details.Role_Name);
     this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
     
     this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
