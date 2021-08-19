@@ -39,13 +39,13 @@ export class SideNaveComponent implements OnInit {
         url:"/DealHUB/dashboard",
         active: true,
       },
-      { 
-        name: "Masters",
-        Role:null,
-        iconClass: 'masters.png',
-        url:"/DealHUB/master",
-        active: false,
-      },
+      // { 
+      //   name: "Masters",
+      //   Role:null,
+      //   iconClass: 'masters.png',
+      //   url:"/DealHUB/master",
+      //   active: false,
+      // },
       { 
        name: 'Change Password',
        Role:null,
@@ -98,7 +98,7 @@ export class SideNaveComponent implements OnInit {
   Logout()
   {
     let data =new MenuModel();
-    data._user_code = localStorage.getItem("UserCode");
+    data._user_code = this._commomservices.setEncryption(this._commomservices.commonkey,localStorage.getItem('UserCode'));
     data.token = localStorage.getItem("Token");
     this._commomservices.deletetoken(data).subscribe(data =>{
       let res = JSON.parse(data);

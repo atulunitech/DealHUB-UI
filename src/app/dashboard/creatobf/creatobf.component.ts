@@ -341,7 +341,7 @@ export class CreatobfComponent implements OnInit {
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
       });
      }
   
@@ -638,7 +638,7 @@ this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
   }
 },
 (error:HttpErrorResponse)=>{
-  this._mesgBox.showError(error.message);
+ // this._mesgBox.showError(error.message);
   //alert(error.message);
 }
 );
@@ -672,7 +672,7 @@ this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
      
  },
  (error:HttpErrorResponse)=>{
-   this._mesgBox.showError(error.message);
+   //this._mesgBox.showError(error.message);
    //alert(error.message);
  });
   }
@@ -2207,7 +2207,7 @@ downloadCoversheet(event)
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
@@ -2274,7 +2274,7 @@ downloadCoversheet(event)
       }
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
@@ -2804,7 +2804,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }

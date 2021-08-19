@@ -760,8 +760,8 @@ else
   }
 
   ngOnInit() {
-    let abcencrypted =  this.commonService.encryptalpha(this.commonService.commonkey,"abc");
-    abcencrypted = this.commonService.decryptalpha(this.commonService.commonkey,abcencrypted);
+    // let abcencrypted =  this.commonService.encryptalpha(this.commonService.commonkey,"abc");
+    // abcencrypted = this.commonService.decryptalpha(this.commonService.commonkey,abcencrypted);
     this.commonService.menu_status=false;
     this.commonService.notification_view=false;
 
@@ -819,7 +819,8 @@ else
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        // this._mesgBox.showError(error.message);
+        this._mesgBox.showError(error.error.Record.MESSAGE);
       });
      }
   public checkError = (controlName: string, errorName: string) => {
@@ -905,7 +906,7 @@ else
       //  this.Verticalheadlist = res.verticalhead;
  },
  (error:HttpErrorResponse)=>{
-   this._mesgBox.showError(error.message);
+   //this._mesgBox.showError(error.message);
    //alert(error.message);
  });
   }
@@ -1007,7 +1008,7 @@ this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
   this.Solutiongroup= res;
 },
 (error:HttpErrorResponse)=>{
-  this._mesgBox.showError(error.message);
+ // this._mesgBox.showError(error.message);
   //alert(error.message);
 }
 );
@@ -2826,7 +2827,7 @@ editSubmit()
       }
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
