@@ -1,4 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
@@ -861,6 +862,7 @@ getusereditdetails(data)
   this._masterservice.usermasterform.controls.role.setValue(data.role_id);
   this._masterservice.usermasterform.controls.email.setValue(data.Email_Id);
   this._masterservice.usermasterform.controls.mobile.setValue(data.Mobile_No);
+  this._masterservice.usermasterform.controls.Active.setValue(data.active);
   
   this._masterservice.usermodel._id = data.id;
   this._masterservice.usermodel._is_cassh_user = data.is_cassh_user;
@@ -968,7 +970,7 @@ SaveUsers()
   {
   this._masterservice.usermodel._id = 0;
   this._masterservice.usermodel._is_cassh_user = 0;
-  this._masterservice.usermodel._active = "0";
+  //this._masterservice.usermodel._active = "0";
   this._masterservice.usermodel._islocked = 0;
 }
 
@@ -979,6 +981,8 @@ SaveUsers()
   this._masterservice.usermodel._mobile_no = this._masterservice.usermasterform.controls.mobile.value;
   this._masterservice.usermodel._email_id = this._masterservice.usermasterform.controls.email.value;
   this._masterservice.usermodel._role_id = this._masterservice.usermasterform.controls.role.value;
+
+  this._masterservice.usermodel._active = this._masterservice.usermasterform.controls.Active.value;
   
   this._masterservice.usermodel._mappedverticals =  this._masterservice.usermasterform.controls.verticals.value;
   this._masterservice.usermodel._mappedbranches =  this._masterservice.usermasterform.controls.branch.value;
@@ -987,12 +991,17 @@ SaveUsers()
   this._masterservice.updateusermaster(this._masterservice.usermodel).subscribe(res =>{
     res = JSON.parse(res);
 		this._mesgBox.showSucess(res[0].message);
+    setTimeout(() => {
+      window.location.reload();
+    },2000);
+    // this.displaydiv = false;
+    // this.getdataforusers();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
-    window.location.reload();
+   // window.location.reload();
  },
-  error =>
+  (error:HttpErrorResponse) =>
      {
-      this._mesgBox.showError(error.message);
+      this._mesgBox.showError(error.error.Record.MESSAGE);
      });
 }
 

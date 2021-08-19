@@ -55,7 +55,7 @@ dontshowforDOA:boolean = true;
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
   SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
   SubSectorColumn: string[] = ['SubSector_Name','Sector_Name','ProjectTypeAction'];
-  SolutionCategoryColumn: string[] = ['solutioncategory_name','Active','ProjectTypeAction'];
+  SolutionCategoryColumn: string[] = ['Solutioncategory_Name','Active','ProjectTypeAction'];
   SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Domain','Active','ProjectTypeAction'];
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
   BusinessColumn: string[] = ['Business_Code','Business_Name','Active','ProjectTypeAction'];
@@ -335,7 +335,7 @@ dontshowforDOA:boolean = true;
      }
   }
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"& $ % @ # ]/;
+    var format = /[<>'"&$%@#]/;
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
@@ -397,36 +397,65 @@ dontshowforDOA:boolean = true;
   }
   ShowEditType(Details)
 { 
-  this.enablecreate = false;
+ 
   if( this.masterType=="Project Type")
   {
+    if(this.enablecreate && (this.ProjectTypeForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowProjectTypeEdit=true;
     this.DomainId=Details.domain_id;
-    this.createoredit = "Edit : "+Details.Project_Name;
+    this.createoredit = "Edit : "+Details.Project_Name + " ("+Details.Project_Code+")";
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
     this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Privilege")
   {
+    if(this.enablecreate && (this.PrivilegeForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
     this.createoredit = "Edit : "+Details.privilege_name;
-    this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
+    this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
     
   }
   else if(this.masterType=="Roles")
   {
-
+    if(this.enablecreate && (this.RoleForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
     this.createoredit = "Edit : "+Details.role_name;
-    this.RoleForm.controls.Role_code.setValue(Details.role_code);
-    this.RoleForm.controls.role_name.setValue(Details.role_name);
+    this.RoleForm.controls.Role_code.setValue(Details.Role_Code);
+    this.RoleForm.controls.role_name.setValue(Details.Role_Name);
     this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
     
-    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
+    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
 
     if(this._masterservice.map_privilege_role.length != null)
     {
@@ -447,6 +476,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Branch")
   {
+    if(this.enablecreate && (this.BranchForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewbranchmodel();
     this.ShowBranchEdit=true;
     this.createoredit = "Edit : "+Details.Branch_Name;
@@ -456,6 +495,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Comment Type")
   {
+    if(this.enablecreate && (this.CommentForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewcommentmodel();
     this.ShowCommentEdit=true;
     this.createoredit = "Edit : "+Details.Comment_Type;
@@ -465,6 +514,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Sector")
   {
+    if(this.enablecreate && (this.SectorForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewsectormodel();
     this.ShowSectorEdit=true;
     this.createoredit = "Edit : "+Details.Sector_Name;
@@ -474,6 +533,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="SubSector")
   {
+    if(this.enablecreate && (this.SubSectorForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewsubsectormodel();
     this.ShowSubSectorEdit=true;
     this.createoredit = "Edit : "+Details.SubSector_Name;
@@ -483,15 +552,35 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Solution Category")
   {
+    if(this.enablecreate && (this.SolutionCategoryForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewsolutioncategorymodel();
     this.ShowSolutionCategoryEdit=true;
     this.createoredit = "Edit : "+Details.solutioncategory_name;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
-    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.solutioncategory_name);
+    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
     this.SolutionCategoryForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
   else if(this.masterType=="Solution")
   {
+    if(this.enablecreate && (this.SolutionForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewsolutionmodel();
     this.ShowSolutionEdit=true;
     this.createoredit = "Edit : "+Details.Solution_Name;
@@ -504,6 +593,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="DOA Matrix Messages")
   {
+    if(this.enablecreate && (this.DOAForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewdoamodel();
     this.ShowDOAEdit=true;
     this.createoredit = "Edit : "+Details.Message;
@@ -514,15 +613,35 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Forms")
   {
+    if(this.enablecreate && (this.pagesListForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowFormEdit=true;
     this.FormId=Details.id;
     this.createoredit = "Edit : "+Details.form_name;
-    this.pagesListForm.controls.Form_name.setValue(Details.form_name);
-    this.pagesListForm.controls.Form_Url.setValue(Details.url);
+    this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
+    this.pagesListForm.controls.Form_Url.setValue(Details.Url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Vertical")
   {
+    if(this.enablecreate && (this.VerticalForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowVerticalEdit=true;
     this.VerticalId=Details.Vertical_id
     this.createoredit = "Edit : "+Details.Vertical_name;
@@ -548,6 +667,16 @@ dontshowforDOA:boolean = true;
   }
   else if(this.masterType=="Business Type")
   {
+    if(this.enablecreate && (this.BusinessForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this._masterservice.createnewbusinessmodel();
     this.ShowBusinessEdit=true;
     this.createoredit = "Edit : "+Details.Business_Name;
@@ -556,6 +685,7 @@ dontshowforDOA:boolean = true;
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
     this.BusinessForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
+  this.enablecreate = false;
   }
   Canceltype()
   {
@@ -831,8 +961,15 @@ GetMstDomains()
    
      
     this.dashboardData=res.domains;
-  
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
+   // this.BindGridDetails();
     this.displayedColumns=this.ProjectTypeColumn;
    
   })
@@ -846,6 +983,8 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
   this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+//  this.listData.filter = this.ProjectTypeForm.controls.ProjectCode.value;
+ 
   this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
@@ -864,8 +1003,15 @@ GetMstPrivilege()
       console.log(Result);
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_privilege;
-  
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
+   // this.BindGridDetails();
     this.displayedColumns=this.PrivilegeColumn;
     });
   }
@@ -896,7 +1042,15 @@ GetMstRole()
   this.dashboardData=res.mst_roles;
 this._masterservice.PrivilegeList=res.mst_privilege;
 this._masterservice.map_privilege_role=res.map_privilege_role;
-  this.BindGridDetails();
+if(this.dashboardData.length > 0)
+{
+ this.BindGridDetails();
+}
+else
+{
+  this.listData = new MatTableDataSource(this.dashboardData);
+}
+ // this.BindGridDetails();
   this.displayedColumns=this.RolesColumn;
   });
 }
@@ -942,7 +1096,14 @@ GetMstBranch()
   this._masterservice.GetMstBranch().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if(this.dashboardData.length > 0)
+    {
+     this.BindGridDetails();
+    }
+    else
+    {
+      this.listData = new MatTableDataSource(this.dashboardData);
+    }
     this.displayedColumns=this.BranchColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1282,6 +1443,13 @@ Update_Mst_Verticals()
   })
 
 }
+// FunctionSelect(event,functionid)
+// {
+//   if(functionid !=0)
+//   {
+//     this._masterservice.SectorList.filter(x=>x.vertical_id==functionid)
+//   }
+// }
 //Vertical End
 
 //Business Type start
