@@ -80,7 +80,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
       });
      }
 
@@ -97,12 +97,15 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
         //   this.Usercode=event['Usercode'];
         // })
         let encryptedpwd="";
+        let encryptedusercode = "";
         // alert(this.key);
           encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
           this.loginvalid.get('NewPassword').setValue(encryptedpwd);
           this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
-          this.loginmodel._SecretKey = this.key;
-        this.Usercode =localStorage.getItem("ResetUC");
+          encryptedusercode = this.commonService.setEncryption(this.key,localStorage.getItem("ResetUC"));
+         // this.loginmodel._SecretKey = this.key;
+        // this.Usercode =localStorage.getItem("ResetUC");
+        this.Usercode =encryptedusercode;
         this.loginmodel._user_code=this.Usercode;
         this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
         

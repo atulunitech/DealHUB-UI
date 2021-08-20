@@ -8,6 +8,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import * as CryptoJS from 'crypto-js'; 
 import { Token } from '@angular/compiler/src/ml_parser/lexer';
 import { MatDialog } from '@angular/material/dialog';
+import { CommonService } from 'src/app/services/common.service';
 
 //region model
 export class LoginModel
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
   disablebutton:boolean=false;
 
   constructor(private formbuilder:FormBuilder, 
-    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent,public dialog:MatDialog) { }
+    private _loginservice:loginservices,private router: Router,private _mesgBox: MessageBoxComponent,public dialog:MatDialog,private _commomservices:CommonService) { }
 
 
   ngOnInit(): void {
@@ -181,8 +182,8 @@ export class LoginComponent implements OnInit {
        this.loginvalid.get('Password').setValue(encryptedpwd);
        console.log("check pwd");
        console.log(this.loginvalid.get('Password').value);
-  
-      this.loginmodel._user_code=this.loginvalid.get('userID').value;
+        let enctyptedusercode = this.setEncryption(this.key,this.loginvalid.get('userID').value);
+      this.loginmodel._user_code= enctyptedusercode;
      // this.loginmodel._SecretKey = this.key;
       this.loginmodel._attempt = "1";
       this.loginmodel._password=this.loginvalid.get('Password').value;
@@ -193,6 +194,10 @@ export class LoginComponent implements OnInit {
         var loginresult =Result;
       this.disablebutton=false;
       if(loginresult.hasOwnProperty("user")){
+        let getrandom = Result.user.Api_Key.split("*$");
+        Result.user.Api_Key = getrandom[0];
+        let actualrandom = getrandom[1];
+        let actualkey = "0c24f9de!b"+actualrandom;
         if(this.RememberMe)
         {
           localStorage.setItem("UserName",Result.user.UserName);
@@ -207,15 +212,34 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("rememberCurrentUser","false");
 
         }
-        localStorage.setItem("UserCode",Result.user.UserCode);
-        localStorage.setItem("privilege_name",Result.user.privilege_name);
+        // let privilege = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.privilege_name);
+        let privilege = this._commomservices.setDecryption(actualkey,Result.user.privilege_name);
+        let usercode = this._commomservices.setDecryption(actualkey,Result.user.UserCode);
+        let role_name = this._commomservices.setDecryption(actualkey,Result.user.role_name);
+        let userid = this._commomservices.setDecryption(actualkey,Result.user.UserId);
+        // localStorage.setItem("UserCode",Result.user.UserCode);
+        localStorage.setItem("UserCode",usercode);
+        // localStorage.setItem("privilege_name",Result.user.privilege_name);
+        localStorage.setItem("privilege_name",privilege);
         localStorage.setItem("userToken",Result.user.Api_Key);
-        localStorage.setItem("role_name",Result.user.role_name);
+        // localStorage.setItem("role_name",Result.user.role_name);
+        localStorage.setItem("role_name",role_name);
         localStorage.setItem("UserName",Result.user.UserName);
-        localStorage.setItem("User_Id",Result.user.UserId);
+        // localStorage.setItem("User_Id",Result.user.UserId);
+        localStorage.setItem("User_Id",userid);
         localStorage.setItem("RequestId",Result.user.AntiforgeryKey);
         console.log(Result.user.UserName);
         
+        if(Result.user.ispasswordchanged == 0)
+        {
+          this._commomservices.resetclicked.next(true);
+          this._commomservices.disabledresetclose = true;
+        }
+        else
+        {
+          this._commomservices.resetclicked.next(false);
+          this._commomservices.disabledresetclose = false;
+        }
         
         //alert("Login Sucess");
         this.router.navigate(['/DealHUB/dashboard']);
@@ -262,7 +286,7 @@ export class LoginComponent implements OnInit {
       this._mesgBox.showError("Please Enter Correct Login ID Or Password");
     }
   }
-   
+  
   }
   
   LostPass(event)

@@ -16,7 +16,11 @@ export class GetObfMasterParameters
 {
   userid:string;
 }
-
+export class sharedetails{
+  _dh_header_id:number;
+  _user_id:string;
+  _ToEmailId:string;
+}
 class SaveAttachmentParameter{
   _dh_id:number;
   _dh_header_id:number;
@@ -442,7 +446,7 @@ export class OBFServices {
   }
 
   NoSpecialCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[^a-zA-z0-9., & % () - _ * \n +]/;
+    var format = /[^a-zA-z0-9.,& % () - _*\n+]/;
     if ((control.value && format.test(control.value)) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
@@ -546,6 +550,16 @@ export class OBFServices {
       //   return this.http.get<any>(environment.apiUrl+"Api/DashBoard/GetDetailTimelineHistory",
       //      httpOptions);  
       // }
+
+      ShareOBF(_dh_header_id:number,_user_id:string,_ToEmailId:string): Observable<any> 
+      {
+        let model:sharedetails = new sharedetails();
+        model._dh_header_id = _dh_header_id;
+        model._user_id = _user_id;
+        model._ToEmailId=_ToEmailId;
+        return this.http.post<any>(environment.apiUrl+"Api/DashBoard/ShareOBF",
+        model);  
+      }
 
       GetDetailTimelineHistory(dh_id:number,dh_header_id:number):Observable<any>
       {

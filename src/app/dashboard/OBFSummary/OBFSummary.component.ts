@@ -25,7 +25,8 @@ import { PerfectScrollbarConfigInterface,
   PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { FlexAlignStyleBuilder } from '@angular/flex-layout';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
-
+import { CommonService } from 'src/app/services/common.service';
+ 
  class SaveAttachmentParameter{
   _dh_id:number;
   _dh_header_id:number;
@@ -78,8 +79,8 @@ class filesdetail
     BrifreadMore=false;
     paymentRead=false;
     PaymentreadMore=false;
-   // comments = new FormControl('', Validators.required);
-    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters,Validators.email])
+   // comments = new FormControl('', Validators.required);,Validators.email
+    EmailAddress=new FormControl("", [Validators.required,this.NoInvalidCharacters])
     step=0;
     service:string;
     privilege_name:string;
@@ -123,13 +124,19 @@ class filesdetail
   disablesavebutton:boolean=true;
   disableLOIPO:boolean=false;
   disableSupporting:boolean=false;
+
+  disableSupportingmsg:string="";
+  disableLOIPOmsg:string="";
+  disablefinalaggmsg:string="";
+  
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
     constructor(private sanitizer:DomSanitizer,
         public _obfservices:OBFServices,private dialog:MatDialog,
         public _dashboardservice:DashboardService,
-        private _mesgBox: MessageBoxComponent,private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
+        private _mesgBox: MessageBoxComponent,public commonService:CommonService,
+        private datepipe: DatePipe,private router: Router,private route:ActivatedRoute) 
       { 
 
       }
@@ -167,7 +174,12 @@ class filesdetail
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
      
     //  this._obfservices.initializeobf(JSON.parse(data));
-      var jsondata=JSON.parse(data);
+    let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+      var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
@@ -275,10 +287,12 @@ class filesdetail
           if(indexsupp >-1)
           {
             this.disableSupporting=false;
+           
           }
           else{
            
             this.disableSupporting=true;
+           // this.disableSupportingmsg="No Supporting Documents to Download";
            
           }
           let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
@@ -288,7 +302,7 @@ class filesdetail
           }
           else{
             this.disableLOIPO=true;
-            
+           // this.disableLOIPOmsg="No LOI/PO Documents to Download";
           }
           let indexofFinal=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="FinalAgg");
           if(indexofFinal > -1)
@@ -296,6 +310,7 @@ class filesdetail
             }
           else{
             this.disablefinalagg=true;
+           // this.disablefinalaggmsg="No Final Agreement Documents to Download";
             
           }
         }
@@ -382,7 +397,10 @@ class filesdetail
     else
     {
       var url=environment.apiUrl + this._obfservices.obfsummarymodel.uploadDetails[0].OBFFilepath;
-      window.open(url);
+      // let blob:any = new Blob([url], { type: 'text/json; charset=utf-8' });
+      // const tempurl = window.URL.createObjectURL(blob);
+      //fileSaver.saveAs(url);
+       window.open(url);
     }
           
   }
@@ -402,7 +420,9 @@ class filesdetail
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
-            
+            //  let blob:any = new Blob([url], {  type: 'application/octet-stream'  });
+            //  fileSaver.saveAs(blob,this._obfservices.obfsummarymodel.AttachmentDetails[i].filename);
+             
           }
         }
       }
@@ -439,6 +459,7 @@ class filesdetail
           {
              var url=environment.apiUrl + this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
              window.open(url);
+          //  fileSaver.saveAs(url);
           }
         }
       }
@@ -575,6 +596,7 @@ class filesdetail
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
            else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="LOI")
             {
@@ -583,6 +605,7 @@ class filesdetail
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
             else if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="Agreement")
             {
@@ -591,8 +614,9 @@ class filesdetail
               savefile.filepath=this._obfservices.obfsummarymodel.AttachmentDetails[i].filepath;
               savefile.description=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
               this.filelist.push(savefile);
+              this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
-            this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
+            
         }
       }
     }
@@ -759,7 +783,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo= (this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -806,7 +830,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=0;
@@ -856,7 +880,7 @@ class filesdetail
     this._obfservices._approveRejectModel._dh_header_id=this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
     this._obfservices._approveRejectModel._fname="";
     this._obfservices._approveRejectModel._fpath="";
-    this._obfservices._approveRejectModel._created_by=localStorage.getItem("UserCode");
+    this._obfservices._approveRejectModel._created_by=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this._obfservices._approveRejectModel.exceptionalcase_cfo=(this.obfsummaryform.get("ExceptionCFO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.exceptioncase_ceo=(this.obfsummaryform.get("ExceptionCEO").value==false? 0 :1 );
     this._obfservices._approveRejectModel.is_on_hold=1;
@@ -1024,6 +1048,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description = this.Loipodropdown;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1042,6 +1067,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
     
@@ -1057,6 +1083,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description = this.filelist[i].description;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1081,6 +1108,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
    } 
@@ -1125,6 +1153,7 @@ class filesdetail
         SaveAttachment._fname=  this.filelist[i].filename; 
         SaveAttachment._fpath = this.filelist[i].filepath;
         SaveAttachment._description =  this.filelist[i].description;
+        SaveAttachment._created_by=localStorage.getItem("UserCode");
         this.Attachments.push(SaveAttachment);
       }
     }
@@ -1151,6 +1180,7 @@ class filesdetail
       SaveAttachment._fname= "Remove all Details"; 
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
+      SaveAttachment._created_by=localStorage.getItem("UserCode");
       this.Attachments.push(SaveAttachment);
     }
     if(this.Attachments.length !=0)
@@ -1296,7 +1326,7 @@ class filesdetail
            this.Attachments.push(this.SaveAttachmentParameter);
         }
       }
-     
+      //let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
       }
       },
       (err:any)=>{
@@ -1542,7 +1572,7 @@ class filesdetail
   }
   commentdisable:boolean=false;
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&$#*^%!()]/;
+    var format = /[<>'"$#^!]/;
 
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
      
@@ -1646,7 +1676,60 @@ class filesdetail
     }
     sendDetails()
     {
+//var UserCode= localStorage.getItem("UserCode");
+     let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+     var _ToEmailId=this.EmailAddress.value;
 
+      if(_ToEmailId != null)
+      {
+        var result=this.validateEmail(_ToEmailId);
+        if(result)
+        {
+          this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
+            console.log(data);
+            var result=JSON.parse(data);
+            if(result[0].status=="Success")
+            {
+              this._mesgBox.showSucess(result[0].message); 
+            }
+            else
+            {
+              this._mesgBox.showError(result[0].message); 
+            }
+            this.dialog.closeAll();
+            this.EmailAddress.setValue("");
+          })
+        }
+        else
+        {
+         
+          this._mesgBox.showError("Invalid email Id!");
+          this.EmailAddress.setValue("");
+        }
+        
+      }
+      
+      
     }
+    validateEmail(email) {
+      var test=email.split(',')
+      
+      const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(test.length >0)
+      {
+        for(let i=0;i<test.length;i++)
+        {
+          var result= re.test(test[i]);
+          if(!result)
+          {
+            return false;
+          }
+        }
+        
+      }
+      return true;
+     
+    }
+    
     
   }

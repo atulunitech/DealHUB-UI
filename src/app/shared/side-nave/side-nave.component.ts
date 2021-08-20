@@ -24,6 +24,7 @@ export class SideNaveComponent implements OnInit {
   // signle open mode
   config = { multi: false };
   options = { multi: false };
+  
  
   ngOnInit(): void {
     // alert("Hello from Side Navigation");
@@ -97,7 +98,7 @@ export class SideNaveComponent implements OnInit {
   Logout()
   {
     let data =new MenuModel();
-    data._user_code = localStorage.getItem("UserCode");
+    data._user_code = this._commomservices.setEncryption(this._commomservices.commonkey,localStorage.getItem('UserCode'));
     data.token = localStorage.getItem("Token");
     this._commomservices.deletetoken(data).subscribe(data =>{
       let res = JSON.parse(data);

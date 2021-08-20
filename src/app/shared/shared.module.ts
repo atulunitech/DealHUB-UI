@@ -9,10 +9,13 @@ import { BackendHeaderComponent } from './backend-header/backend-header.componen
 import { BackendFooterComponent } from './backend-footer/backend-footer.component';
 import { SideNaveComponent } from './side-nave/side-nave.component';
 import { MessageBoxComponent } from '../shared/MessageBox/MessageBox.Component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { NotificationComponent } from './notification/notification.component';
 import { PerfectScrollbarModule, PerfectScrollbarConfigInterface,
   PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-
+  import { MatMenuModule } from '@angular/material/menu';
+  import {MatButtonModule} from '@angular/material/button';
+  import {MatDialogModule } from '@angular/material/dialog';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelPropagation: true
 };
@@ -23,10 +26,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HeaderComponent,
     FooterComponent,
     BackendHeaderComponent, 
-    BackendFooterComponent, SideNaveComponent, MessageBoxComponent, NotificationComponent],
+    BackendFooterComponent, SideNaveComponent, MessageBoxComponent,ConfirmDialogComponent, NotificationComponent],
   exports: [
     HeaderComponent,
     FooterComponent,
+    ConfirmDialogComponent,
     BackendHeaderComponent,
     BackendFooterComponent,SideNaveComponent,MessageBoxComponent,NotificationComponent
   ],
@@ -34,7 +38,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CommonModule,
     FlexLayoutModule,
     PerfectScrollbarModule,
-    SharedRoutingModule
+    SharedRoutingModule,MatMenuModule,MatButtonModule,MatDialogModule
   ],
   providers:[
     MessageBoxComponent,

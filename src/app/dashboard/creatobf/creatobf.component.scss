@@ -256,16 +256,16 @@
                            {
                                .info_view
                                {
-                                background-color: #2258bf;
+                                // background-color: #2258bf;
                                 color: white;
-                                padding: 2px;
-                                border-radius: 30px;
+                                // padding: 2px;
+                                // border-radius: 30px;
                                 font-size: 10px;
                                 text-transform: lowercase;
                                 margin-left: 3px;
                                 line-height: initial;
-                                width: 18px;
-                                height: 18px;
+                                // width: 18px;
+                                // height: 18px;
                                 display: inline-block;
                                 text-align: center;
                                 padding-left: 0px;
@@ -273,6 +273,7 @@
                                 font-weight: bold;
                                 cursor: pointer;
                                 position: relative;
+                                top: 4px;
                                 &:hover 
                                 {
                                     .hov_info
@@ -591,3 +592,40 @@
     max-width: 217px;
     word-break: break-word;
 }
+
+
+::ng-deep .cdk-overlay-pane
+{
+    margin-top: 5px;
+
+}
+::ng-deep .mat-menu-panel{
+    background: #487de2;
+    min-height: auto !important;
+    padding: 0 15px 0 15px;
+    color: white;
+    &.nor_tool
+    {
+        background-color: #487de2;
+        p{
+            margin: 0px;
+            font-style: normal;
+            font-size: 0.75rem;
+        }
+    }
+    h4{
+        color: #ffd800;
+        margin: 0px;
+        line-height: initial;
+        font-size: inherit;
+        font-weight: 500;
+    }
+    p{
+        margin: 0px;
+        margin-top: 2px;
+        &:last-child
+        {
+            font-style: italic;
+        }
+    }
+  }

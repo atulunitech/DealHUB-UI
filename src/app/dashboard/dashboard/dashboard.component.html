@@ -1,6 +1,10 @@
 <form [formGroup]="Dashboardvalid" >
+  <!-- <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" style="    margin-top: -48px;" >
+    <div class="com_title">dashboard</div>
+    
+ </div> -->
   <div fxLayout="row" fxLayoutAlign="space-between center"  class="filter_cont" >
-     <div class="com_title">dashboard</div>
+     
      <div fxLayout="row" fxLayoutAlign="space-between center" class="mas_filter">
       <!-- <input
       ngxDaterangepickerMd
@@ -40,18 +44,19 @@
     <mat-form-field appearance="fill" class="example-full-width">
       <mat-label>Search Filter</mat-label>
       <mat-select [formControl]="searchfiltercontrol" multiple disableOptionCentering>
-        <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option>
+        <!-- <mat-option *ngFor="let filter of searchfilterarr" (onSelectionChange)="selectfilter($event)" [value]="filter.value">{{filter.viewValue}}</mat-option> -->
+        <mat-option *ngFor="let filter of searchKeys" (onSelectionChange)="selectfilter($event)" [value]="filter">{{filter.displayName}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   </div>
-      <div class="serch_box_ms">
+      <div class="serch_box_ms" >
         
-       <div class="search_con">
+       <!-- <div class="search_con">
         <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
          <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
          <mat-autocomplete #auto="matAutocomplete" >
-          <!-- <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" (onSelectionChange)="searchtextchange($event.source.value)"> -->
+          
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" >
             <div>
               <mat-checkbox [checked]="false" (change)="toggleSelection($event,option)" (click)="$event.stopPropagation()">
@@ -62,20 +67,125 @@
           <button (click)="filterdatafinal()">filterrrrrrr</button>
         </mat-autocomplete>
         
+       </div> -->
+       <div class="search_con search_top" style="width: auto;">
+        <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
+        <mat-chip-list #chipListSearch >
+          <mat-chip  *ngFor="let search of filtersTodisplay"  [selectable]="selectable"
+                   [removable]="removable" [matTooltip]="search.value +' ('+search.displayName+')'" (removed)="removesearch(search)">
+                   {{search.value.length > 7?search.value.substring(0,7)+"...":search.value}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+         <!-- <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" > -->
+         <input type="text" 
+         matInput placeholder="Search"
+        [formControl]="searchControl" 
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipListSearch"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="addSearch($event)" 
+        >
+        </mat-chip-list>
+         <mat-autocomplete #auto="matAutocomplete" >
+          
+            <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
+              {{ data.value }} -- {{ data.displayName }}
+          </mat-option>
+          <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
+        </mat-autocomplete>
+        
        </div>
-       <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
+
+       <!-- <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
         <mat-icon>close</mat-icon>
-      </button>
+      </button> -->
+       <!-- <div class="search_icon"><img src="assets/images/search_icon.png"></div> -->
        <div class="search_icon"><img src="assets/images/search_icon.png"></div>
       
      </div>
-     <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" 
-     routerLink="/DealHUB/dashboard/Obf" >
-     <img class="creat_bt_icon" src="assets/images/create_icon.png" alt="">create OBF</button>
+    
       <!-- <div class="creat_bt"><span><img src="assets/images/create_icon.png" alt=""></span>create OBF</div> -->
     </div>
+    <div>
+      <button *ngIf="this.privilege_name == 'OBF Initiator'" mat-flat-button class="creat_bt bt_sp" style="padding:0 20px 0 20px"
+      routerLink="/DealHUB/dashboard/Obf" >
+      <!-- <img class="creat_bt_icon" src="assets/images/create_icon.png" alt=""> -->
+      create OBF</button>
+    </div>
   </div>
-  <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data" >
+  <div  fxLayout="column" fxLayoutAlign=" none"  class="con_data"  >
+    <div class="con_data_in"  *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected" [ngStyle]="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected?{'height': '26px'} : {'height': '6'}"  style="    padding-bottom: 0px;
+   height: 5px;
+    margin-bottom: 7px;
+    margin-top: -10px;" >
+      
+        <div class="serch_box_ms" style="width: 100%;
+        display: flex;
+        margin: 0;" >
+          
+          <!-- <div class="search_con">
+           <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()">
+            <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" >
+            <mat-autocomplete #auto="matAutocomplete" >
+             
+               <mat-option *ngFor="let option of filteredOptions | async" [value]="option" [matTooltip]="option" >
+               <div>
+                 <mat-checkbox [checked]="false" (change)="toggleSelection($event,option)" (click)="$event.stopPropagation()">
+               {{option}}
+             </mat-checkbox>
+             </div>
+             </mat-option>
+             <button (click)="filterdatafinal()">filterrrrrrr</button>
+           </mat-autocomplete>
+           
+          </div> -->
+          <div class="search_con search_top_view" style="display: inline-block;padding-top: 0px;">
+           <!-- <input type="text" *ngIf="!(autocompletearr.length > 0)" matInput placeholder="Search dsdsdsd" [(ngModel)]="searchwords"  [ngModelOptions]="{standalone: true}" autocomplete="off" (keyup)="applyFilter()"> -->
+           
+           <mat-chip-list #chipListSearch style="float:left">
+             <mat-chip *ngFor="let search of filtersToSearch" [selectable]="selectable"
+                      [removable]="removable" [matTooltip]="search.value +' ('+search.displayName+')'" (removed)="removesearch(search)">
+                      {{search.value.length > 7?search.value.substring(0,7)+"...":search.value}}
+               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+             </mat-chip>
+            <!-- <input type="text" *ngIf="autocompletearr.length > 0" matInput placeholder="Search"  [formControl]="searchControl" [matAutocomplete]="auto" > -->
+            <input style="display: none;" type="text" 
+            matInput placeholder="Search"
+           [formControl]="searchControl" 
+           [matAutocomplete]="auto"
+           [matChipInputFor]="chipListSearch"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           [matChipInputAddOnBlur]="addOnBlur"
+           (matChipInputTokenEnd)="addSearch($event)" 
+           >
+           </mat-chip-list>
+           
+            <mat-autocomplete #auto="matAutocomplete" >
+             
+               <mat-option  *ngFor="let data of filteredSearchData | async" [value]="data" (onSelectionChange)="onValueSelect($event,data)" [matTooltip]="data.value +' '+data.displayName" >
+                 {{ data.value }} -- {{ data.displayName }}
+             </mat-option>
+             <!-- <button (click)="filterdatafinal()">filterrrrrrr</button> -->
+           </mat-autocomplete>
+           
+          </div>
+   
+          <!-- <button class="search_close"  aria-label="Clear"*ngIf="this.searchControl.value" (click)="onSearchClear()">
+           <mat-icon>close</mat-icon>
+         </button> -->
+          <!-- <div class="search_icon"><img src="assets/images/search_icon.png"></div> -->
+         
+          <button mat-flat-button class="creat_bt fil_bt" style="position: absolute;
+          padding: 5px 18px 5px 18px;
+          line-height: initial;
+          top: 2px;
+          right: 14px;"  (click)="ResetallFilter()" *ngIf="filtersToSearch.length > 0 || this.dateselected || this.statusfilterselected">Clear All Filter</button>
+          
+        </div>
+      
+      
+    </div>
     <div fxLayout="row" fxLayoutAlign="space-between center" class="con_data_in">
       <div class="con_fil_box p_f_apr"   [ngClass]="{'active': highlight==='tab1'}">
         <div class="box_shead" (click)=" addColumn(0) "><img src="assets/images/p_f_a.png"></div>
@@ -83,14 +193,17 @@
          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? ('Draft') : ('Pending for approval')}}
         </div>
         <div class="fil_had_no" (click)=" addColumn(0) " >
-          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}}
+          <!-- {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this._dashboardcountModel[0]._draft) : (this._dashboardcountModel[0]._TotalPending)}} -->
+          {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator'  ) ? (this.countparam.draftscount) : (this.countparam.draftscount)}}
         </div>
          <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" (click)=" OBfcilck(0) ">
-            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}} 
+            <!-- OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_obf) : (this._dashboardcountModel[0]._pendingobf)}}  -->
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.draftsobfcount) : (this.countparam.draftsobfcount)}} 
           </div>
           <div class="lst_ppl" (click)=" PPLclick(0) ">
-            PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}} 
+            <!-- PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._draft_ppl) : (this._dashboardcountModel[0]._pendingppl)}}  -->
+            PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.draftpplcount) : (this.countparam.draftpplcount)}} 
            </div>
         </div>
       </div>
@@ -101,16 +214,19 @@
         </div>
        
         <div class="fil_had_no"  (click)="addColumn(1)" >
-       {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}}
+       <!-- {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted) : (this._dashboardcountModel[0]._approved)}} -->
+       {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedcount) :(this.countparam.submittedcount)}}
         </div>
       
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf"  (click)=" OBfcilck(1) ">
-            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}} 
+            <!-- OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_obf) : (this._dashboardcountModel[0]._approved_obf)}}  -->
+            OBF: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedobfcount) : (this.countparam.submittedobfcount)}}
           </div>
         
           <div class="lst_ppl" (click)=" PPLclick(1) ">
-             PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}} 
+             <!-- PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this._dashboardcountModel[0]._submitted_ppl) : (this._dashboardcountModel[0]._approved_ppl)}}  -->
+             PPL: {{((this.privilege_name) == 'OBF Initiator' ||(this.privilege_name) == 'PPL Initiator') ? (this.countparam.submittedpplcount) : (this.countparam.submittedpplcount)}} 
           </div>
          
         </div>
@@ -121,14 +237,17 @@
           Rejected
         </div>
         <div class="fil_had_no" (click)="addColumn(2)" >
-          {{this._dashboardcountModel[0]._rejected}}
+          <!-- {{this._dashboardcountModel[0]._rejected}} -->
+          {{this.countparam.rejectedcount}}
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf" (click)=" OBfcilck(2) ">
-            OBF: {{this._dashboardcountModel[0]._rejected_obf}}
+            <!-- OBF: {{this._dashboardcountModel[0]._rejected_obf}} -->
+            OBF: {{this.countparam.rejectedobfcount}}
           </div>
           <div class="lst_ppl" (click)=" PPLclick(2) ">
-            PPL: {{this._dashboardcountModel[0]._rejected_ppl}}
+            <!-- PPL: {{this._dashboardcountModel[0]._rejected_ppl}} -->
+            PPL: {{this.countparam.rejectedpplcount}}
           </div>
         </div>
       </div>
@@ -138,7 +257,8 @@
           approved obf
         </div>
         <div class="fil_had_no">
-         {{this._dashboardcountModel[0]._totalapprovedobf}}
+         <!-- {{this._dashboardcountModel[0]._totalapprovedobf}} -->
+         {{this.countparam.approvedobfcount}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -155,7 +275,8 @@
           approved ppl
         </div>
         <div class="fil_had_no">
-          {{this._dashboardcountModel[0]._totalapprovedppl}}
+          <!-- {{this._dashboardcountModel[0]._totalapprovedppl}} -->
+          {{this.countparam.approvedpplcount}}
         </div>
         <!-- <div fxLayout="row" fxLayoutAlign="space-between end" class="obl_ppf_con">
           <div class="lst_obf">
@@ -169,7 +290,9 @@
       
     </div>
       <div class="fl_table_con" >
-        <perfect-scrollbar class="perfect_scroll_com"  [config]="{useBothWheelAxes: true, suppressScrollX: false, suppressScrollY: false}" >
+        <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 315px);
+        background-color: white;
+        height: 100vh;" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
             <ng-container  [matColumnDef]="theRemovedElement.columnDef">
               <mat-header-cell *matHeaderCellDef mat-sort-header class="{{ theRemovedElement.header }}">{{ theRemovedElement.header }}</mat-header-cell>
@@ -183,21 +306,66 @@
                 <!-- <mat-icon><img src="assets/images/dwn_fil_icon.png" style="background-color: rgb(61, 61, 129);"></mat-icon> -->
                 <!-- <div class="dwon_ic_con"><img src="assets/images/download_icon.png"></div> -->
                 <div class="set-size charts-container">
-                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" title="{{row.progresspercentage}}%">
+                <div class="pie-wrapper pie-wrapper--solid progress-{{row.progresspercentage}}" [matMenuTriggerFor]="menunew_s" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()">
     <span class="label"><span class="smaller">{{row.progresspercentage}}%</span></span>
   </div>
+  <mat-menu class="nor_tool" #menunew_s="matMenu" [hasBackdrop]="false">
+    <p>Current version:{{row.version_name}}</p> 
+    </mat-menu>
 </div>
             </mat-cell>
           </ng-container>
            
   
             <ng-container *ngFor="let column of columns"  [matColumnDef]="column.columnDef">
+              <div *ngIf="column.columnDef == 'Current_Status'">
+                <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }} 
+                  <div style="padding: 0;min-width: auto;background: transparent !important;cursor: pointer;"  *ngIf="row.is_on_hold==1" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" >
+                    <img src="assets/images/on_hold_icon.png">
+                  </div>
+                  <mat-menu class="on_hold_view" style="display: block;" #menu="matMenu" [hasBackdrop]="false">
+                    <h4>{{row.phase_code}} On Hold </h4> 
+                    <p>Date: {{row.onhold_datetime | date}} </p> 
+                    <p>Comment: {{row.onholdcomment}}</p> 
+                    <p>Hold By: {{row.onhold_commentedby}}</p> 
+                  </mat-menu> 
+                  <!-- <div class="onhold_st"  *ngIf="row.is_on_hold==1" >
+                    <div class="on_hold_view">
+                   <h4>{{row.phase_code}} on Hold </h4> 
+                   <p>Date: {{row.onhold_datetime | date}} </p> 
+                   <p>Comment: {{row.onholdcomment}}</p> 
+                   <p>Hold By: {{row.onhold_commentedby}}</p> 
+                    </div> 
+                   <div class="on_hold_info">i</div> 
+                  </div> -->
+                </mat-cell>
+              </div>
               <div *ngIf="column.columnDef == 'Code'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >{{ column.cell(row) }}
+                  
+                  <mat-menu class="nor_tool" #menunew="matMenu" [hasBackdrop]="false">
+                  <p> Download File</p> 
+                  </mat-menu>
+                  <mat-menu class="nor_tool" #menunew1="matMenu" [hasBackdrop]="false">
+                    <p>{{row.IsFinalAggUpload==0 ?'No Final Agreement to Download':' Download Final Aggreement' }}  </p> 
+                    </mat-menu>
                   <div style="display: flex;">
-                  <div class="dwon_ic_con_new"  matTooltip="Download Coversheet" #tooltip="matTooltip" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
-                  <div class="dwon_ic_con_new"  matTooltip="Download Final Aggreement" #tooltip="matTooltip" [class.disablefinalagg]="row.IsFinalAggUpload==0"><img (click)="downloaddetailFinalAgg(row)" src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new" [matMenuTriggerFor]="menunew" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()" ><img (click)="downloaddetailobf(row)"  src="assets/images/download-iconnew.png"></div>
+                  <div class="dwon_ic_con_new" style="position: relative;"  [class.disablefinalagg]="row.IsFinalAggUpload==0"  [matMenuTriggerFor]="menunew1" #menuTriggerNew="matMenuTrigger" (mouseover)="menuTriggerNew.openMenu()" (mouseleave)="menuTriggerNew.closeMenu()">
+                    <div style="position: absolute;
+                    width: 20px;
+                    height: 20PX;
+                    background-color: transparent;
+                    pointer-events: initial;
+                    cursor: initial;" *ngIf="row.IsFinalAggUpload==0" [matMenuTriggerFor]="menunew1" #menuTriggerNew="matMenuTrigger" (mouseover)="menuTriggerNew.openMenu()" (mouseleave)="menuTriggerNew.closeMenu()"></div>
+                    <img (click)="downloaddetailFinalAgg(row)" [src]="row.IsFinalAggUpload==0 ? 'assets/images/download_dis_icon.png' : 
+                    'assets/images/download-iconnew.png'" >
+                    <!-- <div>
+                     {{row.IsFinalAggUpload==0 ? 'No final aggreement document to download':'Test'}}
+                    </div> -->
+                  </div>
                 </div>
                 </mat-cell>
               </div>
@@ -210,6 +378,7 @@
                   
                   </div></mat-cell>
               </div>
+              
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
                 <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span></span></mat-cell>
@@ -286,11 +455,20 @@
                  " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
                  <mat-cell style="padding-left: 10px; 
                   " [ngStyle]="{'min-width': (this.privilege_name == 'PPL Initiator') ? '325px' : '190px'}" *matCellDef="let row" 
-                  [matTooltip]="getmsg(row)" #tooltip="matTooltip" >
+                  >
                   <button mat-flat-button class="creat_bt view_bt"  (click)="getOBFSummaryPage(row)">View</button>
                 <button mat-flat-button class="creat_bt edit_bt" (click)="openModal(mytemplate,row)">Edit</button>
-                <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
-                
+               
+                <div class="prev_dis"  [matMenuTriggerFor]="menunew_PI" #menuPITrigger="matMenuTrigger" (mouseover)="menuPITrigger.openMenu()" (mouseleave)="menuPITrigger.closeMenu()">
+                  <button *ngIf="this.privilege_name == 'PPL Initiator'"mat-flat-button class="creat_bt edit_bt" 
+                  [disabled]="checkdisable(row)"  (click)="initiateppl(row)">{{row.ppl_init==1? 'PPL Initiated' :'Initiate PPL'}}</button>
+                 
+                </div>
+                  <mat-menu   class="nor_tool" #menunew_PI="matMenu" [hasBackdrop]="false">
+                    <div *ngIf="row.ppl_init==1">
+                  <p>PPL is already initiated.</p>  
+                  </div>
+                </mat-menu>
               </mat-cell>
              
            
@@ -321,12 +499,31 @@
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
              
           </table>
+          <!-- <div *ngIf="listData.filteredData.length == 0">No data Found</div> -->
+          <div style="    display: flex;
+          justify-content: center;
+          flex-direction: inherit;
+          position: fixed;
+          height: auto;
+          width: 100%;
+          top: 50%;
+          transform: translate(-50%, 3%);
+          left: 50%;" *ngIf="listData.filteredData.length == 0">
+            <img src="assets/images/no-data1.jpg" style="
+            width: 270px;
+        ">
+          </div>
         </perfect-scrollbar>
         
-        <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
+        <!-- <mat-paginator style-paginator showFirstLastButtons [showTotalPages]="7" 
         [pageSize]="6"
         >
+      </mat-paginator> -->
+      <mat-paginator  #pagination style-paginator showFirstLastButtons  [length]="this.filterdata.length"
+              [pageSize]="7"
+              >
       </mat-paginator>
+     
       </div>
       
    </div>
@@ -508,9 +705,12 @@
         <div class="edit_box_popup">
           <div id="flowBoxes" >
           
-            <div class="right" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}} <img src="assets/images/tick_icon.png"></div>
+            <div class="right view_{{details.is_stage_completed}}"  title="" *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> {{details.role_name}}
+               <img [src]="details.is_stage_completed==-2? 'assets/images/on_hold_icon.png' : 
+               details.is_stage_completed==-1 ? 'assets/images/Reject-icon.png': 'assets/images/tick_icon.png' " ></div>
             
     </div>
+
 <!-- <div *ngFor="let details of this.approvalstatusdetail.Approvaldetail"> 
   {{details.is_stage_completed}}
   </div> -->
@@ -523,9 +723,10 @@
         </div> -->
         <div class="cust-accor-as">
         <mat-accordion>
-          <mat-expansion-panel  (afterExpand)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
-            <mat-expansion-panel-header collapsedHeight="50px" expandedHeight="60px">
-              <mat-panel-title>
+          <mat-expansion-panel  [expanded]="details.is_latest_version==1"  (opened)="GetComment(details.dh_id,details.dh_header_id)"  *ngFor="let details of this.approvalstatusdetail.versiondetail" >
+            <mat-expansion-panel-header   collapsedHeight="60px" expandedHeight="60px">
+              <mat-panel-title [class.frs_set_active]="details.is_latest_version==1">
+                <img class="is_curr_ve" src="assets/images/acitve_as.png" >
                 <div class="mat_previe_box">
                   <div class="prev_tit">
                   {{details.is_latest_version==1?'Current Version':'Version'}} 
@@ -551,12 +752,15 @@
               </div>
            </div>
            <div class="mat_previe_box">
-            <div class="prev_tit">
+            <div class="prev_tit" >
              Project Name
             </div>
-            <div class="prev_dis">
-             {{details.dh_project_name}}
+            <div class="prev_dis" [matMenuTriggerFor]="menunew_P" #menuTrigger="matMenuTrigger" (mouseover)="menuTrigger.openMenu()" (mouseleave)="menuTrigger.closeMenu()">
+            {{details.dh_project_name.length > 100 ?details.dh_project_name.substring(0,50)+"...": details.dh_project_name}}
             </div>
+            <mat-menu class="nor_tool" #menunew_P="matMenu" [hasBackdrop]="false">
+              <p>{{details.dh_project_name}}</p> 
+              </mat-menu>
            </div>
            <div class="mat_previe_box">
             <div class="prev_tit">
@@ -707,7 +911,7 @@
       <mat-dialog-content class="mat-typography chan_pass_con">
         <div class="chang_pass_box_popup">
           <div class="pass_logo_title">
-            <a mat-dialog-close href="javascript:void(0)" class="close"></a>
+            <a mat-dialog-close href="javascript:void(0)" [class.disabled]="commonService.disabledresetclose" class="close"></a>
             <img src="assets/images/change_pass.png">
             <h3>Change Password</h3>
             <p>You are almost there now, enter your new password and 
@@ -768,10 +972,11 @@
       </mat-dialog-content>
       <mat-dialog-actions align="end">
         <div style="margin: 0 auto;width: 360px;padding-bottom: 20px;">
-        <button class="creat_bt bt_sp" mat-flat-button mat-dialog-close>Cancel</button>
+        <button style="color:#2258bf;" [disabled]="commonService.disabledresetclose" mat-flat-button mat-dialog-close>Cancel</button>
         <button mat-flat-button class="creat_bt bt_sp" [mat-dialog-close]="true" cdkFocusInitial [disabled]="loginvalid.invalid" (click)="ResetPassword()">Reset Password</button>
       </div>
       </mat-dialog-actions>
     </form>
     </ng-template>
   </div>
+ 

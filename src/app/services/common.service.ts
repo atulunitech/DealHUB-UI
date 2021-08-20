@@ -25,6 +25,8 @@ export class notificationDetails
 })
 export class CommonService {
 
+  public disabledresetclose:boolean = false;
+  public commonkey = "0c24f9de!b855915";
   private _loading = new BehaviorSubject<boolean>(false);
   qryparamssecretkey:string = "dealhubsecretkey$123";
   public resetclicked = new BehaviorSubject<boolean>(false);
@@ -130,17 +132,27 @@ setEncryption(keys, value){
 
 setDecryption(keys, value){
   var key = CryptoJS.enc.Utf8.parse(keys);
-  var iv = CryptoJS.enc.Utf8.parse(keys);
-  var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Utf8.parse(value.toString()), key,
+  var ivs = CryptoJS.enc.Utf8.parse(keys);
+  var decrypted = CryptoJS.AES.decrypt(value, key,
   {
-      keySize: 256 / 32,
-      iv: iv,
+      keySize: 128 / 8,
+      iv: ivs,
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
-  }).toString(CryptoJS.enc.Utf8);
+  });
 
-  return decrypted;
+  return decrypted.toString(CryptoJS.enc.Utf8);
 }
+
+ encryptalpha(key,str) {
+  return CryptoJS.AES.encrypt(str, key).toString();
+}
+
+ decryptalpha(key,encrypted) {
+  const decrypted = CryptoJS.AES.decrypt(encrypted, key);
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
 
 encrypt(value : string) : string{
   return CryptoJS.AES.encrypt(value, this.qryparamssecretkey.trim()).toString();

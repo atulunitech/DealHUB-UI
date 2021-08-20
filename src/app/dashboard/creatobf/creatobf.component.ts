@@ -165,12 +165,14 @@ export interface Solutiongroup {
   styleUrls: ['./creatobf.component.scss']
 })
 export class CreatobfComponent implements OnInit {
-
+  sectorlistreupload:sectors[] = [];
   sectorlist:sectors[] = [];
   branchlist:verticallist[]=[];
   subsectorlist:subsectors[] = [];
   servicesControl = new FormControl('', Validators.required);
   data: [][];
+  standardTemplete:string;
+ 
   declarations:string = "";
     coversheetpath:string="";
     loipopath:string="";
@@ -260,7 +262,7 @@ export class CreatobfComponent implements OnInit {
     this._obfservices.createnewobfmodelandeditobfmodel();
     this.reinitiateobf = false;
     this.reinitiatefordisable = false;
-
+      
     this.isppl = false;
     this.initiateppl = false;
     this._obfservices.obfmodel._dh_id =0;
@@ -321,6 +323,7 @@ export class CreatobfComponent implements OnInit {
       // }
   });
   //this.getClientKey();
+  this.standardTemplete =this.isppl?'/DealHub - PPL Coversheet.xlsx':'/DealHub - OBF Coversheet.xlsx';
   }
    editObfcoverbol:boolean = false;
    editObfLoiPobol:boolean = false;
@@ -338,18 +341,29 @@ export class CreatobfComponent implements OnInit {
      // alert(this.key);
     },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
       });
      }
   
   geteditobfdata(dh_id,dh_header_id)
   {
+    let randomadd  =  Math.floor(Math.random() * (2000 - 1000 + 1) + 1000);
+    // this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
+    
    let editobf:editobfarguement = new editobfarguement();
-   editobf.dh_id = dh_id;
-   editobf.dh_header_id = dh_header_id;
-   editobf.user_code = localStorage.getItem("UserCode");
+  //  editobf.dh_id = dh_id;
+  //  editobf.dh_header_id = dh_header_id;
+    editobf.dh_id = <number>(<unknown>((dh_id + randomadd).toString()+""+randomadd));
+    editobf.dh_header_id = <number>(<unknown>((dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
+  //  editobf.user_code = localStorage.getItem("UserCode");  commented for vapt
+  editobf.user_code ="RANDOM";
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
-     let result =  JSON.parse(res);
+    let getrandom = res.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+     let result =  JSON.parse(Resultdata);
      this.isEditObf = true;
     //  this.detailstickdisabled = false;
      console.log("check objectssssss after edit");
@@ -361,7 +375,7 @@ export class CreatobfComponent implements OnInit {
       this.editObfLoiPobol = true;
       this.editObfSupportbol = true;
      }
-      this._obfservices.editObfObject = JSON.parse(res);
+      this._obfservices.editObfObject = JSON.parse(Resultdata);
       this._obfservices.initializeobfmodelandform();
       this.editobfinitialization();
      // this.getotherservicesandsolutions();
@@ -409,8 +423,8 @@ export class CreatobfComponent implements OnInit {
 
          }else
          {
-         this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
-          this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
+        //  this._obfservices.ObfCreateForm.get('Supportpath').setValidators(Validators.required);
+        //   this._obfservices.ObfCreateForm.get('Supportpath').updateValueAndValidity();
          }
 
       }
@@ -532,7 +546,14 @@ export class CreatobfComponent implements OnInit {
     editobf.dh_header_id = this._obfservices.editObfObject._dh_header_id;
     editobf.user_code = localStorage.getItem("UserCode");
     this._obfservices.getpreviousversion(editobf).subscribe(res =>{
-      let result = JSON.parse(res);
+     
+      let getrandom = res.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+
+      let result = JSON.parse(Resultdata);
       console.log("get previous data");
       console.log(result);
       this._obfservices.editObfObject._total_cost = result._total_cost;
@@ -616,8 +637,14 @@ export class CreatobfComponent implements OnInit {
 
 getsolutionmaster()
 {
-this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(data =>{
-  let res = JSON.parse(data);
+  let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
+this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
+  let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+  let res = JSON.parse(Resultdata);
   console.log("get solution masters");
   console.log(res);
   this.Solutiongroup= res;
@@ -628,7 +655,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
   }
 },
 (error:HttpErrorResponse)=>{
-  this._mesgBox.showError(error.message);
+ // this._mesgBox.showError(error.message);
   //alert(error.message);
 }
 );
@@ -636,8 +663,15 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
 
   getcreateobfmasters()
   {
-    this._obfservices.GetCreateOBFMasters(localStorage.getItem('UserCode')).subscribe(data =>{
-      let res = JSON.parse(data);
+    let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
+    this._obfservices.GetCreateOBFMasters(encryptedusercode).subscribe(data =>{
+      
+      let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+      let res = JSON.parse(Resultdata);
        console.log(Object.keys(res) );
        console.log(res.sectors);
        console.log(res.subsector);
@@ -646,6 +680,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
        console.log("Vertical head Master");
        console.log(res.verticalhead);
        this.sectorlist = res.verticalsectorwise;
+       this.sectorlistreupload = res.verticalsectorwise;
        console.log("Vertical wise sector");
        console.log(res.verticalsectorwise);
        this.subsectorlist = res.subsector;
@@ -660,7 +695,7 @@ this._obfservices.getsolutionmaster(localStorage.getItem('UserCode')).subscribe(
      
  },
  (error:HttpErrorResponse)=>{
-   this._mesgBox.showError(error.message);
+   //this._mesgBox.showError(error.message);
    //alert(error.message);
  });
   }
@@ -1090,6 +1125,8 @@ downloadCoversheet(event)
     if(types == "coversheet")
        {
         this.editObfcoverbol = false;
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+        this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
         this._obfservices.ObfCreateForm.patchValue({coversheet: null});
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
@@ -1156,16 +1193,17 @@ downloadCoversheet(event)
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(this.isEditObf)
         {
-          for(var i = 0;i<this._obfservices.obfmodel.Attachments.length;i++)
-          {
-          let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "support");
-         if(index > -1)
-            {
-             this._obfservices.obfmodel.Attachments.splice(index,1);
-            //  this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
-            //  this.uploadnotdisabled = false;
-           }
-          }
+          this.editObfSupportbol = true;
+        //   for(var i = 0;i<this._obfservices.obfmodel.Attachments.length;i++)
+        //   {
+        //   let index = this._obfservices.obfmodel.Attachments.findIndex(obj => obj._description == "support");
+        //  if(index > -1)
+        //     {
+        //      this._obfservices.obfmodel.Attachments.splice(index,1);
+        //     //  this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
+        //     //  this.uploadnotdisabled = false;
+        //    }
+        //   }
         }
          this.supportfilecount +=1;
          if(this.supportfilecount > 1)
@@ -1417,8 +1455,12 @@ downloadCoversheet(event)
     {
       this.supportfiles = [];
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
-      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+     // this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+    }
+    if(this._obfservices.obfmodel.Attachments.length==0)
+    {
+      this.disableSupporting=true;
     }
   }
 
@@ -1446,8 +1488,12 @@ downloadCoversheet(event)
     {
       this.supportfiles = [];
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
-      this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
+      //this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+    }
+    if(this._obfservices.obfmodel.Attachments.length==0)
+    {
+      this.disableSupporting=true;
     }
     // console.log(attachment);
   }
@@ -1473,7 +1519,9 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Loiposheet:""});
       this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isloipo = !this.isloipo;
+      
     }
+
     // console.log(attachment);
   }
 
@@ -1590,6 +1638,7 @@ downloadCoversheet(event)
         console.log(ws);
       // console.log(ws.A1.h);
       try{
+        this.sectorlist = this.sectorlistreupload;
         if(this.isEditObf)
         {
           this._obfservices.emptyexcelformvaluesforreuploadcoversheet();
@@ -1706,15 +1755,11 @@ downloadCoversheet(event)
     else{
       let branchname:string = ws.E7.w;
       let indexbranch = this.branchlist.findIndex(obf => obf.viewValue.toString().trim().toUpperCase() == branchname.toString().trim().toUpperCase());
-      if(indexbranch == -1)
-      {
-        // this._mesgBox.showError("Branch location is not correct, kindly check");
-        //       this.coversheetfiles = [];
-        //       this.iscoversheet = !this.iscoversheet;
-        //       return false;
-        validmsg +="Branch location is not correct, kindly check ,";
-        validcount +=1;
-      }
+      // if(indexbranch == -1)
+      // {
+      //   validmsg +="Branch location is not correct, kindly check ,";
+      //   validcount +=1;
+      // }
       if(this.initiateppl || (this.reinitiateobf && this.isppl) || (this.editorcreateobfstring.trim() == 'Edit PPL'))
           {
             if(ws.E7.w.toString().trim().toUpperCase() != this._obfservices.editObfObject._dh_location.toString().trim().toUpperCase())
@@ -1750,6 +1795,8 @@ downloadCoversheet(event)
       validmsg +="Vertical field is not correct, please check ,";
       validcount +=1;
      }
+     else
+     {
       let verticalid = parseInt(result[0].value.toString());
       if(verticalid == 8)
       {
@@ -1760,6 +1807,18 @@ downloadCoversheet(event)
           //     this.iscoversheet = !this.iscoversheet;
           //     return false;
           validmsg +="Project type can be only `Transportation` for MLL Network,";
+          validcount +=1;
+        }
+      }
+      if(verticalid == 10)
+      {
+        if(this._obfservices.obfmodel._projecttype != 3)
+        {
+          // this._mesgBox.showError("Project type can be only `Transportation` for MLL Network");
+          //     this.coversheetfiles = [];
+          //     this.iscoversheet = !this.iscoversheet;
+          //     return false;
+          validmsg +="Project type can be only `Transportation` for TSG,";
           validcount +=1;
         }
       }
@@ -1801,6 +1860,7 @@ downloadCoversheet(event)
     //let verticalheadid = res[0].vertical_head_id;
      this._obfservices.obfmodel._verticalhead_id = res[0].vertical_head_id;
     }
+  }
       // let value: any = ws.H3.v;
       // const parsedDate: Date = new Date(value);
       //  //parsedDate.setHours(parsedDate.getHours() + timezoneOffset); // utc-dates
@@ -2065,7 +2125,7 @@ downloadCoversheet(event)
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 0;
-    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+    this._obfservices.obfmodel._created_by = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
@@ -2112,8 +2172,26 @@ downloadCoversheet(event)
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+          
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
-        //alert(error.message);
+      }
       })
     }
       }
@@ -2155,7 +2233,7 @@ downloadCoversheet(event)
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+        //this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
@@ -2222,7 +2300,7 @@ downloadCoversheet(event)
       }
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
@@ -2279,6 +2357,7 @@ downloadCoversheet(event)
       this._obfservices.obfmodel._is_loi_po_uploaded = "N";
       this.loipofiles = [];
       this.LoiPoprogress = [];
+      this.disableLOIPO=true;
       if(this.isEditObf)
       {
         this.onRemoveLoiAttachments();
@@ -2296,6 +2375,7 @@ downloadCoversheet(event)
      
     }
     else{
+      this.disableLOIPO=false;
       this._obfservices.ObfCreateForm.get('Loiposheet').setValidators(Validators.required);
       this._obfservices.ObfCreateForm.get('Loiposheet').updateValueAndValidity();
       this.loiopdisabled = false;
@@ -2640,7 +2720,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     this._obfservices.obfmodel._status ="A";
     this._obfservices.obfmodel._is_saved =1;
     this._obfservices.obfmodel._is_submitted = 1;
-    this._obfservices.obfmodel._created_by =  localStorage.getItem('UserCode');
+    this._obfservices.obfmodel._created_by =  this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
     if(this.isEditObf)
     {
       if(this.reinitiateobf)
@@ -2691,7 +2771,26 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       }
       },
       (error:HttpErrorResponse)=>{
+        if(error.status === 400)
+        {
+        if(this.isEditObf)
+        {
+          this._obfservices.obfmodel._dh_id = this._obfservices.editObfObject._dh_id;
+          this._obfservices.obfmodel._dh_header_id = this._obfservices.editObfObject._dh_header_id;
+         
+        }
+        else
+        {
+          this._obfservices.obfmodel._dh_id = 0;
+          this._obfservices.obfmodel._dh_header_id = 0;
+        }
+        this._obfservices.ObfCreateForm.controls.Sector.setValue("");
+          this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+      }
+      else
+      {
         this._mesgBox.showError(error.message);
+      }
         //alert(error.message);
       });
     }
@@ -2731,7 +2830,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },
       (error:HttpErrorResponse)=>{
-        this._mesgBox.showError(error.message);
+       // this._mesgBox.showError(error.message);
         //alert(error.message);
       })
     }
@@ -2812,7 +2911,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
     // this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
     this._obfservices.obfmodel._dh_id = <number>(<unknown>((this._obfservices.obfmodel._dh_id + randomadd).toString()+""+randomadd));
     this._obfservices.obfmodel._dh_header_id = <number>(<unknown>((this._obfservices.obfmodel._dh_header_id + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
-    this._obfservices.obfmodel._sap_customer_code =this._obfservices.obfmodel._sap_customer_code == undefined?this.randomIntFromInterval(1000,2000): (parseInt(this._obfservices.obfmodel._sap_customer_code) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000);
+    this._obfservices.obfmodel._sap_customer_code =(this._obfservices.obfmodel._sap_customer_code == undefined || this._obfservices.obfmodel._sap_customer_code == "")?this.randomIntFromInterval(1000,2000): (parseInt(this._obfservices.obfmodel._sap_customer_code) + randomadd).toString()+""+this.randomIntFromInterval(1000,2000);
     this._obfservices.obfmodel._total_margin = <number>(<unknown>((this._obfservices.obfmodel._total_margin + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._capex = <number>(<unknown>((this._obfservices.obfmodel._capex + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
     this._obfservices.obfmodel._total_revenue = <number>(<unknown>((this._obfservices.obfmodel._total_revenue + randomadd).toString()+""+this.randomIntFromInterval(1000,2000)));
@@ -2891,5 +2990,10 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         this._mesgBox.showError(type+ " is not valid, Kindly check again");
         return -2; 
       }
+  }
+  downloadtemplete(url)
+  {
+    let temp= environment.apiUrl+url;
+    window.open(temp);
   }
 }

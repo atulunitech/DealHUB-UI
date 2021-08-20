@@ -33,47 +33,67 @@
           
                       <div fxLayout="row" fxLayoutAlign="space-between start"  class="mat_fld_box_wrp con_dwn_wrp">
                         <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_upload_box" >
-                          <div fxFlex="auto " class="mat_upload_in_wr">
+                          <div fxFlex="auto " class="mat_upload_in_wr" style="position: relative;">
+                            <div  _ngcontent-usm-c220=""  style="
+    position: absolute;
+    right: 0;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color:#2258bf;
+    z-index: 99;
+    top: 4px;
+"><img  (click)="downloadtemplete(standardTemplete)" _ngcontent-usm-c220=""  src="assets/images/download-Icon.png" style="
+    width: 12px;
+    margin-right: 4px;
+    margin-top: -1px;
+"> <a [href]="sanitize(standardTemplete)" target="_blank" style="color:#2258bf;" >
+  Download Template
+ </a> </div>
                             <div class="mat_upload_tit" *ngIf="!isppl" >
-                              Attach OBF SHEET <div class="info_view">i
+                              Attach OBF SHEET 
+                              <div class="info_view"><img src="assets/images/infoicon.png" style="width: 18px;">
                                 <div class="hov_info">
                                   <div class="infopop_title">OBF Sheet file instructions</div>
                                   <ul class="infopop_discrip">
                                     <li> In excel workbook should be in specified standard template.</li>
                                     <li> Workbook name should be “OBF Coversheet”.</li>
                                     <li> All mandatory fields should have values.</li>
-                                    <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
-                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom or Transport Solution Group.</li>
+                                    <li> Verticals can be Auto and Engineering (Non-MnM),E-Commerce,Consumer and Pharma,Auto Outbound,
+                                      Enterprise Mobility,Auto and Engineering (MnM),MLL Network,Consumer - Telecom or Transport Solutions Group.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
                                       <li>Total Project Life to be entered in number of months.</li>
-                                      <li>For Verticals Enterprise Mobility, MLL Network and Transport Solution Group, Project type can only be Transportation.</li>
+                                      <li>For Verticals Enterprise Mobility, MLL Network and Transport Solutions Group, Project type can only be Transportation.</li>
                                       <li> Please check before submitting for all entered values.</li>
                                   </ul>
                                 </div>
-                               
+                              
                               </div>
+                             
                             </div>
                             <div class="mat_upload_tit" *ngIf="isppl" >
-                              Attach PPL SHEET <div class="info_view">i
-                                <div class="hov_info" >
+                              Attach PPL SHEET <div class="info_view"><img src="assets/images/infoicon.png" style="width: 18px;">
+                                <div class="hov_info" style="width: 770px;    top: -70px;" >
                                   <div class="infopop_title">PPL Sheet file instructions</div>
                                   <ul class="infopop_discrip">
                                     <li> ­­­­In excel, workbook should be in specified standard template.</li>
                                     <li> Workbook name should be "PPL Coversheet".</li>
                                     <li> All mandatory fields should have values.</li>
-                                    <li> Verticals can be Auto and Engineering,E-Commerce,Consumer and Pharma,Auto Outbound,
-                                      Enterprise Mobility,Mahindra and Mahindra,MLL Network,Consumer - Telecom or Transport Solution Group.</li>
+                                    <li> Verticals can be Auto and Engineering (Non-MnM),E-Commerce,Consumer and Pharma,Auto Outbound,
+                                      Enterprise Mobility,Auto and Engineering (MnM),MLL Network,Consumer - Telecom or Transport Solutions Group.</li>
                                       <li> Value of Total cost, Revenue and Capex should be in Crores.</li>
                                       <li>Payment terms should be entered in days.</li>
                                       <li>Total Project Life to be entered in number of months.</li> 
-                                      <li>For Verticals Enterprise Mobility, MLL Network and Transport Solution Group, Project type can only be Transportation.</li>
+                                      <li>For Verticals Enterprise Mobility, MLL Network and Transport Solutions Group, Project type can only be Transportation.</li>
                                       <li>For PPL fields like Project Name, Project Type, Customer Name, Opportunity ID, Project Primary Location/ State, Vertical must be same as that of final Approved OBF version.</li>
                                       <li> Please check before submitting for all entered values.</li>
                                   </ul>
                                 </div>
                                
                               </div>
+                           
                             </div>
                             <ngx-dropzone class="mat_up_con" (change)="onSelect($event,'coversheet')" accept=".xlsx">
                               <ngx-dropzone-label class="matUp_lable">
@@ -97,19 +117,20 @@
                             <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="!isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded Attach Obf Sheet 
                              </div>
+                             
                              <div class="mat_upload_tit" style="margin-top: 36px;" *ngIf="isppl &&(coversheetfiles.length > 0 || (editObfcoverbol && _obfservices.coversheetarray.length > 0))">
                               Uploaded PPL Sheet 
                              </div>
                             <div *ngIf="Coversheetprogress.length == 0">
                               
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f,'coversheet')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of coversheetfiles" [removable]="true" (removed)="onRemove(coversheetfiles,f,'coversheet')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" *ngIf="Coversheetprogress.length == 0">
-                                  {{ f.name }}
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  
 
                                 </div> 
@@ -119,7 +140,7 @@
                           </div>
                           <div *ngIf="Coversheetprogress.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of Coversheetprogress" [removable]="true" (removed)="removeprogresscoversheet()" [matTooltip]="f.fileName">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
@@ -127,8 +148,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f.fileName }}
-                                
+                                  <!-- {{ f.fileName }} -->
+                                  {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
 
                                 </div> 
                                 
@@ -137,7 +158,7 @@
                           </div>
                           <div *ngIf="editObfcoverbol && _obfservices.coversheetarray.length > 0">
                             
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.coversheetarray" [removable]="true" (removed)="removeeditcoversheet()" [matTooltip]="f._fname">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
@@ -145,7 +166,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f._fname }}
+                                  <!-- {{ f._fname }} -->
+                                  {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
                                 
 
                                 </div> 
@@ -213,14 +235,15 @@
                               Uploaded Loi/Po Agreement 
                              </div>
                              <div *ngIf="LoiPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of loipofiles" [removable]="true" (removed)="onRemove(loipofiles,f,'loipo')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
@@ -228,7 +251,7 @@
                             </ngx-dropzone-preview>
                             </div>
                             <div *ngIf="LoiPoprogress.length > 0">
-                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)">
+                              <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of LoiPoprogress" [removable]="true" (removed)="onRemoveLoiPoPreview(f,LoiPoprogress)" [matTooltip]="f.fileName">
                                 
                                 <ngx-dropzone-label class="drop_lab_cs">
                                   <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;" [style.width.%]="f.value"></div>
@@ -236,8 +259,8 @@
                                     <img src="assets/images/tick.png" style="margin-right: 15px;">
                                   </div>
                                   <div class="doc_cont" style="position: relative;" >
-                                    {{ f.fileName }}
-                                   
+                                    <!-- {{ f.fileName }} -->
+                                    {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
   
                                   </div>  
                                 </ngx-dropzone-label>
@@ -245,7 +268,7 @@
                               </div>
                               <div *ngIf="editObfLoiPobol && _obfservices.loipoarray.length > 0">
                             
-                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" >
+                                <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.loipoarray" [removable]="true" (removed)="onRemoveLoiAttachments()" [matTooltip]="f._fname">
                                   
                                   <ngx-dropzone-label class="drop_lab_cs">
                                     <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
@@ -253,8 +276,8 @@
                                       <img src="assets/images/tick.png" style="margin-right: 15px;">
                                     </div>
                                     <div class="doc_cont" style="position: relative;" >
-                                      {{ f._fname }}
-                                    
+                                      <!-- {{ f._fname }} -->
+                                      {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
     
                                     </div> 
                                     
@@ -294,14 +317,15 @@
                               Uploaded Supporting Documents 
                              </div>
                           <div *ngIf="SupportPoprogress.length == 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
@@ -309,20 +333,21 @@
                             </ngx-dropzone-preview>
                           </div>  
                           <div *ngIf="SupportPoprogress.length > 0">
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')">
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of supportfiles" [removable]="true" (removed)="onRemove(supportfiles,f,'support')" [matTooltip]="f.name">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div class="doc_icon">
                                   <img src="assets/images/doc_icon.JPG" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont">
-                                  {{ f.name }}
+                                  <!-- {{ f.name }} -->
+                                  {{ f.name.length > 36?f.name.substring(0,36)+"...":f.name }}
                                  <!-- <div>{{ f.type }}</div>  -->
 
                                 </div> 
                               </ngx-dropzone-label>
                             </ngx-dropzone-preview>
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of finalsupportarray" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,finalsupportarray)" >
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of finalsupportarray" [removable]="true" (removed)="onRemoveAttachmentsPreview(f,finalsupportarray)" [matTooltip]="f.fileName">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;" [style.width.%]="f.value"></div>
@@ -330,16 +355,16 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f.fileName }}
-                                 
+                                  <!-- {{ f.fileName }} -->
+                                  {{ f.fileName.length > 36?f.fileName.substring(0,36)+"...":f.fileName }}
 
                                 </div> 
                               </ngx-dropzone-label>
                             </ngx-dropzone-preview>
                           </div>   
                           <div *ngIf="editObfSupportbol && _obfservices.supportarray.length > 0">
-                            
-                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)">
+                           
+                            <ngx-dropzone-preview class="dro_wrp" *ngFor="let f of _obfservices.supportarray" [removable]="true" (removed)="onRemoveAttachments(f,_obfservices.supportarray)" [matTooltip]="f._fname">
                               
                               <ngx-dropzone-label class="drop_lab_cs">
                                 <div style="background-color: #2258bf;position: absolute;width: 100%;height: 100%;top: 0;opacity: 0.5;left: 0px;border-radius: 5px;"></div>
@@ -347,8 +372,8 @@
                                   <img src="assets/images/tick.png" style="margin-right: 15px;">
                                 </div>
                                 <div class="doc_cont" style="position: relative;" >
-                                  {{ f._fname }}
-                                
+                                  <!-- {{ f._fname }} -->
+                                  {{ f._fname.length > 36?f._fname.substring(0,36)+"...":f._fname }}
 
                                 </div> 
                                 
@@ -433,7 +458,7 @@
                             <div class="mt-cust-fd">
                               <mat-form-field appearance="fill" class="example-full-width">
                                 <mat-label>Other Services</mat-label>
-                                <input matInput formControlName="otherservices" [disabled]="reinitiatefordisable" id="abc" #otherservices style="margin-left: 10px;" (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
+                                <input matInput formControlName="otherservices" [disabled]="reinitiatefordisable" id="abc" #otherservices  (change)="otherssave($event,'services')" [errorStateMatcher]="matcher" required/>
                                 <mat-error *ngIf="_obfservices.ObfCreateForm.controls.otherservices.errors?.required">
                                   Services:Other is <strong>required</strong>
                                 </mat-error>
@@ -947,25 +972,52 @@
                             </div>
                             <div class="dwn_con_wr"><img (click)="downloadCoversheet($event)" src="assets/images/dwn_fil_icon.png"></div>
                             </div>
-                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting">
+                            <div fxFlex="auto "  fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledsupporting]="disableSupporting" style="position: relative;">
                               <div class="dwn_con_wr">
                                 <img src="assets/images/dwn-load-file.png">
                                 <span>
                                   <a  (click)="downloaddocument($event)"  target="_blank" >Supporting Document</a></span>
                               </div>
                               <div class="dwn_con_wr"><img (click)="downloaddocument($event)"  src="assets/images/dwn_fil_icon.png"></div>
+                              <div style="position: absolute;
+                        width: 100%;
+                        height: 31PX;
+                        background-color: transparent;
+                        pointer-events: initial;
+                        cursor: initial;" *ngIf="disableSupporting" [matMenuTriggerFor]="downloadsupporting" #DownloadSupportTrigger="matMenuTrigger" (mouseover)="DownloadSupportTrigger.openMenu()" (mouseleave)="DownloadSupportTrigger.closeMenu()" > 
+                        
+                      </div>
+                        
                               </div>
-                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO">
+                              <mat-menu  #downloadsupporting="matMenu" [hasBackdrop]="false">
+                                <p>No Supporting Documents to Download</p>  
+                                </mat-menu>
+                           
+
+                              <div fxFlex="auto " fxLayoutAlign="space-between center" class="mat_dwn_lod_con" [class.disabledLOIPO]="disableLOIPO" style="position: relative;">
                                 <div class="dwn_con_wr">
                                   <img  src="assets/images/dwn-load-file.png">
                                   <span ><a (click)="downloadLOIp($event)"  target="_blank" >LOI/PO/Agreement</a></span>
                                 </div>
                                 <div class="dwn_con_wr" ><img (click)="downloadLOIp($event)" src="assets/images/dwn_fil_icon.png" ></div>
+                                <div style="position: absolute;
+                                width: 100%;
+                                height: 31PX;
+                                background-color: transparent;
+                                pointer-events: initial;
+                                cursor: initial;" *ngIf="disableLOIPO" [matMenuTriggerFor]="downloadLOIPO" #downloadLOIPOTrigger="matMenuTrigger" (mouseover)="downloadLOIPOTrigger.openMenu()" (mouseleave)="downloadLOIPOTrigger.closeMenu()" > 
+                                
                               </div>
+                              </div>
+                              
+                       
+                             
                                 <!-- <a [href]="sanitize(supportdocpath)" target="_blank" ></a> -->
                                 
                             </div>
-                         
+                            <mat-menu  #downloadLOIPO="matMenu" [hasBackdrop]="false">
+                              <p>No LOI/PO Documents to Download</p>  
+                              </mat-menu>
                             <div  *ngIf="reinitiateobf"   class="mat_exp_title">Previous {{isppl?(initiateppl?'OBF':'PPL'):'OBF'}} (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div  *ngIf="this.editorcreateobfstring.trim() == 'Edit PPL'"   class="mat_exp_title">Previous OBF (v{{_obfservices.editObfObject._version_name}}) </div>
                             <div fxLayout="row wrap" fxLayoutAlign=" start"  *ngIf="reinitiateobf || (this.editorcreateobfstring.trim() == 'Edit PPL')"    class="mat_fld_box_wrp prm_mat_fld_box_wrp prm_mat_fld_box_wrp_prv">

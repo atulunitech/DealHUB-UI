@@ -800,7 +800,7 @@
           border-radius: 4px;
           .mat-input-element
           {
-            height: 100px;
+            height: 70px;
           }
 
         }
@@ -897,7 +897,73 @@
 }
 
 //end
+// s
+.maser_toggel
+{
+  position: relative;
+  ::ng-deep .mat-slide-toggle
+ {
+   &::after
+   {
+    content: 'NO';
+    position: absolute;
+    top: 0px;
+    right: 9px;
+    font-size: 0.7rem;
+    color: #fff;
+    text-transform: uppercase;
+   }
+   &.mat-checked
+   {
+     &::after
+     {
+       content: 'yes';
+       position: absolute;
+       top: 0px;
+       left: 5px;
+       font-size: 0.7rem;
+       color: #fff;
+       text-transform: uppercase;
+     }
+    .mat-slide-toggle-label
+    {
+      .mat-slide-toggle-bar
+      {
+        background-color: #345d9d;
+        .mat-slide-toggle-thumb-container
+      {
+       left: 13px;
+        .mat-slide-toggle-thumb
+        {
+         background-color: #fff;
+        }
+      }
+      }
+    }
+   }
+  .mat-slide-toggle-label
+  {
+    .mat-slide-toggle-bar
+    {
+      width: 48px;
+      height: 20px;
+      border-radius: 10px;
+      .mat-slide-toggle-thumb-container
+      {
+        top: 2px;
+    left: 2px;
+        .mat-slide-toggle-thumb
+        {
+          width: 16px;
+          height: 16px;
+        }
+      }
 
+    }
+  }
+ }
+}
+// e
 //startloader
 // Functions
 @function colour($value) {
@@ -1019,7 +1085,8 @@ $animation-duration: 2.5s;
 //end loader
 
 
-.cus_check {
+.cus_check 
+{
   font-size: 0.84rem;
   font-weight: bold;
   ::ng-deep
@@ -1034,6 +1101,34 @@ $animation-duration: 2.5s;
   .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: #2258bf;
   }
+  ::ng-deep .mat-checkbox-inner-container {
+    margin-right: 5px;
+  }
+}
+
+
+.cus_check_ms_list
+{
+  font-size: 0.84rem;
+  font-weight: bold;
+  ::ng-deep .mat-checkbox-frame { 
+    border-color: #1c68c1;
+    border-width: 1px;
+}
+  ::ng-deep
+    .mat-checkbox-checked.mat-accent
+    .mat-checkbox-ripple
+    .mat-ripple-element {
+    opacity: 0.03 !important;
+    background-color: #1c68c1 !important;
+    
+  }
+
+  ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #1c68c1;
+  }
+  
   ::ng-deep .mat-checkbox-inner-container {
     margin-right: 5px;
   }

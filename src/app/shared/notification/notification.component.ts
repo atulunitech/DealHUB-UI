@@ -34,13 +34,11 @@ export class NotificationComponent implements OnInit {
   
   Get_System_Notification()
   {
-   
-    this.commonService.Get_System_Notification(localStorage.getItem("UserCode")).subscribe(data=>{
+    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    this.commonService.Get_System_Notification(encryptedusercode).subscribe(data=>{
       console.log(data);
       var jsonresult=JSON.parse(data);
       this.commonService.initializeNotification(JSON.parse(data));
-     
-      //alert("notifcation called");
 
     })
   }

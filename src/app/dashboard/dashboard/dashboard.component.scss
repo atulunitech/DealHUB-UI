@@ -7,6 +7,10 @@
 .pointer{
     cursor: pointer;
 }
+a.disabled {
+    pointer-events: none;
+    cursor: not-allowed; 
+ }
 .Edit {
     width: 45px;
     height: 28px;
@@ -207,6 +211,66 @@
         @include heightwidth(200px,inherit);
         @include padding(5px,40px,5px,20px);
         background-color: $thm-bg;
+        &.search_top_view
+        {
+            width: 100%;
+        background: none;
+        border: none;
+        padding-top: 6px;
+        padding-bottom: 0;
+        ::ng-deep.mat-chip-list-wrapper{display: contents;}
+            ::ng-deep.mat-chip.mat-standard-chip
+            {
+                background-color: #fff;
+    padding: 0px 5px 0 8px;
+    margin: 0 4px 0 0;
+    font-size: 0.75rem;
+    color: #2258BF;
+    min-height: 28px;
+    border: 1px solid #91B7FF;
+    &:hover
+    {
+        background: white;
+    }
+    &::after
+    {
+        background: #fff;
+    }
+    .mat-chip-remove
+    {
+        color: rgb(34, 88, 191);
+    opacity: 0.8;
+    }
+            }
+        }
+        &.search_top
+        {
+            width: auto;
+            padding-left: 10px;
+            ::ng-deep.mat-chip.mat-standard-chip
+            {
+                background-color: #E5EEFF;
+    padding: 0px 5px 0 8px;
+    margin: 0 4px 0 0px;
+    font-size: 0.75rem;
+    min-height: 28px;
+    color: #2258BF;
+    border: 1px solid #91B7FF;
+    &:hover
+    {
+        background: #E5EEFF;
+    }
+    &::after
+    {
+        background: #E5EEFF;
+    }
+    .mat-chip-remove
+    {
+        color: rgb(34, 88, 191);
+    opacity: 0.8;
+    }
+            }
+        }
         input
         {
             border: none;
@@ -248,6 +312,14 @@
 {
     @include margin(initial,initial,initial,10px);
     
+}
+.fil_bt
+{
+    position: absolute;
+    padding: 3px 18px 3px 18px;
+    line-height: initial;
+    top: 4px;
+    right: 14px;
 }
 .edit_bt
 {
@@ -296,7 +368,22 @@
             background-color: #ccc;
         }
       }
-    ::ng-deep .mat-paginator-range-actions{
+      ::ng-deep perfect-scrollbar > div > div.ps__rail-y {
+        opacity: 9;
+       z-index: 9;
+        .ps__thumb-y
+        {
+            background-color: #ccc;
+        }
+      }
+      ::ng-deep .mat-paginator
+      {
+          background: transparent;
+          ::ng-deep .mat-paginator-container
+      {
+          background-color: transparent;
+          min-height: 46px;
+          ::ng-deep .mat-paginator-range-actions{
        
         .mat-icon-button
         {
@@ -304,7 +391,7 @@
             width: 30px;
             height: 30px;
             line-height: inherit;
-            background-color: transparent !important;
+            background-color: #fff !important;
             color: black !important;
             margin: 0 !important;
             border: 1px solid #dedede;
@@ -332,6 +419,10 @@
 
         }
     }
+      }
+      }
+      
+    
     .ms_table
     {
         // width: 100%;
@@ -374,6 +465,8 @@
                     padding-right: 10px;
                     padding-top: 10px;
                     padding-bottom: 10px;
+                   
+                   
                     &.cdk-column-ProjectName
                     {
                         min-width: 180px;
@@ -392,7 +485,77 @@
             &.cdk-column-Current_Status
             {
                 min-width: 115px;
-                max-width: 115px
+                max-width: 115px;overflow: initial;
+                .onhold_st
+                {
+                    position: relative;
+                    cursor: pointer;
+                    &:hover 
+                    {
+                        .on_hold_view
+                        {
+                            display: block;
+                        }
+                        
+                    }
+                    .on_hold_view
+                    {
+                        background-color: #2258bf;
+                        position: absolute;
+                        padding: 10px;
+                        border-radius: 4px;
+                        width: 180px;
+                        display: none;
+                        color: #fff;
+                        line-height: initial;
+                        font-size: 0.79rem;
+                        left: 28px;
+                        top: -25px;
+                        font-weight: 400;
+                        cursor: initial;
+                        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+                        &::before
+                        {
+                            content: "";
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-top: 7px solid transparent;
+                            border-right: 7px solid #2258bf;
+                            border-bottom: 7px solid transparent;
+                            left: -7px;
+                            top: 28px;
+                        }
+                        h4{
+                            color: #ffd800;
+                            margin: 0px;
+                            line-height: initial;
+                            font-size: inherit;
+                            font-weight: 500;
+                        }
+                        p{
+                            margin: 0px;
+                            margin-top: 2px;
+                            &:last-child
+                            {
+                                font-style: italic;
+                            }
+                        }
+                    }
+                    .on_hold_info
+                    {
+                        width: 20px;
+                        height: auto;
+                        background-color: #ffbe00;
+                        align-items: center;
+                        display: flex;
+                        justify-content: center;
+                        color: #fff;
+                        border-radius: 20px;
+                        font-size: 0.7rem;
+                        font-weight: bold;
+                    }
+                }
             }
             &.cdk-column-Total_Revenue
             {
@@ -558,7 +721,7 @@
     overflow: hidden;
     @include padding(0,0px,0,0px);
     @include margin(initial,10px,initial,0px);
-    @include heightwidth(215px,42px);
+    @include heightwidth(210px,42px);
     // @include flexbox();
     @include font-weight(normal);
     @include font-size(0.80);
@@ -614,6 +777,11 @@
     img
     {
        @include heightwidth(12px,initial);
+    }
+    &.disablefinalagg
+    {
+        background-color: #eaeaea;
+        pointer-events: none;
     }
 }
 
@@ -839,7 +1007,7 @@
                                       }
                                     h3{
                                         color: #0e2c65;
-                                        font-weight: 800;
+                                        font-weight: 700;
                                         font-size: 1.5rem;
                                         margin: 0 0 5px 0;
                                     }
@@ -848,7 +1016,7 @@
                                         width: 350px;
                                         text-align: center;
                                         line-height: initial;
-                                        margin: 0 0 10px 0;
+                                        margin: 0 0 15px 0;
                                         font-size: 0.95rem;
                                         font-weight: 500;
                                         color: #141414;
@@ -1366,6 +1534,19 @@
                     // color:$thm-title-color;
                     // @include font-weight(bold);
                     // @include font-size(1);
+                    &.frs_set_active
+                    {
+                        .is_curr_ve{
+                            display: block;
+                        }
+                    }
+                    .is_curr_ve
+                    {
+                        display: none;
+                        position: absolute;
+                        left: 12px;
+                        top: 20px;
+                    }
                     .mat_previe_box
                 {
                     max-width: 300px;
@@ -1567,9 +1748,14 @@ padding-bottom: 14px;
     .mat-autocomplete-panel
     {
         right: 50px !important;
-    min-width: 275px !important;
+    min-width: 375px !important;
     left: auto !important;
-    margin-top: -10px;
+    margin-top: 0px;
+    .mat-option
+    {
+        height: 28px !important;
+        font-size: 0.90rem !important;
+    }
     }
 }
 // ::ng-deep #mat-select-0-panel, ::ng-deep #mat-select-7-panel
@@ -1603,25 +1789,34 @@ padding-bottom: 14px;
     background-color: white;
     font-weight: 500;
     flex: 1;
-    &:last-child
+    &.right
     {
-        background-color: #345d9d;
-        color: #fff;
-        img{
-            display: none;
-        }
-        &.right
+        background-color: white;
+        
+        &.view_1
         {
-            &::after
-            {
-                background-color: #345d9d;
-    border-top: 2px solid #345d9d;
-    border-right: 2px solid #345d9d;
-    top: 1px;
-    right: -2px;
-    height: 26px;
-    width: 25px;
+            background-color: white;
+            img{
+                display: block;
             }
+            
+        }
+           
+        &.view_-2
+        {
+            background-color: white;
+            img{
+                display: block;
+            }
+            
+        }
+        &.view_-1
+        {
+            background-color: white;
+            img{
+                display: block;
+            }
+            
         }
     }
     img{
@@ -1630,6 +1825,7 @@ padding-bottom: 14px;
     z-index: 999;
     top: 10px;
     width: 14px;
+    display: none;
     }
         &.right
         {
@@ -1658,4 +1854,40 @@ padding-bottom: 14px;
     
 }
 
+::ng-deep .cdk-overlay-pane
+{
+    margin-top: 5px;
 
+}
+::ng-deep .mat-menu-panel{
+    background: #487de2;
+    min-height: auto !important;
+    padding: 0 15px 0 15px;
+    color: white;
+    &.nor_tool
+    {
+        background-color: #487de2;
+        p{
+            margin: 0px;
+            font-style: normal;
+            font-size: 0.75rem;
+        }
+    }
+    h4{
+        color: #ffd800;
+        margin: 0px;
+        line-height: initial;
+        font-size: inherit;
+        font-weight: 500;
+    }
+    p{
+        margin: 0px;
+        margin-top: 2px;
+        &:last-child
+        {
+            font-style: italic;
+        }
+    }
+  }
+
+  
