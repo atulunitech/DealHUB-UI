@@ -1708,7 +1708,7 @@ downloaddetailFinalAgg(row)
     // let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     let encryptedusercode = this.commonService.setEncryption(Keynew,localStorage.getItem('UserCode'));
    // this._dashboardmodel._user_code=localStorage.getItem("UserCode");
-   this._dashboardmodel._user_code=encryptedusercode;
+   this._dashboardmodel._user_code=encryptedusercode +"*$"+randomnum;
 
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
