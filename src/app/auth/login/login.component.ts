@@ -200,23 +200,23 @@ export class LoginComponent implements OnInit {
         let actualkey = "0c24f9de!b"+actualrandom;
         if(this.RememberMe)
         {
-          localStorage.setItem("UserName",Result.user.UserName);
+          localStorage.setItem("UserName",Result.user.UN);
           localStorage.setItem("Token",Result.user.Api_Key);
           localStorage.setItem("rememberCurrentUser","true");
         
          }
         else
         {
-          localStorage.setItem("UserName",Result.user.UserName);
+          localStorage.setItem("UserName",Result.user.UN);
           localStorage.setItem("Token",Result.user.Api_Key);
           localStorage.setItem("rememberCurrentUser","false");
 
         }
         // let privilege = this._commomservices.setDecryption(this._commomservices.commonkey,Result.user.privilege_name);
-        let privilege = this._commomservices.setDecryption(actualkey,Result.user.privilege_name);
-        let usercode = this._commomservices.setDecryption(actualkey,Result.user.UserCode);
-        let role_name = this._commomservices.setDecryption(actualkey,Result.user.role_name);
-        let userid = this._commomservices.setDecryption(actualkey,Result.user.UserId);
+        let privilege = this._commomservices.setDecryption(actualkey,Result.user.PN);
+        let usercode = this._commomservices.setDecryption(actualkey,Result.user.UC);
+        let role_name = this._commomservices.setDecryption(actualkey,Result.user.RN);
+        let userid = this._commomservices.setDecryption(actualkey,Result.user.UI);
         // localStorage.setItem("UserCode",Result.user.UserCode);
         localStorage.setItem("UserCode",usercode);
         // localStorage.setItem("privilege_name",Result.user.privilege_name);
@@ -224,7 +224,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("userToken",Result.user.Api_Key);
         // localStorage.setItem("role_name",Result.user.role_name);
         localStorage.setItem("role_name",role_name);
-        localStorage.setItem("UserName",Result.user.UserName);
+        localStorage.setItem("UserName",Result.user.UN);
         // localStorage.setItem("User_Id",Result.user.UserId);
         localStorage.setItem("User_Id",userid);
         localStorage.setItem("RequestId",Result.user.AntiforgeryKey);

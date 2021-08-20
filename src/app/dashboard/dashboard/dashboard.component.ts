@@ -1600,7 +1600,15 @@ getapprovalstatus(element)
       backdropClass: 'popupBackdropClass',
 })
 this._dashboardservice.GetDashboardProgress(this.dh_id.toString(),this.dh_header_id.toString()).subscribe((Result)=>{
-  var jsondata=JSON.parse(Result);
+  
+  let getrandom = Result.split("*$");
+  let Resultdata = getrandom[0];
+  let actualrandom = getrandom[1];
+  let actualkey = "0c24f9de!b"+actualrandom;
+  Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+  var jsondata=JSON.parse(Resultdata);
+
+  //var jsondata=JSON.parse(Result);
    this.approvalstatusdetail.versiondetail=jsondata.versiondetail;
    this.approvalstatusdetail.TimeLine=jsondata.TimeLine;
    this.approvalstatusdetail.Approvaldetail=jsondata.latestprogress;
