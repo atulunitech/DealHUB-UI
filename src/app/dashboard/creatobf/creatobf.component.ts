@@ -627,7 +627,12 @@ getsolutionmaster()
 {
   let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
 this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
-  let res = JSON.parse(data);
+  let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+  let res = JSON.parse(Resultdata);
   console.log("get solution masters");
   console.log(res);
   this.Solutiongroup= res;
@@ -648,7 +653,13 @@ this._obfservices.getsolutionmaster(encryptedusercode).subscribe(data =>{
   {
     let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
     this._obfservices.GetCreateOBFMasters(encryptedusercode).subscribe(data =>{
-      let res = JSON.parse(data);
+      
+      let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+      let res = JSON.parse(Resultdata);
        console.log(Object.keys(res) );
        console.log(res.sectors);
        console.log(res.subsector);
