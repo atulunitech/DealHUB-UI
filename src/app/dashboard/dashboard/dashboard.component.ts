@@ -1696,9 +1696,14 @@ downloaddetailFinalAgg(row)
           },500 );
         }
       });
-      console.log(Result);
-      var loginresult =Result;
-      this.dashboardData=JSON.parse(Result);
+        let getrandom = Result.split("*$");
+        let Resultdata = getrandom[0];
+        let actualrandom = getrandom[1];
+        let actualkey = "0c24f9de!b"+actualrandom;
+        Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+      console.log(Resultdata);
+      var loginresult =Resultdata;
+      this.dashboardData=JSON.parse(Resultdata);
       this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
       if(this.dashboardData.length > 0)
