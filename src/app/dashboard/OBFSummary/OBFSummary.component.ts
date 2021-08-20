@@ -173,8 +173,14 @@ class filesdetail
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
      
+    let getrandom = data.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+
     //  this._obfservices.initializeobf(JSON.parse(data));
-      var jsondata=JSON.parse(data);
+      var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
