@@ -55,7 +55,7 @@ dontshowforDOA:boolean = true;
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
   SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
   SubSectorColumn: string[] = ['SubSector_Name','Sector_Name','ProjectTypeAction'];
-  SolutionCategoryColumn: string[] = ['solutioncategory_name','Active','ProjectTypeAction'];
+  SolutionCategoryColumn: string[] = ['Solutioncategory_Name','Active','ProjectTypeAction'];
   SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Domain','Active','ProjectTypeAction'];
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
   BusinessColumn: string[] = ['Business_Code','Business_Name','Active','ProjectTypeAction'];
@@ -412,7 +412,7 @@ dontshowforDOA:boolean = true;
     }
     this.ShowProjectTypeEdit=true;
     this.DomainId=Details.domain_id;
-    this.createoredit = "Edit : "+Details.Project_Name;
+    this.createoredit = "Edit : "+Details.Project_Name + " ("+Details.Project_Code+")";
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
     this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
@@ -432,7 +432,7 @@ dontshowforDOA:boolean = true;
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
     this.createoredit = "Edit : "+Details.privilege_name;
-    this.PrivilegeForm.controls.privilege_name.setValue(Details.privilege_name);
+    this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
     
   }
@@ -451,11 +451,11 @@ dontshowforDOA:boolean = true;
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
     this.createoredit = "Edit : "+Details.role_name;
-    this.RoleForm.controls.Role_code.setValue(Details.role_code);
-    this.RoleForm.controls.role_name.setValue(Details.role_name);
+    this.RoleForm.controls.Role_code.setValue(Details.Role_Code);
+    this.RoleForm.controls.role_name.setValue(Details.Role_Name);
     this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
     
-    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.equivalent_cassh_role_name);
+    this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
 
     if(this._masterservice.map_privilege_role.length != null)
     {
@@ -566,7 +566,7 @@ dontshowforDOA:boolean = true;
     this.ShowSolutionCategoryEdit=true;
     this.createoredit = "Edit : "+Details.solutioncategory_name;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
-    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.solutioncategory_name);
+    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
     this.SolutionCategoryForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
   else if(this.masterType=="Solution")
@@ -626,8 +626,8 @@ dontshowforDOA:boolean = true;
     this.ShowFormEdit=true;
     this.FormId=Details.id;
     this.createoredit = "Edit : "+Details.form_name;
-    this.pagesListForm.controls.Form_name.setValue(Details.form_name);
-    this.pagesListForm.controls.Form_Url.setValue(Details.url);
+    this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
+    this.pagesListForm.controls.Form_Url.setValue(Details.Url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
   }
   else if(this.masterType=="Vertical")
@@ -961,9 +961,20 @@ GetMstDomains()
    
      
     this.dashboardData=res.domains;
-  
-    this.BindGridDetails();
-    this.displayedColumns=this.ProjectTypeColumn;
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
+    }
+   // this.BindGridDetails();
+   
    
   })
   
@@ -976,6 +987,8 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
   this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+//  this.listData.filter = this.ProjectTypeForm.controls.ProjectCode.value;
+ 
   this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
     console.log(Result);
     var Res=JSON.parse(Result);
@@ -994,8 +1007,19 @@ GetMstPrivilege()
       console.log(Result);
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_privilege;
-  
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
+    }
+   // this.BindGridDetails();
     this.displayedColumns=this.PrivilegeColumn;
     });
   }
@@ -1026,7 +1050,19 @@ GetMstRole()
   this.dashboardData=res.mst_roles;
 this._masterservice.PrivilegeList=res.mst_privilege;
 this._masterservice.map_privilege_role=res.map_privilege_role;
-  this.BindGridDetails();
+if( this.dashboardData != undefined)
+{
+ this.BindGridDetails();
+ this.displayedColumns=this.ProjectTypeColumn;
+}
+else
+{
+  this.dashboardData=[];
+  this.listData = new MatTableDataSource(this.dashboardData);
+//  this.listData.filteredData.length=0;
+ 
+}
+ // this.BindGridDetails();
   this.displayedColumns=this.RolesColumn;
   });
 }
@@ -1064,6 +1100,10 @@ SubmitRoleType()
   
 
 }
+PrivilegeChange(event,privilegeName)
+{
+  
+}
 //Roles End
 
 // Branch Start
@@ -1072,7 +1112,18 @@ GetMstBranch()
   this._masterservice.GetMstBranch().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+    //  this.listData.filteredData.length=0;
+     
+    }
     this.displayedColumns=this.BranchColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1109,7 +1160,17 @@ GetMstCommentType()
   this._masterservice.GetMstCommentType().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_comment_type;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
+   
     this.displayedColumns=this.CommentTypeColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1146,6 +1207,16 @@ GetMstSector()
   this._masterservice.GetMstSector().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.BindGridDetails();
     this.displayedColumns=this.SectorColumn; 
   },
@@ -1185,7 +1256,16 @@ GetMstSubSector()
     var res=JSON.parse(Result);
     this.dashboardData=res.mst_subsector;
     this.Sectordropdown = res.mst_sector;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SubSectorColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1222,7 +1302,16 @@ GetMstSolutionCategory()
   this._masterservice.GetMstSolutionCategory().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SolutionCategoryColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1261,7 +1350,16 @@ GetMstSolution()
     this.SolutionCategorydropdown = res.mst_solutioncategory;
     this.functiondropdown = res.mst_functions;
     this.domaindropdown = res.mst_domains;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.SolutionColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1300,7 +1398,16 @@ GetMstDoa()
   this._masterservice.GetMstDoaMsg().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.DOAColumn; 
   },
   (error:HttpErrorResponse) =>{
@@ -1341,7 +1448,16 @@ GetMstForms()
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
   
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.formsColumn;
   })
 }
@@ -1379,7 +1495,16 @@ GetMstVerticals()
     this._masterservice.FunctionList=res.mst_functions;
     this._masterservice.SectorList=res.mst_sector;
     this._masterservice.map_vertical_sector=res.map_vertical_sector;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.VerticalColumn;
   })
 }
@@ -1412,6 +1537,13 @@ Update_Mst_Verticals()
   })
 
 }
+// FunctionSelect(event,functionid)
+// {
+//   if(functionid !=0)
+//   {
+//     this._masterservice.SectorList.filter(x=>x.vertical_id==functionid)
+//   }
+// }
 //Vertical End
 
 //Business Type start
@@ -1420,7 +1552,16 @@ GetMstBusiness()
   this._masterservice.GetMstBusiness().subscribe((Result)=>{
     var res=JSON.parse(Result);
     this.dashboardData=res.Table;
-    this.BindGridDetails();
+    if( this.dashboardData != undefined)
+    {
+     this.BindGridDetails();
+     this.displayedColumns=this.ProjectTypeColumn;
+    }
+    else
+    {
+      this.dashboardData=[];
+      this.listData = new MatTableDataSource(this.dashboardData);
+   }
     this.displayedColumns=this.BusinessColumn; 
   },
   (error:HttpErrorResponse) =>{

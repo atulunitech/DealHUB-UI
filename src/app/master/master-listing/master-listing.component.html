@@ -333,7 +333,7 @@
                   <mat-form-field appearance="fill" class="example-full-width">
                     <mat-label>Select Function*</mat-label>
                     <mat-select formControlName="Function" disableOptionCentering>
-                      <mat-option *ngFor="let Function of _masterservice.FunctionList" [value]="Function.value"  >
+                      <mat-option *ngFor="let Function of _masterservice.FunctionList"  [value]="Function.value"  >
                         {{Function.viewValue}}
                       </mat-option>
                     </mat-select>
@@ -394,7 +394,7 @@
       <div class="edit_heda">
         {{createoredit}}
       </div>
-      <form [formGroup]="BranchForm">
+      <form [formGroup]="BranchForm" style="background-color: #f1f1f1;padding-top: 10px;">
         <div class="edit_body">
           <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
             <div fxFlex="50" class="edit_body_in">
@@ -842,6 +842,20 @@
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
           </table>
+          <div style="    display: flex;
+          justify-content: center;
+          flex-direction: inherit;
+          position: absolute;
+          height: auto;
+          width: 100%;
+          top: 50%;
+          transform: translate(-50%, -30%);
+          left: 50%;" *ngIf="this.listData.filteredData.length == 0">
+            <img src="assets/images/no-data1.jpg" style="
+            width: 270px;
+        ">
+          </div>
+         
             </perfect-scrollbar>
             <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="listData.filteredData.length" style="margin-bottom: 10px;"
                     [pageSize]="7"
