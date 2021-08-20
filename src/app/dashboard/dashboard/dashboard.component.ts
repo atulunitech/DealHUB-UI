@@ -1527,8 +1527,12 @@ openModal(templateRef,row) {
    //editobf.user_code = localStorage.getItem("UserCode");  commented for vapt
    editobf.user_code ="RANDOM";
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
-    let result =  JSON.parse(res);
-    this._obfservices.editObfObject = JSON.parse(res);
+    let getrandom = res.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+    this._obfservices.editObfObject = JSON.parse(Resultdata);
     this._obfservices.initializeobfmodelandform();
     
     this.servicesControl.setValue(this._obfservices.servicesarray);

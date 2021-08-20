@@ -358,7 +358,12 @@ export class CreatobfComponent implements OnInit {
   //  editobf.user_code = localStorage.getItem("UserCode");  commented for vapt
   editobf.user_code ="RANDOM";
    this._obfservices.geteditobfdata(editobf).subscribe(res =>{
-     let result =  JSON.parse(res);
+    let getrandom = res.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+     let result =  JSON.parse(Resultdata);
      this.isEditObf = true;
     //  this.detailstickdisabled = false;
      console.log("check objectssssss after edit");
@@ -370,7 +375,7 @@ export class CreatobfComponent implements OnInit {
       this.editObfLoiPobol = true;
       this.editObfSupportbol = true;
      }
-      this._obfservices.editObfObject = JSON.parse(res);
+      this._obfservices.editObfObject = JSON.parse(Resultdata);
       this._obfservices.initializeobfmodelandform();
       this.editobfinitialization();
      // this.getotherservicesandsolutions();
@@ -541,7 +546,14 @@ export class CreatobfComponent implements OnInit {
     editobf.dh_header_id = this._obfservices.editObfObject._dh_header_id;
     editobf.user_code = localStorage.getItem("UserCode");
     this._obfservices.getpreviousversion(editobf).subscribe(res =>{
-      let result = JSON.parse(res);
+     
+      let getrandom = res.split("*$");
+    let Resultdata = getrandom[0];
+    let actualrandom = getrandom[1];
+    let actualkey = "0c24f9de!b"+actualrandom;
+    Resultdata =  this._commonservices.setDecryption(actualkey,Resultdata);
+
+      let result = JSON.parse(Resultdata);
       console.log("get previous data");
       console.log(result);
       this._obfservices.editObfObject._total_cost = result._total_cost;
