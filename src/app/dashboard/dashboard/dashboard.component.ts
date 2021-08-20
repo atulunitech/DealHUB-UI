@@ -1694,7 +1694,11 @@ downloaddetailFinalAgg(row)
 
   CallDashBoardService()
   {
-    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    let randomnum =  Math.floor(Math.random() * (999999 - 110000 + 1) + 110000); 
+    let Keynew = "0c24f9de!b";
+    Keynew = Keynew + randomnum;
+    // let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    let encryptedusercode = this.commonService.setEncryption(Keynew,localStorage.getItem('UserCode'));
    // this._dashboardmodel._user_code=localStorage.getItem("UserCode");
    this._dashboardmodel._user_code=encryptedusercode;
 
