@@ -36,9 +36,16 @@ export class NotificationComponent implements OnInit {
   {
     let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
     this.commonService.Get_System_Notification(encryptedusercode).subscribe(data=>{
+
       console.log(data);
-      var jsonresult=JSON.parse(data);
-      this.commonService.initializeNotification(JSON.parse(data));
+      let getrandom = data.split("*$");
+      let Resultdata = getrandom[0];
+      let actualrandom = getrandom[1];
+      let actualkey = "0c24f9de!b"+actualrandom;
+      Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+      var jsondata=JSON.parse(Resultdata);
+    //  var jsonresult=JSON.parse(data);
+      this.commonService.initializeNotification(jsondata);
 
     })
   }

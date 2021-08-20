@@ -173,12 +173,13 @@ class filesdetail
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
      
-    //  this._obfservices.initializeobf(JSON.parse(data));
     let getrandom = data.split("*$");
     let Resultdata = getrandom[0];
     let actualrandom = getrandom[1];
     let actualkey = "0c24f9de!b"+actualrandom;
     Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+
+    //  this._obfservices.initializeobf(JSON.parse(data));
       var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
@@ -1372,8 +1373,13 @@ class filesdetail
    
 
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
-      
-      var jsondata=JSON.parse(data);
+      let getrandom = data.split("*$");
+      let Resultdata = getrandom[0];
+      let actualrandom = getrandom[1];
+      let actualkey = "0c24f9de!b"+actualrandom;
+      Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
+      var jsondata=JSON.parse(Resultdata);
+     // var jsondata=JSON.parse(data);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
