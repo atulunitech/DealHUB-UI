@@ -122,19 +122,47 @@ export class UserMasterComponent implements OnInit {
 showhideverticalFn()
 {
   this.showhidevertical = !this.showhidevertical;
+  this.vertical_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allverticalselected = false;
+      this.allverticalchck['checked'] = false;
+    }
+  });
 }
 clickOutside() {
   this.showhidevertical = !this.showhidevertical;
+  this.vertical_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allverticalselected = false;
+      this.allverticalchck['checked'] = false;
+    }
+  });
 }
 
 showhidebranchFn()
 {
   this.showhidebranch = !this.showhidebranch;
+  this.barnch_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allbranchselected = false;
+      this.allbranchchck['checked'] = false;
+    }
+  });
 }
 
 showhidebrranchfn_out()
 {
   this.showhidebranch = !this.showhidebranch;
+  this.barnch_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allbranchselected = false;
+      this.allbranchchck['checked'] = false;
+    }
+  });
 }
 
 
@@ -408,7 +436,10 @@ showhidebrranchfn_out()
 
   ClearAllBranch()
   {
+    if(this.showhidebranch)
+    {
     this.allbranchchck['checked'] = false;
+    }
     this.barnch_array_selected.forEach(elt =>{
       elt.selected = false;
     });
@@ -464,7 +495,10 @@ showhidebrranchfn_out()
 
   ClearAllVerticals()
   {
+    if(this.showhidevertical)
+    {
     this.allverticalchck['checked'] = false;
+    }
     this.vertical_array_selected.forEach(elt =>{
       elt.selected = false;
     });
