@@ -780,7 +780,7 @@ onToggleGroupChange(evt,data)
  model._id = data.id;
  model._active = evt.value;
  model._islocked = data.islocked == 0 ? 1: 0;
- model._user_id = localStorage.getItem('UserCode');
+ model._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
  // console.log(evt.value);
 
  const message = data.active == "0"? "Are you sure you want to activate this user acount?":"Are you sure you want to deactivate this user account?";
