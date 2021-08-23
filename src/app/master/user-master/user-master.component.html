@@ -120,28 +120,32 @@
 
     </div>
   </div>
-  <div fxFlex="50" class="edit_body_in">
-    <div  class="edit_body_in">
-      <div class="mt-cust-fd">
-        <mat-form-field appearance="fill" class="example-full-width">
-          <mat-label>Select Active / Inactive*</mat-label>
-          <mat-select formControlName="Active" disableOptionCentering>
-            <mat-option  value="1"  >
-             Active
-            </mat-option>
-            <mat-option  value="0"  >
-              Inactive
-             </mat-option>
-          </mat-select>
-          <mat-error *ngIf="_masterservice.usermasterform.controls.Active.errors?.required">
-            Please select Active / Inactive
-          </mat-error>
-        </mat-form-field>
-        </div>
-    </div>
-  </div>
+ 
        </div>
-       
+       <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between start" fxFlex="50" >
+        <div fxFlex="100" class="edit_body_in">
+          <div  class="edit_body_in" style="margin: 0px;">
+            <div class="mt-cust-fd">
+              <mat-form-field appearance="fill" class="example-full-width">
+                <mat-label>Select Active / Inactive*</mat-label>
+                <mat-select formControlName="Active" disableOptionCentering>
+                  <mat-option  value="1"  >
+                   Active
+                  </mat-option>
+                  <mat-option  value="0"  >
+                    Inactive
+                   </mat-option>
+                </mat-select>
+                <mat-error *ngIf="_masterservice.usermasterform.controls.Active.errors?.required">
+                  Please select Active / Inactive
+                </mat-error>
+              </mat-form-field>
+              </div>
+          </div>
+        </div>
+        
+        
+       </div>
       
       </div>
 

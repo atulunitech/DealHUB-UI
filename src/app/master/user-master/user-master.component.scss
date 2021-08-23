@@ -201,7 +201,11 @@
             }
                    &.cdk-column-userlocked
             {
-                min-width: 60px;
+                min-width: 80px;
+            }
+            &.cdk-column-Mobile_No
+            {
+                min-width: 90px;
             }
                     &.cdk-column-ProjectName
                     {
@@ -401,7 +405,11 @@
             }
             &.cdk-column-userlocked
             {
-                min-width: 60px;
+                min-width: 80px;
+            }
+            &.cdk-column-Mobile_No
+            {
+                min-width: 90px;
             }
             &.cdk-column-ProjectName
                     {
