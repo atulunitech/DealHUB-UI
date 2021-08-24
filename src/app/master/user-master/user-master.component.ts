@@ -93,7 +93,7 @@ export class UserMasterComponent implements OnInit {
   @ViewChild('allbranchchck') allbranchchck: ElementRef;
   @ViewChild('allverticalchck') allverticalchck: ElementRef;
   @ViewChild('verticalinput') verticalinput: ElementRef;
-  @ViewChild('pagination') paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
      this.paginator = mp;
     
@@ -116,7 +116,6 @@ export class UserMasterComponent implements OnInit {
   ngAfterViewInit() {
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
-    this.paginator.firstPage();
 
 }
 
@@ -1031,6 +1030,7 @@ SaveUsers()
     // },2000);
      this.displaydiv = false;
      this.getdataforusers();
+    this.paginator.firstPage();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
    // window.location.reload();
  },
