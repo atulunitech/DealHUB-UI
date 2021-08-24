@@ -1475,6 +1475,11 @@ onchange(evt,solutioncategory)
       //  this.tableFilteredData.push(data)
     }
     this.paginator.length=this.tableFilteredData.length;
+   // this.paginator.length=this.filterdata.length;
+    this.paginator.firstPage()
+    this.paginator.pageIndex=0;
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
