@@ -35,7 +35,7 @@
                         height: 31PX;
                         background-color:transparent;
                         pointer-events: initial;
-                        cursor: initial;" 
+                        cursor: initial;" [ngStyle]="!this.ShowViewButton && {'display': 'none'}"
                         *ngIf="((!this.ShowViewButton) && 
                         this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || 
                         this._obfservices.obfsummarymodel.PPl_details != undefined ||
