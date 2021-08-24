@@ -1470,9 +1470,11 @@ onchange(evt,solutioncategory)
          
       }
       this.listData=new MatTableDataSource(this.tableFilteredData);
+      
       //if(filterCount == this.filtersToSearch.length)
       //  this.tableFilteredData.push(data)
     }
+    this.paginator.length=this.tableFilteredData.length;
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -2230,7 +2232,11 @@ downloaddetailFinalAgg(row)
    //this.paginator.pageIndex=0;
    if(this.paginator != undefined)
    {
+    //  var temp=this.calculatepaginatorlength(this.filterdata.length)
+    //  this.paginator.length=this.filterdata.length <7 ? 1 : temp ;
+     this.paginator.length=this.filterdata.length;
     this.paginator.firstPage()
+    this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
    }
@@ -2238,6 +2244,22 @@ downloaddetailFinalAgg(row)
     //this.listData.paginator.firstPage();
     //this.listData.paginator.pageIndex=0;
    
+  }
+  calculatepaginatorlength(length)
+  {
+    if(length>7)
+    {
+      var Quo=length/7;
+      var rem=length%7;
+      Quo=parseInt(Quo.toFixed(0)) ;
+      if(rem>0)
+      {
+        Quo=Quo+1
+        return Quo;
+      }
+
+    }
+    return 2;
   }
   onChangePage(pe:PageEvent) {
     console.log(pe.pageIndex);
