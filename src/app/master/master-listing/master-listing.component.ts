@@ -39,6 +39,7 @@ public DOAForm:FormGroup;
 public BusinessForm:FormGroup;
 public CommentForm:FormGroup;
 enablecreate:boolean = false;
+//disableDOAonedit:boolean = false;
 createoredit:string = "";
 dontshowforDOA:boolean = true;
   constructor(private router: Router,private route:ActivatedRoute,public commonService:CommonService,
@@ -610,6 +611,9 @@ dontshowforDOA:boolean = true;
     this.DOAForm.controls.Message.setValue(Details.Message);
     this.DOAForm.controls.Prefix.setValue(Details.Prefix);
     this.DOAForm.controls.MessageFor.setValue(Details.Message_For);
+    this.DOAForm.controls.Prefix.disable();
+    this.DOAForm.controls.MessageFor.disable();
+   // this.disableDOAonedit = true;
   }
   else if(this.masterType=="Forms")
   {
@@ -895,9 +899,14 @@ createType()
   else if(this.masterType == "DOA Matrix Messages")
   {
     this.ShowDOAEdit=true;
+   // this.disableDOAonedit = false;
     this.createoredit = "Create DOA Matrix Messages";
     this._masterservice.createnewdoamodel();
     this._masterservice.doamodel._DOA_Matrix_Id = 0;
+    this.DOAForm.controls.Prefix.enable();
+    this.DOAForm.controls.MessageFor.enable();
+    this.DOAForm.controls.Prefix.markAsUntouched();
+    this.DOAForm.controls.MessageFor.markAsUntouched();
     this.DOAForm.controls.Message.setValue("");
     this.DOAForm.controls.Prefix.setValue("");
     this.DOAForm.controls.MessageFor.setValue("");
