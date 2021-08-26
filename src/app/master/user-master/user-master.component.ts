@@ -6,7 +6,7 @@ import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -168,6 +168,17 @@ showhidebrranchfn_out()
 
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();
+     this.paginator.length=this.listData.filteredData.length;
+     this.paginator.firstPage()
+     this.paginator.pageIndex=1;
+     this.listData.sort = this.sort;
+     this.listData.paginator = this.paginator;
+   // this.pageventcall(null);
+  }
+
+  onChangePage(pe:PageEvent) {
+    console.log(pe.pageIndex);
+    console.log(pe.pageSize);
   }
 
   displayFn(branch: branch): string {
@@ -884,7 +895,7 @@ getusereditdetails(data)
   this.allbranchselected = true;
   this.allverticalselected = true;
   this.displaydiv = true;
-  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name;
+  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name+" ("+data.User_Code+")";
   this.branchchips =[];
   this.verticalchips = [];
   this.verticalchipstodisplay = [];

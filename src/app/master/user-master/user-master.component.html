@@ -275,7 +275,7 @@
       <ng-container  matColumnDef="userlocked" >
           <mat-header-cell  *matHeaderCellDef mat-sort-header>Is Locked</mat-header-cell>
         <mat-cell  *matCellDef="let row" >
-          <img style="width: 18px;" [src]="row.islocked == 1 ? 'assets/images/lock_icon.png' : 'assets/images/unlock-alt.png'" (click)="lockunlockuser($event,row)">
+          <img style="width: 18px;" [matTooltip]="row.islocked == 0?'You can only unlock the locked users':''" [src]="row.islocked == 1 ? 'assets/images/lock_icon.png' : 'assets/images/unlock-alt.png'" (click)="row.islocked == 1?lockunlockuser($event,row):null">
         </mat-cell>
         <!-- <mat-cell *matCellDef="let row" ><button mat-flat-button class="creat_bt edit_bt" (click)="reinitiateobf(row)">Revise PPL</button></mat-cell> -->
          </ng-container>
@@ -315,7 +315,7 @@
 ">
   </div>
   </perfect-scrollbar>
-  <mat-paginator  #pagination style-paginator showFirstLastButtons   [length]="userfilter.length" style="margin-bottom: 10px;"
+  <mat-paginator (page)="onChangePage($event)"  #pagination style-paginator showFirstLastButtons   [length]="listData.filteredData.length" style="margin-bottom: 10px;"
               [pageSize]="10"
               >
       </mat-paginator> 
