@@ -432,7 +432,7 @@ dontshowforDOA:boolean = true;
     }
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
-    this.createoredit = "Edit : "+Details.privilege_name;
+    this.createoredit = "Edit : "+Details.Privilege_name;
     this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Status=="Active"?"1":"0");
     
@@ -629,7 +629,7 @@ dontshowforDOA:boolean = true;
     }
     this.ShowFormEdit=true;
     this.FormId=Details.id;
-    this.createoredit = "Edit : "+Details.form_name;
+    this.createoredit = "Edit : "+Details.Form_name;
     this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
     this.pagesListForm.controls.Form_Url.setValue(Details.Url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Status=="Active"?"1":"0");
