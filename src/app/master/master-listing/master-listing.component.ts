@@ -565,7 +565,7 @@ dontshowforDOA:boolean = true;
     }
     this._masterservice.createnewsolutioncategorymodel();
     this.ShowSolutionCategoryEdit=true;
-    this.createoredit = "Edit : "+Details.solutioncategory_name;
+    this.createoredit = "Edit : "+Details.Solutioncategory_Name;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
     this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
     this.SolutionCategoryForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
