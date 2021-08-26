@@ -45,20 +45,20 @@ dontshowforDOA:boolean = true;
     public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
-  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
-  formsColumn:string[]=['Form_name','Url','Active','ProjectTypeAction'];
-  VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Active','ProjectTypeAction'];
-  PrivilegeColumn:string[]=['Privilege_name','Active','ProjectTypeAction'];
+  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Status','ProjectTypeAction'];
+  formsColumn:string[]=['Form_name','Url','Status','ProjectTypeAction'];
+  VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Status','ProjectTypeAction'];
+  PrivilegeColumn:string[]=['Privilege_name','Status','ProjectTypeAction'];
   //PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
-  RolesColumn:string[]=['Role_Code','Role_Name','Equivalent_Cassh_Role_Name','Active','ProjectTypeAction'];
-  BranchColumn: string[] = ['Branch_Name','Active','ProjectTypeAction'];
+  RolesColumn:string[]=['Role_Code','Role_Name','Equivalent_Cassh_Role_Name','Status','ProjectTypeAction'];
+  BranchColumn: string[] = ['Branch_Name','Status','ProjectTypeAction'];
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
-  SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
+  SectorColumn: string[] = ['Sector_Name','Status','ProjectTypeAction'];
   SubSectorColumn: string[] = ['SubSector_Name','Sector_Name','ProjectTypeAction'];
-  SolutionCategoryColumn: string[] = ['Solutioncategory_Name','Active','ProjectTypeAction'];
-  SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Domain','Active','ProjectTypeAction'];
+  SolutionCategoryColumn: string[] = ['Solutioncategory_Name','Status','ProjectTypeAction'];
+  SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Project_Type','Status','ProjectTypeAction'];
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
-  BusinessColumn: string[] = ['Business_Code','Business_Name','Active','ProjectTypeAction'];
+  BusinessColumn: string[] = ['Business_Code','Business_Name','Status','ProjectTypeAction'];
   Sectordropdown:any[] = [];
   SolutionCategorydropdown:any[] = [];
   FormId:number=0;
@@ -415,7 +415,7 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Project_Name + " ("+Details.Project_Code+")";
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
-    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Status=="Active"?"1":"0");
   }
   else if(this.masterType=="Privilege")
   {
@@ -433,7 +433,7 @@ dontshowforDOA:boolean = true;
     this.PrivilegeId=Details.privilege_Id;
     this.createoredit = "Edit : "+Details.privilege_name;
     this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
-    this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Status=="Active"?"1":"0");
     
   }
   else if(this.masterType=="Roles")
@@ -450,10 +450,10 @@ dontshowforDOA:boolean = true;
     }
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
-    this.createoredit = "Edit : "+Details.role_name;
+    this.createoredit = "Edit : "+Details.Role_Name + " ("+Details.Role_Code+")";
     this.RoleForm.controls.Role_code.setValue(Details.Role_Code);
     this.RoleForm.controls.role_name.setValue(Details.Role_Name);
-    this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
+    this.RoleForm.controls.Rolestatus.setValue(Details.Status=="Active"?"1":"0");
     
     this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
 
@@ -529,7 +529,7 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Sector_Name;
     this._masterservice.sectormodel._Sector_Id = Details.Sector_Id ;
     this.SectorForm.controls.Sector_Name.setValue(Details.Sector_Name);
-    this.SectorForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SectorForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   else if(this.masterType=="SubSector")
   {
@@ -567,7 +567,7 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.solutioncategory_name;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
     this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
-    this.SolutionCategoryForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SolutionCategoryForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   else if(this.masterType=="Solution")
   {
@@ -589,7 +589,7 @@ dontshowforDOA:boolean = true;
     this.SolutionForm.controls.Function.setValue(Details.function_id);
     this.SolutionForm.controls.SolutionCategory.setValue(Details.Solutioncategory_Id);
     this.SolutionForm.controls.Domain.setValue(Details.domain_id);
-    this.SolutionForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SolutionForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   else if(this.masterType=="DOA Matrix Messages")
   {
@@ -628,7 +628,7 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.form_name;
     this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
     this.pagesListForm.controls.Form_Url.setValue(Details.Url);
-    this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.pagesListForm.controls.FormStatus.setValue(Details.Status=="Active"?"1":"0");
   }
   else if(this.masterType=="Vertical")
   {
@@ -648,7 +648,7 @@ dontshowforDOA:boolean = true;
     this.VerticalForm.controls.VerticalName.setValue(Details.Vertical_name);
     this.VerticalForm.controls.VerticalCode.setValue(Details.Vertical_code);
     this.VerticalForm.controls.Function.setValue(Details.Function_id);
-    this.VerticalForm.controls.VerticalStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.VerticalForm.controls.VerticalStatus.setValue(Details.Status=="Active"?"1":"0");
     if(this._masterservice.map_vertical_sector.length != null)
     {
       let locationarray=[];
@@ -683,7 +683,7 @@ dontshowforDOA:boolean = true;
     this._masterservice.businessmodel._function_id = Details.function_id ;
     this.BusinessForm.controls.BusinessCode.setValue(Details.Business_Code);
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
-    this.BusinessForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.BusinessForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   this.enablecreate = false;
   }
