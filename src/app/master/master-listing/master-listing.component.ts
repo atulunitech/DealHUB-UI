@@ -648,7 +648,7 @@ dontshowforDOA:boolean = true;
     }
     this.ShowVerticalEdit=true;
     this.VerticalId=Details.Vertical_id
-    this.createoredit = "Edit : "+Details.Vertical_name;
+    this.createoredit = "Edit : "+Details.Vertical_name + " ("+Details.Vertical_code+")";
     this.VerticalForm.controls.VerticalName.setValue(Details.Vertical_name);
     this.VerticalForm.controls.VerticalCode.setValue(Details.Vertical_code);
     this.VerticalForm.controls.Function.setValue(Details.Function_id);
@@ -683,7 +683,7 @@ dontshowforDOA:boolean = true;
     }
     this._masterservice.createnewbusinessmodel();
     this.ShowBusinessEdit=true;
-    this.createoredit = "Edit : "+Details.Business_Name;
+    this.createoredit = "Edit : "+Details.Business_Name  + " ("+Details.Business_Code+")";
     this._masterservice.businessmodel._function_id = Details.function_id ;
     this.BusinessForm.controls.BusinessCode.setValue(Details.Business_Code);
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
