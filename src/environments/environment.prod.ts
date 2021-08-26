@@ -5,7 +5,7 @@ export const environment = {
   //apiUrl: 'http://13.235.216.142/dealhubapidev/'
   apiUrl: 'http://13.235.216.142/dealhubapiqa/'
   // apiUrl: 'http://13.235.216.142/dealhubapiuat/'
- // apiUrl: 'http://10.175.17.48/dealhubapi/'
+  //apiUrl: 'http://10.175.17.48/dealhubapi/'
   //apiUrl: 'http://13.235.216.142/dealhubapivapt/'
 
 };

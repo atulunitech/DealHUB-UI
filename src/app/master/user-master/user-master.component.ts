@@ -6,7 +6,7 @@ import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -93,7 +93,7 @@ export class UserMasterComponent implements OnInit {
   @ViewChild('allbranchchck') allbranchchck: ElementRef;
   @ViewChild('allverticalchck') allverticalchck: ElementRef;
   @ViewChild('verticalinput') verticalinput: ElementRef;
-  @ViewChild('pagination') paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
      this.paginator = mp;
     
@@ -116,7 +116,6 @@ export class UserMasterComponent implements OnInit {
   ngAfterViewInit() {
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
-    this.paginator.firstPage();
 
 }
 
@@ -169,6 +168,17 @@ showhidebrranchfn_out()
 
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();
+     this.paginator.length=this.listData.filteredData.length;
+     this.paginator.firstPage()
+     this.paginator.pageIndex=1;
+     this.listData.sort = this.sort;
+     this.listData.paginator = this.paginator;
+   // this.pageventcall(null);
+  }
+
+  onChangePage(pe:PageEvent) {
+    console.log(pe.pageIndex);
+    console.log(pe.pageSize);
   }
 
   displayFn(branch: branch): string {
@@ -885,7 +895,7 @@ getusereditdetails(data)
   this.allbranchselected = true;
   this.allverticalselected = true;
   this.displaydiv = true;
-  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name;
+  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name+" ("+data.User_Code+")";
   this.branchchips =[];
   this.verticalchips = [];
   this.verticalchipstodisplay = [];
@@ -1031,6 +1041,7 @@ SaveUsers()
     // },2000);
      this.displaydiv = false;
      this.getdataforusers();
+    this.paginator.firstPage();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
    // window.location.reload();
  },
