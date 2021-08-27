@@ -54,7 +54,7 @@
 
                      
                           
-                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="border-radius: 4px;"  (click)="openShareBox()" *ngIf="(this.role_name=='PH' || this.role_name=='VH') && this.shortcurrentstatus =='Submitted'"> Share <img src="assets/images/share_icon.png" style="margin-left: 7px;"> </button>
+                        <button mat-flat-button class="creat_bt edit_bt summ_obf_click" style="border-radius: 4px;"  (click)="openShareBox()" *ngIf="this.shortcurrentstatus !='draft'"> Share <img src="assets/images/share_icon.png" style="margin-left: 7px;"> </button>
                         
                       </div>
                     </mat-panel-title>
