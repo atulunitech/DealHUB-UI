@@ -997,7 +997,7 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
   this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
    
-  if(this.ProjectTypeForm.controls.ProjectCode.value != " " || this.ProjectTypeForm.controls.ProjectName.value !=" ")
+  if(this.ProjectTypeForm.controls.ProjectCode.value != " " && this.ProjectTypeForm.controls.ProjectName.value != " ")
   {
     this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
       console.log(Result);
@@ -1102,7 +1102,7 @@ SubmitRoleType()
   this._masterservice.mst_roles._Previlege_Id=tempservicecat;
   this._masterservice.mst_roles._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  if(this.RoleForm.controls.role_name.value != " " || this.RoleForm.controls.Role_code.value !=" " || this.RoleForm.controls.equivalent_cassh_role_name.value != " ")
+  if(this.RoleForm.controls.role_name.value != " " && this.RoleForm.controls.Role_code.value !=" " && this.RoleForm.controls.equivalent_cassh_role_name.value != " ")
   {
     this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
       console.log(Result);
@@ -1492,7 +1492,7 @@ SubmitDOAMessages()
   this._masterservice.doamodel._MessageFor = this.DOAForm.controls.MessageFor.value;
   this._masterservice.doamodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  if(this.DOAForm.controls.Message.value != " " || this.DOAForm.controls.Prefix.value !=" " || this.DOAForm.controls.MessageFor.value != " ")
+  if(this.DOAForm.controls.Message.value != " " && this.DOAForm.controls.Prefix.value !=" " && this.DOAForm.controls.MessageFor.value != " ")
   {
     this._masterservice.Update_Mst_DOA(this._masterservice.doamodel).subscribe((Result)=>{
       Result = JSON.parse(Result);
@@ -1543,7 +1543,7 @@ SubmitFormList()
   this._masterservice.mst_Forms._id=this.FormId;
   this._masterservice.mst_Forms. _user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
   
-  if(this.pagesListForm.controls.Form_name.value != " " || this.pagesListForm.controls.Form_Url.value!= " " )
+  if(this.pagesListForm.controls.Form_name.value != " " && this.pagesListForm.controls.Form_Url.value!= " " )
   {
     this._masterservice.Update_Mst_Forms(this._masterservice.mst_Forms).subscribe((Result)=>{
       var res=JSON.parse(Result);
@@ -1606,7 +1606,7 @@ Update_Mst_Verticals()
   this._masterservice.mst_verticals._active=this.VerticalForm.controls.VerticalStatus.value;
   this._masterservice.mst_verticals._Sector_Id=tempservicecat;
   this._masterservice.mst_verticals._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-  if(this.VerticalForm.controls.VerticalName.value != " " || this.VerticalForm.controls.VerticalCode.value != " ")
+  if(this.VerticalForm.controls.VerticalName.value != " " && this.VerticalForm.controls.VerticalCode.value != " ")
   {
     this._masterservice.Update_Mst_Verticals(this._masterservice.mst_verticals).subscribe((Result)=>{
       var res=JSON.parse(Result);
@@ -1665,7 +1665,7 @@ SubmitBusinessType()
   this._masterservice.businessmodel._active = this.BusinessForm.controls.Active.value;
   this._masterservice.businessmodel._user_id =this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  if(this.BusinessForm.controls.BusinessName.value !=" " || this.BusinessForm.controls.BusinessCode.value != " " )
+  if(this.BusinessForm.controls.BusinessName.value !=" " && this.BusinessForm.controls.BusinessCode.value != " " )
   {
     this._masterservice.Update_Mst_Business(this._masterservice.businessmodel).subscribe((Result)=>{
       Result = JSON.parse(Result);
