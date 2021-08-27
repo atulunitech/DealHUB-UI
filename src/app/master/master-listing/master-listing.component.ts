@@ -1008,7 +1008,10 @@ SubmitProjectType(ProjectTypeForm)
       this.GetMstDomains();
     });
   }
- 
+ else
+ {
+  this._mesgBox.showError("Please Enter Details");
+ }
 }
 //Project Type End
 
