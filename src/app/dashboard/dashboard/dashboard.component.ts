@@ -187,6 +187,7 @@ export class DashboardComponent implements OnInit {
   startdate:any;
   enddate:any;
   dateselected:boolean=false;
+  TableHeadLine:string="";
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
@@ -1904,8 +1905,14 @@ downloaddetailFinalAgg(row)
       {
         //Draft Section.
         
-        this.listData=new MatTableDataSource(this.dashboardData); 
-       
+        this.listData=new MatTableDataSource(this.dashboardData);
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Drafts PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Drafts OBF Table ";
+      }
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -1937,7 +1944,14 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          if(this.privilege_name=="PPL Initiator")
+          {
+            this.TableHeadLine=" Submitted PPL Table ";
+          } 
+        else {
+          this.TableHeadLine=" Submitted OBF Table ";
+        } 
+        
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -1971,6 +1985,14 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+        this.TableHeadLine=" Rejected OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -2003,6 +2025,8 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3 )
       {
+
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
        
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2038,6 +2062,7 @@ downloaddetailFinalAgg(row)
       else if(selection==4)
       {
        //approved PPl
+       this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
       
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2076,6 +2101,16 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+       
+
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine="Pending For Approval PPL Table ";
+        } 
+      else {
+        this.TableHeadLine="Pending For Approval OBF Table ";
+      } 
+
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted' )
@@ -2107,6 +2142,17 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+        
+
+         if(this.privilege_name=="PPL Reviewer")
+         {
+          this.TableHeadLine=" Approved PPL Table ";
+         } 
+       else {
+        this.TableHeadLine=" Approved OBF Table ";
+       } 
+
+       
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2140,6 +2186,16 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
       
+        
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+
+
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2171,6 +2227,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3)
       {
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2203,6 +2260,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==4)
       {
+        this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2445,7 +2503,7 @@ downloaddetailFinalAgg(row)
       if(selection==0)
       {
         //Draft Section.
-        
+        this.TableHeadLine="Draft OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' && obj.phase_code=='OBF')
@@ -2477,7 +2535,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          this.TableHeadLine="Submitted OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='OBF')
@@ -2508,6 +2566,7 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='OBF')
@@ -2540,6 +2599,7 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+        this.TableHeadLine="Pending For Approval OBF Table";
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='OBF')
@@ -2571,6 +2631,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+         this.TableHeadLine="Apporved OBF Table";
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2603,7 +2664,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==2)
       {
-      
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2648,6 +2709,7 @@ PPLclick(selection)
     if(selection==0)
     {
       //Draft Section.
+      this.TableHeadLine="Draft PPL Table";
       this.filterdata=[];
       this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
@@ -2680,7 +2742,7 @@ PPLclick(selection)
     else if (selection==1)
     {
         //Submitted section
-       
+        this.TableHeadLine="Submitted PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
@@ -2711,6 +2773,7 @@ PPLclick(selection)
     else if(selection==2)
     {
       //Rejected
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
@@ -2744,6 +2807,7 @@ PPLclick(selection)
     if(selection==0)
     {
       this.filterdata=[];
+      this.TableHeadLine="Pending For Approval PPL Table";
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
@@ -2774,6 +2838,7 @@ PPLclick(selection)
     }
     else if (selection==1)
     {
+      this.TableHeadLine="Approved PPL Table";
        //Approved section
        this.filterdata=[];
       
@@ -2806,7 +2871,7 @@ PPLclick(selection)
     }
     else if(selection==2)
     {
-    
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>
         {
