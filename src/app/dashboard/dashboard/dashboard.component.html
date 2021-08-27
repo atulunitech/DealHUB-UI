@@ -289,11 +289,11 @@
       </div>
       
     </div>
-    <div>
+    <div class="vew_card_text">
       {{TableHeadLine}}
     </div>
       <div class="fl_table_con" >
-        <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 315px);
+        <perfect-scrollbar class="perfect_scroll_com"   style="    max-height: calc(100vh - 366px);
         background-color: white;
         height: 100vh;" >
           <table mat-table [dataSource]="listData" class="ms_table" matSort>
@@ -503,17 +503,17 @@
              
           </table>
           <!-- <div *ngIf="listData.filteredData.length == 0">No data Found</div> -->
-          <div style="    display: flex;
+          <div style="        display: flex;
           justify-content: center;
           flex-direction: inherit;
-          position: fixed;
+          position: static;
           height: auto;
           width: 100%;
           top: 50%;
-          transform: translate(-50%, 3%);
+          transform: translate(0%, 9%);
           left: 50%;" *ngIf="listData.filteredData.length == 0">
             <img src="assets/images/no-data1.jpg" style="
-            width: 270px;
+            width: 200px;
         ">
           </div>
         </perfect-scrollbar>
