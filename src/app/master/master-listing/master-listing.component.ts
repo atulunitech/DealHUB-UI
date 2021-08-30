@@ -99,8 +99,8 @@ dontshowforDOA:boolean = true;
     {
       this.ProjectTypeForm = new FormGroup({
         // Validators.email,
-        ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-        ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+        ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+        ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
         ProjectStatus:new FormControl("",[Validators.required])
       });
     }
@@ -108,7 +108,7 @@ dontshowforDOA:boolean = true;
    {
     this.PrivilegeForm = new FormGroup({
       // Validators.email,
-      privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       PrivilegeStatus:new FormControl("", [Validators.required])
 
     });
@@ -117,9 +117,9 @@ dontshowforDOA:boolean = true;
    {
     this.RoleForm = new FormGroup({
       // Validators.email,
-      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      equivalent_cassh_role_name:new FormControl('', [this.NoInvalidCharacters]),
+      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      equivalent_cassh_role_name:new FormControl('', [this.NoInvalidCharacters,this.noWhitespaceValidator]),
       privilege:new FormControl('', [Validators.required]),
       Rolestatus:new FormControl("", [Validators.required])
     });
@@ -128,41 +128,41 @@ dontshowforDOA:boolean = true;
    else if(this.masterType == "Branch")
    {
     this.BranchForm = new FormGroup({
-      Branch_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Branch_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Comment Type")
    {
     this.CommentForm = new FormGroup({
-      Comment : new FormControl('', [Validators.required,this.NoInvalidCharacters])
+      Comment : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator])
     });
    }
    else if(this.masterType == "Sector")
    {
     this.SectorForm = new FormGroup({
-      Sector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Sector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Sub Sector")
    {
     this.SubSectorForm = new FormGroup({
-      SubSector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      SubSector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Sector_Id : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Solution Category")
    {
     this.SolutionCategoryForm = new FormGroup({
-      SolutionCategory_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      SolutionCategory_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Solution")
    {
     this.SolutionForm = new FormGroup({
-      Solution_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Solution_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Function : new FormControl('', [Validators.required]),
       SolutionCategory : new FormControl('', [Validators.required]),
       Domain : new FormControl('', [Validators.required]),
@@ -172,25 +172,25 @@ dontshowforDOA:boolean = true;
    else if(this.masterType == "DOA Matrix Messages")
    {
     this.DOAForm = new FormGroup({
-      Message : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      Prefix : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      MessageFor : new FormControl('', [Validators.required,this.NoInvalidCharacters])
+      Message : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      Prefix : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      MessageFor : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator])
     });
    }
    else if( this.masterType=="Forms" )
    {
     this.pagesListForm = new FormGroup({
       // Validators.email,
-      Form_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      Form_Url:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Form_name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      Form_Url:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       FormStatus:new FormControl("", [Validators.required]),
     });
    }
   else if(this.masterType=="Vertical")
   {
     this.VerticalForm=new FormGroup({
-      VerticalName:new FormControl('',[Validators.required,this.NoInvalidCharacters]),
-      VerticalCode: new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      VerticalName:new FormControl('',[Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      VerticalCode: new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Function:new FormControl('', [Validators.required]),
       Sector:new FormControl("", [Validators.required]),
       VerticalStatus:new FormControl("", [Validators.required])
@@ -200,8 +200,8 @@ dontshowforDOA:boolean = true;
   else if(this.masterType == "Business Type")
   {
    this.BusinessForm = new FormGroup({
-     BusinessCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-     BusinessName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+     BusinessCode : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+     BusinessName : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
      Active : new FormControl('', [Validators.required])
    });
   }
@@ -335,8 +335,14 @@ dontshowforDOA:boolean = true;
          break;
      }
   }
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+}
+
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[^\S.*$<>^0-9'"&$%@#]/;
+    var format = /[<>^0-9'"&$%@#]/;
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
