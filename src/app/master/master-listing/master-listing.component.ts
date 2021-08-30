@@ -119,7 +119,7 @@ dontshowforDOA:boolean = true;
       // Validators.email,
       Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
       role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      equivalent_cassh_role_name:new FormControl('', [this.NoInvalidCharacters]),
       privilege:new FormControl('', [Validators.required]),
       Rolestatus:new FormControl("", [Validators.required])
     });
