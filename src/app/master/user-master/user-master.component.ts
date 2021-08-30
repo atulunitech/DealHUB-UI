@@ -716,6 +716,7 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    this.userlabel = "Create User";
     this.enablecreate = true;
     this.allbranchselected = false;
   this.allverticalselected = false;
