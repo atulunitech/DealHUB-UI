@@ -336,7 +336,7 @@ dontshowforDOA:boolean = true;
      }
   }
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>^0-9'"&$%@#]/;
+    var format = /[^\S.*$<>^0-9'"&$%@#]/;
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
