@@ -1370,8 +1370,8 @@ class filesdetail
     //evt.preventDefault();
     if (evt.isUserInput) {
 
-   
-
+    this.dh_id=dh_id;
+    this.dh_header_id=dh_header_id;
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       let getrandom = data.split("*$");
       let Resultdata = getrandom[0];
