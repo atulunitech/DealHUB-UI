@@ -187,6 +187,7 @@ export class DashboardComponent implements OnInit {
   startdate:any;
   enddate:any;
   dateselected:boolean=false;
+  TableHeadLine:string="";
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
@@ -1469,9 +1470,16 @@ onchange(evt,solutioncategory)
          
       }
       this.listData=new MatTableDataSource(this.tableFilteredData);
+      
       //if(filterCount == this.filtersToSearch.length)
       //  this.tableFilteredData.push(data)
     }
+    this.paginator.length=this.tableFilteredData.length;
+   // this.paginator.length=this.filterdata.length;
+    this.paginator.firstPage()
+    this.paginator.pageIndex=0;
+    this.listData.sort = this.sort;
+    this.listData.paginator = this.paginator;
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -1701,9 +1709,13 @@ downloaddetailFinalAgg(row)
 
   CallDashBoardService()
   {
-    let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    let randomnum =  Math.floor(Math.random() * (999999 - 110000 + 1) + 110000); 
+    let Keynew = "0c24f9de!b";
+    Keynew = Keynew + randomnum;
+    // let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+    let encryptedusercode = this.commonService.setEncryption(Keynew,localStorage.getItem('UserCode'));
    // this._dashboardmodel._user_code=localStorage.getItem("UserCode");
-   this._dashboardmodel._user_code=encryptedusercode;
+   this._dashboardmodel._user_code=encryptedusercode +"*$"+randomnum;
 
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
@@ -1892,8 +1904,14 @@ downloaddetailFinalAgg(row)
       {
         //Draft Section.
         
-        this.listData=new MatTableDataSource(this.dashboardData); 
-       
+        this.listData=new MatTableDataSource(this.dashboardData);
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Drafts PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Drafts OBF Table ";
+      }
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -1925,7 +1943,14 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          if(this.privilege_name=="PPL Initiator")
+          {
+            this.TableHeadLine=" Submitted PPL Table ";
+          } 
+        else {
+          this.TableHeadLine=" Submitted OBF Table ";
+        } 
+        
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -1959,6 +1984,14 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+        this.TableHeadLine=" Rejected OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -1991,6 +2024,8 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3 )
       {
+
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
        
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2026,6 +2061,7 @@ downloaddetailFinalAgg(row)
       else if(selection==4)
       {
        //approved PPl
+       this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
       
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2064,6 +2100,16 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+       
+
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine="Pending For Approval PPL Table ";
+        } 
+      else {
+        this.TableHeadLine="Pending For Approval OBF Table ";
+      } 
+
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted' )
@@ -2095,6 +2141,17 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+        
+
+         if(this.privilege_name=="PPL Reviewer")
+         {
+          this.TableHeadLine=" Approved PPL Table ";
+         } 
+       else {
+        this.TableHeadLine=" Approved OBF Table ";
+       } 
+
+       
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2128,6 +2185,16 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
       
+        
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+
+
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2159,6 +2226,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3)
       {
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2191,6 +2259,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==4)
       {
+        this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2228,7 +2297,11 @@ downloaddetailFinalAgg(row)
    //this.paginator.pageIndex=0;
    if(this.paginator != undefined)
    {
+    //  var temp=this.calculatepaginatorlength(this.filterdata.length)
+    //  this.paginator.length=this.filterdata.length <7 ? 1 : temp ;
+     this.paginator.length=this.filterdata.length;
     this.paginator.firstPage()
+    this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
    }
@@ -2236,6 +2309,22 @@ downloaddetailFinalAgg(row)
     //this.listData.paginator.firstPage();
     //this.listData.paginator.pageIndex=0;
    
+  }
+  calculatepaginatorlength(length)
+  {
+    if(length>7)
+    {
+      var Quo=length/7;
+      var rem=length%7;
+      Quo=parseInt(Quo.toFixed(0)) ;
+      if(rem>0)
+      {
+        Quo=Quo+1
+        return Quo;
+      }
+
+    }
+    return 2;
   }
   onChangePage(pe:PageEvent) {
     console.log(pe.pageIndex);
@@ -2416,7 +2505,7 @@ downloaddetailFinalAgg(row)
       if(selection==0)
       {
         //Draft Section.
-        
+        this.TableHeadLine="Draft OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' && obj.phase_code=='OBF')
@@ -2448,7 +2537,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          this.TableHeadLine="Submitted OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='OBF')
@@ -2479,6 +2568,7 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='OBF')
@@ -2511,6 +2601,7 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+        this.TableHeadLine="Pending For Approval OBF Table";
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='OBF')
@@ -2542,6 +2633,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+         this.TableHeadLine="Apporved OBF Table";
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2574,7 +2666,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==2)
       {
-      
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2619,6 +2711,7 @@ PPLclick(selection)
     if(selection==0)
     {
       //Draft Section.
+      this.TableHeadLine="Draft PPL Table";
       this.filterdata=[];
       this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
@@ -2651,7 +2744,7 @@ PPLclick(selection)
     else if (selection==1)
     {
         //Submitted section
-       
+        this.TableHeadLine="Submitted PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
@@ -2682,6 +2775,7 @@ PPLclick(selection)
     else if(selection==2)
     {
       //Rejected
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
@@ -2715,6 +2809,7 @@ PPLclick(selection)
     if(selection==0)
     {
       this.filterdata=[];
+      this.TableHeadLine="Pending For Approval PPL Table";
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
@@ -2745,6 +2840,7 @@ PPLclick(selection)
     }
     else if (selection==1)
     {
+      this.TableHeadLine="Approved PPL Table";
        //Approved section
        this.filterdata=[];
       
@@ -2777,7 +2873,7 @@ PPLclick(selection)
     }
     else if(selection==2)
     {
-    
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>
         {

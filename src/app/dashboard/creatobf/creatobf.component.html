@@ -875,11 +875,20 @@
                       <div class="prev_tit">
                         Project Brief 
                       </div>
-                      <div class="prev_dis">
+                      <!-- <div class="prev_dis">
                         {{(BrifreadMore) ? (_obfservices.obfmodel._dh_desc) : (_obfservices.obfmodel._dh_desc) | slice:0:50 }}  
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
+                      </div> -->
+                      <div class="prev_dis" *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length > 60)">
+                            
+                        {{(BrifreadMore) ? (_obfservices.obfmodel._dh_desc) : (_obfservices.obfmodel._dh_desc) | slice:0:50 }}  
+                        <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true">More...</a>
+                        <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
+                      <div  *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length < 60)">
+                        {{(_obfservices.obfmodel._dh_desc)}}  
+                       </div>
                    </div> 
                    <div class="mat_previe_box">
                     <div class="prev_tit">
@@ -911,11 +920,20 @@
                           <div class="prev_tit">
                             Assumption & Risk
                           </div>
-                          <div class="prev_dis" >
+                          <!-- <div class="prev_dis" >
+                            {{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
+                            <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
+                            <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
+                          </div> -->
+                          <div class="prev_dis" *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length > 60)">
+                            
                             {{(readMore) ? (_obfservices.obfmodel._assumptions_and_risks) : (_obfservices.obfmodel._assumptions_and_risks) | slice:0:50 }}  
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
+                          <div  *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length < 60)">
+                            {{(_obfservices.obfmodel._assumptions_and_risks)}}  
+                           </div>
                        </div>
                       
                      <div class="mat_previe_box">

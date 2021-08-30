@@ -6,7 +6,7 @@ import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -122,24 +122,63 @@ export class UserMasterComponent implements OnInit {
 showhideverticalFn()
 {
   this.showhidevertical = !this.showhidevertical;
+  this.vertical_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allverticalselected = false;
+      this.allverticalchck['checked'] = false;
+    }
+  });
 }
 clickOutside() {
   this.showhidevertical = !this.showhidevertical;
+  this.vertical_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allverticalselected = false;
+      this.allverticalchck['checked'] = false;
+    }
+  });
 }
 
 showhidebranchFn()
 {
   this.showhidebranch = !this.showhidebranch;
+  this.barnch_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allbranchselected = false;
+      this.allbranchchck['checked'] = false;
+    }
+  });
 }
 
 showhidebrranchfn_out()
 {
   this.showhidebranch = !this.showhidebranch;
+  this.barnch_array_selected.forEach(elt =>{
+    if(elt.selected == false)
+    {
+      this.allbranchselected = false;
+      this.allbranchchck['checked'] = false;
+    }
+  });
 }
 
 
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();
+     this.paginator.length=this.listData.filteredData.length;
+     this.paginator.firstPage()
+     this.paginator.pageIndex=1;
+     this.listData.sort = this.sort;
+     this.listData.paginator = this.paginator;
+   // this.pageventcall(null);
+  }
+
+  onChangePage(pe:PageEvent) {
+    console.log(pe.pageIndex);
+    console.log(pe.pageSize);
   }
 
   displayFn(branch: branch): string {
@@ -408,7 +447,10 @@ showhidebrranchfn_out()
 
   ClearAllBranch()
   {
+    if(this.showhidebranch)
+    {
     this.allbranchchck['checked'] = false;
+    }
     this.barnch_array_selected.forEach(elt =>{
       elt.selected = false;
     });
@@ -464,7 +506,10 @@ showhidebrranchfn_out()
 
   ClearAllVerticals()
   {
+    if(this.showhidevertical)
+    {
     this.allverticalchck['checked'] = false;
+    }
     this.vertical_array_selected.forEach(elt =>{
       elt.selected = false;
     });
@@ -671,6 +716,7 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    this.userlabel = "Create User";
     this.enablecreate = true;
     this.allbranchselected = false;
   this.allverticalselected = false;
@@ -780,7 +826,7 @@ onToggleGroupChange(evt,data)
  model._id = data.id;
  model._active = evt.value;
  model._islocked = data.islocked == 0 ? 1: 0;
- model._user_id = localStorage.getItem('UserCode');
+ model._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
  // console.log(evt.value);
 
  const message = data.active == "0"? "Are you sure you want to activate this user acount?":"Are you sure you want to deactivate this user account?";
@@ -850,7 +896,7 @@ getusereditdetails(data)
   this.allbranchselected = true;
   this.allverticalselected = true;
   this.displaydiv = true;
-  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name;
+  this.userlabel = "Edit :"+data.First_Name+" "+data.Last_Name+" ("+data.User_Code+")";
   this.branchchips =[];
   this.verticalchips = [];
   this.verticalchipstodisplay = [];
@@ -991,11 +1037,12 @@ SaveUsers()
   this._masterservice.updateusermaster(this._masterservice.usermodel).subscribe(res =>{
     res = JSON.parse(res);
 		this._mesgBox.showSucess(res[0].message);
-    setTimeout(() => {
-      window.location.reload();
-    },2000);
-    // this.displaydiv = false;
-    // this.getdataforusers();
+    // setTimeout(() => {
+    //   window.location.reload();
+    // },2000);
+     this.displaydiv = false;
+     this.getdataforusers();
+    this.paginator.firstPage();
     //this.router.navigate(['/DealHUB/master/masterlist'],{ queryParams: { type:'Users' } });
    // window.location.reload();
  },

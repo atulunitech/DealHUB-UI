@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core'
 import {HttpHeaders,HttpParams,HttpClient} from '@angular/common/http'
 import {Observable, observable} from 'rxjs'
 import { environment } from 'src/environments/environment';
+import { CommonService } from '../services/common.service';
 
 export class GetOBFSummaryDataVersionWiseParameters
 {
@@ -13,7 +14,7 @@ export class GetOBFSummaryDataVersionWiseParameters
 })
 export class DashboardService {
 
-  constructor(private http:HttpClient) 
+  constructor(private http:HttpClient,private _commonservices:CommonService) 
   { 
 
   }
@@ -27,7 +28,10 @@ export class DashboardService {
     uploadImage(image:File,types:string) {
       const formData: FormData = new FormData();
        let count=0;
+       let encryptedusercode = this._commonservices.setEncryption(this._commonservices.commonkey,localStorage.getItem('UserCode'));
        formData.append('Image', image, image.name);
+       formData.append("usercode", encryptedusercode);
+       formData.append("Token", localStorage.getItem("Token"));
        let url = "";
        if(types == "coversheet")
        url = environment.apiUrl + '/Api/Auth/UploadObfFile';
@@ -35,7 +39,7 @@ export class DashboardService {
        url = environment.apiUrl + '/Api/Auth/UploadImage';
        // const httpOptions = { headers: new HttpHeaders({ 'No-Auth':'True'}),observe:"events",reportProgress: true};  
        return this.http.post(url, formData,{
-            headers: new HttpHeaders({ 'No-Auth':'True'}),
+             headers: new HttpHeaders({ 'No-Auth':'True'}),
            reportProgress: true,
            observe: 'events'
          });

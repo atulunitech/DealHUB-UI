@@ -919,8 +919,9 @@
      {
        content: 'yes';
        position: absolute;
-       top: 0px;
-       left: 5px;
+       left: 6px;
+       top: 5px;
+       line-height: initial;
        font-size: 0.7rem;
        color: #fff;
        text-transform: uppercase;
@@ -1352,7 +1353,7 @@ $label-font-size-redo: $default-size * 4;
     content: '';
     display: block;
     height: 100%;
-    margin-left: 50%;
+    margin-left: 48%;
     transform-origin: left;
   }
   

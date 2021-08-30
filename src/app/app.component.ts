@@ -68,7 +68,8 @@ export class AppComponent {
         if(localStorage.getItem("rememberCurrentUser") != "true")
         {
           let data =new MenuModel();
-          data._user_code = localStorage.getItem("UserCode");
+          //data._user_code = localStorage.getItem("UserCode");
+          data._user_code = this._commomservices.setEncryption(this._commomservices.commonkey,localStorage.getItem('UserCode'));
          data.token = localStorage.getItem("Token");
          if(localStorage.getItem("Token").toString() != "")
          {

@@ -20,7 +20,7 @@ export class loginservices
     
     getClientKey(): Observable<any> {  
 	    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','No-Auth':'True'}) };  
-	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/GetClientKey',  
+	    return this.http.post<any>(environment.apiUrl + '/Api/Auth/GetClientKey',null,
 	     httpOptions);  
 	  }
 

@@ -39,26 +39,27 @@ public DOAForm:FormGroup;
 public BusinessForm:FormGroup;
 public CommentForm:FormGroup;
 enablecreate:boolean = false;
+//disableDOAonedit:boolean = false;
 createoredit:string = "";
 dontshowforDOA:boolean = true;
   constructor(private router: Router,private route:ActivatedRoute,public commonService:CommonService,
     public _masterservice:MasterService,private _mesgBox: MessageBoxComponent) { }
   userdetails :Mstcommonparameters;
   UsersColumn: string[] = ['user_code', 'first_name', 'last_name', 'mobile_no','email_id','useractive'];
-  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Active','ProjectTypeAction'];
-  formsColumn:string[]=['Form_name','Url','Active','ProjectTypeAction'];
-  VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Active','ProjectTypeAction'];
-  PrivilegeColumn:string[]=['Privilege_name','Active','ProjectTypeAction'];
+  ProjectTypeColumn: string[] = ['Project_Code','Project_Name','Status','ProjectTypeAction'];
+  formsColumn:string[]=['Form_name','Url','Status','ProjectTypeAction'];
+  VerticalColumn:string[]=['Vertical_code','Vertical_name','Function_code','Status','ProjectTypeAction'];
+  PrivilegeColumn:string[]=['Privilege_name','Status','ProjectTypeAction'];
   //PrivilegeColumn:string[]=['privilege_name','ProjectTypeAction'];
-  RolesColumn:string[]=['Role_Code','Role_Name','Equivalent_Cassh_Role_Name','Active','ProjectTypeAction'];
-  BranchColumn: string[] = ['Branch_Name','Active','ProjectTypeAction'];
+  RolesColumn:string[]=['Role_Code','Role_Name','Equivalent_Cassh_Role_Name','Status','ProjectTypeAction'];
+  BranchColumn: string[] = ['Branch_Name','Status','ProjectTypeAction'];
   CommentTypeColumn: string[] = ['Comment_Type','ProjectTypeAction'];
-  SectorColumn: string[] = ['Sector_Name','Active','ProjectTypeAction'];
-  SubSectorColumn: string[] = ['SubSector_Name','Sector_Name','ProjectTypeAction'];
-  SolutionCategoryColumn: string[] = ['Solutioncategory_Name','Active','ProjectTypeAction'];
-  SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Domain','Active','ProjectTypeAction'];
+  SectorColumn: string[] = ['Sector_Name','Status','ProjectTypeAction'];
+  SubSectorColumn: string[] = ['Sub_Sector','Sector_Name','ProjectTypeAction'];
+  SolutionCategoryColumn: string[] = ['Solution_Category','Status','ProjectTypeAction'];
+  SolutionColumn: string[] = ['Solution_Name','Solution_Category','Function_Name','Project_Type','Status','ProjectTypeAction'];
   DOAColumn: string[] = ['Message','Prefix','Message_For','ProjectTypeAction'];
-  BusinessColumn: string[] = ['Business_Code','Business_Name','Active','ProjectTypeAction'];
+  BusinessColumn: string[] = ['Business_Code','Business_Name','Status','ProjectTypeAction'];
   Sectordropdown:any[] = [];
   SolutionCategorydropdown:any[] = [];
   FormId:number=0;
@@ -98,8 +99,8 @@ dontshowforDOA:boolean = true;
     {
       this.ProjectTypeForm = new FormGroup({
         // Validators.email,
-        ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-        ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+        ProjectCode : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+        ProjectName : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
         ProjectStatus:new FormControl("",[Validators.required])
       });
     }
@@ -107,7 +108,7 @@ dontshowforDOA:boolean = true;
    {
     this.PrivilegeForm = new FormGroup({
       // Validators.email,
-      privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      privilege_name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       PrivilegeStatus:new FormControl("", [Validators.required])
 
     });
@@ -116,9 +117,9 @@ dontshowforDOA:boolean = true;
    {
     this.RoleForm = new FormGroup({
       // Validators.email,
-      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      equivalent_cassh_role_name:new FormControl('', [this.NoInvalidCharacters,this.noWhitespaceValidator]),
       privilege:new FormControl('', [Validators.required]),
       Rolestatus:new FormControl("", [Validators.required])
     });
@@ -127,41 +128,41 @@ dontshowforDOA:boolean = true;
    else if(this.masterType == "Branch")
    {
     this.BranchForm = new FormGroup({
-      Branch_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Branch_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Comment Type")
    {
     this.CommentForm = new FormGroup({
-      Comment : new FormControl('', [Validators.required,this.NoInvalidCharacters])
+      Comment : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator])
     });
    }
    else if(this.masterType == "Sector")
    {
     this.SectorForm = new FormGroup({
-      Sector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Sector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
-   else if(this.masterType == "SubSector")
+   else if(this.masterType == "Sub Sector")
    {
     this.SubSectorForm = new FormGroup({
-      SubSector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      SubSector_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Sector_Id : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Solution Category")
    {
     this.SolutionCategoryForm = new FormGroup({
-      SolutionCategory_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      SolutionCategory_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Active : new FormControl('', [Validators.required])
     });
    }
    else if(this.masterType == "Solution")
    {
     this.SolutionForm = new FormGroup({
-      Solution_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Solution_Name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Function : new FormControl('', [Validators.required]),
       SolutionCategory : new FormControl('', [Validators.required]),
       Domain : new FormControl('', [Validators.required]),
@@ -171,25 +172,25 @@ dontshowforDOA:boolean = true;
    else if(this.masterType == "DOA Matrix Messages")
    {
     this.DOAForm = new FormGroup({
-      Message : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      Prefix : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      MessageFor : new FormControl('', [Validators.required,this.NoInvalidCharacters])
+      Message : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      Prefix : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      MessageFor : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator])
     });
    }
    else if( this.masterType=="Forms" )
    {
     this.pagesListForm = new FormGroup({
       // Validators.email,
-      Form_name : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-      Form_Url:new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      Form_name : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      Form_Url:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       FormStatus:new FormControl("", [Validators.required]),
     });
    }
   else if(this.masterType=="Vertical")
   {
     this.VerticalForm=new FormGroup({
-      VerticalName:new FormControl('',[Validators.required,this.NoInvalidCharacters]),
-      VerticalCode: new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+      VerticalName:new FormControl('',[Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      VerticalCode: new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       Function:new FormControl('', [Validators.required]),
       Sector:new FormControl("", [Validators.required]),
       VerticalStatus:new FormControl("", [Validators.required])
@@ -199,8 +200,8 @@ dontshowforDOA:boolean = true;
   else if(this.masterType == "Business Type")
   {
    this.BusinessForm = new FormGroup({
-     BusinessCode : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
-     BusinessName : new FormControl('', [Validators.required,this.NoInvalidCharacters]),
+     BusinessCode : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+     BusinessName : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
      Active : new FormControl('', [Validators.required])
    });
   }
@@ -300,7 +301,7 @@ dontshowforDOA:boolean = true;
 
                 case "SubSector":
                 this.GetMstSubSector();
-                this.masterType="SubSector";
+                this.masterType="Sub Sector";
                 break;
 
                 case "SolutionCategory":
@@ -334,8 +335,14 @@ dontshowforDOA:boolean = true;
          break;
      }
   }
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+}
+
   NoInvalidCharacters(control: AbstractControl): {[key: string]: any} | null  {
-    var format = /[<>'"&$%@#]/;
+    var format = /[<>^0-9'"&$%@#]/;
     if (control.value && format.test(control.value) || (control.value && control.value.includes("%3e"))) {
       return { 'invalidservices': true };
     }
@@ -366,7 +373,7 @@ dontshowforDOA:boolean = true;
   {
     return this.SectorForm.controls[controlName].hasError(errorName);
   }
-  else if(this.masterType=="SubSector")
+  else if(this.masterType=="Sub Sector")
   {
     return this.SubSectorForm.controls[controlName].hasError(errorName);
   }
@@ -415,7 +422,7 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Project_Name + " ("+Details.Project_Code+")";
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
-    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Status=="Active"?"1":"0");
   }
   else if(this.masterType=="Privilege")
   {
@@ -431,9 +438,9 @@ dontshowforDOA:boolean = true;
     }
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=Details.privilege_Id;
-    this.createoredit = "Edit : "+Details.privilege_name;
+    this.createoredit = "Edit : "+Details.Privilege_name;
     this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
-    this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Status=="Active"?"1":"0");
     
   }
   else if(this.masterType=="Roles")
@@ -450,10 +457,10 @@ dontshowforDOA:boolean = true;
     }
     this.ShowRoleEdit=true;
     this.Role_id=Details. id;
-    this.createoredit = "Edit : "+Details.role_name;
+    this.createoredit = "Edit : "+Details.Role_Name + " ("+Details.Role_Code+")";
     this.RoleForm.controls.Role_code.setValue(Details.Role_Code);
     this.RoleForm.controls.role_name.setValue(Details.Role_Name);
-    this.RoleForm.controls.Rolestatus.setValue(Details.Active=="Active"?"1":"0");
+    this.RoleForm.controls.Rolestatus.setValue(Details.Status=="Active"?"1":"0");
     
     this.RoleForm.controls.equivalent_cassh_role_name.setValue(Details.Equivalent_Cassh_Role_Name);
 
@@ -529,9 +536,9 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Sector_Name;
     this._masterservice.sectormodel._Sector_Id = Details.Sector_Id ;
     this.SectorForm.controls.Sector_Name.setValue(Details.Sector_Name);
-    this.SectorForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SectorForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
-  else if(this.masterType=="SubSector")
+  else if(this.masterType=="Sub Sector")
   {
     if(this.enablecreate && (this.SubSectorForm.dirty))
     {
@@ -545,9 +552,9 @@ dontshowforDOA:boolean = true;
     }
     this._masterservice.createnewsubsectormodel();
     this.ShowSubSectorEdit=true;
-    this.createoredit = "Edit : "+Details.SubSector_Name;
+    this.createoredit = "Edit : "+Details.Sub_Sector;
     this._masterservice.subsectormodel._SubSector_Id = Details.SubSector_Id ;
-    this.SubSectorForm.controls.SubSector_Name.setValue(Details.SubSector_Name);
+    this.SubSectorForm.controls.SubSector_Name.setValue(Details.Sub_Sector);
     this.SubSectorForm.controls.Sector_Id.setValue(Details.Sector_Id);
   }
   else if(this.masterType=="Solution Category")
@@ -564,10 +571,10 @@ dontshowforDOA:boolean = true;
     }
     this._masterservice.createnewsolutioncategorymodel();
     this.ShowSolutionCategoryEdit=true;
-    this.createoredit = "Edit : "+Details.solutioncategory_name;
+    this.createoredit = "Edit : "+Details.Solution_Category;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
-    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solutioncategory_Name);
-    this.SolutionCategoryForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solution_Category);
+    this.SolutionCategoryForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   else if(this.masterType=="Solution")
   {
@@ -589,7 +596,7 @@ dontshowforDOA:boolean = true;
     this.SolutionForm.controls.Function.setValue(Details.function_id);
     this.SolutionForm.controls.SolutionCategory.setValue(Details.Solutioncategory_Id);
     this.SolutionForm.controls.Domain.setValue(Details.domain_id);
-    this.SolutionForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.SolutionForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   else if(this.masterType=="DOA Matrix Messages")
   {
@@ -610,6 +617,9 @@ dontshowforDOA:boolean = true;
     this.DOAForm.controls.Message.setValue(Details.Message);
     this.DOAForm.controls.Prefix.setValue(Details.Prefix);
     this.DOAForm.controls.MessageFor.setValue(Details.Message_For);
+    this.DOAForm.controls.Prefix.disable();
+    this.DOAForm.controls.MessageFor.disable();
+   // this.disableDOAonedit = true;
   }
   else if(this.masterType=="Forms")
   {
@@ -625,10 +635,10 @@ dontshowforDOA:boolean = true;
     }
     this.ShowFormEdit=true;
     this.FormId=Details.id;
-    this.createoredit = "Edit : "+Details.form_name;
+    this.createoredit = "Edit : "+Details.Form_name;
     this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
     this.pagesListForm.controls.Form_Url.setValue(Details.Url);
-    this.pagesListForm.controls.FormStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.pagesListForm.controls.FormStatus.setValue(Details.Status=="Active"?"1":"0");
   }
   else if(this.masterType=="Vertical")
   {
@@ -644,11 +654,11 @@ dontshowforDOA:boolean = true;
     }
     this.ShowVerticalEdit=true;
     this.VerticalId=Details.Vertical_id
-    this.createoredit = "Edit : "+Details.Vertical_name;
+    this.createoredit = "Edit : "+Details.Vertical_name + " ("+Details.Vertical_code+")";
     this.VerticalForm.controls.VerticalName.setValue(Details.Vertical_name);
     this.VerticalForm.controls.VerticalCode.setValue(Details.Vertical_code);
     this.VerticalForm.controls.Function.setValue(Details.Function_id);
-    this.VerticalForm.controls.VerticalStatus.setValue(Details.Active=="Active"?"1":"0");
+    this.VerticalForm.controls.VerticalStatus.setValue(Details.Status=="Active"?"1":"0");
     if(this._masterservice.map_vertical_sector.length != null)
     {
       let locationarray=[];
@@ -679,11 +689,11 @@ dontshowforDOA:boolean = true;
     }
     this._masterservice.createnewbusinessmodel();
     this.ShowBusinessEdit=true;
-    this.createoredit = "Edit : "+Details.Business_Name;
+    this.createoredit = "Edit : "+Details.Business_Name  + " ("+Details.Business_Code+")";
     this._masterservice.businessmodel._function_id = Details.function_id ;
     this.BusinessForm.controls.BusinessCode.setValue(Details.Business_Code);
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
-    this.BusinessForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.BusinessForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
   }
   this.enablecreate = false;
   }
@@ -735,7 +745,7 @@ dontshowforDOA:boolean = true;
       this.SectorForm.controls.Sector_Name.setValue("");
       this.SectorForm.controls.Active.setValue("");
     }
-    else if(this.masterType=="SubSector")
+    else if(this.masterType=="Sub Sector")
     {
       this.ShowSubSectorEdit = false;
       
@@ -862,10 +872,10 @@ createType()
     this.SectorForm.controls.Sector_Name.setValue("");
     this.SectorForm.controls.Active.setValue("");
   }
-  else if(this.masterType == "SubSector")
+  else if(this.masterType == "Sub Sector")
   {
     this.ShowSubSectorEdit=true;
-    this.createoredit = "Create SubSector";
+    this.createoredit = "Create Sub Sector";
     this._masterservice.createnewsubsectormodel();
     this._masterservice.subsectormodel._SubSector_Id = 0;
     this.SubSectorForm.controls.SubSector_Name.setValue("");
@@ -895,9 +905,14 @@ createType()
   else if(this.masterType == "DOA Matrix Messages")
   {
     this.ShowDOAEdit=true;
+   // this.disableDOAonedit = false;
     this.createoredit = "Create DOA Matrix Messages";
     this._masterservice.createnewdoamodel();
     this._masterservice.doamodel._DOA_Matrix_Id = 0;
+    this.DOAForm.controls.Prefix.enable();
+    this.DOAForm.controls.MessageFor.enable();
+    this.DOAForm.controls.Prefix.markAsUntouched();
+    this.DOAForm.controls.MessageFor.markAsUntouched();
     this.DOAForm.controls.Message.setValue("");
     this.DOAForm.controls.Prefix.setValue("");
     this.DOAForm.controls.MessageFor.setValue("");
@@ -987,16 +1002,22 @@ SubmitProjectType(ProjectTypeForm)
   this._masterservice.Mst_Domains._domain_name=this.ProjectTypeForm.controls.ProjectName.value;
   this._masterservice.Mst_Domains._domain_id=this.DomainId;
   this._masterservice.Mst_Domains._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-//  this.listData.filter = this.ProjectTypeForm.controls.ProjectCode.value;
- 
-  this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
-    console.log(Result);
-    var Res=JSON.parse(Result);
-    this._mesgBox.showSucess(Res[0].message);
-    this.Canceltype();
-    this.ShowProjectTypeEdit=false;
-    this.GetMstDomains();
-  });
+   
+  if(this.ProjectTypeForm.controls.ProjectCode.value != " " && this.ProjectTypeForm.controls.ProjectName.value != " ")
+  {
+    this._masterservice.Update_Mst_Domains( this._masterservice.Mst_Domains).subscribe((Result)=>{
+      console.log(Result);
+      var Res=JSON.parse(Result);
+      this._mesgBox.showSucess(Res[0].message);
+      this.Canceltype();
+      this.ShowProjectTypeEdit=false;
+      this.GetMstDomains();
+    });
+  }
+ else
+ {
+  this._mesgBox.showError("Please Enter Details");
+ }
 }
 //Project Type End
 
@@ -1029,15 +1050,19 @@ GetMstPrivilege()
   this._masterservice.Mst_privilege._privilege_name=this.PrivilegeForm.controls.privilege_name.value;
   this._masterservice.Mst_privilege._active=this.PrivilegeForm.controls.PrivilegeStatus.value;
   this._masterservice.Mst_privilege._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-  this._masterservice.Update_Mst_Privilege( this._masterservice.Mst_privilege).subscribe((Result)=>{
-    console.log(Result);
-    var Res=JSON.parse(Result);
-    this.Canceltype();
-    this._mesgBox.showSucess(Res[0].message);
-   
+  if(this.PrivilegeForm.controls.privilege_name.value != " ")
+  {
+    this._masterservice.Update_Mst_Privilege( this._masterservice.Mst_privilege).subscribe((Result)=>{
+      console.log(Result);
+      var Res=JSON.parse(Result);
+      this.Canceltype();
+      this._mesgBox.showSucess(Res[0].message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
   
-    
-  });
 }
 //Privilege End
 //Roles Start
@@ -1083,22 +1108,26 @@ SubmitRoleType()
   this._masterservice.mst_roles._Previlege_Id=tempservicecat;
   this._masterservice.mst_roles._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
-    console.log(Result);
-    var res=JSON.parse(Result);
-    this.Canceltype();
-    if(res[0].status=="success")
-    {
-      this._mesgBox.showSucess(res[0].message);
-    }
-    else 
-    {
-      this._mesgBox.showError(res[0].message);
-    }
-  
-  });
-  
-
+  if(this.RoleForm.controls.role_name.value != " " && this.RoleForm.controls.Role_code.value !=" " && this.RoleForm.controls.equivalent_cassh_role_name.value != " ")
+  {
+    this._masterservice.Update_Mst_Roles(this._masterservice.mst_roles).subscribe((Result)=>{
+      console.log(Result);
+      var res=JSON.parse(Result);
+      this.Canceltype();
+      if(res[0].status=="success")
+      {
+        this._mesgBox.showSucess(res[0].message);
+      }
+      else 
+      {
+        this._mesgBox.showError(res[0].message);
+      }
+    
+    });
+  }
+ else{
+    this._mesgBox.showError("Please Enter Details");
+  }
 }
 PrivilegeChange(event,privilegeName)
 {
@@ -1140,16 +1169,22 @@ SubmitBranchType()
   this._masterservice.branchmodel._branchname = this.BranchForm.controls.Branch_Name.value;
   this._masterservice.branchmodel._active = this.BranchForm.controls.Active.value;
   this._masterservice.branchmodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-
-  this._masterservice.Update_Mst_Branch(this._masterservice.branchmodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowBranchEdit = false;
-    this.GetMstBranch();
-  },
-  (error:HttpErrorResponse) =>{
-   // this._mesgBox.showError(error.message);
-  });
+  if(this.BranchForm.controls.Branch_Name.value != " " )
+  {
+    this._masterservice.Update_Mst_Branch(this._masterservice.branchmodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowBranchEdit = false;
+      this.GetMstBranch();
+    },
+    (error:HttpErrorResponse) =>{
+     // this._mesgBox.showError(error.message);
+    });
+  }
+ 
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
 
 }
 //branch end
@@ -1187,16 +1222,21 @@ SubmitCommentType()
   this._masterservice.commentmodel._comment_type = this.CommentForm.controls.Comment.value;
   //this._masterservice.branchmodel._active = this.BranchForm.controls.Active.value;
   this._masterservice.commentmodel._user_id =this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-
-  this._masterservice.Update_Mst_Comment(this._masterservice.commentmodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowCommentEdit = false;
-    this.GetMstCommentType();
-  },
-  (error:HttpErrorResponse) =>{
-    //this._mesgBox.showError(error.message);
-  });
+  if(this.CommentForm.controls.Comment.value !=" " )
+  {
+    this._masterservice.Update_Mst_Comment(this._masterservice.commentmodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowCommentEdit = false;
+      this.GetMstCommentType();
+    },
+    (error:HttpErrorResponse) =>{
+      //this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
 
 }
 
@@ -1234,17 +1274,24 @@ SubmitSectorType()
   this._masterservice.sectormodel._Sector_Name = this.SectorForm.controls.Sector_Name.value;
   this._masterservice.sectormodel._active = this.SectorForm.controls.Active.value;
   this._masterservice.sectormodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
+  if( this.SectorForm.controls.Sector_Name.value != " ")
+  {
+    this._masterservice.Update_Mst_Sector(this._masterservice.sectormodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowSectorEdit = false;
+      this.GetMstSector();
+    },
+    (error:HttpErrorResponse) =>{
+      //this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+ 
 
-  this._masterservice.Update_Mst_Sector(this._masterservice.sectormodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSectorEdit = false;
-    this.GetMstSector();
-  },
-  (error:HttpErrorResponse) =>{
-    //this._mesgBox.showError(error.message);
-  });
-
+  
 }
 
 // Sector Ends
@@ -1283,15 +1330,23 @@ SubmitSubSectorType()
   this._masterservice.subsectormodel._Sector_Id = this.SubSectorForm.controls.Sector_Id.value;
   this._masterservice.subsectormodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_SubSector(this._masterservice.subsectormodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSubSectorEdit = false;
-    this.GetMstSubSector();
-  },
-  (error:HttpErrorResponse) =>{
-    //this._mesgBox.showError(error.message);
-  });
+  if( this.SubSectorForm.controls.SubSector_Name.value !=" ")
+  {
+    this._masterservice.Update_Mst_SubSector(this._masterservice.subsectormodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowSubSectorEdit = false;
+      this.GetMstSubSector();
+    },
+    (error:HttpErrorResponse) =>{
+      //this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
+
 
 }
 
@@ -1329,15 +1384,24 @@ SubmitSolutionCategoryType()
   this._masterservice.solutioncategorymodel._active = this.SolutionCategoryForm.controls.Active.value;
   this._masterservice.solutioncategorymodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_SolutionCategory(this._masterservice.solutioncategorymodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSolutionCategoryEdit = false;
-    this.GetMstSolutionCategory();
-  },
-  (error:HttpErrorResponse) =>{
-   // this._mesgBox.showError(error.message);
-  });
+
+  if( this.SolutionCategoryForm.controls.SolutionCategory_Name.value !=" ")
+  {
+    this._masterservice.Update_Mst_SolutionCategory(this._masterservice.solutioncategorymodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowSolutionCategoryEdit = false;
+      this.GetMstSolutionCategory();
+    },
+    (error:HttpErrorResponse) =>{
+     // this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
+ 
 
 }
 //Solution Category ends
@@ -1380,16 +1444,24 @@ SubmitSolution()
   this._masterservice.solutionmodel._active = this.SolutionForm.controls.Active.value;
   this._masterservice.solutionmodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_Solution(this._masterservice.solutionmodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowSolutionEdit = false;
-    this.GetMstSolution();
-  },
-  (error:HttpErrorResponse) =>{
-   // this._mesgBox.showError(error.message);
-  });
+  if(this.SolutionForm.controls.Solution_Name.value !=" ")
+  {
+    this._masterservice.Update_Mst_Solution(this._masterservice.solutionmodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowSolutionEdit = false;
+      this.GetMstSolution();
+    },
+    (error:HttpErrorResponse) =>{
+     // this._mesgBox.showError(error.message);
+    });
+  
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
 
+ 
 }
 // Solution ends
 //DOA messages start
@@ -1426,15 +1498,23 @@ SubmitDOAMessages()
   this._masterservice.doamodel._MessageFor = this.DOAForm.controls.MessageFor.value;
   this._masterservice.doamodel._user_id = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_DOA(this._masterservice.doamodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowDOAEdit = false;
-    this.GetMstDoa();
-  },
-  (error:HttpErrorResponse) =>{
-    //this._mesgBox.showError(error.message);
-  });
+  if(this.DOAForm.controls.Message.value != " " && this.DOAForm.controls.Prefix.value !=" " && this.DOAForm.controls.MessageFor.value != " ")
+  {
+    this._masterservice.Update_Mst_DOA(this._masterservice.doamodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowDOAEdit = false;
+      this.GetMstDoa();
+    },
+    (error:HttpErrorResponse) =>{
+      //this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
+ 
 
 }
 
@@ -1468,19 +1548,28 @@ SubmitFormList()
   this._masterservice.mst_Forms._active=this.pagesListForm.controls.FormStatus.value;
   this._masterservice.mst_Forms._id=this.FormId;
   this._masterservice.mst_Forms. _user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-  this._masterservice.Update_Mst_Forms(this._masterservice.mst_Forms).subscribe((Result)=>{
-    var res=JSON.parse(Result);
-    this.Canceltype();
-    if(res[0].status=="success")
-    {
-      this._mesgBox.showSucess(res[0].message);
-    }
-    else 
-    {
-      this._mesgBox.showError(res[0].message);
-    }
-   
-  })
+  
+  if(this.pagesListForm.controls.Form_name.value != " " && this.pagesListForm.controls.Form_Url.value!= " " )
+  {
+    this._masterservice.Update_Mst_Forms(this._masterservice.mst_Forms).subscribe((Result)=>{
+      var res=JSON.parse(Result);
+      this.Canceltype();
+      if(res[0].status=="success")
+      {
+        this._mesgBox.showSucess(res[0].message);
+      }
+      else 
+      {
+        this._mesgBox.showError(res[0].message);
+      }
+     
+    })
+    
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
   
 }
 //Forms End
@@ -1523,27 +1612,29 @@ Update_Mst_Verticals()
   this._masterservice.mst_verticals._active=this.VerticalForm.controls.VerticalStatus.value;
   this._masterservice.mst_verticals._Sector_Id=tempservicecat;
   this._masterservice.mst_verticals._user_id=this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
-  this._masterservice.Update_Mst_Verticals(this._masterservice.mst_verticals).subscribe((Result)=>{
-    var res=JSON.parse(Result);
-    this.Canceltype();
-    if(res[0].status=="success")
-    {
-      this._mesgBox.showSucess(res[0].message);
-    }
-    else 
-    {
-      this._mesgBox.showError(res[0].message);
-    }
-  })
+  if(this.VerticalForm.controls.VerticalName.value != " " && this.VerticalForm.controls.VerticalCode.value != " ")
+  {
+    this._masterservice.Update_Mst_Verticals(this._masterservice.mst_verticals).subscribe((Result)=>{
+      var res=JSON.parse(Result);
+      this.Canceltype();
+      if(res[0].status=="success")
+      {
+        this._mesgBox.showSucess(res[0].message);
+      }
+      else 
+      {
+        this._mesgBox.showError(res[0].message);
+      }
+    })
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
+ 
 
 }
-// FunctionSelect(event,functionid)
-// {
-//   if(functionid !=0)
-//   {
-//     this._masterservice.SectorList.filter(x=>x.vertical_id==functionid)
-//   }
-// }
+
 //Vertical End
 
 //Business Type start
@@ -1580,15 +1671,23 @@ SubmitBusinessType()
   this._masterservice.businessmodel._active = this.BusinessForm.controls.Active.value;
   this._masterservice.businessmodel._user_id =this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
 
-  this._masterservice.Update_Mst_Business(this._masterservice.businessmodel).subscribe((Result)=>{
-    Result = JSON.parse(Result);
-		this._mesgBox.showSucess(Result[0].message);
-    this.ShowBusinessEdit = false;
-    this.GetMstBusiness();
-  },
-  (error:HttpErrorResponse) =>{
-    //this._mesgBox.showError(error.message);
-  });
+  if(this.BusinessForm.controls.BusinessName.value !=" " && this.BusinessForm.controls.BusinessCode.value != " " )
+  {
+    this._masterservice.Update_Mst_Business(this._masterservice.businessmodel).subscribe((Result)=>{
+      Result = JSON.parse(Result);
+      this._mesgBox.showSucess(Result[0].message);
+      this.ShowBusinessEdit = false;
+      this.GetMstBusiness();
+    },
+    (error:HttpErrorResponse) =>{
+      //this._mesgBox.showError(error.message);
+    });
+  }
+  else{
+    this._mesgBox.showError("Please Enter Details");
+  }
+
+ 
 }
 //Business Type end
 }
