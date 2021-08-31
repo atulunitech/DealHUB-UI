@@ -2631,7 +2631,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
-         this.TableHeadLine="Apporved OBF Table";
+         this.TableHeadLine="Approved OBF Table";
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
