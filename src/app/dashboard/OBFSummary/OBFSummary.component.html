@@ -40,7 +40,7 @@
                         this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || 
                         this._obfservices.obfsummarymodel.PPl_details != undefined ||
                          this.shortcurrentstatus =='cApproved' || 
-                         (this.shortcurrentstatus =='approved' && this.privilege_name== 'OBF Initiator'))"
+                         (this.shortcurrentstatus =='approved' && this.privilege_name== 'OBF Initiator')  || (this.shortcurrentstatus =='approved' && this.privilege_name== 'PPL Initiator'))"
 
                          [matMenuTriggerFor]="menunew" #menuNEwTrigger="matMenuTrigger"
                          (mouseover)="menuNEwTrigger.openMenu()" (mouseleave)="menuNEwTrigger.closeMenu()" > 
