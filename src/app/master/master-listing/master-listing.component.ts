@@ -83,6 +83,17 @@ dontshowforDOA:boolean = true;
     
      applyFilter() {
       this.listData.filter = this.searchwords.trim().toLowerCase();
+     this.paginator.length=this.listData.filteredData.length;
+    // this.paginator.firstPage();
+     this.paginator.pageIndex=0;
+     this.listData.sort = this.sort;
+     this.listData.paginator = this.paginator;
+     this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 7,
+    previousPageIndex:0 
+    })
     }
   ngOnInit(): void {
     this.userdetails = new Mstcommonparameters();

@@ -189,7 +189,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-      
+      this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)

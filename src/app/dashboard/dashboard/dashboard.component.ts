@@ -249,7 +249,12 @@ export class DashboardComponent implements OnInit {
   statusfilter:any[]=[];
   filterdata:any[]=[];
   // @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+@ViewChild(MatPaginator) paginator: MatPaginator;
+
+//   @ViewChild(MatPaginator, {static: true}) set paginator (paginator: MatPaginator) {
+//     this.dataSource.paginator = paginator;
+// }
+
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   @ViewChild('chipList1') chipList1: MatChipList;
   public myForm1: FormGroup;
@@ -318,7 +323,14 @@ export class DashboardComponent implements OnInit {
   this.listData=new MatTableDataSource(datefilter);
   this.listData.sort = this.sort;
  this.listData.paginator = this.paginator;
+
  this.addColumn(this.selectedcolumn);
+ this.listData.paginator.page.emit({
+  length: this.paginator.getNumberOfPages(),
+pageIndex: 0,
+pageSize: 10,
+previousPageIndex:0 
+})
     }
    }
 
@@ -1480,6 +1492,12 @@ onchange(evt,solutioncategory)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -2319,6 +2337,26 @@ downloaddetailFinalAgg(row)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    if(this.statusfilterselected)
+    {
+      alert('paginator from if');
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+   
    }
   
     //this.listData.paginator.firstPage();
@@ -2713,8 +2751,31 @@ downloaddetailFinalAgg(row)
       }
      
     }
+  
+    this.paginator.length=this.filterdata.length;
+    this.paginator.firstPage()
+    this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    if(this.statusfilterselected)
+    {
+      alert('paginator from if');
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
   }
 PPLclick(selection)
 {
@@ -2921,8 +2982,31 @@ PPLclick(selection)
    
   }
 
+
+  this.paginator.length=this.filterdata.length;
+  this.paginator.firstPage()
+  this.paginator.pageIndex=0;
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
+  if(this.statusfilterselected)
+  {
+    alert('paginator from if');
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
+  else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+  {
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
 }
 
 editSubmit()

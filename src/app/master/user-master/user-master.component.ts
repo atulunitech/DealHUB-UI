@@ -173,6 +173,12 @@ showhidebrranchfn_out()
      this.paginator.pageIndex=0;
      this.listData.sort = this.sort;
      this.listData.paginator = this.paginator;
+     this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 7,
+    previousPageIndex:0 
+    })
     //this.onChangePage(null);
   }
 
