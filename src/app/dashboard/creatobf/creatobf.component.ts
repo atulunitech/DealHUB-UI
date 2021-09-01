@@ -1139,8 +1139,15 @@ downloadCoversheet(event)
     if(types == "coversheet")
        {
         this.editObfcoverbol = false;
+        if(this.reinitiatefordisable)
+        {
+
+        }
+        else
+        {
         this._obfservices.ObfCreateForm.controls.Sector.setValue("");
         this._obfservices.ObfCreateForm.controls.Subsector.setValue("");
+        }
         this._obfservices.ObfCreateForm.patchValue({coversheet: null});
         this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
         if(event.addedFiles.length > 1)
