@@ -436,8 +436,22 @@ export class CreatobfComponent implements OnInit {
       {
         this.editObfSupportbol = false;
       }
+      // added on 01-Sep-2021 because servicelist were not populated
+      this.Solutionservicesarray = [];
+      let result = this.Solutiongroup.filter(obj => {
+        return obj.value === this._obfservices.editObfObject._solution_category_id.toString();
+      });
+      this.servicecate=result[0].viewValue;
+      this.Solutionservicesarray = result[0].Solutionservices;
+      //end
       this.servicesControl.setValue(this._obfservices.servicesarray);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
+     //added on 31-Aug-2021 for unique sector
+      let ressec = this.sectorlist.filter(obj =>{
+        return obj.vertical_id === this._obfservices.editObfObject._vertical_id;
+      });
+      this.sectorlist = <sectors[]>ressec;
+      //end
       var resultnew = this.subsectorlist.filter(obj => {
         return obj.Sector_Id === this._obfservices.editObfObject._Sector_Id;
       });
