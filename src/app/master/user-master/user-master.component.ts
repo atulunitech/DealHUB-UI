@@ -169,11 +169,11 @@ showhidebrranchfn_out()
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();
      this.paginator.length=this.listData.filteredData.length;
-     this.paginator.firstPage()
-     this.paginator.pageIndex=1;
+    // this.paginator.firstPage();
+     this.paginator.pageIndex=0;
      this.listData.sort = this.sort;
      this.listData.paginator = this.paginator;
-   // this.pageventcall(null);
+    //this.onChangePage(null);
   }
 
   onChangePage(pe:PageEvent) {
