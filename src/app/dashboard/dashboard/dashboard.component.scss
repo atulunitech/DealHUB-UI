@@ -385,21 +385,21 @@ a.disabled {
           min-height: 46px;
           ::ng-deep .mat-paginator-range-actions{
        
-        .mat-icon-button
-        {
-            border-radius: 0%;
-            width: 30px;
-            height: 30px;
-            line-height: inherit;
-            background-color: #fff !important;
-            color: black !important;
-            margin: 0 !important;
-            border: 1px solid #dedede;
-            .mat-paginator-icon
-            {
-                width: 14px;
-            }
-        }
+        // .mat-icon-button
+        // {
+        //     border-radius: 0%;
+        //     width: 30px;
+        //     height: 30px;
+        //     line-height: inherit;
+        //     background-color: #fff !important;
+        //     color: black !important;
+        //     margin: 0 !important;
+        //     border: 1px solid #dedede;
+        //     .mat-paginator-icon
+        //     {
+        //         width: 14px;
+        //     }
+        // }
         .mat-flat-button
         {
             min-width: auto;
@@ -790,7 +790,7 @@ a.disabled {
 }
 
 ::ng-deep .mat-paginator-range-label{
-    display: none !important;
+    // display: none !important;
 }
 
 
