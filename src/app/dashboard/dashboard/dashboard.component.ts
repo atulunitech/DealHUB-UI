@@ -1541,6 +1541,15 @@ openModal(templateRef,row) {
     Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
     this._obfservices.editObfObject = JSON.parse(Resultdata);
     this._obfservices.initializeobfmodelandform();
+
+    // added on 01-Sep-2021 because servicelist were not populated
+    this.Solutionservicesarray = [];
+    let result = this.Solutiongroup.filter(obj => {
+      return obj.value === this._obfservices.editObfObject._vertical_id.toString();
+    });
+    this.servicecate=result[0].viewValue;
+    this.Solutionservicesarray = result[0].Solutionservices;
+    //end
     
     this.servicesControl.setValue(this._obfservices.servicesarray);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
