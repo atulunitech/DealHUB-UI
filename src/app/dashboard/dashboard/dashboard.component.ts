@@ -2337,7 +2337,7 @@ downloaddetailFinalAgg(row)
     this.listData.paginator = this.paginator;
     if(this.statusfilterselected)
     {
-      alert('paginator from if');
+      
       this.listData.paginator.page.emit({
         length: this.paginator.getNumberOfPages(),
       pageIndex: 0,
@@ -2757,7 +2757,7 @@ downloaddetailFinalAgg(row)
     this.listData.paginator = this.paginator;
     if(this.statusfilterselected)
     {
-      alert('paginator from if');
+      
       this.listData.paginator.page.emit({
         length: this.paginator.getNumberOfPages(),
       pageIndex: 0,
@@ -2988,7 +2988,7 @@ PPLclick(selection)
   this.listData.paginator = this.paginator;
   if(this.statusfilterselected)
   {
-    alert('paginator from if');
+   
     this.listData.paginator.page.emit({
       length: this.paginator.getNumberOfPages(),
     pageIndex: 0,
