@@ -189,7 +189,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-      
+      this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -1370,8 +1370,8 @@ class filesdetail
     //evt.preventDefault();
     if (evt.isUserInput) {
 
-   
-
+    this.dh_id=dh_id;
+    this.dh_header_id=dh_header_id;
     this._obfservices.GetOBFSummaryDataVersionWise(dh_id,dh_header_id).subscribe(data =>{
       let getrandom = data.split("*$");
       let Resultdata = getrandom[0];
@@ -1691,6 +1691,7 @@ class filesdetail
         var result=this.validateEmail(_ToEmailId);
         if(result)
         {
+          
           this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);

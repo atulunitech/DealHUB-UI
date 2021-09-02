@@ -187,6 +187,7 @@ export class DashboardComponent implements OnInit {
   startdate:any;
   enddate:any;
   dateselected:boolean=false;
+  TableHeadLine:string="";
   approvalstatusdetail:approvalstatusdetail=new approvalstatusdetail();
   @ViewChild(DaterangepickerDirective, {static: true,}) picker: DaterangepickerDirective;direction: 'ltr';
   selected: {startDate: moment.Moment, endDate: moment.Moment};
@@ -249,7 +250,12 @@ export class DashboardComponent implements OnInit {
   statusfilter:any[]=[];
   filterdata:any[]=[];
   // @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+@ViewChild(MatPaginator) paginator: MatPaginator;
+
+//   @ViewChild(MatPaginator, {static: true}) set paginator (paginator: MatPaginator) {
+//     this.dataSource.paginator = paginator;
+// }
+
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   @ViewChild('chipList1') chipList1: MatChipList;
   public myForm1: FormGroup;
@@ -318,7 +324,14 @@ export class DashboardComponent implements OnInit {
   this.listData=new MatTableDataSource(datefilter);
   this.listData.sort = this.sort;
  this.listData.paginator = this.paginator;
+
  this.addColumn(this.selectedcolumn);
+ this.listData.paginator.page.emit({
+  length: this.paginator.getNumberOfPages(),
+pageIndex: 0,
+pageSize: 10,
+previousPageIndex:0 
+})
     }
    }
 
@@ -1480,6 +1493,12 @@ onchange(evt,solutioncategory)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -1919,8 +1938,14 @@ downloaddetailFinalAgg(row)
       {
         //Draft Section.
         
-        this.listData=new MatTableDataSource(this.dashboardData); 
-       
+        this.listData=new MatTableDataSource(this.dashboardData);
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Drafts PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Drafts OBF Table ";
+      }
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' )
           {
@@ -1952,7 +1977,14 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          if(this.privilege_name=="PPL Initiator")
+          {
+            this.TableHeadLine=" Submitted PPL Table ";
+          } 
+        else {
+          this.TableHeadLine=" Submitted OBF Table ";
+        } 
+        
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -1986,6 +2018,14 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        if(this.privilege_name=="PPL Initiator")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+        this.TableHeadLine=" Rejected OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         
         this.filterdata=this.dashboardData.filter(obj=>{
@@ -2018,6 +2058,8 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3 )
       {
+
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
        
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2053,6 +2095,7 @@ downloaddetailFinalAgg(row)
       else if(selection==4)
       {
        //approved PPl
+       this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
       
         this.filterdata=this.dashboardData.filter(obj=>
@@ -2091,6 +2134,16 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+       
+
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine="Pending For Approval PPL Table ";
+        } 
+      else {
+        this.TableHeadLine="Pending For Approval OBF Table ";
+      } 
+
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted' )
@@ -2122,6 +2175,17 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+        
+
+         if(this.privilege_name=="PPL Reviewer")
+         {
+          this.TableHeadLine=" Approved PPL Table ";
+         } 
+       else {
+        this.TableHeadLine=" Approved OBF Table ";
+       } 
+
+       
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2155,6 +2219,16 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
       
+        
+        if(this.privilege_name=="PPL Reviewer")
+        {
+          this.TableHeadLine=" Rejected PPL Table ";
+        } 
+      else {
+        this.TableHeadLine=" Rejected OBF Table ";
+      } 
+
+
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2186,6 +2260,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==3)
       {
+        this.TableHeadLine=" Approved OBF Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2218,6 +2293,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==4)
       {
+        this.TableHeadLine=" Approved PPL Table ";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2259,6 +2335,26 @@ downloaddetailFinalAgg(row)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    if(this.statusfilterselected)
+    {
+      
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+   
    }
   
     //this.listData.paginator.firstPage();
@@ -2460,7 +2556,7 @@ downloaddetailFinalAgg(row)
       if(selection==0)
       {
         //Draft Section.
-        
+        this.TableHeadLine="Draft OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='draft' && obj.phase_code=='OBF')
@@ -2492,7 +2588,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
           //Submitted section
-         
+          this.TableHeadLine="Submitted OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='OBF')
@@ -2523,6 +2619,7 @@ downloaddetailFinalAgg(row)
       else if(selection==2)
       {
         //Rejected
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>{
           if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='OBF')
@@ -2555,6 +2652,7 @@ downloaddetailFinalAgg(row)
     {
       if(selection==0)
       {
+        this.TableHeadLine="Pending For Approval OBF Table";
         this.filterdata=this.dashboardData.filter(obj=>
           {
             if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='OBF')
@@ -2586,6 +2684,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
+         this.TableHeadLine="Approved OBF Table";
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2618,7 +2717,7 @@ downloaddetailFinalAgg(row)
       }
       else if(selection==2)
       {
-      
+        this.TableHeadLine="Rejected OBF Table";
         this.listData=new MatTableDataSource(this.dashboardData); 
         this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2650,8 +2749,31 @@ downloaddetailFinalAgg(row)
       }
      
     }
+  
+    this.paginator.length=this.filterdata.length;
+    this.paginator.firstPage()
+    this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    if(this.statusfilterselected)
+    {
+      
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
   }
 PPLclick(selection)
 {
@@ -2663,6 +2785,7 @@ PPLclick(selection)
     if(selection==0)
     {
       //Draft Section.
+      this.TableHeadLine="Draft PPL Table";
       this.filterdata=[];
       this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
@@ -2695,7 +2818,7 @@ PPLclick(selection)
     else if (selection==1)
     {
         //Submitted section
-       
+        this.TableHeadLine="Submitted PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='submitted' && obj.phase_code=='PPL')
@@ -2726,6 +2849,7 @@ PPLclick(selection)
     else if(selection==2)
     {
       //Rejected
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>{
         if(obj.shortcurrentstatus=='rejected' && obj.phase_code=='PPL')
@@ -2759,6 +2883,7 @@ PPLclick(selection)
     if(selection==0)
     {
       this.filterdata=[];
+      this.TableHeadLine="Pending For Approval PPL Table";
       this.filterdata=this.dashboardData.filter(obj=>
         {
           if(obj.shortcurrentstatus=='Submitted'  && obj.phase_code=='PPL')
@@ -2789,6 +2914,7 @@ PPLclick(selection)
     }
     else if (selection==1)
     {
+      this.TableHeadLine="Approved PPL Table";
        //Approved section
        this.filterdata=[];
       
@@ -2821,7 +2947,7 @@ PPLclick(selection)
     }
     else if(selection==2)
     {
-    
+      this.TableHeadLine="Rejected PPL Table";
      // this.listData=new MatTableDataSource(this.dashboardData); 
       this.filterdata=this.dashboardData.filter(obj=>
         {
@@ -2854,8 +2980,31 @@ PPLclick(selection)
    
   }
 
+
+  this.paginator.length=this.filterdata.length;
+  this.paginator.firstPage()
+  this.paginator.pageIndex=0;
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
+  if(this.statusfilterselected)
+  {
+   
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
+  else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+  {
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
 }
 
 editSubmit()
