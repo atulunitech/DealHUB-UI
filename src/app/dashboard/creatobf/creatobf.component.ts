@@ -436,6 +436,12 @@ export class CreatobfComponent implements OnInit {
       {
         this.editObfSupportbol = false;
       }
+
+      //added below code to remove ppl comment on initiate, if added on previous OBF
+      if(this.editorcreateobfstring.trim() == "Initiate PPL"){
+       this._obfservices.ObfCreateForm.controls.comments.setValue("");
+      }
+      //end
       // added on 01-Sep-2021 because servicelist were not populated
       this.Solutionservicesarray = [];
       let result = this.Solutiongroup.filter(obj => {
