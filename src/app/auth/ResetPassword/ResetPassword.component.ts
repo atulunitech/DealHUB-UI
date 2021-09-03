@@ -112,10 +112,19 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
          
         this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
          // alert("Password Changed Successfully.");
-         this._mesgBox.showSucess("Password Changed Successfully.");
+        //  this._mesgBox.showSucess("Password Changed Successfully.");
+       
+          this._mesgBox.showSucess(Result);
          this.router.navigateByUrl('/login');
-         
-        });
+        
+        },
+        (error:HttpErrorResponse)=>{
+          this._mesgBox.showError(error.error.Record.MESSAGE);
+          this.loginvalid.controls.NewPassword.setValue("");
+          this.loginvalid.controls.confirmpassword.setValue("");
+          this.getClientKey();
+        }
+        );
       }
       public checkError = (controlName: string, errorName: string) => {
         return this.loginvalid.controls[controlName].hasError(errorName);
