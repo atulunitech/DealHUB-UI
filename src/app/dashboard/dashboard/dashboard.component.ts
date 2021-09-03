@@ -2414,8 +2414,13 @@ downloaddetailFinalAgg(row)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+  
+     let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+   
+     let dh_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_id;
+     let dh_header_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_header_id;
 
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary',dh_id,dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
   on_Highlight(check){
