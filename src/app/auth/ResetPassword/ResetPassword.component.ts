@@ -100,22 +100,31 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
         let encryptedusercode = "";
         // alert(this.key);
           encryptedpwd = this.commonService.setEncryption(this.key,this.loginvalid.get('NewPassword').value);
-          this.loginvalid.get('NewPassword').setValue(encryptedpwd);
-          this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
+          //this.loginvalid.get('NewPassword').setValue(encryptedpwd);
+          //this.loginvalid.get('confirmpassword').setValue(encryptedpwd);
           encryptedusercode = this.commonService.setEncryption(this.key,localStorage.getItem("ResetUC"));
          // this.loginmodel._SecretKey = this.key;
         // this.Usercode =localStorage.getItem("ResetUC");
         this.Usercode =encryptedusercode;
         this.loginmodel._user_code=this.Usercode;
-        this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
-        
+       // this.loginmodel._password=this.loginvalid.get('confirmpassword').value;
+       this.loginmodel._password= encryptedpwd;
          
         this._loginservice.ResetPassword(this.loginmodel).subscribe(Result=>{
          // alert("Password Changed Successfully.");
-         this._mesgBox.showSucess("Password Changed Successfully.");
+        //  this._mesgBox.showSucess("Password Changed Successfully.");
+       
+          this._mesgBox.showSucess(Result);
          this.router.navigateByUrl('/login');
-         
-        });
+        
+        },
+        (error:HttpErrorResponse)=>{
+          this._mesgBox.showError(error.error.Record.MESSAGE);
+          this.loginvalid.controls.NewPassword.setValue("");
+          this.loginvalid.controls.confirmpassword.setValue("");
+          this.getClientKey();
+        }
+        );
       }
       public checkError = (controlName: string, errorName: string) => {
         return this.loginvalid.controls[controlName].hasError(errorName);
