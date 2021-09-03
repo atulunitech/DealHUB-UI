@@ -646,6 +646,10 @@ a.disabled {
             @include font-weight(bold);
             ::ng-deep.mat-sort-header-container
             {
+                .mat-sort-header-content
+                {
+                    text-align: left !important;
+                }
                 .mat-sort-header-button
                 {
                     text-align: left;
