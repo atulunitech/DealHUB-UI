@@ -207,25 +207,28 @@
                 </div>
               </div>
               </div>
-              <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
-                <div fxFlex="100" class="edit_body_in">
-                  <div class="mt-cust-fd">
-                    <mat-form-field appearance="fill" class="example-full-width">
-                      <mat-label>Select Active / Inactive*</mat-label>
-                      <mat-select formControlName="Rolestatus" disableOptionCentering>
-                        <mat-option value="1"  >
-                          Active
-                        </mat-option>
-                        <mat-option value="0">
-                          Inactive
-                        </mat-option>
-                      
-                      </mat-select>
-                      <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
-                    </mat-form-field>
-                  </div>
-                </div>
-                </div>
+            
+        </div>
+        <div class="edit_body">
+          <div class="edit_body_out" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50" >
+            <div fxFlex="100" class="edit_body_in">
+              <div class="mt-cust-fd">
+                <mat-form-field appearance="fill" class="example-full-width">
+                  <mat-label>Select Active / Inactive*</mat-label>
+                  <mat-select formControlName="Rolestatus" disableOptionCentering>
+                    <mat-option value="1"  >
+                      Active
+                    </mat-option>
+                    <mat-option value="0">
+                      Inactive
+                    </mat-option>
+                  
+                  </mat-select>
+                  <mat-error *ngIf="checkError('Rolestatus', 'required')">Role Status is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            </div>
         </div>
         <div class="edit_footr">
           <button mat-flat-button class="creat_bt cu_width mast_can_bt" (click)="Canceltype()" style="margin-right: 10px;" >Cancel</button>
