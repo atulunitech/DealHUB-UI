@@ -1567,8 +1567,11 @@ openModal(templateRef,row) {
     let result = this.Solutiongroup.filter(obj => {
       return obj.value === this._obfservices.editObfObject._solution_category_id.toString();
     });
+    if(result.length > 0)
+    {
     this.servicecate=result[0].viewValue;
     this.Solutionservicesarray = result[0].Solutionservices;
+    }
     //end
     
     this.servicesControl.setValue(this._obfservices.servicesarray);
