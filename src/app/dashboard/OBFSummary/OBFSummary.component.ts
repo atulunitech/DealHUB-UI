@@ -155,16 +155,17 @@ class filesdetail
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
      (params => {
-    //   let getdh_id = params["dh_id"].split("*$");
-    //   let Resultdata = getdh_id[0];
-    //   this.dh_id = getdh_id[1];
+      let getdh_id = params["dh_id"].split("*$");
+      let Resultdata = getdh_id[0];
+      this.dh_id = getdh_id[1];
 
     
-    //  let getdh_header_id = params["dh_header_id"].split("*$");
-    //  let Result = getdh_header_id[0];
-    //  this.dh_header_id = getdh_header_id[1];
-      this.dh_id=params["dh_id"];
-      this.dh_header_id=params["dh_header_id"];
+     let getdh_header_id = params["dh_header_id"].split("*$");
+     let Result = getdh_header_id[0];
+     this.dh_header_id = getdh_header_id[1];
+
+      // this.dh_id=params["dh_id"];
+      // this.dh_header_id=params["dh_header_id"];
       this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
