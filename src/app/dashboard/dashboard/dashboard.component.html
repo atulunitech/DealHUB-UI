@@ -384,15 +384,15 @@
               
               <div *ngIf="column.columnDef == 'Total_Cost'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) }} <span></span></mat-cell>
+                <mat-cell class="{{column.header}}" *matCellDef="let row" >₹ {{ column.cell(row) ==0 ? 0 :  column.cell(row)}}<span></span></mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Total_Revenue'">
                 <mat-header-cell class="{{column.header}}" *matHeaderCellDef mat-sort-header>{{column.header}}(₹ cr)</mat-header-cell>
-                <mat-cell class="{{column.header}}"  *matCellDef="let row" >₹ {{ column.cell(row) }}</mat-cell>
+                <mat-cell class="{{column.header}}"  *matCellDef="let row" >₹ {{ column.cell(row) ==0 ? 0 :  column.cell(row)}}</mat-cell>
               </div>
               <div *ngIf="column.columnDef == 'Gross_Margin'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{column.header}}%</mat-header-cell>
-                <mat-cell  *matCellDef="let row">{{ column.cell(row) }}%</mat-cell>
+                <mat-cell  *matCellDef="let row">{{ column.cell(row) ==0 ? 0 :  column.cell(row)}}%</mat-cell>
               </div>
                 <div *ngIf="column.columnDef == 'download'">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</mat-header-cell>
