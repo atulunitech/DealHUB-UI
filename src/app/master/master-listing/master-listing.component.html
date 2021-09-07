@@ -11,7 +11,7 @@
 
      
       </div>
-      <div> <button mat-flat-button class="creat_bt cu_width" (click)="createType()" style="margin-left: 20px;" >Create</button></div>
+      <div [ngStyle]="{'display': (masterType == 'DOA Matrix Messages') ? 'none' : 'block'}"> <button mat-flat-button class="creat_bt cu_width" (click)="createType()" style="margin-left: 20px;" >Create</button></div>
   </div>
   
 </div>
