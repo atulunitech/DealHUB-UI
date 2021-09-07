@@ -155,8 +155,17 @@ class filesdetail
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
      (params => {
-      this.dh_id=params["dh_id"];
-      this.dh_header_id=params["dh_header_id"];
+      let getdh_id = params["dh_id"].split("*$");
+      let Resultdata = getdh_id[0];
+      this.dh_id = getdh_id[1];
+
+    
+     let getdh_header_id = params["dh_header_id"].split("*$");
+     let Result = getdh_header_id[0];
+     this.dh_header_id = getdh_header_id[1];
+
+      // this.dh_id=params["dh_id"];
+      // this.dh_header_id=params["dh_header_id"];
       this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
@@ -190,6 +199,15 @@ class filesdetail
       this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
       this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
+      {
+        this.obfsummaryform.controls["MarginException"].setValue(true);
+        this.disableMargincontrol=true;
+      }
+      else{
+        this.obfsummaryform.controls["MarginException"].setValue(false);
+        this.disableMargincontrol=false;
+      }
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)

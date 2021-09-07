@@ -1493,12 +1493,13 @@ onchange(evt,solutioncategory)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
-    this.listData.paginator.page.emit({
+   this.listData.paginator.page.emit({
       length: this.paginator.getNumberOfPages(),
     pageIndex: 0,
     pageSize: 10,
     previousPageIndex:0 
     })
+
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -1786,6 +1787,7 @@ downloaddetailFinalAgg(row)
       }
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
        this.bindfilterobjectoninit();
+      
     },
     (error:HttpErrorResponse)=>{
     
@@ -2333,14 +2335,14 @@ downloaddetailFinalAgg(row)
    {
     //  var temp=this.calculatepaginatorlength(this.filterdata.length)
     //  this.paginator.length=this.filterdata.length <7 ? 1 : temp ;
-     this.paginator.length=this.filterdata.length;
-    this.paginator.firstPage()
-    this.paginator.pageIndex=0;
-    this.listData.sort = this.sort;
-    this.listData.paginator = this.paginator;
+
     if(this.statusfilterselected)
     {
-      
+      this.paginator.length=this.filterdata.length;
+      this.paginator.firstPage()
+      this.paginator.pageIndex=0;
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
       this.listData.paginator.page.emit({
         length: this.paginator.getNumberOfPages(),
       pageIndex: 0,
@@ -2350,6 +2352,11 @@ downloaddetailFinalAgg(row)
     }
     else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
     {
+      this.paginator.length=this.filterdata.length;
+      this.paginator.firstPage()
+      this.paginator.pageIndex=0;
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
       this.listData.paginator.page.emit({
         length: this.paginator.getNumberOfPages(),
       pageIndex: 0,
@@ -2417,8 +2424,13 @@ downloaddetailFinalAgg(row)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+  
+     let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+   
+     let dh_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_id;
+     let dh_header_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_header_id;
 
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary',dh_id,dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
   on_Highlight(check){
