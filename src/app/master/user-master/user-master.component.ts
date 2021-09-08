@@ -722,6 +722,16 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    if(this._masterservice.usermasterform.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.userlabel = "Create User";
     this.enablecreate = true;
     this.allbranchselected = false;
@@ -738,6 +748,8 @@ showhidebrranchfn_out()
     this.verticalchips = [];
     this.verticalchipstodisplay = [];
     this.displaydiv = true;
+    this._masterservice.usermasterform.markAsUntouched();
+    this._masterservice.usermasterform.markAsPristine();
   }
 
   bindbranchtoarray(arr)
