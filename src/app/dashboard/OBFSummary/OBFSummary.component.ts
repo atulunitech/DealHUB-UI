@@ -129,6 +129,7 @@ class filesdetail
   disableLOIPOmsg:string="";
   disablefinalaggmsg:string="";
   
+  
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
@@ -181,7 +182,7 @@ class filesdetail
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-     
+      this.commonService.show();
     let getrandom = data.split("*$");
     let Resultdata = getrandom[0];
     let actualrandom = getrandom[1];
@@ -296,7 +297,9 @@ class filesdetail
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
-
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 100);
       if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
       
       {
@@ -607,6 +610,14 @@ class filesdetail
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
+          let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+          if(indexofLOI > -1)
+          {
+             //this.disableLOIPO=false;
+          }
+          else{
+            this.Loipodropdown="";
+          }
             if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
             {
               let savefile:filesdetail = new filesdetail();
@@ -635,9 +646,11 @@ class filesdetail
               this.filelist.push(savefile);
               this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
+
             
         }
       }
+     
     }
   
   }
@@ -1200,6 +1213,7 @@ class filesdetail
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
       SaveAttachment._created_by=localStorage.getItem("UserCode");
+      this.Loipodropdown="";
       this.Attachments.push(SaveAttachment);
     }
     if(this.Attachments.length !=0)
@@ -1701,18 +1715,21 @@ class filesdetail
     sendDetails()
     {
 //var UserCode= localStorage.getItem("UserCode");
+     
      let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
      var _ToEmailId=this.EmailAddress.value;
-
+    
       if(_ToEmailId != null)
       {
         var result=this.validateEmail(_ToEmailId);
         if(result)
         {
-          
+          this.dialog.closeAll();
           this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);
+            this.commonService.show();
+            
             if(result[0].status=="Success")
             {
               this._mesgBox.showSucess(result[0].message); 
@@ -1721,9 +1738,14 @@ class filesdetail
             {
               this._mesgBox.showError(result[0].message); 
             }
-            this.dialog.closeAll();
+            setTimeout(() => {
+              this.commonService.hide();
+            }, 100);
+           
             this.EmailAddress.setValue("");
+            
           })
+          
         }
         else
         {
@@ -1737,6 +1759,7 @@ class filesdetail
       
     }
     validateEmail(email) {
+     
       var test=email.split(',')
       
       const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1752,6 +1775,7 @@ class filesdetail
         }
         
       }
+     
       return true;
      
     }
