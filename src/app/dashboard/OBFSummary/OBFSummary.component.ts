@@ -129,6 +129,7 @@ class filesdetail
   disableLOIPOmsg:string="";
   disablefinalaggmsg:string="";
   
+  
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
@@ -1703,18 +1704,21 @@ class filesdetail
     sendDetails()
     {
 //var UserCode= localStorage.getItem("UserCode");
+     
      let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
      var _ToEmailId=this.EmailAddress.value;
-
+    
       if(_ToEmailId != null)
       {
         var result=this.validateEmail(_ToEmailId);
         if(result)
         {
-          
+          this.dialog.closeAll();
           this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);
+            this.commonService.show();
+            
             if(result[0].status=="Success")
             {
               this._mesgBox.showSucess(result[0].message); 
@@ -1723,9 +1727,14 @@ class filesdetail
             {
               this._mesgBox.showError(result[0].message); 
             }
-            this.dialog.closeAll();
+            setTimeout(() => {
+              this.commonService.hide();
+            }, 100);
+           
             this.EmailAddress.setValue("");
+            
           })
+          
         }
         else
         {
@@ -1739,6 +1748,7 @@ class filesdetail
       
     }
     validateEmail(email) {
+     
       var test=email.split(',')
       
       const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1754,6 +1764,7 @@ class filesdetail
         }
         
       }
+     
       return true;
      
     }
