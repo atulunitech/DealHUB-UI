@@ -111,6 +111,17 @@ export class AuthInterceptor implements HttpInterceptor {
                         }
                       }
                       return error;
+                    }),
+                    finalize(() => {
+                    //  alert("abc");
+                      this.dialog.closeAll();
+             
+                      this.commonService.resetclicked.next(false);
+                    //  this.dialog.closeAll();
+                    setTimeout(() => {
+                      this.commonService.hide();
+                    }, 3000);
+                    
                     })
                   );
             }
@@ -127,18 +138,18 @@ export class AuthInterceptor implements HttpInterceptor {
          
 
        
-        return next.handle(req).pipe(
-            finalize(() => {
+        // return next.handle(req).pipe(
+        //     finalize(() => {
               
-              this.dialog.closeAll();
+        //       this.dialog.closeAll();
              
-              this.commonService.resetclicked.next(false);
-            //  this.dialog.closeAll();
-            setTimeout(() => {
-              this.commonService.hide();
-            }, 3000);
+        //       this.commonService.resetclicked.next(false);
+        //     //  this.dialog.closeAll();
+        //     setTimeout(() => {
+        //       this.commonService.hide();
+        //     }, 3000);
             
-            })
-          );
+        //     })
+        //   );
     }
 }
