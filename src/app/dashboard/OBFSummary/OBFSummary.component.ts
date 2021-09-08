@@ -181,7 +181,7 @@ class filesdetail
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-     
+      this.commonService.show();
     let getrandom = data.split("*$");
     let Resultdata = getrandom[0];
     let actualrandom = getrandom[1];
@@ -296,7 +296,9 @@ class filesdetail
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
-
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 100);
       if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
       
       {
