@@ -610,6 +610,14 @@ class filesdetail
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
+          let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+          if(indexofLOI > -1)
+          {
+             //this.disableLOIPO=false;
+          }
+          else{
+            this.Loipodropdown="";
+          }
             if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
             {
               let savefile:filesdetail = new filesdetail();
@@ -638,9 +646,11 @@ class filesdetail
               this.filelist.push(savefile);
               this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
+
             
         }
       }
+     
     }
   
   }
@@ -1203,6 +1213,7 @@ class filesdetail
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
       SaveAttachment._created_by=localStorage.getItem("UserCode");
+      this.Loipodropdown="";
       this.Attachments.push(SaveAttachment);
     }
     if(this.Attachments.length !=0)
