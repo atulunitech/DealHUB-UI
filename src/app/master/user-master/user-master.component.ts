@@ -614,7 +614,8 @@ showhidebrranchfn_out()
     //let res =  this.confirmDialog("Are you sure to change to cash users?");
     
    // console.log(res);
-  const message = "Are you sure to change to cash users?";
+ // const message = "Are you sure to change to cash users?";
+  const message = data.is_cassh_user == "0"? " Are you sure you want to change this user to cash user ?":"Are you sure you want to change this user to non cash user ?";
    let result = false;
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
