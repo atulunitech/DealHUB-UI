@@ -31,6 +31,7 @@ import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
 import { loginservices } from 'src/app/auth/login/LoginServices';
 import { DatePipe } from '@angular/common';
 import {MatMenuTrigger} from '@angular/material/menu';
+import { Subscription } from 'rxjs';
 //region Model
 export class DashBoardModel
 {
@@ -220,6 +221,7 @@ export class DashboardComponent implements OnInit {
   {key: 'solutioncategory_name', displayName: 'Solution Category Name'}]
   private customizedKeySet = ['key', 'value']
   tableFilteredData: any[] = []
+  resetclickedsubscription: Subscription;
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   // POC data ends
@@ -1758,8 +1760,8 @@ downloaddetailFinalAgg(row)
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
       console.log("DashBoardData");
-      this.commonService.getresetclickedevent().subscribe(res =>{
-        //alert(res);
+   this.resetclickedsubscription = this.commonService.getresetclickedevent().subscribe(res =>{
+      //  alert(res);
         if(res == true)
         {
           setTimeout(() => {
@@ -3376,6 +3378,8 @@ getattachment(dh_id,dh_header_id)
      // return randnum.toString().trim() + (len + 1).toString().trim();
      return randnum.toString().trim();
     }
-
+    ngOnDestroy() { 
+      this.resetclickedsubscription.unsubscribe();
+  }
   
 }
