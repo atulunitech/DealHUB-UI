@@ -400,6 +400,7 @@ class filesdetail
     
       if (error.status==401)
       {
+        this._mesgBox.showError("Unauthorized access.");
         this.router.navigateByUrl('/login');
         
       }
