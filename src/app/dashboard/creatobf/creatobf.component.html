@@ -886,7 +886,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true">More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div  *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length < 60)">
+                      <div  class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length < 60)">
                         {{(_obfservices.obfmodel._dh_desc)}}  
                        </div>
                    </div> 
@@ -931,7 +931,7 @@
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
-                          <div  *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length < 60)">
+                          <div  class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length < 60)">
                             {{(_obfservices.obfmodel._assumptions_and_risks)}}  
                            </div>
                        </div>
@@ -950,7 +950,7 @@
                         <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
                         <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
+                      <div class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
                         {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                        </div>
                    </div>
