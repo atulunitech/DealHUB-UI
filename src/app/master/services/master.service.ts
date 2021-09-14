@@ -296,7 +296,8 @@ export class MasterService {
       lastname : new FormControl("",[Validators.required,this.NoInvalidCharacters]),
       role : new FormControl("",Validators.required),
       email : new FormControl("",[Validators.required,Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")]),
-      mobile : new FormControl("",[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
+     // mobile : new FormControl("",[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
+     mobile : new FormControl("",[Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]),
       branch : new FormControl("",Validators.required),
       verticals : new FormControl("",Validators.required),
       Active: new FormControl("",Validators.required)
