@@ -199,7 +199,10 @@ class filesdetail
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
+
+      this.dh_id= this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
       this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+      
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
       {
         this.obfsummaryform.controls["MarginException"].setValue(true);
