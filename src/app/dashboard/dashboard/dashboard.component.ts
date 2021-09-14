@@ -1062,6 +1062,10 @@ datefilter()
 this.listData=new MatTableDataSource(this.filterdata);
 this.listData.sort = this.sort;
 this.listData.paginator = this.paginator;
+
+
+
+
 }
 
   ngAfterViewInit() {
@@ -2344,8 +2348,21 @@ downloaddetailFinalAgg(row)
    {
     //  var temp=this.calculatepaginatorlength(this.filterdata.length)
     //  this.paginator.length=this.filterdata.length <7 ? 1 : temp ;
-
-    if(this.statusfilterselected)
+if(this.dateselected )
+{
+  this.paginator.length=this.filterdata.length;
+  this.paginator.firstPage()
+  this.paginator.pageIndex=0;
+  this.listData.sort = this.sort;
+  this.listData.paginator = this.paginator;
+  this.listData.paginator.page.emit({
+    length: this.paginator.getNumberOfPages(),
+  pageIndex: 0,
+  pageSize: 10,
+  previousPageIndex:0 
+  })
+}
+  else  if(this.statusfilterselected)
     {
       this.paginator.length=this.filterdata.length;
       this.paginator.firstPage()
