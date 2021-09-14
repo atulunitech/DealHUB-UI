@@ -193,6 +193,7 @@ class filesdetail
       var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
@@ -202,7 +203,7 @@ class filesdetail
 
       this.dh_id= this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
       this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
-      
+
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
       {
         this.obfsummaryform.controls["MarginException"].setValue(true);
@@ -361,27 +362,45 @@ class filesdetail
    {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
-      var tempservicecat="";
-      var Tempservice="";
+     
      
       for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-      
+        var tempservicecat="";
+        var Tempservice="";
         Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
 
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
           if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
           {
-            
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            if(this._obfservices.obfsummarymodel.solutionDetails[t].solution_name !="Other")
+            {
+              tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            }
+            else if (this._obfservices.obfsummarymodel.solutionDetails[t].solution_name =="Other")
+            {
+              if(this._obfservices.obfsummarymodel.OtherServices.length !=0)
+              {
+                let index= this._obfservices.obfsummarymodel.OtherServices.findIndex(obj => obj.solutionName == Tempservice);
+                if(index > -1)
+                {
+                  tempservicecat += ',Other -'+ this._obfservices.obfsummarymodel.OtherServices[index].Other_solution_name;
+                }
+              }
+           
+              
+            }
+           
+           
           }
         }
+        tempservicecat=tempservicecat.substring(1);
+        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
       
-       tempservicecat=tempservicecat.substring(1);
-       finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
-       
       }
+     
+
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
@@ -1421,6 +1440,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
       //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });

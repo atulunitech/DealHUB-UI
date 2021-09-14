@@ -99,7 +99,12 @@ class obfsummary{
   servicelist:solutionservicelist[];
   PPl_details:PPl_details[];
   SAPdetail:SAPdetail[];
-
+  OtherServices:OtherServices[];
+}
+class OtherServices
+{
+  solutionName:string;
+  Other_solution_name:string;
 }
 class solutionservicelist
 {
