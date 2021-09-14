@@ -169,11 +169,17 @@ showhidebrranchfn_out()
   applyFilter() {
     this.listData.filter = this.searchwords.trim().toLowerCase();
      this.paginator.length=this.listData.filteredData.length;
-     this.paginator.firstPage()
-     this.paginator.pageIndex=1;
+    // this.paginator.firstPage();
+     this.paginator.pageIndex=0;
      this.listData.sort = this.sort;
      this.listData.paginator = this.paginator;
-   // this.pageventcall(null);
+     this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 7,
+    previousPageIndex:0 
+    })
+    //this.onChangePage(null);
   }
 
   onChangePage(pe:PageEvent) {
@@ -608,7 +614,8 @@ showhidebrranchfn_out()
     //let res =  this.confirmDialog("Are you sure to change to cash users?");
     
    // console.log(res);
-  const message = "Are you sure to change to cash users?";
+ // const message = "Are you sure to change to cash users?";
+  const message = data.is_cassh_user == "0"? " Are you sure you want to change this user to cash user ?":"Are you sure you want to change this user to non cash user ?";
    let result = false;
   const dialogData = new ConfirmDialogModel("Confirm Action", message);
 
@@ -716,6 +723,16 @@ showhidebrranchfn_out()
 
   Showdiv()
   {
+    if(this._masterservice.usermasterform.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.userlabel = "Create User";
     this.enablecreate = true;
     this.allbranchselected = false;
@@ -732,6 +749,8 @@ showhidebrranchfn_out()
     this.verticalchips = [];
     this.verticalchipstodisplay = [];
     this.displaydiv = true;
+    this._masterservice.usermasterform.markAsUntouched();
+    this._masterservice.usermasterform.markAsPristine();
   }
 
   bindbranchtoarray(arr)

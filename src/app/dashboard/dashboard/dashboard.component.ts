@@ -31,6 +31,7 @@ import { LoginModel } from 'src/app/auth/ResetPassword/ResetPassword.component';
 import { loginservices } from 'src/app/auth/login/LoginServices';
 import { DatePipe } from '@angular/common';
 import {MatMenuTrigger} from '@angular/material/menu';
+import { Subscription } from 'rxjs';
 //region Model
 export class DashBoardModel
 {
@@ -220,6 +221,7 @@ export class DashboardComponent implements OnInit {
   {key: 'solutioncategory_name', displayName: 'Solution Category Name'}]
   private customizedKeySet = ['key', 'value']
   tableFilteredData: any[] = []
+  resetclickedsubscription: Subscription;
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   // POC data ends
@@ -250,7 +252,12 @@ export class DashboardComponent implements OnInit {
   statusfilter:any[]=[];
   filterdata:any[]=[];
   // @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+@ViewChild(MatPaginator) paginator: MatPaginator;
+
+//   @ViewChild(MatPaginator, {static: true}) set paginator (paginator: MatPaginator) {
+//     this.dataSource.paginator = paginator;
+// }
+
   @ViewChild('chipList') SAPIOchiplist: MatChipList;
   @ViewChild('chipList1') chipList1: MatChipList;
   public myForm1: FormGroup;
@@ -319,7 +326,14 @@ export class DashboardComponent implements OnInit {
   this.listData=new MatTableDataSource(datefilter);
   this.listData.sort = this.sort;
  this.listData.paginator = this.paginator;
+
  this.addColumn(this.selectedcolumn);
+ this.listData.paginator.page.emit({
+  length: this.paginator.getNumberOfPages(),
+pageIndex: 0,
+pageSize: 10,
+previousPageIndex:0 
+})
     }
    }
 
@@ -1048,6 +1062,10 @@ datefilter()
 this.listData=new MatTableDataSource(this.filterdata);
 this.listData.sort = this.sort;
 this.listData.paginator = this.paginator;
+
+
+
+
 }
 
   ngAfterViewInit() {
@@ -1481,6 +1499,13 @@ onchange(evt,solutioncategory)
     this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+   this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+
     // this.filterdata = this.tableFilteredData;
     /*this.tableFilteredData = this.tableFilteredData.filter(
       (s => (o: any) => 
@@ -1517,6 +1542,7 @@ onchange(evt,solutioncategory)
     dialogRef.afterClosed().subscribe(result => {
       this.dialog.closeAll();
         console.log('The dialog was closed');
+        this.commonService.resetclicked.next(false);
         // this.animal = result;
     });
   }
@@ -1542,9 +1568,27 @@ openModal(templateRef,row) {
     Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
     this._obfservices.editObfObject = JSON.parse(Resultdata);
     this._obfservices.initializeobfmodelandform();
+
+    // added on 01-Sep-2021 because servicelist were not populated
+    this.Solutionservicesarray = [];
+    let result = this.Solutiongroup.filter(obj => {
+      return obj.value === this._obfservices.editObfObject._solution_category_id.toString();
+    });
+    if(result.length > 0)
+    {
+    this.servicecate=result[0].viewValue;
+    this.Solutionservicesarray = result[0].Solutionservices;
+    }
+    //end
     
     this.servicesControl.setValue(this._obfservices.servicesarray);
       this._obfservices.ObfCreateForm.patchValue({Otherservicesandcategories:this._obfservices.servicesarray});
+      //added on 31-Aug-2021 for unique sector
+      let ressec = this.sectorlist.filter(obj =>{
+        return obj.vertical_id === this._obfservices.editObfObject._vertical_id;
+      });
+      this.sectorlist = <sectors[]>ressec;
+      //end
       var resultnew = this.subsectorlist.filter(obj => {
         return obj.Sector_Id === this._obfservices.editObfObject._Sector_Id;
       });
@@ -1721,8 +1765,8 @@ downloaddetailFinalAgg(row)
     this._dashboardservice.GetDashBoardData(this._dashboardmodel).subscribe(Result=>{
     
       console.log("DashBoardData");
-      this.commonService.getresetclickedevent().subscribe(res =>{
-        //alert(res);
+   this.resetclickedsubscription = this.commonService.getresetclickedevent().subscribe(res =>{
+      //  alert(res);
         if(res == true)
         {
           setTimeout(() => {
@@ -1737,6 +1781,7 @@ downloaddetailFinalAgg(row)
         Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
       console.log(Resultdata);
       var loginresult =Resultdata;
+      this.commonService.show();
       this.dashboardData=JSON.parse(Resultdata);
       this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
@@ -1750,6 +1795,12 @@ downloaddetailFinalAgg(row)
       }
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
        this.bindfilterobjectoninit();
+      
+       setTimeout(() => {
+        this.commonService.hide();
+      }, 100);
+      
+      
     },
     (error:HttpErrorResponse)=>{
     
@@ -2297,11 +2348,49 @@ downloaddetailFinalAgg(row)
    {
     //  var temp=this.calculatepaginatorlength(this.filterdata.length)
     //  this.paginator.length=this.filterdata.length <7 ? 1 : temp ;
-     this.paginator.length=this.filterdata.length;
-    this.paginator.firstPage()
-    this.paginator.pageIndex=0;
-    this.listData.sort = this.sort;
-    this.listData.paginator = this.paginator;
+if(this.dateselected )
+{
+  this.paginator.length=this.filterdata.length;
+  this.paginator.firstPage()
+  this.paginator.pageIndex=0;
+  this.listData.sort = this.sort;
+  this.listData.paginator = this.paginator;
+  this.listData.paginator.page.emit({
+    length: this.paginator.getNumberOfPages(),
+  pageIndex: 0,
+  pageSize: 10,
+  previousPageIndex:0 
+  })
+}
+  else  if(this.statusfilterselected)
+    {
+      this.paginator.length=this.filterdata.length;
+      this.paginator.firstPage()
+      this.paginator.pageIndex=0;
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.paginator.length=this.filterdata.length;
+      this.paginator.firstPage()
+      this.paginator.pageIndex=0;
+      this.listData.sort = this.sort;
+      this.listData.paginator = this.paginator;
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+   
    }
   
     //this.listData.paginator.firstPage();
@@ -2361,8 +2450,13 @@ downloaddetailFinalAgg(row)
     console.log("check obf summary data");
     // this.obfsummary.dh_id = Row.dh_id;
     // this.obfsummary._user_id =parseInt(localStorage.getItem('UserName'));
+  
+     let randomNumber:number = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+   
+     let dh_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_id;
+     let dh_header_id = "$!$030!m0l0l"+randomNumber.toString() + "*$" +Row.dh_header_id;
 
-    this.router.navigate(['/DealHUB/dashboard/OBFSummary',Row.dh_id,Row.dh_header_id,Row.shortcurrentstatus]);
+    this.router.navigate(['/DealHUB/dashboard/OBFSummary',dh_id,dh_header_id,Row.shortcurrentstatus]);
    //  this.router.navigate(['/DealHUB/dashboard/OBFSummary'], { queryParams: { dh_id: Row.dh_id }, queryParamsHandling: 'preserve' });
   }
   on_Highlight(check){
@@ -2631,7 +2725,7 @@ downloaddetailFinalAgg(row)
       else if (selection==1)
       {
          //Approved section
-         this.TableHeadLine="Apporved OBF Table";
+         this.TableHeadLine="Approved OBF Table";
          this.listData=new MatTableDataSource(this.dashboardData); 
          this.filterdata=this.dashboardData.filter(obj=>
           {
@@ -2696,8 +2790,31 @@ downloaddetailFinalAgg(row)
       }
      
     }
+  
+    this.paginator.length=this.filterdata.length;
+    this.paginator.firstPage()
+    this.paginator.pageIndex=0;
     this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
+    if(this.statusfilterselected)
+    {
+      
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
+    else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+    {
+      this.listData.paginator.page.emit({
+        length: this.paginator.getNumberOfPages(),
+      pageIndex: 0,
+      pageSize: 10,
+      previousPageIndex:0 
+      })
+    }
   }
 PPLclick(selection)
 {
@@ -2904,8 +3021,31 @@ PPLclick(selection)
    
   }
 
+
+  this.paginator.length=this.filterdata.length;
+  this.paginator.firstPage()
+  this.paginator.pageIndex=0;
   this.listData.sort = this.sort;
   this.listData.paginator = this.paginator;
+  if(this.statusfilterselected)
+  {
+   
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
+  else if(this.filtersToSearch.length <= 0 && !this.dateselected && !this.statusfilterselected)
+  {
+    this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 10,
+    previousPageIndex:0 
+    })
+  }
 }
 
 editSubmit()
@@ -3253,6 +3393,8 @@ getattachment(dh_id,dh_header_id)
      // return randnum.toString().trim() + (len + 1).toString().trim();
      return randnum.toString().trim();
     }
-
+    ngOnDestroy() { 
+      this.resetclickedsubscription.unsubscribe();
+  }
   
 }

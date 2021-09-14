@@ -129,6 +129,7 @@ class filesdetail
   disableLOIPOmsg:string="";
   disablefinalaggmsg:string="";
   
+  
   disablefinalagg:boolean=false;
     @ViewChild('callAPIDialog') callAPIDialog: TemplateRef<any>;
     @ViewChild('shareDialog') shareDialog: TemplateRef<any>;
@@ -155,8 +156,17 @@ class filesdetail
      //this.dh_id= this.route.snapshot.queryParams["dh_id"];
      this.route.params.subscribe
      (params => {
-      this.dh_id=params["dh_id"];
-      this.dh_header_id=params["dh_header_id"];
+      let getdh_id = params["dh_id"].split("*$");
+      let Resultdata = getdh_id[0];
+      this.dh_id = getdh_id[1];
+
+    
+     let getdh_header_id = params["dh_header_id"].split("*$");
+     let Result = getdh_header_id[0];
+     this.dh_header_id = getdh_header_id[1];
+
+      // this.dh_id=params["dh_id"];
+      // this.dh_header_id=params["dh_header_id"];
       this.shortcurrentstatus=params["shortcurrentstatus"];
       this.getdetailsfordh_id(this.dh_id);
      }
@@ -172,7 +182,7 @@ class filesdetail
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-     
+      this.commonService.show();
     let getrandom = data.split("*$");
     let Resultdata = getrandom[0];
     let actualrandom = getrandom[1];
@@ -183,13 +193,26 @@ class filesdetail
       var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
       this._obfservices.obfsummarymodel.PPl_details=jsondata.PPl_details;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
-      
+
+      this.dh_id= this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
+      this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
+
+      if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
+      {
+        this.obfsummaryform.controls["MarginException"].setValue(true);
+        this.disableMargincontrol=true;
+      }
+      else{
+        this.obfsummaryform.controls["MarginException"].setValue(false);
+        this.disableMargincontrol=false;
+      }
       if(this.role_name=='CFO')
       {
        if(this._obfservices.obfsummarymodel.uploadDetails[0].exceptionalcase_cfo==1)
@@ -278,7 +301,9 @@ class filesdetail
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
-
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 100);
       if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
       
       {
@@ -337,27 +362,45 @@ class filesdetail
    {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
-      var tempservicecat="";
-      var Tempservice="";
+     
      
       for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-      
+        var tempservicecat="";
+        var Tempservice="";
         Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
 
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
           if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
           {
-            
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            if(this._obfservices.obfsummarymodel.solutionDetails[t].solution_name !="Other")
+            {
+              tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            }
+            else if (this._obfservices.obfsummarymodel.solutionDetails[t].solution_name =="Other")
+            {
+              if(this._obfservices.obfsummarymodel.OtherServices.length !=0)
+              {
+                let index= this._obfservices.obfsummarymodel.OtherServices.findIndex(obj => obj.solutionName == Tempservice);
+                if(index > -1)
+                {
+                  tempservicecat += ',Other -'+ this._obfservices.obfsummarymodel.OtherServices[index].Other_solution_name;
+                }
+              }
+           
+              
+            }
+           
+           
           }
         }
+        tempservicecat=tempservicecat.substring(1);
+        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
       
-       tempservicecat=tempservicecat.substring(1);
-       finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
-       
       }
+     
+
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
@@ -379,6 +422,7 @@ class filesdetail
     
       if (error.status==401)
       {
+        this._mesgBox.showError("Unauthorized access.");
         this.router.navigateByUrl('/login');
         
       }
@@ -589,6 +633,14 @@ class filesdetail
       {
         for(var i=0;i<this._obfservices.obfsummarymodel.AttachmentDetails.length;i++)
         {
+          let indexofLOI=this._obfservices.obfsummarymodel.AttachmentDetails.findIndex(obj=> obj.description=="LOI" || obj.description=="PO"|| obj.description=="Agreement");
+          if(indexofLOI > -1)
+          {
+             //this.disableLOIPO=false;
+          }
+          else{
+            this.Loipodropdown="";
+          }
             if(this._obfservices.obfsummarymodel.AttachmentDetails[i].description=="PO")
             {
               let savefile:filesdetail = new filesdetail();
@@ -617,9 +669,11 @@ class filesdetail
               this.filelist.push(savefile);
               this.Loipodropdown=this._obfservices.obfsummarymodel.AttachmentDetails[i].description;
             }
+
             
         }
       }
+     
     }
   
   }
@@ -1182,6 +1236,7 @@ class filesdetail
       SaveAttachment._fpath = "Remove all Details"; 
       SaveAttachment._description = type ;
       SaveAttachment._created_by=localStorage.getItem("UserCode");
+      this.Loipodropdown="";
       this.Attachments.push(SaveAttachment);
     }
     if(this.Attachments.length !=0)
@@ -1385,6 +1440,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
       //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });
@@ -1683,18 +1739,21 @@ class filesdetail
     sendDetails()
     {
 //var UserCode= localStorage.getItem("UserCode");
+     
      let encryptedusercode = this.commonService.setEncryption(this.commonService.commonkey,localStorage.getItem('UserCode'));
      var _ToEmailId=this.EmailAddress.value;
-
+    
       if(_ToEmailId != null)
       {
         var result=this.validateEmail(_ToEmailId);
         if(result)
         {
-          
+          this.dialog.closeAll();
           this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);
+            this.commonService.show();
+            
             if(result[0].status=="Success")
             {
               this._mesgBox.showSucess(result[0].message); 
@@ -1703,9 +1762,14 @@ class filesdetail
             {
               this._mesgBox.showError(result[0].message); 
             }
-            this.dialog.closeAll();
+            setTimeout(() => {
+              this.commonService.hide();
+            }, 100);
+           
             this.EmailAddress.setValue("");
+            
           })
+          
         }
         else
         {
@@ -1719,6 +1783,7 @@ class filesdetail
       
     }
     validateEmail(email) {
+     
       var test=email.split(',')
       
       const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1734,6 +1799,7 @@ class filesdetail
         }
         
       }
+     
       return true;
      
     }

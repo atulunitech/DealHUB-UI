@@ -40,7 +40,7 @@
                         this._obfservices.obfsummarymodel.uploadDetails[0].phase_code=='PPL' || 
                         this._obfservices.obfsummarymodel.PPl_details != undefined ||
                          this.shortcurrentstatus =='cApproved' || 
-                         (this.shortcurrentstatus =='approved' && this.privilege_name== 'OBF Initiator'))"
+                         (this.shortcurrentstatus =='approved' && this.privilege_name== 'OBF Initiator')  || (this.shortcurrentstatus =='approved' && this.privilege_name== 'PPL Initiator'))"
 
                          [matMenuTriggerFor]="menunew" #menuNEwTrigger="matMenuTrigger"
                          (mouseover)="menuNEwTrigger.openMenu()" (mouseleave)="menuNEwTrigger.closeMenu()" > 
@@ -355,7 +355,7 @@
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
-                          <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length < 60)">
+                          <div class="prev_dis"  *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks.length < 60)">
                             {{(_obfservices.obfsummarymodel.uploadDetails[0].assumptions_and_risks)}}  
                            </div>
                        </div>
@@ -374,7 +374,7 @@
                           <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
                           <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
                         </div>
-                        <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc.length < 20)">
+                        <div  class="prev_dis"   *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc.length < 20)">
                           {{(_obfservices.obfsummarymodel.uploadDetails[0].payment_term_desc)}}  
                          </div>
                    </div>
@@ -872,7 +872,7 @@
       color: #2258bf;
       font-weight: 600;
       font-size: 0.9rem;">Close</button>
-      <button (click)="sendDetails()" mat-button mat-flat-button class="creat_bt cu_width"  [disabled]='EmailAddress.invalid'
+      <button (click)="sendDetails()"  mat-button mat-flat-button class="creat_bt cu_width"  [disabled]='EmailAddress.invalid'
        class="creat_bt" mat-flat-button>Send Now</button>
      </mat-dialog-actions>
   </ng-template>

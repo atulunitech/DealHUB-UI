@@ -83,6 +83,17 @@ dontshowforDOA:boolean = true;
     
      applyFilter() {
       this.listData.filter = this.searchwords.trim().toLowerCase();
+     this.paginator.length=this.listData.filteredData.length;
+    // this.paginator.firstPage();
+     this.paginator.pageIndex=0;
+     this.listData.sort = this.sort;
+     this.listData.paginator = this.paginator;
+     this.listData.paginator.page.emit({
+      length: this.paginator.getNumberOfPages(),
+    pageIndex: 0,
+    pageSize: 7,
+    previousPageIndex:0 
+    })
     }
   ngOnInit(): void {
     this.userdetails = new Mstcommonparameters();
@@ -119,7 +130,7 @@ dontshowforDOA:boolean = true;
       // Validators.email,
       Role_code : new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
       role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
-      equivalent_cassh_role_name:new FormControl('', [Validators.required,this.NoInvalidCharacters,this.noWhitespaceValidator]),
+      equivalent_cassh_role_name:new FormControl('', [this.NoInvalidCharacters]),
       privilege:new FormControl('', [Validators.required]),
       Rolestatus:new FormControl("", [Validators.required])
     });
@@ -407,7 +418,7 @@ dontshowforDOA:boolean = true;
  
   if( this.masterType=="Project Type")
   {
-    if(this.enablecreate && (this.ProjectTypeForm.dirty))
+    if(this.ProjectTypeForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -423,10 +434,11 @@ dontshowforDOA:boolean = true;
     this.ProjectTypeForm.controls.ProjectCode.setValue(Details.Project_Code);
     this.ProjectTypeForm.controls.ProjectName.setValue(Details.Project_Name);
     this.ProjectTypeForm.controls.ProjectStatus.setValue(Details.Status=="Active"?"1":"0");
+    this.ProjectTypeForm.markAsPristine();
   }
   else if(this.masterType=="Privilege")
   {
-    if(this.enablecreate && (this.PrivilegeForm.dirty))
+    if(this.PrivilegeForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -441,11 +453,11 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Privilege_name;
     this.PrivilegeForm.controls.privilege_name.setValue(Details.Privilege_name);
     this.PrivilegeForm.controls.PrivilegeStatus.setValue(Details.Status=="Active"?"1":"0");
-    
+    this.PrivilegeForm.markAsPristine();
   }
   else if(this.masterType=="Roles")
   {
-    if(this.enablecreate && (this.RoleForm.dirty))
+    if(this.RoleForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -479,11 +491,11 @@ dontshowforDOA:boolean = true;
     } 
     this.RoleForm.controls.privilege.patchValue(locationarray);
     }
-  
+    this.RoleForm.markAsPristine();
   }
   else if(this.masterType=="Branch")
   {
-    if(this.enablecreate && (this.BranchForm.dirty))
+    if(this.BranchForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -499,10 +511,11 @@ dontshowforDOA:boolean = true;
     this._masterservice.branchmodel._branch_id = Details.branch_id ;
     this.BranchForm.controls.Branch_Name.setValue(Details.Branch_Name);
     this.BranchForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
+    this.BranchForm.markAsPristine();
   }
   else if(this.masterType=="Comment Type")
   {
-    if(this.enablecreate && (this.CommentForm.dirty))
+    if(this.CommentForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -517,11 +530,12 @@ dontshowforDOA:boolean = true;
     this.createoredit = "Edit : "+Details.Comment_Type;
     this._masterservice.commentmodel._comment_type_id = Details.comment_type_id ;
     this.CommentForm.controls.Comment.setValue(Details.Comment_Type);
+    this.CommentForm.markAsPristine();
     //this.BranchForm.controls.Active.setValue(Details.Active == "Active"?"1":"0");
   }
   else if(this.masterType=="Sector")
   {
-    if(this.enablecreate && (this.SectorForm.dirty))
+    if(this.SectorForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -537,10 +551,11 @@ dontshowforDOA:boolean = true;
     this._masterservice.sectormodel._Sector_Id = Details.Sector_Id ;
     this.SectorForm.controls.Sector_Name.setValue(Details.Sector_Name);
     this.SectorForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
+    this.SectorForm.markAsPristine();
   }
   else if(this.masterType=="Sub Sector")
   {
-    if(this.enablecreate && (this.SubSectorForm.dirty))
+    if(this.SubSectorForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -556,10 +571,11 @@ dontshowforDOA:boolean = true;
     this._masterservice.subsectormodel._SubSector_Id = Details.SubSector_Id ;
     this.SubSectorForm.controls.SubSector_Name.setValue(Details.Sub_Sector);
     this.SubSectorForm.controls.Sector_Id.setValue(Details.Sector_Id);
+    this.SubSectorForm.markAsPristine();
   }
   else if(this.masterType=="Solution Category")
   {
-    if(this.enablecreate && (this.SolutionCategoryForm.dirty))
+    if(this.SolutionCategoryForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -575,10 +591,11 @@ dontshowforDOA:boolean = true;
     this._masterservice.solutioncategorymodel._solutioncategory_Id = Details.solutioncategory_Id ;
     this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue(Details.Solution_Category);
     this.SolutionCategoryForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
+    this.SolutionCategoryForm.markAsPristine();
   }
   else if(this.masterType=="Solution")
   {
-    if(this.enablecreate && (this.SolutionForm.dirty))
+    if(this.SolutionForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -597,10 +614,11 @@ dontshowforDOA:boolean = true;
     this.SolutionForm.controls.SolutionCategory.setValue(Details.Solutioncategory_Id);
     this.SolutionForm.controls.Domain.setValue(Details.domain_id);
     this.SolutionForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
+    this.SolutionForm.markAsPristine();
   }
   else if(this.masterType=="DOA Matrix Messages")
   {
-    if(this.enablecreate && (this.DOAForm.dirty))
+    if(this.DOAForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -619,11 +637,12 @@ dontshowforDOA:boolean = true;
     this.DOAForm.controls.MessageFor.setValue(Details.Message_For);
     this.DOAForm.controls.Prefix.disable();
     this.DOAForm.controls.MessageFor.disable();
+    this.DOAForm.markAsPristine();
    // this.disableDOAonedit = true;
   }
   else if(this.masterType=="Forms")
   {
-    if(this.enablecreate && (this.pagesListForm.dirty))
+    if(this.pagesListForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -639,10 +658,11 @@ dontshowforDOA:boolean = true;
     this.pagesListForm.controls.Form_name.setValue(Details.Form_name);
     this.pagesListForm.controls.Form_Url.setValue(Details.Url);
     this.pagesListForm.controls.FormStatus.setValue(Details.Status=="Active"?"1":"0");
+    this.pagesListForm.markAsPristine();
   }
   else if(this.masterType=="Vertical")
   {
-    if(this.enablecreate && (this.VerticalForm.dirty))
+    if(this.VerticalForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -674,10 +694,11 @@ dontshowforDOA:boolean = true;
     } 
     this.VerticalForm.controls.Sector.patchValue(locationarray);
     }
+    this.VerticalForm.markAsPristine();
   }
   else if(this.masterType=="Business Type")
   {
-    if(this.enablecreate && (this.BusinessForm.dirty))
+    if(this.BusinessForm.dirty)
     {
       if(confirm("Current Form is unsaved,Do you wish to continue?"))
       {
@@ -694,6 +715,7 @@ dontshowforDOA:boolean = true;
     this.BusinessForm.controls.BusinessCode.setValue(Details.Business_Code);
     this.BusinessForm.controls.BusinessName.setValue(Details.Business_Name);
     this.BusinessForm.controls.Active.setValue(Details.Status == "Active"?"1":"0");
+    this.BusinessForm.markAsPristine();
   }
   this.enablecreate = false;
   }
@@ -818,25 +840,59 @@ createType()
   this.enablecreate = true;
   if(this.masterType=="Project Type")
   {
+    if(this.ProjectTypeForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowProjectTypeEdit=true;
     this.DomainId=0;
     this.createoredit = "Create Project Type";
     this.ProjectTypeForm.controls.ProjectCode.setValue("");
       this.ProjectTypeForm.controls.ProjectName.setValue("");
       this.ProjectTypeForm.controls.ProjectStatus.setValue("");
-    
+      this.ProjectTypeForm.markAsUntouched();
+      this.ProjectTypeForm.markAsPristine();
+
 
   }
   else if(this.masterType=="Privilege")
   {
+    if(this.PrivilegeForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowPrivilegeEdit=true;
     this.PrivilegeId=0;
     this.createoredit = "Create Privilege Type";
     this.PrivilegeForm.controls.privilege_name.setValue("");
     this.PrivilegeForm.controls.ProjectStatus.setValue("");
+    this.PrivilegeForm.markAsUntouched();
+    this.PrivilegeForm.markAsPristine();
   }
   else if(this.masterType=="Roles")
   {
+    if(this.RoleForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowRoleEdit=true;
     this.Role_id=0;
     this.createoredit = "Create Roles Type";
@@ -844,54 +900,126 @@ createType()
      this.RoleForm.controls.role_name.setValue("");
      this.RoleForm.controls.Rolestatus.setValue("");
      this.RoleForm.controls.equivalent_cassh_role_name.setValue("");
+     this.RoleForm.markAsUntouched();
+     this.RoleForm.markAsPristine();
   }
   else if(this.masterType == "Branch")
   {
+    if(this.ShowBranchEdit && (this.BranchForm.dirty))
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.createoredit = "Create Branch";
     this.ShowBranchEdit=true;
     this._masterservice.createnewbranchmodel();
     this._masterservice.branchmodel._branch_id = 0;
     this.BranchForm.controls.Branch_Name.setValue("");
     this.BranchForm.controls.Active.setValue("");
+    this.BranchForm.markAsUntouched();
+    this.BranchForm.markAsPristine();
   }
   else if(this.masterType == "Comment Type")
   {
+    if(this.CommentForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowCommentEdit=true;
     this.createoredit = "Create Comment Type";
     this._masterservice.createnewcommentmodel();
     this._masterservice.commentmodel._comment_type_id = 0;
     //this.CommentControl.setValue("");
     this.CommentForm.controls.Comment.setValue("");
+    this.CommentForm.markAsUntouched();
+    this.CommentForm.markAsPristine();
   }
   else if(this.masterType == "Sector")
   {
+    if(this.SectorForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowSectorEdit=true;
     this.createoredit = "Create Sector";
     this._masterservice.createnewsectormodel();
     this._masterservice.sectormodel._Sector_Id = 0;
     this.SectorForm.controls.Sector_Name.setValue("");
     this.SectorForm.controls.Active.setValue("");
+    this.SectorForm.markAsUntouched();
+    this.SectorForm.markAsPristine();
   }
   else if(this.masterType == "Sub Sector")
   {
+    if(this.SubSectorForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowSubSectorEdit=true;
     this.createoredit = "Create Sub Sector";
     this._masterservice.createnewsubsectormodel();
     this._masterservice.subsectormodel._SubSector_Id = 0;
     this.SubSectorForm.controls.SubSector_Name.setValue("");
     this.SubSectorForm.controls.Sector_Id.setValue("");
+    this.SubSectorForm.markAsUntouched();
+    this.SubSectorForm.markAsPristine();
   }
   else if(this.masterType == "Solution Category")
   {
+    if(this.SolutionCategoryForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowSolutionCategoryEdit=true;
     this.createoredit = "Create Solution Category";
     this._masterservice.createnewsolutioncategorymodel();
     this._masterservice.solutioncategorymodel._solutioncategory_Id = 0;
     this.SolutionCategoryForm.controls.SolutionCategory_Name.setValue("");
     this.SolutionCategoryForm.controls.Active.setValue("");
+    this.SolutionCategoryForm.markAsUntouched();
+    this.SolutionCategoryForm.markAsPristine();
   }
   else if(this.masterType == "Solution")
   {
+    if(this.SolutionForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowSolutionEdit=true;
     this.createoredit = "Create Solution";
     this._masterservice.createnewsolutionmodel();
@@ -901,9 +1029,21 @@ createType()
     this.SolutionForm.controls.SolutionCategory.setValue("");
     this.SolutionForm.controls.Domain.setValue("");
     this.SolutionForm.controls.Active.setValue("");
+    this.SolutionForm.markAsUntouched();
+    this.SolutionForm.markAsPristine();
   }
   else if(this.masterType == "DOA Matrix Messages")
   {
+    if(this.DOAForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowDOAEdit=true;
    // this.disableDOAonedit = false;
     this.createoredit = "Create DOA Matrix Messages";
@@ -916,18 +1056,42 @@ createType()
     this.DOAForm.controls.Message.setValue("");
     this.DOAForm.controls.Prefix.setValue("");
     this.DOAForm.controls.MessageFor.setValue("");
+    this.DOAForm.markAsUntouched();
+    this.DOAForm.markAsPristine();
   }
   else if(this.masterType=="Forms")
   {
+    if(this.pagesListForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowFormEdit=true;
     this.FormId=0;
     this.createoredit = "Create Forms Type";
     this.pagesListForm.controls.Form_name.setValue("");
     this.pagesListForm.controls.Form_Url.setValue("");
     this.pagesListForm.controls.FormStatus.setValue("");
+    this.pagesListForm.markAsUntouched();
+    this.pagesListForm.markAsPristine();
   }
   else if(this.masterType=="Vertical")
   {
+    if(this.VerticalForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowVerticalEdit=true;
     this.VerticalId=0;
     this.createoredit = "Create Vertical Type";
@@ -936,9 +1100,21 @@ createType()
     this.VerticalForm.controls.Function.setValue("");
     this.VerticalForm.controls.Sector.setValue("");
     this.VerticalForm.controls.VerticalStatus.setValue("");
+    this.VerticalForm.markAsUntouched();
+    this.VerticalForm.markAsPristine();
   }
   else if(this.masterType == "Business Type")
   {
+    if(this.BusinessForm.dirty)
+    {
+      if(confirm("Current Form is unsaved,Do you wish to continue?"))
+      {
+  
+      }
+      else{
+        return false;
+      }
+    }
     this.ShowBusinessEdit=true;
     this.createoredit = "Create Business Type";
     this._masterservice.createnewbusinessmodel();
@@ -946,6 +1122,8 @@ createType()
     this.BusinessForm.controls.BusinessCode.setValue("");
     this.BusinessForm.controls.BusinessName.setValue("");
     this.BusinessForm.controls.Active.setValue("");
+    this.BusinessForm.markAsUntouched();
+    this.BusinessForm.markAsPristine();
   }
 }
 //project Type Start

@@ -306,7 +306,7 @@ export class LoginComponent implements OnInit {
       // this.loginmodel._password = this.setEncryption(this.key,this.loginmodel._password);
       this.loginmodel._password = "";
       this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
-        this._mesgBox.showSucess("Email send.");
+        this._mesgBox.showSucess("Email sent.");
        
       });
     }
