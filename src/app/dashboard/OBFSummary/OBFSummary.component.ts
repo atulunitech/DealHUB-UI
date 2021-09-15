@@ -845,7 +845,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
-    this.commonService.show();
+    //this.commonService.show();
     sessionStorage.setItem("Action","Approve");
       if(jsondata[0].status =="success")
       {
@@ -860,9 +860,9 @@ class filesdetail
         this.commonService.hide();
       }, 1000);
     });
-    setTimeout(() => {
-      this.commonService.hide();
-    }, 3000);
+    // setTimeout(() => {
+    //   this.commonService.hide();
+    // }, 3000);
   }
   RejectDeatils()
    {  
