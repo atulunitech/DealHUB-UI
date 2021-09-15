@@ -774,7 +774,7 @@
                             ₹ Cr
                           </div>
                           <div class="prev_dis">
-                            {{_obfservices.obfmodel._total_revenue}}
+                            {{_obfservices.ObfCreateForm.controls.Totalrevenue.value}}
                           </div>
                        </div>
                        <div class="mat_previe_box">
@@ -782,7 +782,7 @@
                           Total Cost <br>₹ Cr
                         </div>
                         <div class="prev_dis">
-                          {{_obfservices.obfmodel._total_cost}}
+                          {{_obfservices.ObfCreateForm.controls.Totalcost.value}}
                         </div>
                      </div>
                      <div class="mat_previe_box">
@@ -790,7 +790,7 @@
                         Capex <br>₹ Cr 
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfmodel._capex}}
+                        {{_obfservices.ObfCreateForm.controls.Capex.value}}
                       </div>
                    </div>
                      <div class="mat_previe_box">
@@ -798,7 +798,7 @@
                         Total Margin 
                       </div>
                       <div class="prev_dis">
-                        {{_obfservices.obfmodel._total_margin}} %
+                        {{_obfservices.ObfCreateForm.controls.Totalmargin.value}} %
                       </div>
                    </div>
                    <div class="mat_previe_box">
@@ -806,7 +806,7 @@
                       Payment Terms (in Days)
                     </div>
                     <div class="prev_dis">
-                      {{_obfservices.obfmodel._payment_terms}} Days
+                      {{_obfservices.ObfCreateForm.controls.Paymentterms.value}} Days
                     </div>
                   </div>
                    <div class="mat_previe_box">
@@ -886,7 +886,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true">More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div  *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length < 60)">
+                      <div  class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Projectbrief').value.length < 60)">
                         {{(_obfservices.obfmodel._dh_desc)}}  
                        </div>
                    </div> 
@@ -911,7 +911,7 @@
                   </div>
                   <div class="prev_dis">
                     
-                    {{this._obfservices.obfmodel._sap_customer_code}}
+                    {{_obfservices.ObfCreateForm.controls.Sapcustomercode.value}}
                   </div>
                </div>
                        </div>
@@ -931,7 +931,7 @@
                             <a href="javascript:;" *ngIf="!readMore" (click)="readMore=true">More...</a>
                             <a href="javascript:;" *ngIf="readMore" (click)="readMore=false">less...</a>
                           </div>
-                          <div  *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length < 60)">
+                          <div  class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Assumptionrisks').value.length < 60)">
                             {{(_obfservices.obfmodel._assumptions_and_risks)}}  
                            </div>
                        </div>
@@ -950,7 +950,7 @@
                         <a href="javascript:;" *ngIf="!PaymentreadMore" (click)="PaymentreadMore=true">More...</a>
                         <a href="javascript:;" *ngIf="PaymentreadMore" (click)="PaymentreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
+                      <div class="prev_dis"  *ngIf="(_obfservices.ObfCreateForm.get('Payment_Terms_description').value.length< 20)">
                         {{ (_obfservices.ObfCreateForm.get('Payment_Terms_description').value)  }}  
                        </div>
                    </div>

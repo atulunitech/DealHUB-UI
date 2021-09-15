@@ -21,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
         {
           setTimeout(() => {
             this.commonService.hide();
-          }, 3500);
+          }, 4000);
           
             return next.handle(req.clone());
             
@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 });
                 setTimeout(() => {
                   this.commonService.hide();
-                }, 3000);
+                }, 4000);
                 
                 return next.handle(clonedreq).pipe(
                     tap(
@@ -136,7 +136,7 @@ export class AuthInterceptor implements HttpInterceptor {
             //  this.dialog.closeAll();
             setTimeout(() => {
               this.commonService.hide();
-            }, 3000);
+            }, 4000);
             
             })
           );

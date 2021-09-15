@@ -407,6 +407,8 @@ export class CreatobfComponent implements OnInit {
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
     this.supportchecked = true;
     this.checked_d = false;
+    this.disableSupporting=true;
+    this.disableLOIPO=true;
   }
   
  
@@ -1454,10 +1456,12 @@ downloadCoversheet(event)
     }
     if(types == "loipo" && this.loipofiles.length == 0)
     {
+      this.disableLOIPO=true;
       this._obfservices.ObfCreateForm.patchValue({Loiposheet: ""});
     }
     if(types == "support" && this.supportfiles.length == 0)
     {
+      this.disableSupporting=true;
       this.isSupport = !this.isSupport;
       this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
     }
@@ -1487,6 +1491,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
      // this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+      this.disableSupporting=true;
     }
     if(this._obfservices.obfmodel.Attachments.length==0)
     {
@@ -1520,6 +1525,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
       //this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+      this.disableSupporting=true;
     }
     if(this._obfservices.obfmodel.Attachments.length==0)
     {
@@ -1931,7 +1937,8 @@ downloadCoversheet(event)
             this.iscoversheet = !this.iscoversheet;
             return false;
         }
-        this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
+       // this._obfservices.ObfCreateForm.patchValue({Totalrevenue: ws.D13.w});
+       this._obfservices.ObfCreateForm.patchValue({Totalrevenue: val});
       // this._obfservices.obfmodel._total_revenue = parseFloat(ws.D13.w.toString());
         this._obfservices.obfmodel._total_revenue = val;
       }
@@ -1948,7 +1955,8 @@ downloadCoversheet(event)
             this.iscoversheet = !this.iscoversheet;
             return false;
         }
-      this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
+    //  this._obfservices.ObfCreateForm.patchValue({Totalcost: ws.F13.w});
+    this._obfservices.ObfCreateForm.patchValue({Totalcost: val});
       // this._obfservices.obfmodel._total_cost = parseFloat(ws.F13.w.toString());
       this._obfservices.obfmodel._total_cost = val;
     }
@@ -1966,7 +1974,7 @@ downloadCoversheet(event)
           validmsg +="Total margin is not in correct format ,";
           validcount +=1;
         }
-      this._obfservices.ObfCreateForm.patchValue({Totalmargin: ws.H13.w});
+      this._obfservices.ObfCreateForm.patchValue({Totalmargin: parseFloat(this.extractonlydgits(ws.H13.w.toString().trim()))});
       // this._obfservices.obfmodel._total_margin = parseFloat(ws.H13.w.toString().replace('%',""));
       this._obfservices.obfmodel._total_margin = parseFloat(this.extractonlydgits(ws.H13.w.toString().trim()));
     }
@@ -2007,7 +2015,8 @@ downloadCoversheet(event)
             return false;
         }
 
-        this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
+        // this._obfservices.ObfCreateForm.patchValue({Capex: ws.D15.w});
+        this._obfservices.ObfCreateForm.patchValue({Capex: val});
       // this._obfservices.obfmodel._capex = parseFloat(ws.D15.w.toString().replace('%',""));
       // this._obfservices.obfmodel._capex = parseFloat(this.extractonlydgits(ws.D15.w.toString().trim()));
          this._obfservices.obfmodel._capex = val;
@@ -2029,7 +2038,7 @@ downloadCoversheet(event)
           validmsg +="Payment terms is not in correct format ,";
           validcount +=1;
         }
-        this._obfservices.ObfCreateForm.patchValue({Paymentterms: ws.H15.w});
+        this._obfservices.ObfCreateForm.patchValue({Paymentterms: parseFloat(this.extractonlydgits(ws.H15.w.toString().trim()))});
        // this._obfservices.obfmodel._payment_terms = parseInt(ws.H15.w.toString().replace(" Days",""));
        this._obfservices.obfmodel._payment_terms = parseFloat(this.extractonlydgits(ws.H15.w.toString().trim()));
       }

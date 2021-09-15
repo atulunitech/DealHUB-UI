@@ -193,6 +193,7 @@ class filesdetail
       var jsondata=JSON.parse(Resultdata);
       this._obfservices.obfsummarymodel.uploadDetails = jsondata.uploadDetails;
       this._obfservices.obfsummarymodel.solutionDetails = jsondata.solutionDetails;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
@@ -202,7 +203,7 @@ class filesdetail
 
       this.dh_id= this._obfservices.obfsummarymodel.uploadDetails[0].dh_id;
       this.dh_header_id = this._obfservices.obfsummarymodel.uploadDetails[0].dh_header_id;
-      
+
       if(this._obfservices.obfsummarymodel.uploadDetails[0].marginal_exception_requested == 1)
       {
         this.obfsummaryform.controls["MarginException"].setValue(true);
@@ -300,9 +301,7 @@ class filesdetail
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
-      setTimeout(() => {
-        this.commonService.hide();
-      }, 100);
+     
       if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
       
       {
@@ -351,7 +350,9 @@ class filesdetail
       alert(error.message);
     }
     );
-   
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
   }
   getserviceslist()
   {
@@ -361,27 +362,45 @@ class filesdetail
    {
     if(this._obfservices.obfsummarymodel.servicelist.length != 0)
     {
-      var tempservicecat="";
-      var Tempservice="";
+     
      
       for(let i=0 ;i<this._obfservices.obfsummarymodel.servicelist.length ; i++)
       {
-      
+        var tempservicecat="";
+        var Tempservice="";
         Tempservice=this._obfservices.obfsummarymodel.servicelist[i].solutioncategory_name;
 
         for(let t=0;t < this._obfservices.obfsummarymodel.solutionDetails.length;t++)
         {
           if(Tempservice == this._obfservices.obfsummarymodel.solutionDetails[t].solutioncategory_name)
           {
-            
-            tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            if(this._obfservices.obfsummarymodel.solutionDetails[t].solution_name !="Other")
+            {
+              tempservicecat += ','+ this._obfservices.obfsummarymodel.solutionDetails[t].solution_name;
+            }
+            else if (this._obfservices.obfsummarymodel.solutionDetails[t].solution_name =="Other")
+            {
+              if(this._obfservices.obfsummarymodel.OtherServices.length !=0)
+              {
+                let index= this._obfservices.obfsummarymodel.OtherServices.findIndex(obj => obj.solutionName == Tempservice);
+                if(index > -1)
+                {
+                  tempservicecat += ',Other -'+ this._obfservices.obfsummarymodel.OtherServices[index].Other_solution_name;
+                }
+              }
+           
+              
+            }
+           
+           
           }
         }
+        tempservicecat=tempservicecat.substring(1);
+        finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
       
-       tempservicecat=tempservicecat.substring(1);
-       finalservicecat += " "+ Tempservice +"-"+ tempservicecat +".";
-       
       }
+     
+
       this.service=finalservicecat;
        this.service = this.service.substring(1);
     }
@@ -811,7 +830,7 @@ class filesdetail
       }
     }
   
-   
+    this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -826,6 +845,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
+    this.commonService.show();
     sessionStorage.setItem("Action","Approve");
       if(jsondata[0].status =="success")
       {
@@ -836,7 +856,13 @@ class filesdetail
         this._mesgBox.showError(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 3000);
   }
   RejectDeatils()
    {  
@@ -859,6 +885,7 @@ class filesdetail
    } 
    else
    {
+     this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -873,6 +900,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       this.commonService.show();
        sessionStorage.setItem("Action","Reject");
       if(res[0].status =="success")
       {
@@ -883,8 +911,13 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
-
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
   }
   }
   onHoldDetails()
@@ -908,7 +941,7 @@ class filesdetail
    } 
    else
    {
-
+    this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -923,6 +956,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       this.commonService.show();
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
@@ -934,7 +968,14 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
+   
   }
 }
   
@@ -1421,6 +1462,7 @@ class filesdetail
       this._obfservices.obfsummarymodel.AttachmentDetails = jsondata.AttachmentDetails;
       this._obfservices.obfsummarymodel.CommentDetails=jsondata.CommentDetails;
       this._obfservices.obfsummarymodel.servicelist=jsondata.ServicesList;
+      this._obfservices.obfsummarymodel.OtherServices = jsondata.OtherServices;
       //this._obfservices.obfsummarymodel.VersionDetails=jsondata.VersionDetails;
       this._obfservices.obfsummarymodel.SAPdetail=jsondata.SAPdetail;
       //this.obfsummaryform.patchValue({version:this._obfservices.obfsummarymodel.uploadDetails[0].dh_id });

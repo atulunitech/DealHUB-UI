@@ -321,7 +321,7 @@
                         <a href="javascript:;" *ngIf="!BrifreadMore" (click)="BrifreadMore=true"> More...</a>
                         <a href="javascript:;" *ngIf="BrifreadMore" (click)="BrifreadMore=false">less...</a>
                       </div>
-                      <div *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 20)">
+                      <div  class="prev_dis" *ngIf="(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc.length < 20)">
                         {{(_obfservices.obfsummarymodel.uploadDetails[0].dh_desc)}}  
                        </div>
                    </div> 
