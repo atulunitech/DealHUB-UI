@@ -407,6 +407,8 @@ export class CreatobfComponent implements OnInit {
     this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
     this.supportchecked = true;
     this.checked_d = false;
+    this.disableSupporting=true;
+    this.disableLOIPO=true;
   }
   
  
@@ -1451,10 +1453,12 @@ downloadCoversheet(event)
     }
     if(types == "loipo" && this.loipofiles.length == 0)
     {
+      this.disableLOIPO=true;
       this._obfservices.ObfCreateForm.patchValue({Loiposheet: ""});
     }
     if(types == "support" && this.supportfiles.length == 0)
     {
+      this.disableSupporting=true;
       this.isSupport = !this.isSupport;
       this._obfservices.ObfCreateForm.patchValue({Supportpath: ""});
     }
@@ -1484,6 +1488,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
      // this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+      this.disableSupporting=true;
     }
     if(this._obfservices.obfmodel.Attachments.length==0)
     {
@@ -1517,6 +1522,7 @@ downloadCoversheet(event)
       this._obfservices.ObfCreateForm.patchValue({Supportpath:""});
       //this.uploadnotdisabled = this._obfservices.ObfCreateForm.valid;
       this.isSupport = !this.isSupport;
+      this.disableSupporting=true;
     }
     if(this._obfservices.obfmodel.Attachments.length==0)
     {
