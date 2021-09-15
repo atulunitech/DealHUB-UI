@@ -301,9 +301,7 @@ class filesdetail
       this.getserviceslist();
       this.getSAPCode();
       this.GetDetailTimelineHistory(this.dh_id,this.dh_header_id);
-      setTimeout(() => {
-        this.commonService.hide();
-      }, 100);
+     
       if(this._obfservices.obfsummarymodel.AttachmentDetails != undefined)
       
       {
@@ -352,7 +350,9 @@ class filesdetail
       alert(error.message);
     }
     );
-   
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
   }
   getserviceslist()
   {
@@ -830,7 +830,7 @@ class filesdetail
       }
     }
   
-   
+    this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -845,6 +845,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
     var jsondata=JSON.parse(data);
+    this.commonService.show();
     sessionStorage.setItem("Action","Approve");
       if(jsondata[0].status =="success")
       {
@@ -855,7 +856,13 @@ class filesdetail
         this._mesgBox.showError(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 3000);
   }
   RejectDeatils()
    {  
@@ -878,6 +885,7 @@ class filesdetail
    } 
    else
    {
+     this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -892,6 +900,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       this.commonService.show();
        sessionStorage.setItem("Action","Reject");
       if(res[0].status =="success")
       {
@@ -902,8 +911,13 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
-
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
   }
   }
   onHoldDetails()
@@ -927,7 +941,7 @@ class filesdetail
    } 
    else
    {
-
+    this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -942,6 +956,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
+       this.commonService.show();
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
@@ -953,7 +968,14 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
+      setTimeout(() => {
+        this.commonService.hide();
+      }, 1000);
     });
+    setTimeout(() => {
+      this.commonService.hide();
+    }, 1000);
+   
   }
 }
   
