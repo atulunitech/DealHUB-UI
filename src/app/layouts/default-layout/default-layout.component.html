@@ -1,6 +1,32 @@
-<div  class="log_wrp"  fxLayout="row" fxLayoutAlign="space-between">
-   
-    <div class="log_incont">
+<div  class="log_wrp"  fxLayout="row"  style="background-color: #f3f4f8;">
+    <div class="" style="    display: flex;
+    padding-right: 20px;
+    position: absolute;
+    margin-right: 10px;
+    width: 239px;
+    font-size: 10px;
+    font-weight: 600;
+    bottom: 0;
+    right: 0;
+
+    padding: 12px;
+    z-index: 99;">
+                <div style="padding-right: 5px; display: flex; justify-content: center; align-items: center;">
+                    <div>
+                        For Application Support &amp; Queries<div style="text-align: center; background-color: red;
+                            color: #fff;">
+                            <a href="https://iprism.mahindralogistics.com/portal/en/newticket?departmentId=587738000000244554&layoutId=587738000000247809" target="_blank" style="color: #fff; text-decoration: none; line-height: 17px;
+                                text-transform: uppercase; font-size: 9px; margin-top: 6px; display: flex; justify-content: center;">
+                                Sumbit Ticket</a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img alt="MLL" title="Mahindra Logistics" src="assets/images/iPrismlogo.png" style="border: 0px;
+                        width: 54px;">
+                </div>
+            </div>
+    <div class="log_incont" style="display: none;">
         <div class="" style="    display: flex;
         padding-right: 20px;
         position: absolute;
@@ -10,7 +36,7 @@
         font-weight: 600;
         bottom: 0;
         left: 0;
-        background-color: #ffffff17;
+    
         padding: 12px;
         z-index: 99;">
                     <div style="padding-right: 5px; display: flex; justify-content: center; align-items: center;">
@@ -28,7 +54,7 @@
                             width: 54px;">
                     </div>
                 </div>
-        <div  style="
+        <div  style="display: none;
     position: absolute;
     /* z-index: 00; */
     position: absolute;
@@ -47,8 +73,8 @@
 "></div>
 
         <!-- <img src="assets/loginscreen.jpg"> -->
-        <div id="overlay">
-            <img src="assets/images/loginscreen.png">
+        <div id="overlay" >
+            <img src="../../../assets/images/new_bg_login.png" >
         </div>
         <div style="position: absolute;
         width: 100%;
@@ -64,7 +90,13 @@
             bottom: 0;">
         </div>
     </div>
-    <div class="log_infor_cont" fxLayout="column" fxLayoutAlign="end stretch">
+    <div class="log_incont" style="width: 50%;">
+        <div id="overlay" style="background-color: #f3f4f8;">
+            <img src="assets/images/new_bg_login.png" style="    margin-top: -65px;
+            height: 110vh;">
+        </div>
+    </div>
+    <div class="log_infor_cont" fxLayout="column" fxLayoutAlign="center stretch">
         <app-header class="hed_con"></app-header>
     
         <router-outlet></router-outlet>
