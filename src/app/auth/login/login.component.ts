@@ -296,6 +296,7 @@ export class LoginComponent implements OnInit {
   }
   GetEmail()
   {
+    this.disablebutton=true;
     if(this.ResetPasswordForm.get('ResetPasswordUserid').value != "" )
     {
       this.loginmodel._user_code=this.ResetPasswordForm.get('ResetPasswordUserid').value+"*"+window.location.href.replace("login","ResetPassword");
@@ -306,11 +307,13 @@ export class LoginComponent implements OnInit {
       // this.loginmodel._password = this.setEncryption(this.key,this.loginmodel._password);
       this.loginmodel._password = "";
       this._loginservice.sendemail(this.loginmodel).subscribe(Result=>{
+        this.disablebutton=false;
         this._mesgBox.showSucess("Email sent.");
        
       });
     }
     else{
+      this.disablebutton=false;
       this._mesgBox.showError("Please Enter UserCode.");
     }
    
