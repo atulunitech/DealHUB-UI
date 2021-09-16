@@ -17,6 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
   
     intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
       this.commonService.show();
+     
         if (req.headers.get('No-Auth') == "True")
         {
          
@@ -110,7 +111,12 @@ export class AuthInterceptor implements HttpInterceptor {
                       }
                       return error;
                     }),
-                    finalize(() => this.commonService.hide())
+                    finalize(() =>{
+                      this.commonService.hide();
+                      
+                    } 
+                    
+                    )
                   );
             }
             else {
