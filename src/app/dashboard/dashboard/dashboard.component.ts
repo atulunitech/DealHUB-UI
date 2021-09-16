@@ -1781,7 +1781,7 @@ downloaddetailFinalAgg(row)
         Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
       console.log(Resultdata);
       var loginresult =Resultdata;
-      this.commonService.show();
+      //this.commonService.show();
       this.dashboardData=JSON.parse(Resultdata);
       this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
@@ -1796,9 +1796,9 @@ downloaddetailFinalAgg(row)
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
        this.bindfilterobjectoninit();
       
-       setTimeout(() => {
-        this.commonService.hide();
-      }, 100);
+      //  setTimeout(() => {
+      //   this.commonService.hide();
+      // }, 100);
       
       
     },
