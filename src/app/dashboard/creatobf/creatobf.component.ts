@@ -2793,7 +2793,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
       if(val)
     {
       this._obfservices.createobf(this._obfservices.obfmodel).subscribe(data =>{
-        this._commonservices.show();
+      //  this._commonservices.show();
         console.log("data arrived after insert");
         let res = JSON.parse(data);
         console.log(res);
@@ -2804,9 +2804,9 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         // alert("Documents uploaded Successfully");
        this._mesgBox.showSucess( (this.isppl?"PPL":"OBF")+" created successfully");
         this.router.navigate(['/DealHUB/dashboard']);
-        setTimeout(() => {
-          this._commonservices.hide();
-        }, 1000);
+        // setTimeout(() => {
+        //   this._commonservices.hide();
+        // }, 1000);
       }
       else{
         //alert("Technical error while uploading documents");
@@ -2858,7 +2858,7 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
         console.log("data arrived after services update");
         let res = JSON.parse(data);
         console.log(res);
-        this._commonservices.show();
+      //  this._commonservices.show();
         if(String(res[0].status).toLowerCase() == "success"){
            this._obfservices.obfmodel._dh_header_id = res[0].dh_header_id;
            this._obfservices.obfmodel._dh_id = res[0].dh_id;
@@ -2870,9 +2870,9 @@ this.Comments=this._obfservices.ObfCreateForm.get("comments").value;
           //alert("Technical error while updating details");
           this._mesgBox.showError("Technical error while updating details");
         }
-        setTimeout(() => {
-          this._commonservices.hide();
-        }, 1000);
+        // setTimeout(() => {
+        //   this._commonservices.hide();
+        // }, 1000);
         // this._obfservices.obfmodel._dh_header_id = res.dh_header_id;
         // this._obfservices.obfmodel._dh_id = res.dh_id;
       },

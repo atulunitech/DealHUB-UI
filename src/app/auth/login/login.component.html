@@ -4,7 +4,7 @@
         <p class="to_account" style="margin-bottom: 20px;">
            <span style="color: #17377d;">Login with</span>  your <span style="color: #17377d;">Credentials</span>  
         </p>
-    <form [formGroup]="loginvalid">
+    <form [formGroup]="loginvalid" >
         <div>
             <div class="mt-cust-fd"  >
                 <mat-form-field appearance="fill" class="example-full-width">
@@ -44,8 +44,7 @@
         <div>
            
         </div>
-    </form>
-    <button [disabled]="disablebutton"   mat-flat-button class="cus_bt" color="primary"  (click)="onFormSubmit()"
+        <button [disabled]="disablebutton"   mat-flat-button class="cus_bt" color="primary"  (click)="onFormSubmit()"
     style="    border-radius: 4px;
     margin-top: 20px;
     width: 100%;
@@ -54,6 +53,8 @@
     border: solid 1px #23458f;
     background-image: linear-gradient(to bottom, #407bff, #2651af);"
     >Login</button>
+    </form>
+    
     <!-- <div class="lost_pass" (click)="lostPass()">
         Lost your password ??
     </div> -->
@@ -77,7 +78,7 @@
             
             <div fxLayout="row" fxLayoutAlign="space-between center" >
                 <div class="lost_pass re_login" (click)="relogin()">Login</div>
-                <div><button mat-flat-button class="cus_bt" [disabled]="ResetPasswordForm.invalid" color="primary" (click)="GetEmail()">Reset Password</button></div>
+                <div><button mat-flat-button class="cus_bt" [disabled]="ResetPasswordForm.invalid || disablebutton" color="primary" (click)="GetEmail()">Reset Password</button></div>
             </div>
            
         </form>

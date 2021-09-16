@@ -143,6 +143,7 @@ class filesdetail
       }
       
   ngOnInit(): void {
+    //this.commonService.show();
     this._obfservices.createnewobfsummarymodel();
     if(localStorage.getItem("privilege_name")!= null)
     {
@@ -182,7 +183,7 @@ class filesdetail
   getdetailsfordh_id(dh_id)
   {
     this._obfservices.getobfsummarydata(dh_id).subscribe(data =>{
-      this.commonService.show();
+      //this.commonService.show();
     let getrandom = data.split("*$");
     let Resultdata = getrandom[0];
     let actualrandom = getrandom[1];
@@ -350,9 +351,9 @@ class filesdetail
       alert(error.message);
     }
     );
-    setTimeout(() => {
-      this.commonService.hide();
-    }, 1000);
+    // setTimeout(() => {
+    //   this.commonService.hide();
+    // }, 1000);
   }
   getserviceslist()
   {
@@ -830,7 +831,7 @@ class filesdetail
       }
     }
   
-    this.commonService.show();
+   // this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=1;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -856,9 +857,9 @@ class filesdetail
         this._mesgBox.showError(jsondata[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
-      setTimeout(() => {
-        this.commonService.hide();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.commonService.hide();
+      // }, 1000);
     });
     // setTimeout(() => {
     //   this.commonService.hide();
@@ -885,7 +886,7 @@ class filesdetail
    } 
    else
    {
-     this.commonService.show();
+     //this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -900,7 +901,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
-       this.commonService.show();
+       //this.commonService.show();
        sessionStorage.setItem("Action","Reject");
       if(res[0].status =="success")
       {
@@ -911,13 +912,13 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
-      setTimeout(() => {
-        this.commonService.hide();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.commonService.hide();
+      // }, 1000);
     });
-    setTimeout(() => {
-      this.commonService.hide();
-    }, 1000);
+    // setTimeout(() => {
+    //   this.commonService.hide();
+    // }, 1000);
   }
   }
   onHoldDetails()
@@ -941,7 +942,7 @@ class filesdetail
    } 
    else
    {
-    this.commonService.show();
+    //this.commonService.show();
     this._obfservices._approveRejectModel.isapproved=0;
     this._obfservices._approveRejectModel.rejectcomment=this.obfsummaryform.get("comments").value;
     this._obfservices._approveRejectModel.rejectionto=0;
@@ -956,7 +957,7 @@ class filesdetail
     this._obfservices._approveRejectModel._marginal_exception_requested=(this.obfsummaryform.get("MarginException").value==false? 0 :1 );
     this._obfservices.ApproveRejectObf(this._obfservices._approveRejectModel).subscribe(data=>{
        let res = JSON.parse(data);
-       this.commonService.show();
+      // this.commonService.show();
       if(res[0].status =="success")
       {
         this._mesgBox.showSucess(res[0].message);
@@ -968,13 +969,13 @@ class filesdetail
         this._mesgBox.showError(res[0].message);
         this.router.navigate(['/DealHUB/dashboard']);
       }
-      setTimeout(() => {
-        this.commonService.hide();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.commonService.hide();
+      // }, 1000);
     });
-    setTimeout(() => {
-      this.commonService.hide();
-    }, 1000);
+    // setTimeout(() => {
+    //   this.commonService.hide();
+    // }, 1000);
    
   }
 }
@@ -1774,7 +1775,7 @@ class filesdetail
           this._obfservices.ShareOBF(this.dh_header_id,encryptedusercode,_ToEmailId).subscribe(data=>{
             console.log(data);
             var result=JSON.parse(data);
-            this.commonService.show();
+           // this.commonService.show();
             
             if(result[0].status=="Success")
             {
@@ -1784,9 +1785,9 @@ class filesdetail
             {
               this._mesgBox.showError(result[0].message); 
             }
-            setTimeout(() => {
-              this.commonService.hide();
-            }, 100);
+            // setTimeout(() => {
+            //   this.commonService.hide();
+            // }, 100);
            
             this.EmailAddress.setValue("");
             
