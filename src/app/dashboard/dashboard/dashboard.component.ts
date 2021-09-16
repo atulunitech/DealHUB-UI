@@ -1842,7 +1842,7 @@ downloaddetailFinalAgg(row)
 
   BindGridDetails()// code given by kirti kumar shifted to new function
   {
-    
+    this.commonService.show();
     const columns = this.dashboardData
     .reduce((columns, row) => {
       return [...columns, ...Object.keys(row)]
@@ -1914,7 +1914,9 @@ downloaddetailFinalAgg(row)
   {
     this.addColumn(0)
   }
-  
+  setTimeout(() => {
+    this.commonService.hide();
+  }, 100);
   //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
