@@ -19,11 +19,11 @@ export class AuthInterceptor implements HttpInterceptor {
       this.commonService.show();
         if (req.headers.get('No-Auth') == "True")
         {
-          setTimeout(() => {
-            this.commonService.hide();
-          }, 4000);
-          
-            return next.handle(req.clone());
+         
+           
+            return next.handle(req.clone()).pipe(
+              finalize(() => this.commonService.hide())
+            );
             
         }
         else
@@ -41,9 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     //headers: req.headers.set("Authorization", "Bearer " + localStorage.getItem('Token'))
                     headers
                 });
-                setTimeout(() => {
-                  this.commonService.hide();
-                }, 4000);
+              
                 
                 return next.handle(clonedreq).pipe(
                     tap(
@@ -111,7 +109,8 @@ export class AuthInterceptor implements HttpInterceptor {
                         }
                       }
                       return error;
-                    })
+                    }),
+                    finalize(() => this.commonService.hide())
                   );
             }
             else {
@@ -134,9 +133,9 @@ export class AuthInterceptor implements HttpInterceptor {
              
               this.commonService.resetclicked.next(false);
             //  this.dialog.closeAll();
-            setTimeout(() => {
-              this.commonService.hide();
-            }, 4000);
+            // setTimeout(() => {
+            //   this.commonService.hide();
+            // }, 4000);
             
             })
           );
