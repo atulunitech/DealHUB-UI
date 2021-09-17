@@ -31,7 +31,7 @@ export class SideNaveComponent implements OnInit {
     
     this.config = this.mergeConfig(this.options);
     //this.GetMenus();
-    this.menus = [
+    this.menus =(localStorage.getItem('role_name') == 'ITS' || localStorage.getItem('role_name') == 'SU')?[
       { 
         name: "Dashboard",
         Role:null,
@@ -46,6 +46,61 @@ export class SideNaveComponent implements OnInit {
          url:"/DealHUB/master",
          active: false,
        },
+      { 
+       name: 'Change Password',
+       Role:null,
+       iconClass: 'change_pass_icon.png',
+       url:"/DealHUB/dashboard",
+       active: false,
+     },
+     { 
+       name: 'Logout',
+       Role:null,
+       iconClass: 'log_out_icon_new.png',
+       url: "javascript:void(0)",
+       active: false,
+     }
+     //  { 
+     //    name: 'Menu 2',
+     //    iconClass: 'fa fa-mobile',
+     //    active: false,
+     //    submenu: [
+     //      { name: 'Sub Menu 2', url: '#' },
+     //      { name: 'Sub Menu 2', url: '#' },
+     //      { name: 'Sub Menu 2', url: '#' }
+     //    ]
+     //  },
+     //  { 
+     //    name: 'Menu 3',
+     //    iconClass: 'fa fa-globe',
+     //    active: false,
+     //    submenu: [
+     //      { name: 'Sub Menu 3', url: '#' },
+     //      { name: 'Sub Menu 3', url: '#' },
+     //      { name: 'Sub Menu 3', url: '#' }
+     //    ]
+     //  },
+     //  { 
+     //    name: 'Menu 4',
+     //    iconClass: 'fa fa-globe',
+     //    active: false
+     //  }
+    ]:
+    [
+      { 
+        name: "Dashboard",
+        Role:null,
+        iconClass: 'dashboard_icon.png',
+        url:"/DealHUB/dashboard",
+        active: true,
+      },
+      //  { 
+      //    name: "Masters",
+      //    Role:null,
+      //    iconClass: 'masters.png',
+      //    url:"/DealHUB/master",
+      //    active: false,
+      //  },
       { 
        name: 'Change Password',
        Role:null,
