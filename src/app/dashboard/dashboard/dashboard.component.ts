@@ -1781,7 +1781,7 @@ downloaddetailFinalAgg(row)
         Resultdata =  this.commonService.setDecryption(actualkey,Resultdata);
       console.log(Resultdata);
       var loginresult =Resultdata;
-      this.commonService.show();
+      
       this.dashboardData=JSON.parse(Resultdata);
       this.getnonfilteredsearchdataimp(this.dashboardData);
       this.getcounts(this.dashboardData);
@@ -1796,9 +1796,6 @@ downloaddetailFinalAgg(row)
        this.statusfilter =  this.returnsortedvalue("currentstatus_search");
        this.bindfilterobjectoninit();
       
-       setTimeout(() => {
-        this.commonService.hide();
-      }, 100);
       
       
     },
@@ -1842,7 +1839,7 @@ downloaddetailFinalAgg(row)
 
   BindGridDetails()// code given by kirti kumar shifted to new function
   {
-    this.commonService.show();
+  
     const columns = this.dashboardData
     .reduce((columns, row) => {
       return [...columns, ...Object.keys(row)]
@@ -1914,9 +1911,7 @@ downloaddetailFinalAgg(row)
   {
     this.addColumn(0)
   }
-  setTimeout(() => {
-    this.commonService.hide();
-  }, 100);
+ 
   //this.setDataSourceAttributes();
   // this.listData.filterPredicate = (data, filter) => {
   //   return this.displayedColumns.some(ele => {
