@@ -52,7 +52,7 @@ export class CommonService {
   hide() {
     setTimeout(() => {
       this._loading.next(false);
-    },2000 );
+    },5000);
     
   }
 
